@@ -1,0 +1,7 @@
+{
+    "@odata.type": "microsoft.graph.socialIdentityProvider",
+    "displayName": "Login with Microsoft",
+    "identityProviderType": "MicrosoftAccount",
+    "clientId": "{client_id}",
+    "clientSecret": "{client_secret}"
+  }

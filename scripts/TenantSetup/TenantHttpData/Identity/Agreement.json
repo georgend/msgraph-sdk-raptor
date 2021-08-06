@@ -1,0 +1,15 @@
+
+{
+    "displayName": "Raptor Agreement",
+    "isViewingBeforeAcceptanceRequired": true,
+    "files": [
+      {
+        "fileName": "TOU.pdf",
+        "language": "en",
+        "isDefault": true,
+        "fileData": {
+          "data": "SGVsbG8gd29ybGQ="
+        }
+      }
+    ]
+  }

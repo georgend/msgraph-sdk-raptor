@@ -1,0 +1,6 @@
+{
+    "name": "Login with Google",
+    "type": "Google",
+    "clientId": "{client_id}",
+    "clientSecret": "{client_secret}"
+}

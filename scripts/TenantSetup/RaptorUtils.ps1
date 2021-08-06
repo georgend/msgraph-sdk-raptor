@@ -1,4 +1,5 @@
 # Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+
 function Get-AppSettings (
     [string] $AppSettingsPath = (Join-Path $PSScriptRoot "./../../msgraph-sdk-raptor-compiler-lib/appsettings.json")
 ) {
@@ -41,9 +42,9 @@ function Get-CurrentDomain (
 #>
 function Get-RequestData (
     [string] $ChildEntity
-    ) {
+) {
     $entityPath = Join-Path $MyInvocation.PSScriptRoot "./$($ChildEntity).json"
-    $data = Get-Content -Path $entityPath -Raw | ConvertFrom-Json
+    $data = Get-Content -Path $entityPath -Raw | ConvertFrom-Json -AsHashtable
     return $data
 }
 
@@ -58,7 +59,7 @@ function Get-RequestData (
     Basic Validation of Parameters
 #>
 function Invoke-RequestHelper (
-     [string] $Uri,
+    [string] $Uri,
     [parameter(Mandatory = $False)][ValidateSet("v1.0", "beta")][string] $GraphVersion = "v1.0",
     [Parameter(Mandatory = $False)][ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")][string] $Method = "GET",
     $Headers = @{ },
@@ -86,8 +87,7 @@ function Invoke-RequestHelper (
         - This application need access to delegated resources without user interaction
     Returns: an access token
 #>
-function Get-Token
-{
+function Get-Token {
     param(
         [string]$Path,
         [string]$ScopeOverride,
@@ -99,12 +99,10 @@ function Get-Token
     $appSettings = Get-AppSettings
     $domain = Get-CurrentDomain -AppSettings $appSettings
     $tokenEndpoint = "https://login.microsoftonline.com/$($domain)/oauth2/v2.0/token"
-    if ($ScopeOverride)
-    {
+    if ($ScopeOverride) {
         $joinedScopeString = $ScopeOverride
     }
-    else
-    {
+    else {
         try {
             $scopes = Invoke-RestMethod -Method Get -Uri "https://graphexplorerapi.azurewebsites.net/permissions?requesturl=$Path&method=$Method"
             if ($scopes.Count -eq 1 -and $scopes[0].value -eq "Not supported.") {
@@ -130,8 +128,7 @@ function Get-Token
     $token = Invoke-RestMethod -Method Post -Uri $tokenEndpoint -Body $Body -ContentType 'application/x-www-form-urlencoded'
 
     Write-Debug "== got token with the following scopes"
-    foreach ($scope in $token.scope.Split())
-    {
+    foreach ($scope in $token.scope.Split()) {
         Write-Debug "    $scope"
     }
 
@@ -150,15 +147,14 @@ function Get-Token
         - http response if response is a single item
         - http response headers if the first two options return $null.
 #>
-function Request-DelegatedResource
-{
+function Request-DelegatedResource {
     param(
         [Parameter(Mandatory = $true)]
         [string]$Uri,
         [Parameter(Mandatory = $False)]
         $Body,
         [ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")]
-        [string] $Method="GET",
+        [string] $Method = "GET",
         $Headers = @{ },
         [string]$ScopeOverride,
         [string]$Version = "v1.0"
@@ -176,10 +172,32 @@ function Request-DelegatedResource
 }
 
 Function Get-RandomAlphanumericString {
-	[CmdletBinding()]
-	Param (
+    [CmdletBinding()]
+    Param (
         [int] $length
-	)
-        $randString = ""; do { $randString = $randString + ((0x30..0x39) + (0x41..0x5A) + (0x61..0x7A) | Get-Random | % {[char]$_}) } until ($randString.length -eq $length)
-        return $randString
+    )
+    $randString = ""; do { $randString = $randString + ((0x30..0x39) + (0x41..0x5A) + (0x61..0x7A) | Get-Random | % { [char]$_ }) } until ($randString.length -eq $length)
+    return $randString
+}
+
+Function New-Certificate {
+    $selfSignedCert = New-SelfSignedCertificate -Type Custom -NotAfter (Get-Date).AddYears(2) -Subject "CN=Microsoft,O=Microsoft Corp,L=Redmond,ST=Washington,C=US"
+    $exportedCert = [System.Convert]::ToBase64String($selfSignedCert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert), [System.Base64FormattingOptions]::InsertLineBreaks)
+    return $exportedCert
+}
+
+Function Remove-PemHeaderOrFooter {
+    [CmdletBinding()]
+    Param (
+        [string] $pemInput
+    )
+    $headerAndFooterList = @(
+        "-----BEGIN CERTIFICATE-----",
+        "-----END CERTIFICATE-----"
+    )
+    $trimmed = $pemInput
+    foreach ($headerOrFooter  in $headerAndFooterList) {
+        $trimmed = $trimmed.Replace($headerOrFooter, [string]::Empty)
+    }
+    return $trimmed.Replace("\r\n", [string]::Empty)
 }
