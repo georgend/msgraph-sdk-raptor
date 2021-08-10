@@ -4,9 +4,9 @@
 #   credentials are given in the appsettings.json file.
 # - uses delegated permissions to access the data.
 
-$scriptsPath = $PWD.Path
+$tenantSetupPath = $PSScriptRoot
 
-$appSettingsPath = Join-Path $scriptsPath "../msgraph-sdk-raptor-compiler-lib/appsettings.json"
+$appSettingsPath = Join-Path $tenantSetupPath "../../msgraph-sdk-raptor-compiler-lib/appsettings.json"
 $appSettings = Get-Content $appSettingsPath | ConvertFrom-Json
 
 if (    !$appSettings.CertificateThumbprint `
@@ -17,7 +17,7 @@ if (    !$appSettings.CertificateThumbprint `
     Write-Error -ErrorAction Stop -Message "please provide CertificateThumbprint, ClientID, Username, Password and TenantID in appsettings.json"
 }
 
-$identifiersPath = Join-Path $scriptsPath "../msgraph-sdk-raptor-compiler-lib/identifiers.json"
+$identifiersPath = Join-Path $tenantSetupPath "../../msgraph-sdk-raptor-compiler-lib/identifiers.json"
 $identifiers = Get-Content $identifiersPath | ConvertFrom-Json
 
 $domain = $appSettings.Username.Split("@")[1]

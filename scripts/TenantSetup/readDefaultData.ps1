@@ -4,9 +4,9 @@
 #   credentials are given in the appsettings.json file.
 # - uses application permissions to access the data.
 
-$scriptsPath = $PWD.Path
+$tenantSetupPath = $PSScriptRoot
 
-$appSettingsPath = Join-Path $scriptsPath "../msgraph-sdk-raptor-compiler-lib/appsettings.json"
+$appSettingsPath = Join-Path $tenantSetupPath "../../msgraph-sdk-raptor-compiler-lib/appsettings.json"
 $appSettings = Get-Content $appSettingsPath | ConvertFrom-Json
 
 if ( !$appSettings.CertificateThumbprint -or !$appSettings.ClientID -or !$appSettings.Username -or !$appSettings.TenantID)
@@ -14,7 +14,7 @@ if ( !$appSettings.CertificateThumbprint -or !$appSettings.ClientID -or !$appSet
     Write-Error -ErrorAction Stop -Message "please provide CertificateThumbprint, ClientID, Username and TenantID in appsettings.json"
 }
 
-$identifiersPath = Join-Path $scriptsPath "../msgraph-sdk-raptor-compiler-lib/identifiers.json"
+$identifiersPath = Join-Path $tenantSetupPath "../../msgraph-sdk-raptor-compiler-lib/identifiers.json"
 $identifiers = Get-Content $identifiersPath | ConvertFrom-Json
 
 $admin = "MOD Administrator"
@@ -286,7 +286,7 @@ $place = req -url "places/microsoft.graph.room" |
     Where-Object {$_.displayName -eq "Conf Room Rainier"}
     Select-Object -First 1
 $place.id
-#Places can also be obtained 
+#Places can also be obtained
 #$place = req -url "places/$($place.id)"
 $identifiers.place._value = $place.id
 
