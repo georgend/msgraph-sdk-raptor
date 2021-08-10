@@ -10,11 +10,10 @@ $appSettingsPath = Join-Path $scriptsPath "../msgraph-sdk-raptor-compiler-lib/ap
 $appSettings = Get-Content $appSettingsPath | ConvertFrom-Json
 
 if (    !$appSettings.CertificateThumbprint `
-    -or !$appSettings.ClientID `
-    -or !$appSettings.Username `
-    -or !$appSettings.Password `
-    -or !$appSettings.TenantID)
-{
+        -or !$appSettings.ClientID `
+        -or !$appSettings.Username `
+        -or !$appSettings.Password `
+        -or !$appSettings.TenantID) {
     Write-Error -ErrorAction Stop -Message "please provide CertificateThumbprint, ClientID, Username, Password and TenantID in appsettings.json"
 }
 
@@ -23,8 +22,7 @@ $identifiers = Get-Content $identifiersPath | ConvertFrom-Json
 
 $domain = $appSettings.Username.Split("@")[1]
 
-function getToken
-{
+function getToken {
     param(
         [string]$path,
         [string]$scopeOverride
@@ -34,12 +32,10 @@ function getToken
     $grantType = "password"
     $method = "GET"
 
-    if ($scopeOverride)
-    {
+    if ($scopeOverride) {
         $joinedScopeString = $scopeOverride
     }
-    else
-    {
+    else {
         try {
             $scopes = Invoke-RestMethod -Method Get -Uri "https://graphexplorerapi.azurewebsites.net/permissions?requesturl=$path&method=$method"
             if ($scopes.Count -eq 1 -and $scopes[0].value -eq "Not supported.") {
@@ -50,27 +46,33 @@ function getToken
                 Where-Object { $_.Contains("Read") -and !$_.Contains("Write") } | # same selection as the read-only permissions for the app
                 Join-String -Separator " "
             }
+            # Ensure that $joinedScopeString is set before exiting
+            if ([string]::IsNullOrWhiteSpace($joinedScopeString)) {
+                $returnedScopes = $scopes.value | Join-String -Separator " "
+                throw "Error Validating returned Scopes $returnedScopes for $path"
+            }
         }
         catch {
+            Write-Error $_
+            Write-Warning "Defaulting to .default Scope for $path with Method $method"
             # try with empty scopes if we can't get permissions from the DevX API
             $joinedScopeString = ".default"
         }
     }
 
+
     $body = "grant_type=$grantType&username=$($appSettings.Username)&password=$($appSettings.Password)&client_id=$($appSettings.ClientID)&scope=$($joinedScopeString)"
     $token = Invoke-RestMethod -Method Post -Uri $tokenEndpoint -Body $body -ContentType 'application/x-www-form-urlencoded'
 
     Write-Debug "== got token with the following scopes"
-    foreach ($scope in $token.scope.Split())
-    {
+    foreach ($scope in $token.scope.Split()) {
         Write-Debug "    $scope"
     }
 
     $token.access_token
 }
 
-function reqDelegated
-{
+function reqDelegated {
     param(
         [string]$url,
         [string]$scopeOverride,
@@ -92,6 +94,17 @@ $calendarGroup = reqDelegated -url "me/calendarGroups" |
     Select-Object -First 1
 $calendarGroup.id
 $identifiers.calendarGroup._value = $calendarGroup.id
+
+$todoTaskList = reqDelegated -url "me/todo/lists" -scopeOverride "Tasks.Read" |
+Select-Object -First 1
+$todoTaskList.id
+$identifiers.todoTaskList._value = $todoTaskList.id
+
+# no data
+# $todoTask = reqDelegated -url "me/todo/lists/$($todoTaskList.id)/tasks" -scopeOverride "Tasks.Read"
+
+# no data
+# $linkedResource = reqDelegated -url "me/todo/lists/$($todoTaskList.id)/tasks/$($todoTask.id)/linkedResources" -scopeOverride "Tasks.Read"
 
 # no data
 # $contactFolder = reqDelegated -url "me/contactFolders" # already in readDefaultData under user/contactFolders. Remove this??
@@ -198,8 +211,8 @@ $presence = reqDelegated -url "users/$($identifiers.user._value)/presence"
 $presence.id
 $identifiers.presence._value = $presence.id
 
-$teamsApp = req -url "appCatalogs/teamsApps" |
-    Where-Object { $_.displayName -eq "Teams"} |
+$teamsApp = reqDelegated -url "appCatalogs/teamsApps" |
+    Where-Object { $_.displayName -eq "Teams" } |
     Select-Object -First 1
 $teamsApp.id
 $identifiers.teamsApp._value = $teamsApp.id
