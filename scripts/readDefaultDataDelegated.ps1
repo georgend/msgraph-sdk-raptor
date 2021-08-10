@@ -93,17 +93,6 @@ $calendarGroup = reqDelegated -url "me/calendarGroups" |
 $calendarGroup.id
 $identifiers.calendarGroup._value = $calendarGroup.id
 
-$todoTaskList = reqDelegated -url "me/todo/lists" -scopeOverride "Tasks.Read" |
-    Select-Object -First 1
-$todoTaskList.id
-$identifiers.todoTaskList._value = $todoTaskList.id
-
-# no data
-# $todoTask = reqDelegated -url "me/todo/lists/$($todoTaskList.id)/tasks" -scopeOverride "Tasks.Read"
-
-# no data
-# $linkedResource = reqDelegated -url "me/todo/lists/$($todoTaskList.id)/tasks/$($todoTask.id)/linkedResources" -scopeOverride "Tasks.Read"
-
 # no data
 # $contactFolder = reqDelegated -url "me/contactFolders" # already in readDefaultData under user/contactFolders. Remove this??
 

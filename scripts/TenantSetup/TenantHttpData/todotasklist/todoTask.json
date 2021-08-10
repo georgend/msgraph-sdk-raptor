@@ -1,0 +1,10 @@
+{
+    "title":"A new task",
+    "linkedResources":[
+       {
+          "webUrl":"http://microsoft.com",
+          "applicationName":"Microsoft",
+          "displayName":"Microsoft"
+       }
+    ]
+ }
