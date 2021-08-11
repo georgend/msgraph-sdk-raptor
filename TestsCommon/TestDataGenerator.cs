@@ -132,7 +132,7 @@ namespace TestsCommon
         /// </summary>
         /// <param name="language">language to generate the exception from</param>
         /// <returns>mapping of issues of which the source comes from service/documentation/metadata and are common accross langauges</returns>
-        public static Dictionary<string, KnownIssue> GetCommonIssues(Languages language, Versions versionEnum)
+        public static Dictionary<string, KnownIssue> GetCompilationCommonIssues(Languages language, Versions versionEnum)
         {
             var version = versionEnum.ToString();
             var lng = language.AsString();
@@ -193,7 +193,7 @@ namespace TestsCommon
         /// </summary>
         /// <param name="versionEnum">version to get the known issues for</param>
         /// <returns>A mapping of test names into known CSharp issues</returns>
-        public static Dictionary<string, KnownIssue> GetCSharpIssues(Versions versionEnum)
+        public static Dictionary<string, KnownIssue> GetCSharpCompilationKnownIssues(Versions versionEnum)
         {
             var version = versionEnum.ToString();
             return new Dictionary<string, KnownIssue>()
@@ -324,12 +324,27 @@ namespace TestsCommon
                 { "create-connectorgroup-from-connector-csharp-Beta-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText) },
             };
         }
+
+        /// <summary>
+        /// Gets execution known issues
+        /// </summary>
+        /// <param name="versionEnum">version to get the execution known issues for</param>
+        /// <returns>A mapping of test names into known CSharp issues</returns>
+        public static Dictionary<string, KnownIssue> GetCSharpExecutionKnownIssues(Versions versionEnum)
+        {
+            var version = versionEnum.ToString();
+            return new Dictionary<string, KnownIssue>()
+            {
+                { $"get-contract-1-csharp-{version}-executes", new KnownIssue(NeedsAnalysis, NeedsAnalysisText) }
+            };
+        }
+
         /// <summary>
         /// Gets known issues
         /// </summary>
         /// <param name="versionEnum">version to get the known issues for</param>
         /// <returns>A mapping of test names into known Java issues</returns>
-        public static Dictionary<string, KnownIssue> GetJavaIssues(Versions versionEnum)
+            public static Dictionary<string, KnownIssue> GetJavaCompilationKnownIssues(Versions versionEnum)
         {
             var version = versionEnum == Versions.V1 ? "V1" : "Beta";
             return new Dictionary<string, KnownIssue>()
@@ -486,16 +501,32 @@ namespace TestsCommon
         /// <param name="language">language to get the issues for</param>
         /// <param name="version">version to get the issues for</param>
         /// <returns>A mapping of test names into known issues</returns>
-        public static Dictionary<string, KnownIssue> GetIssues(Languages language, Versions version)
+        public static Dictionary<string, KnownIssue> GetCompilationKnownIssues(Languages language, Versions version)
         {
             return (language switch
             {
-                Languages.CSharp => GetCSharpIssues(version),
-                Languages.Java => GetJavaIssues(version),
-                _ => new Dictionary<string, KnownIssue>(),
-            }).Union(GetCommonIssues(language, version)).ToDictionary(x => x.Key, x => x.Value);
+                Languages.CSharp => GetCSharpCompilationKnownIssues(version),
+                Languages.Java => GetJavaCompilationKnownIssues(version),
+                _ => new Dictionary<string, KnownIssue>()
+            }).Union(GetCompilationCommonIssues(language, version)).ToDictionary(x => x.Key, x => x.Value);
+        }
+
+        /// <summary>
+        /// Gets known issues by language
+        /// </summary>
+        /// <param name="language">language to get the issues for</param>
+        /// <param name="version">version to get the issues for</param>
+        /// <returns>A mapping of test names into known issues</returns>
+        public static Dictionary<string, KnownIssue> GetExecutionKnownIssues(Languages language, Versions version)
+        {
+            return language switch
+            {
+                Languages.CSharp => GetCSharpExecutionKnownIssues(version),
+                _ => new Dictionary<string, KnownIssue>()
+            };
         }
     }
+
     /// <summary>
     /// Generates TestCaseData for NUnit
     /// </summary>
@@ -542,7 +573,7 @@ namespace TestsCommon
         public static IEnumerable<TestCaseData> GetTestCaseData(RunSettings runSettings)
         {
             return from testData in GetLanguageTestData(runSettings)
-                   where !(testData.IsKnownIssue ^ runSettings.KnownFailuresRequested) // select known issues if requested
+                   where !(testData.IsCompilationKnownIssue ^ runSettings.KnownFailuresRequested) // select known compilation issues iff requested
                    select new TestCaseData(testData).SetName(testData.TestName).SetProperty("Owner", testData.Owner);
         }
 
@@ -559,8 +590,12 @@ namespace TestsCommon
             return from testData in GetLanguageTestData(runSettings)
                    let fullPath = Path.Join(GraphDocsDirectory.GetSnippetsDirectory(testData.Version, runSettings.Language), testData.FileName)
                    let fileContent = File.ReadAllText(fullPath)
-                   let executionTestData = new ExecutionTestData(testData, fileContent)
-                   where !testData.IsKnownIssue // select compiling tests
+                   let executionTestData = new ExecutionTestData(testData with
+                   {
+                       TestName = testData.TestName.Replace("-compiles", "executes")
+                   }, fileContent)
+                   where !testData.IsCompilationKnownIssue // select compiling tests
+                   && !(testData.IsExecutionKnownIssue ^ runSettings.ExecutionKnownFailuresRequested) // select known execution issues iff requested
                    && fileContent.Contains("GetAsync()") // select only the get tests
                    select new TestCaseData(executionTestData).SetName(testData.TestName).SetProperty("Owner", testData.Owner);
         }
@@ -575,7 +610,8 @@ namespace TestsCommon
             var language = runSettings.Language;
             var version = runSettings.Version;
             var documentationLinks = GetDocumentationLinks(version, language);
-            var knownIssues = KnownIssues.GetIssues(language, version);
+            var compilationKnownIssues = KnownIssues.GetCompilationKnownIssues(language, version);
+            var executionKnownIssues = KnownIssues.GetExecutionKnownIssues(language, version);
             var snippetFileNames = documentationLinks.Keys.ToList();
             return from fileName in snippetFileNames                                            // e.g. application-addpassword-csharp-snippets.md
                    let arbitraryDllPostfix = runSettings.DllPath == null || runSettings.Language != Languages.CSharp ? string.Empty : "arbitraryDll-"
@@ -583,13 +619,17 @@ namespace TestsCommon
                    let testName = fileName.Replace("snippets.md", testNamePostfix)              // e.g. application-addpassword-csharp-Beta-compiles
                    let docsLink = documentationLinks[fileName]
                    let knownIssueLookupKey = testName.Replace("arbitraryDll-", string.Empty)
-                   let isKnownIssue = knownIssues.ContainsKey(knownIssueLookupKey)
-                   let knownIssue = isKnownIssue ? knownIssues[knownIssueLookupKey] : null
-                   let knownIssueMessage = knownIssue?.Message ?? string.Empty
-                   let owner = knownIssue?.Owner ?? string.Empty
+                   let executionIssueLookupKey = testName.Replace("-compiles", "-executes")
+                   let isCompilationKnownIssue = compilationKnownIssues.ContainsKey(knownIssueLookupKey)
+                   let compilationKnownIssue = isCompilationKnownIssue ? compilationKnownIssues[knownIssueLookupKey] : null
+                   let isExecutionKnownIssue = executionKnownIssues.ContainsKey(executionIssueLookupKey)
+                   let executionKnownIssue = isExecutionKnownIssue ? executionKnownIssues[executionIssueLookupKey] : null
+                   let knownIssueMessage = compilationKnownIssue?.Message ?? executionKnownIssue?.Message ?? string.Empty
+                   let owner = compilationKnownIssue?.Owner ?? executionKnownIssue?.Message ?? string.Empty
                    select new LanguageTestData(
                            version,
-                           isKnownIssue,
+                           isCompilationKnownIssue,
+                           isExecutionKnownIssue,
                            knownIssueMessage,
                            docsLink,
                            fileName,

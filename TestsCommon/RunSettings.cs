@@ -15,6 +15,7 @@ namespace TestsCommon
         public Versions Version { get; init; }
         public string DllPath { get; init; }
         public bool KnownFailuresRequested { get; init; }
+        public bool ExecutionKnownFailuresRequested { get; init; }
         public Languages Language { get; init; }
         public string JavaCoreVersion { get; init; } = "2.0.0";
         private string _javaLibVersion;
@@ -47,6 +48,7 @@ namespace TestsCommon
             var versionString = parameters.Get("Version");
             var dllPath = parameters.Get("DllPath");
             var knownFailuresRequested = parameters.Get("KnownFailuresRequested");
+            var executionKnownFailuresRequested = parameters.Get("ExecutionKnownFailuresRequested");
 
             var lng = parameters.Get("Language");
             if (!string.IsNullOrEmpty(lng) && !lng.Contains(DashDash))
@@ -81,6 +83,11 @@ namespace TestsCommon
             if (!string.IsNullOrEmpty(knownFailuresRequested) && !knownFailuresRequested.Contains(DashDash))
             {
                 KnownFailuresRequested = bool.Parse(knownFailuresRequested);
+            }
+
+            if (!string.IsNullOrEmpty(executionKnownFailuresRequested) && !executionKnownFailuresRequested.Contains(DashDash))
+            {
+                ExecutionKnownFailuresRequested = bool.Parse(executionKnownFailuresRequested);
             }
 
             JavaCoreVersion = InitializeParameter(parameters, nameof(JavaCoreVersion)) ?? JavaCoreVersion;
