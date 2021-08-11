@@ -113,7 +113,7 @@ function Get-Token {
                 Where-Object { $_.Contains("Read") -and !$_.Contains("Write") } | # same selection as the read-only permissions for the app
                 Join-String -Separator " "
             }
-            else {
+            if  (!$joinedScopeString) {
                 $joinedScopeString = $scopes.value |
                 Join-String -Separator " "
             }
@@ -156,19 +156,31 @@ function Request-DelegatedResource {
         [ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")]
         [string] $Method = "GET",
         $Headers = @{ },
+        $FilePath,
         [string]$ScopeOverride,
         [string]$Version = "v1.0"
     )
 
-    $Headers += @{ "Content-Type" = "application/json" }
+    # If content-type not specified assume application/json
+    if (!$headers.ContainsKey("Content-Type")){
+        $Headers += @{ "Content-Type" = "application/json" }
+    }
     Write-Debug "== getting token for $($Uri) for method $($Method)"
 
     $token = Get-Token -Path "/$Uri" -ScopeOverride $ScopeOverride -Method $Method
     Connect-MgGraph -AccessToken $token | Out-Null
 
     $jsonBody = $Body | ConvertTo-Json -Depth 3
-    $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$Version/$Uri" -Body $jsonBody -OutputType PSObject -ResponseHeadersVariable "respHeaderVar"
-    return $response.value ?? $response ?? $respHeaderVar
+    if ($FilePath -and (Test-Path -Path $FilePath)) {
+        # provide -InputFilePath param instead of -Body param
+        $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$Version/$Uri" -InputFilePath $FilePath -OutputType PSObject -ResponseHeadersVariable "responseHeaderValue"
+    }
+    else {
+        $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$Version/$Uri" -Body $jsonBody -OutputType PSObject -ResponseHeadersVariable "responseHeaderValue"
+    }
+
+    $responseBody = $response.value -is [System.Array] ? $response.value : $response
+    return $responseBody ?? $responseHeaderValue
 }
 
 Function Get-RandomAlphanumericString {
@@ -200,4 +212,10 @@ Function Remove-PemHeaderOrFooter {
         $trimmed = $trimmed.Replace($headerOrFooter, [string]::Empty)
     }
     return $trimmed.Replace("\r\n", [string]::Empty)
+}
+
+function Install-Az() {
+    if (-not (Get-Module Az -ListAvailable)) {
+        Install-Module Az -Force -AllowClobber -Scope CurrentUser
+    }
 }

@@ -1,0 +1,12 @@
+{
+  "displayName": "Test Printer",
+  "manufacturer": "Test Printer Manufacturer",
+  "model": "Test Printer Model",
+  "physicalDeviceId": null,
+  "hasPhysicalDevice": false,
+  "certificateSigningRequest": {
+    "content": "",
+    "transportKey": ""
+  },
+  "connectorId": null
+}
