@@ -1,5 +1,6 @@
 {
     "settings": {
-        "terminal.integrated.shell.linux": "/usr/bin/pwsh"
+        "terminal.integrated.shell.linux": "/usr/bin/pwsh",
+        "workbench.colorTheme": "Visual Studio Dark"
     }
 }
