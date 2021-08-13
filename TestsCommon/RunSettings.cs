@@ -15,7 +15,6 @@ namespace TestsCommon
         public Versions Version { get; init; }
         public string DllPath { get; init; }
         public TestType TestType { get; init; }
-        public bool ExecutionKnownFailuresRequested { get; init; }
         public Languages Language { get; init; }
         public string JavaCoreVersion { get; init; } = "2.0.0";
         private string _javaLibVersion;

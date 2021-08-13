@@ -13,14 +13,14 @@ steps:
     $dllPath = (Get-ChildItem ./msgraph-sdk-dotnet/ -Include Microsoft.Graph.dll -Recurse | Where-Object { $_.FullName.Contains("netcoreapp") }).FullName
     Write-Host "Path to Microsoft.Graph.dll: $dllPath"
 
-    ./msgraph-sdk-raptor/azure-pipelines/e2e-templates/transformSettings.ps1 -Version "$(metadataVersion)" -KnownFailuresRequested "true" -DllPath "$dllPath" -Language "CSharp" -RunSettingsPath "$(runSettingsFile)"
+    ./msgraph-sdk-raptor/azure-pipelines/e2e-templates/transformSettings.ps1 -Version "$(metadataVersion)" -TestType "CompilationKnownIssues" -DllPath "$dllPath" -Language "CSharp" -RunSettingsPath "$(runSettingsFile)"
 
     Write-Host "--- Test.runsettings file ---"
     Get-Content "$(runSettingsFile)"
     Write-Host "-----------------------------"
   displayName: 'Transform .runsettings file for known failures'
   workingDirectory: '$(Build.SourcesDirectory)'
-      
+
 
 - task: DotNetCoreCLI@2
   displayName: 'Csharp Compilation Tests for Known Failures'

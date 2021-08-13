@@ -6,7 +6,7 @@
   <TestRunParameters>
     <Parameter name="Version" value="---VersionPlaceholder---" />
     <Parameter name="DllPath" value="C:/sources/github" />
-    <Parameter name="KnownFailuresRequested" value="---KnownFailuresRequestedPlaceholder---" />
+    <Parameter name="TestType" value="---TestTypePlaceholder---" />
     <Parameter name="Language" value="---LanguagePlaceHolder---" />
     <Parameter name="JavaCoreVersion" value="---JavaCoreVersionPlaceHolder---" />
     <Parameter name="JavaLibVersion" value="---JavaLibVersionPlaceHolder---" />
