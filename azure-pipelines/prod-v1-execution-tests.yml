@@ -34,3 +34,9 @@ steps:
     projectFileName: CsharpV1ExecutionTests
     runName: 'Weekly V1 C# Snippet Execution Tests'
     testType: 'Execution'
+
+- template: compile-run-tests-template.yml
+  parameters:
+    projectFileName: CsharpV1ExecutionKnownFailureTests
+    runName: 'Weekly V1 C# Snippet Execution Tests - Known Issues'
+    testType: 'Execution'
