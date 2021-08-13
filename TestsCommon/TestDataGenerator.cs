@@ -592,7 +592,7 @@ namespace TestsCommon
                    let fileContent = File.ReadAllText(fullPath)
                    let executionTestData = new ExecutionTestData(testData with
                    {
-                       TestName = testData.TestName.Replace("-compiles", "executes")
+                       TestName = testData.TestName.Replace("-compiles", "-executes")
                    }, fileContent)
                    where !testData.IsCompilationKnownIssue // select compiling tests
                    && !(testData.IsExecutionKnownIssue ^ runSettings.TestType == TestType.ExecutionKnownIssues) // select known execution issues iff requested
