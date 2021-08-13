@@ -31,8 +31,7 @@ namespace CsharpV1ExecutionKnownFailureTests
             {
                 Version = Versions.V1,
                 Language = Languages.CSharp,
-                KnownFailuresRequested = false,
-                ExecutionKnownFailuresRequested = true
+                TestType = TestType.ExecutionKnownIssues
             });
 
         /// <summary>

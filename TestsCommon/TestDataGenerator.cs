@@ -573,7 +573,7 @@ namespace TestsCommon
         public static IEnumerable<TestCaseData> GetTestCaseData(RunSettings runSettings)
         {
             return from testData in GetLanguageTestData(runSettings)
-                   where !(testData.IsCompilationKnownIssue ^ runSettings.KnownFailuresRequested) // select known compilation issues iff requested
+                   where !(testData.IsCompilationKnownIssue ^ runSettings.TestType == TestType.CompilationKnownIssues) // select known compilation issues iff requested
                    select new TestCaseData(testData).SetName(testData.TestName).SetProperty("Owner", testData.Owner);
         }
 
@@ -595,7 +595,7 @@ namespace TestsCommon
                        TestName = testData.TestName.Replace("-compiles", "executes")
                    }, fileContent)
                    where !testData.IsCompilationKnownIssue // select compiling tests
-                   && !(testData.IsExecutionKnownIssue ^ runSettings.ExecutionKnownFailuresRequested) // select known execution issues iff requested
+                   && !(testData.IsExecutionKnownIssue ^ runSettings.TestType == TestType.ExecutionKnownIssues) // select known execution issues iff requested
                    && fileContent.Contains("GetAsync()") // select only the get tests
                    select new TestCaseData(executionTestData).SetName(testData.TestName).SetProperty("Owner", testData.Owner);
         }

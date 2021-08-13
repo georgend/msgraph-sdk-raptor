@@ -33,8 +33,7 @@ namespace CsharpBetaExecutionKnownFailureTests
             {
                 Version = Versions.Beta,
                 Language = Languages.CSharp,
-                KnownFailuresRequested = false,
-                ExecutionKnownFailuresRequested = true
+                TestType = TestType.ExecutionKnownIssues
             });
 
         /// <summary>

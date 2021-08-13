@@ -31,7 +31,7 @@ namespace CsharpV1ExecutionTests
             {
                 Version = Versions.V1,
                 Language = Languages.CSharp,
-                KnownFailuresRequested = false
+                TestType = TestType.ExecutionStable
             });
 
         /// <summary>

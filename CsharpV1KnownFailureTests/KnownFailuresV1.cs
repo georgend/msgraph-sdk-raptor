@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 using MsGraphSDKSnippetsCompiler.Models;
 using NUnit.Framework;
@@ -19,7 +19,7 @@ namespace CsharpV1KnownFailureTests
             {
                 Version = Versions.V1,
                 Language = Languages.CSharp,
-                KnownFailuresRequested = true
+                TestType = TestType.CompilationKnownIssues
             });
 
         /// <summary>

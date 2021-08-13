@@ -14,7 +14,7 @@ namespace TestsCommon
     {
         public Versions Version { get; init; }
         public string DllPath { get; init; }
-        public bool KnownFailuresRequested { get; init; }
+        public TestType TestType { get; init; }
         public bool ExecutionKnownFailuresRequested { get; init; }
         public Languages Language { get; init; }
         public string JavaCoreVersion { get; init; } = "2.0.0";
@@ -47,8 +47,7 @@ namespace TestsCommon
 
             var versionString = parameters.Get("Version");
             var dllPath = parameters.Get("DllPath");
-            var knownFailuresRequested = parameters.Get("KnownFailuresRequested");
-            var executionKnownFailuresRequested = parameters.Get("ExecutionKnownFailuresRequested");
+            var testType = parameters.Get("TestType");
 
             var lng = parameters.Get("Language");
             if (!string.IsNullOrEmpty(lng) && !lng.Contains(DashDash))
@@ -80,14 +79,16 @@ namespace TestsCommon
                 Version = VersionString.GetVersion(versionString);
             }
 
-            if (!string.IsNullOrEmpty(knownFailuresRequested) && !knownFailuresRequested.Contains(DashDash))
+            if (!string.IsNullOrEmpty(testType))
             {
-                KnownFailuresRequested = bool.Parse(knownFailuresRequested);
-            }
-
-            if (!string.IsNullOrEmpty(executionKnownFailuresRequested) && !executionKnownFailuresRequested.Contains(DashDash))
-            {
-                ExecutionKnownFailuresRequested = bool.Parse(executionKnownFailuresRequested);
+                if (Enum.TryParse(testType, out TestType testTypeEnum))
+                {
+                    TestType = testTypeEnum;
+                }
+                else
+                {
+                    throw new ArgumentException($"Unexpected test type specified: {testType}");
+                }
             }
 
             JavaCoreVersion = InitializeParameter(parameters, nameof(JavaCoreVersion)) ?? JavaCoreVersion;

@@ -33,7 +33,7 @@ namespace CsharpBetaExecutionTests
             {
                 Version = Versions.Beta,
                 Language = Languages.CSharp,
-                KnownFailuresRequested = false
+                TestType = TestType.ExecutionStable
             });
 
         /// <summary>
