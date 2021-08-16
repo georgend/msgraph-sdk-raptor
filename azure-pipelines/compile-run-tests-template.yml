@@ -16,7 +16,7 @@ steps:
   inputs:
     command: 'test'
     projects: '**/${{ parameters.projectFileName }}.csproj'
-    arguments: '--configuration $(buildConfiguration) --logger trx --results-directory $(Agent.TempDirectory) --settings $(Build.SourcesDirectory)/msgraph-sdk-raptor/${{ parameters.projectFileName}}/Test.runsettings'
+    arguments: '--configuration $(buildConfiguration) --logger "trx;logfilename=${{ parameters.runName }}.trx" --results-directory $(Agent.TempDirectory) --settings $(Build.SourcesDirectory)/msgraph-sdk-raptor/${{ parameters.projectFileName}}/Test.runsettings'
     publishTestResults: false
   displayName: '${{ parameters.projectFileName }} ${{ parameters.testType }} Tests'
   continueOnError: true
@@ -26,6 +26,6 @@ steps:
   inputs:
     testResultsFormat: 'VSTest'
     searchFolder: '$(Agent.TempDirectory)'
-    testResultsFiles: '**/*.trx'
+    testResultsFiles: '**/${{ parameters.runName }}.trx'
     testRunTitle: '${{ parameters.runName }}'
   displayName: 'Publish Test Results'

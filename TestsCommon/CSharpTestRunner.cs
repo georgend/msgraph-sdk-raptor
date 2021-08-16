@@ -100,7 +100,7 @@ public class GraphSDKTest
             var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData.FileName, testData.DllPath);
             var compilationResultsModel = microsoftGraphCSharpCompiler.CompileSnippet(codeToCompile, testData.Version);
 
-            var compilationOutputMessage = new CompilationOutputMessage(compilationResultsModel, codeToCompile, testData.DocsLink, testData.KnownIssueMessage, testData.IsKnownIssue);
+            var compilationOutputMessage = new CompilationOutputMessage(compilationResultsModel, codeToCompile, testData.DocsLink, testData.KnownIssueMessage, testData.IsCompilationKnownIssue);
             EvaluateCompilationResult(compilationResultsModel, testData, codeSnippetFormatted, compilationOutputMessage);
 
             Assert.Pass();
@@ -138,7 +138,7 @@ public class GraphSDKTest
                 codeToCompile,
                 testData.DocsLink,
                 testData.KnownIssueMessage,
-                testData.IsKnownIssue);
+                testData.IsCompilationKnownIssue);
 
             EvaluateCompilationResult(executionResultsModel.CompilationResult, testData, codeSnippetFormatted, compilationOutputMessage);
 
@@ -269,7 +269,7 @@ public class GraphSDKTest
             var linqDirectory = Path.Join(
                     linqPadQueriesDefaultFolder,
                     "/RaptorResults",
-                    (testData.Version, testData.IsKnownIssue) switch
+                    (testData.Version, testData.IsCompilationKnownIssue) switch
                     {
                         (Versions.Beta, false) => "/Beta",
                         (Versions.Beta, true) => "/BetaKnown",
@@ -291,7 +291,7 @@ public class GraphSDKTest
   <Namespace>System.Threading.Tasks</Namespace>
   <Namespace>TimeOfDay = Microsoft.Graph.TimeOfDay</Namespace>
 </Query>
-// {testData.DocsLink}{(testData.IsKnownIssue ? (Environment.NewLine + "/* " + testData.KnownIssueMessage + " */") : string.Empty)}
+// {testData.DocsLink}{(testData.IsCompilationKnownIssue ? (Environment.NewLine + "/* " + testData.KnownIssueMessage + " */") : string.Empty)}
 IAuthenticationProvider authProvider  = null;";
 
             File.WriteAllText(linqFilePath,

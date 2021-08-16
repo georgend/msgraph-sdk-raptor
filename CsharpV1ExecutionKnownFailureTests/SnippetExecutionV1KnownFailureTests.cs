@@ -6,10 +6,10 @@ using MsGraphSDKSnippetsCompiler.Models;
 using NUnit.Framework;
 using TestsCommon;
 
-namespace CsharpV1ExecutionTests
+namespace CsharpV1ExecutionKnownFailureTests
 {
     [TestFixture]
-    public class SnippetExecutionV1Tests
+    public class SnippetExecutionV1KnownFailureTests
     {
         private RaptorConfig _raptorConfig;
         private IPublicClientApplication _publicClientApp;
@@ -31,7 +31,7 @@ namespace CsharpV1ExecutionTests
             {
                 Version = Versions.V1,
                 Language = Languages.CSharp,
-                TestType = TestType.ExecutionStable
+                TestType = TestType.ExecutionKnownIssues
             });
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace CsharpV1ExecutionTests
         /// <param name="docsLink">documentation page where the snippet is shown</param>
         /// <param name="version">Docs version (e.g. V1, Beta)</param>
         [Test]
-        [RetryTestCaseSource(typeof(SnippetExecutionV1Tests), nameof(TestDataV1), MaxTries = 3)]
+        [RetryTestCaseSource(typeof(SnippetExecutionV1KnownFailureTests), nameof(TestDataV1), MaxTries = 3)]
         public async Task Test(ExecutionTestData testData)
         {
             await CSharpTestRunner.Execute(testData, _raptorConfig, _publicClientApp, _confidentialClientApp);

@@ -36,6 +36,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsharpBetaExecutionTests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{28AA9EBB-3F91-4E63-B0F8-2BB165927B3D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsharpBetaExecutionKnownFailureTests", "CsharpBetaExecutionKnownFailureTests\CsharpBetaExecutionKnownFailureTests.csproj", "{21F552A3-5287-4776-A491-DE5A914AE83D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsharpV1ExecutionKnownFailureTests", "CsharpV1ExecutionKnownFailureTests\CsharpV1ExecutionKnownFailureTests.csproj", "{E20BE04F-3DB7-457F-9172-7E874055969C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,6 +102,14 @@ Global
 		{28AA9EBB-3F91-4E63-B0F8-2BB165927B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28AA9EBB-3F91-4E63-B0F8-2BB165927B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28AA9EBB-3F91-4E63-B0F8-2BB165927B3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21F552A3-5287-4776-A491-DE5A914AE83D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21F552A3-5287-4776-A491-DE5A914AE83D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21F552A3-5287-4776-A491-DE5A914AE83D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21F552A3-5287-4776-A491-DE5A914AE83D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E20BE04F-3DB7-457F-9172-7E874055969C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E20BE04F-3DB7-457F-9172-7E874055969C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E20BE04F-3DB7-457F-9172-7E874055969C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E20BE04F-3DB7-457F-9172-7E874055969C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

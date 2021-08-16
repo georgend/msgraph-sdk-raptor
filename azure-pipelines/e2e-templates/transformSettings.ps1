@@ -9,12 +9,12 @@
     assigns runsettings values for Raptor tests
 
 .Example
-    .\CSharpArbitraryDllTests\transformSettings.ps1 -Version v1.0 -KnownFailuresRequested true -DllPath C:\github\msgraph-sdk-dotnet\tests\Microsoft.Graph.DotnetCore.Test\bin\Debug\netcoreapp3.1\Microsoft.Graph.dll -Language CSharp -RunSettingsPath .\CSharpArbitraryDllTests\Test.runsettings
+    .\CSharpArbitraryDllTests\transformSettings.ps1 -Version v1.0 -TestType CompilationStable -DllPath C:\github\msgraph-sdk-dotnet\tests\Microsoft.Graph.DotnetCore.Test\bin\Debug\netcoreapp3.1\Microsoft.Graph.dll -Language CSharp -RunSettingsPath .\CSharpArbitraryDllTests\Test.runsettings
 
 .Parameter Version
     Required. Either v1.0 or beta
 
-.Parameter KnownFailuresRequested
+.Parameter TestType
     Required. Determines whether known issue tests should be run
 
 .Parameter DllPath
@@ -42,7 +42,7 @@ Param(
     [string]$Version,
     [Parameter(Mandatory = $true, ParameterSetName="CSharp")]
     [Parameter(Mandatory = $false, ParameterSetName="Java")]
-    [string]$KnownFailuresRequested,
+    [string]$TestType,
     [Parameter(Mandatory = $true, ParameterSetName="CSharp")][string]$DllPath,
     [Parameter(Mandatory = $true, ParameterSetName="CSharp")]
     [Parameter(Mandatory = $false, ParameterSetName="Java")]
@@ -58,7 +58,7 @@ Param(
 $mapping = @{}
 
 $mapping.Add("Version", $Version)
-$mapping.Add("KnownFailuresRequested", $KnownFailuresRequested)
+$mapping.Add("TestType", $TestType)
 $mapping.Add("DllPath", $DllPath)
 $mapping.Add("Language", $Language)
 $mapping.Add("JavaCoreVersion", $JavaCoreVersion)

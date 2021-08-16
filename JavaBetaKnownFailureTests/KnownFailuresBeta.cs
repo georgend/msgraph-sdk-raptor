@@ -1,4 +1,4 @@
-using MsGraphSDKSnippetsCompiler.Models;
+﻿using MsGraphSDKSnippetsCompiler.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
 using TestsCommon;
@@ -17,7 +17,7 @@ namespace JavaBetaKnownFailureTests
             {
                 Version = Versions.Beta,
                 Language = Languages.Java,
-                KnownFailuresRequested = true
+                TestType = TestType.CompilationKnownIssues
             });
 
         /// <summary>

@@ -1,4 +1,4 @@
-using MsGraphSDKSnippetsCompiler.Models;
+﻿using MsGraphSDKSnippetsCompiler.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
 using TestsCommon;
@@ -17,7 +17,7 @@ namespace JavaV1Tests
             {
                 Version = Versions.V1,
                 Language = Languages.Java,
-                KnownFailuresRequested = false
+                TestType = TestType.CompilationStable
             });
 
         /// <summary>

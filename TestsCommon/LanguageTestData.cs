@@ -6,7 +6,8 @@ namespace TestsCommon
     /// Test Data
     /// </summary>
     /// <param name="Version">Docs version e.g. V1 or Beta</param>
-    /// <param name="IsKnownIssue">Whether the test case is failing due to a known issue</param>
+    /// <param name="IsCompilationKnownIssue">Whether the test case is failing due to a known issue in compilation</param>
+    /// <param name="IsExecutionKnownIssue">Whether the test case is failing due to a known issue in execution</param>
     /// <param name="KnownIssueMessage">Message to represent known issue</param>
     /// <param name="DocsLink">Documentation link where snippet is shown</param>
     /// <param name="FileName">Snippet file name</param>
@@ -16,7 +17,8 @@ namespace TestsCommon
     /// <param name="JavaPreviewLibPath">Optional. Folder container the java core and java service library repositories so the unit testing uses that local version instead.</param>
     public record LanguageTestData(
         Versions Version,
-        bool IsKnownIssue,
+        bool IsCompilationKnownIssue,
+        bool IsExecutionKnownIssue,
         string KnownIssueMessage,
         string DocsLink,
         string FileName,
