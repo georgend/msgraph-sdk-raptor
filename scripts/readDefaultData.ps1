@@ -290,6 +290,13 @@ $place.id
 #$place = req -url "places/$($place.id)"
 $identifiers.place._value = $place.id
 
+#Outlook Categories are pre-defined https://docs.microsoft.com/en-us/graph/api/resources/outlookcategory?view=graph-rest-1.0
+$outlookCategory = req -url "users/$($identifiers.user._value)/outlook/masterCategories" |
+    Where-Object {$_.displayName -eq "Red Category"} |
+    Select-Object -First 1
+$outlookCategory.id
+$identifiers.outlookCategory._value = $outlookCategory.id
+
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
 
 <#
