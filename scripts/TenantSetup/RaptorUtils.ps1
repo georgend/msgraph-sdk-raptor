@@ -113,7 +113,7 @@ function Get-Token {
                 Where-Object { $_.Contains("Read") -and !$_.Contains("Write") } | # same selection as the read-only permissions for the app
                 Join-String -Separator " "
             }
-            if  (!$joinedScopeString) {
+            if (!$joinedScopeString) {
                 $joinedScopeString = $scopes.value |
                 Join-String -Separator " "
             }
@@ -162,7 +162,7 @@ function Request-DelegatedResource {
     )
 
     # If content-type not specified assume application/json
-    if (!$headers.ContainsKey("Content-Type")){
+    if (!$headers.ContainsKey("Content-Type")) {
         $Headers += @{ "Content-Type" = "application/json" }
     }
     Write-Debug "== getting token for $($Uri) for method $($Method)"
@@ -218,4 +218,60 @@ function Install-Az() {
     if (-not (Get-Module Az -ListAvailable)) {
         Install-Module Az -Force -AllowClobber -Scope CurrentUser
     }
+}
+
+<#
+    Executes a HTTP Request where content-type is Form-Data 
+    as required by some graph endpoints such as OneNote Create Page
+#>
+Function Invoke-FormDataRequest {    
+    [CmdletBinding()]
+    param (
+        $FormData = @(),
+        [string] $FormBoundary = [guid]::NewGuid().ToString(),
+        [string] $Uri,
+        [parameter(Mandatory = $False)][ValidateSet("v1.0", "beta")][string] $GraphVersion = "v1.0",
+        [Parameter(Mandatory = $False)][ValidateSet("POST", "PUT", "PATCH", "DELETE")][string] $Method = "POST",
+        $Headers = @{ }
+    )
+    $bodyLines = [System.Collections.ArrayList]::new()
+    
+    $FormData | ForEach-Object {
+        $currentFormData = $_
+        $data = @(
+            "--$FormBoundary",
+            "Content-Disposition:form-data; name=`"$($currentFormData.Name)`"",
+            "Content-Type:$($currentFormData.ContentType)",
+            [System.Environment]::NewLine
+            $currentFormData.Content,
+            [System.Environment]::NewLine
+        )
+        $bodyLines.AddRange($data)
+    }
+    $bodyLines.Add("--$FormBoundary--");
+    $postFormData = $bodyLines -join [System.Environment]::NewLine
+    $Headers += @{ "Content-Type" = "multipart/form-data; boundary=$($FormBoundary)" }
+    $formPostResults = Invoke-MgGraphRequest -Uri  "https://graph.microsoft.com/$GraphVersion/$Uri" -Method $Method -Headers $Headers -Body $postFormData
+    return $formPostResults
+}
+
+<#
+    Gets Html Data using Invoke-WebRequest and 
+    the token from the current Graph Session.
+#>
+Function Get-HtmlDataRequest {
+    [CmdletBinding()]
+    param (
+        [string] $Uri,
+        [parameter(Mandatory = $False)][ValidateSet("v1.0", "beta")][string] $GraphVersion = "v1.0",
+        [Parameter(Mandatory = $False)][ValidateSet("GET")][string] $Method = "GET",
+        $GraphSession = [Microsoft.Graph.PowerShell.Authentication.GraphSession]::Instance
+    )
+
+    $encoding = [System.Text.Encoding]::GetEncoding("utf-8")
+    $MSALToken = $encoding.GetString($GraphSession::Instance.MSALToken) 
+    $currentAccessToken = ConvertFrom-Json $MSALToken -AsHashtable
+    $token = $currentAccessToken.AccessToken.Values.secret
+    $htmlData = Invoke-WebRequest -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -Authentication Bearer -Token (ConvertTo-SecureString $token -AsPlainText -Force)
+    return $htmlData
 }
