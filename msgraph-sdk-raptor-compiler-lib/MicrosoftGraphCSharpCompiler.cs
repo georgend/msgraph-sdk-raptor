@@ -22,6 +22,8 @@ using System.Security;
 using System.Text.Json;
 using System.Collections.Concurrent;
 using System.Net.Http.Headers;
+using System.Text;
+using Microsoft.CodeAnalysis.Text;
 
 namespace MsGraphSDKSnippetsCompiler
 {
@@ -30,6 +32,7 @@ namespace MsGraphSDKSnippetsCompiler
     /// </summary>
     public class MicrosoftGraphCSharpCompiler : IMicrosoftGraphSnippetsCompiler
     {
+        const string SourceCodePath = "generated.cs";
         private readonly string _markdownFileName;
         private readonly string _dllPath;
         private readonly RaptorConfig _config;
@@ -72,7 +75,13 @@ namespace MsGraphSDKSnippetsCompiler
         /// <returns>CompilationResultsModel</returns>
         private (CompilationResultsModel, Assembly) CompileSnippetAndGetAssembly(string codeSnippet, Versions version)
         {
-            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(codeSnippet);
+            var buffer = Encoding.UTF8.GetBytes(codeSnippet);
+            // Mark Original Source as Embeddable
+            var sourceText = SourceText.From(buffer, buffer.Length, Encoding.UTF8, canBeEmbedded: true);
+            // Embed Original Source Code in Syntax Tree
+            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(codeSnippet, new CSharpParseOptions(), SourceCodePath);
+            var syntaxRootNode = syntaxTree.GetRoot() as CSharpSyntaxNode;
+            var encoded = CSharpSyntaxTree.Create(syntaxRootNode, null, SourceCodePath, Encoding.UTF8);
 
             string assemblyName = Path.GetRandomFileName();
             string commonAssemblyPath = Path.GetDirectoryName(typeof(object).Assembly.Location);
@@ -116,13 +125,14 @@ namespace MsGraphSDKSnippetsCompiler
             }
 
             var compilation = CSharpCompilation.Create(
-               assemblyName,
-               syntaxTrees: new[] { syntaxTree },
-               references: metadataReferences,
-               options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
-                                .WithOptimizationLevel(OptimizationLevel.Release));
+                assemblyName,
+                syntaxTrees: new[] { encoded },
+                references: metadataReferences,
+                options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, deterministic: true, platform: Platform.AnyCpu)
+                    .WithConcurrentBuild(true)
+                    .WithOptimizationLevel(OptimizationLevel.Release));
 
-            var (emitResult, assembly) = GetEmitResult(compilation);
+            var (emitResult, assembly) = GetEmitResult(compilation, sourceText);
             CompilationResultsModel results = GetCompilationResults(emitResult);
 
             return (results, assembly);
@@ -266,22 +276,24 @@ namespace MsGraphSDKSnippetsCompiler
             }
         }
 
-
         /// <summary>
         ///     Gets the result of the Compilation.Emit method.
         /// </summary>
         /// <param name="compilation">Immutable representation of a single invocation of the compiler</param>
-        private (EmitResult, Assembly) GetEmitResult(CSharpCompilation compilation)
+        /// <param name="sourceText">Original Source Representation of the Snippet</param>
+        private static (EmitResult, Assembly) GetEmitResult(CSharpCompilation compilation, SourceText sourceText)
         {
             Assembly assembly = null;
 
-            using MemoryStream memoryStream = new MemoryStream();
-            EmitResult emitResult = compilation.Emit(memoryStream);
+            using MemoryStream assemblyStream = new MemoryStream();
+            var emitOptions = new EmitOptions(false, DebugInformationFormat.Embedded);
+            var embeddedTexts = new List<EmbeddedText> { EmbeddedText.FromSource(SourceCodePath, sourceText) };
+            EmitResult emitResult = compilation.Emit(assemblyStream, embeddedTexts: embeddedTexts, options: emitOptions);
 
             if (emitResult.Success)
             {
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                assembly = AssemblyLoadContext.Default.LoadFromStream(memoryStream);
+                assemblyStream.Seek(0, SeekOrigin.Begin);
+                assembly = AssemblyLoadContext.Default.LoadFromStream(assemblyStream);
             }
             return (emitResult, assembly);
         }
@@ -326,7 +338,8 @@ namespace MsGraphSDKSnippetsCompiler
                 new Regex(@"^GroupSetting",regexOptions),
                 new Regex(@"^Teams\[[^\]]*\]\.Schedule",regexOptions),
                 new Regex(@"^Teamwork.WorkforceIntegrations",regexOptions),
-                new Regex(@"^Communications.Presences\[[^\]]*\]",regexOptions)
+                new Regex(@"^Communications.Presences\[[^\]]*\]",regexOptions),
+                new Regex(@"^Groups\[[^\]]*\].AcceptedSenders",regexOptions)
             };
 
             var matchResult = apisWithDelegatedPermissions.Any(x => x.IsMatch(apiPath));

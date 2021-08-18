@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Microsoft.Identity.Client;
 using MsGraphSDKSnippetsCompiler.Models;
 using NUnit.Framework;
@@ -22,6 +21,17 @@ namespace CsharpV1ExecutionTests
             _publicClientApp = TestsSetup.SetupPublicClientApp(_raptorConfig);
             _confidentialClientApp = TestsSetup.SetupConfidentialClientApp(_raptorConfig);
         }
+
+        /// <summary>
+        ///     Clean-Up Public Client and Confidential Client by Removing all accounts
+        /// </summary>
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            TestsSetup.CleanUpApplication(_publicClientApp);
+            TestsSetup.CleanUpApplication(_confidentialClientApp);
+        }
+
         /// <summary>
         /// Gets TestCaseData for V1
         /// TestCaseData contains snippet file name, version and test case name
@@ -37,9 +47,7 @@ namespace CsharpV1ExecutionTests
         /// <summary>
         /// Represents test runs generated from test case data
         /// </summary>
-        /// <param name="fileName">snippet file name in docs repo</param>
-        /// <param name="docsLink">documentation page where the snippet is shown</param>
-        /// <param name="version">Docs version (e.g. V1, Beta)</param>
+        /// <param name="testData"></param>
         [Test]
         [RetryTestCaseSource(typeof(SnippetExecutionV1Tests), nameof(TestDataV1), MaxTries = 3)]
         public async Task Test(ExecutionTestData testData)

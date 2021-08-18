@@ -27,5 +27,23 @@ namespace MsGraphSDKSnippetsCompiler.Models
                 .Build();
             return publicClientApp;
         }
+
+        public static void CleanUpApplication(IClientApplicationBase clientApplication)
+        {
+            if (clientApplication == null)
+            {
+                return;
+            }
+
+            var accounts = clientApplication.GetAccountsAsync()
+                .GetAwaiter()
+                .GetResult();
+            foreach (var account in accounts)
+            {
+                clientApplication.RemoveAsync(account)
+                    .GetAwaiter()
+                    .GetResult();
+            }
+        }
     }
 }
