@@ -6,6 +6,19 @@ pr:
     include:
       - dev
       - main
+  paths:
+    include:
+      - azure-pipelines/java*
+      - Java*
+      - msgraph-sdk-raptor-compiler-lib/MicrosoftGraphJavaCompiler.cs
+      - TestsCommon/JavaTestRunner.cs
+schedules:
+  - cron: "0 3 * * *" # everyday at 3AM UTC (off hours for Redmond, Nairobi and Montreal)
+    displayName: 'Daily V1 Java Snippet Compilation Tests - Known Issues'
+    branches:
+      include:
+      - dev
+    always: true
 
 name: 'V1 Java Snippet Compilation Tests - Known Issues'
 
