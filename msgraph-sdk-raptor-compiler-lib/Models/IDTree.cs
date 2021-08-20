@@ -81,8 +81,12 @@ namespace MsGraphSDKSnippetsCompiler.Models
                 var propertyName = reader.GetString();
                 if (propertyName == "_value")
                 {
-                    reader.Read();
-                    tree.Value = reader.GetString();
+                    // Json may contain Numbers( Integers or Floating Point), handle them as objects.
+                    var currentValue = JsonSerializer.Deserialize<object>(ref reader, options);
+                    if (currentValue != null)
+                    {
+                        tree.Value = currentValue.ToString();
+                    }
                 }
                 else
                 {

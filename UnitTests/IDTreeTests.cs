@@ -29,6 +29,15 @@ namespace UnitTests
             var expected = Regex.Replace(json, @"\s", string.Empty);
             Assert.AreEqual(expected, actual);
         }
+
+        [TestCaseSource(typeof(IDTreeTestCases), nameof(IDTreeTestCases.TreeWithNonStringValues))]
+        public void HandleNonStringValues(string jsonTree)
+        {
+            Assert.DoesNotThrow(() =>
+            {
+                JsonSerializer.Deserialize<IDTree>(jsonTree);
+            });
+        }
     }
 
     public static class IDTreeTestCases
@@ -132,6 +141,30 @@ namespace UnitTests
     }
 }";
 
+        private const string TreeWithNumberValue = @"{
+        ""workbookTable"": {
+            ""_value"": ""{somevalue}"",
+        ""workbookTableColumn"": {
+            ""_value"": ""1""
+        },
+        ""workbookTableRow"": {
+            ""_value"": 0
+        }
+    }
+}";
+
+        private const string TreeWithNullValue = @"{
+        ""workbookTable"": {
+            ""_value"": ""{somevalue}"",
+        ""workbookTableColumn"": {
+            ""_value"": ""1""
+        },
+        ""workbookTableRow"": {
+            ""_value"": null
+        }
+    }
+}";
+
         public static IEnumerable<TestCaseData> EqualTestCases()
         {
             yield return new TestCaseData(EmptyTree, EmptyTree2);
@@ -176,6 +209,11 @@ namespace UnitTests
             yield return new TestCaseData(ComplexTree);
         }
 
+        public static IEnumerable<TestCaseData> TreeWithNonStringValues()
+        {
+            yield return new TestCaseData(TreeWithNumberValue);
+            yield return new TestCaseData(TreeWithNullValue);
+        }
         public static IEnumerable<TestCaseData> SerializationTestCases()
         {
             yield return new TestCaseData(ComplexTree, SerializedComplexTree);
