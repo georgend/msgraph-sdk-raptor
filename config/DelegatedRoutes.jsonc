@@ -1,0 +1,14 @@
+{
+        "Me": "^Me",
+        "Education.Me": "^Education.Me",
+        "Users": "^Users\\[",
+        "Planner": "^Planner",
+        "Print": "^Print",
+        "IdentityProviders": "^IdentityProviders",
+        "Reports": "^Reports",
+        "IdentityGovernance": "^IdentityGovernance",
+        "GroupSetting": "^GroupSetting",
+        "Teams.Schedule": "^Teams\\[[^\\]]*\\]\\.Schedule",
+        "TeamWork.WorkforceIntegrations": "^Teamwork.WorkforceIntegrations",
+        "Communications.Presences": "^Communications.Presences\\[[^\\]]*\\]"
+}

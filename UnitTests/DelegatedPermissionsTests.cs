@@ -1,11 +1,19 @@
 ﻿using MsGraphSDKSnippetsCompiler;
-
+using MsGraphSDKSnippetsCompiler.Models;
 using NUnit.Framework;
 
 namespace UnitTests
 {
     public class DelegatedPermissionsTests
     {
+        private RaptorConfig _raptorConfig;
+
+        [OneTimeSetUp]
+        public void OneTimeSetup()
+        {
+            _raptorConfig = new RaptorConfig { DelegatedRoutesPath = "../../../../config/DelegatedRoutes.jsonc" };
+        }
+
         /// <summary>
         ///     Schedule Requires Delegated Permission otherwise
         ///     MS-APP-ACT-AS Header is required
@@ -53,7 +61,7 @@ var schedule = graphClient.Groups[\""8730b5a6-eca3-400d-9011-1f4202418218\""].Dr
         [TestCase(Schedule)]
         public void ShouldBeMarkedAsDelegated(string testSnippet)
         {
-            var requiredDelegatedPermissions = MicrosoftGraphCSharpCompiler.RequiresDelegatedPermissions(testSnippet);
+            var requiredDelegatedPermissions = MicrosoftGraphCSharpCompiler.RequiresDelegatedPermissions(testSnippet, _raptorConfig);
             Assert.True(requiredDelegatedPermissions);
         }
 
@@ -64,7 +72,7 @@ var schedule = graphClient.Groups[\""8730b5a6-eca3-400d-9011-1f4202418218\""].Dr
         [TestCase(Groups)]
         public void ShouldNotBeMarkedDelegated(string testSnippet)
         {
-            var requiredDelegatedPermissions = MicrosoftGraphCSharpCompiler.RequiresDelegatedPermissions(testSnippet);
+            var requiredDelegatedPermissions = MicrosoftGraphCSharpCompiler.RequiresDelegatedPermissions(testSnippet, _raptorConfig);
             Assert.False(requiredDelegatedPermissions);
         }
     }

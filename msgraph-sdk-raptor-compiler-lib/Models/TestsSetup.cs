@@ -7,7 +7,7 @@ namespace MsGraphSDKSnippetsCompiler.Models
         public static RaptorConfig GetConfig()
         {
             var config = AppSettings.Config();
-            var raptorConfig = new RaptorConfig(config);
+            var raptorConfig = RaptorConfig.Create(config);
             return raptorConfig;
         }
         public static IConfidentialClientApplication SetupConfidentialClientApp(RaptorConfig config)

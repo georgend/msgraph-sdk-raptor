@@ -6,7 +6,7 @@ using NUnit.Framework.Internal.Commands;
 namespace TestsCommon
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class RetryTestCaseSourceAttribute : TestCaseSourceAttribute, IRepeatTest
+    public sealed class RetryTestCaseSourceAttribute : TestCaseSourceAttribute, IRepeatTest
     {
         #region constructors
         public RetryTestCaseSourceAttribute(string sourceName) : base(sourceName){}

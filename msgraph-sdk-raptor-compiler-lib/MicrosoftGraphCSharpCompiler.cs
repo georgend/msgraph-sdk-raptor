@@ -148,6 +148,7 @@ namespace MsGraphSDKSnippetsCompiler
         ///     Returns CompilationResultsModel which has the results status and the compilation diagnostics.
         /// </summary>
         /// <param name="codeSnippet">The code snippet to be compiled.</param>
+        /// <param name="version"></param>
         /// <returns>CompilationResultsModel</returns>
         public async Task<ExecutionResultsModel> ExecuteSnippet(string codeSnippet, Versions version)
         {
@@ -159,7 +160,7 @@ namespace MsGraphSDKSnippetsCompiler
             {
                 try
                 {
-                    var requiresDelegatedPermissions = RequiresDelegatedPermissions(codeSnippet);
+                    var requiresDelegatedPermissions = RequiresDelegatedPermissions(codeSnippet, _config);
                     dynamic instance = assembly.CreateInstance("GraphSDKTest");
                     IAuthenticationProvider authProvider;
 
@@ -316,33 +317,17 @@ namespace MsGraphSDKSnippetsCompiler
         /// Determines whether code snippet requires delegated permissions (as opposed to application permissions)
         /// </summary>
         /// <param name="codeSnippet">code snippet</param>
+        /// <param name="raptorConfig"></param>
         /// <returns>true if the snippet requires delegated permissions</returns>
-        internal static bool RequiresDelegatedPermissions(string codeSnippet)
+        internal static bool RequiresDelegatedPermissions(string codeSnippet, RaptorConfig raptorConfig)
         {
             // TODO: https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/164
             const string graphClient = "graphClient.";
             var apiPathStart = codeSnippet.IndexOf(graphClient, StringComparison.Ordinal) + graphClient.Length;
             var apiPath = codeSnippet[apiPathStart..];
 
-            const RegexOptions regexOptions = RegexOptions.Compiled | RegexOptions.Singleline;
-            var apisWithDelegatedPermissions = new[]
-            {
-                new Regex(@"^Me", regexOptions),
-                new Regex(@"^Education.Me", regexOptions),
-                new Regex(@"^Users\[",regexOptions),
-                new Regex(@"^Planner",regexOptions),
-                new Regex(@"^Print",regexOptions),
-                new Regex(@"^IdentityProviders",regexOptions),
-                new Regex(@"^Reports",regexOptions),
-                new Regex(@"^IdentityGovernance",regexOptions),
-                new Regex(@"^GroupSetting",regexOptions),
-                new Regex(@"^Teams\[[^\]]*\]\.Schedule",regexOptions),
-                new Regex(@"^Teamwork.WorkforceIntegrations",regexOptions),
-                new Regex(@"^Communications.Presences\[[^\]]*\]",regexOptions),
-                new Regex(@"^Groups\[[^\]]*\].AcceptedSenders",regexOptions)
-            };
-
-            var matchResult = apisWithDelegatedPermissions.Any(x => x.IsMatch(apiPath));
+            var routeRegexes = raptorConfig.RouteRegexes.Value;
+            var matchResult = routeRegexes.Any(x => x.IsMatch(apiPath));
             return matchResult;
         }
     }

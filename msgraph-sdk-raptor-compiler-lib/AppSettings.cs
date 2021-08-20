@@ -23,7 +23,7 @@ namespace MsGraphSDKSnippetsCompiler
         public static string GetNonEmptyValue(this IConfigurationRoot config, string key)
         {
             var value = config.GetSection(key).Value;
-            if (value == string.Empty)
+            if (string.IsNullOrWhiteSpace(value))
             {
                 throw new Exception($"Value for {key} is not found in appsettings.json");
             }
