@@ -45,7 +45,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish known failure test results as artifact'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/KnownFailures/*.trx;$(Build.ArtifactStagingDirectory)/KnownFailures/PassedTests.txt'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/KnownFailures'
     ArtifactName: 'KnownFailures'
     publishLocation: 'Container'
 
