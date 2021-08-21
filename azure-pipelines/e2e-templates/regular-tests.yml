@@ -29,10 +29,21 @@ steps:
     publishTestResults: false
   continueOnError: true
 
+- pwsh: |
+    $trxFilePathRegex = "$(Build.ArtifactStagingDirectory)/RegularTests/*.trx"
+    $trxFilePath = (Resolve-Path $trxFilePathRegex).Path
+    $txtFilePath = "$(Build.ArtifactStagingDirectory)/RegularTests/FailedTests.txt"
+
+    Write-Host "--- Failed Tests ---"
+    ./msgraph-sdk-raptor/scripts/filterTests.ps1  -trxFilePath $trxFilePath -outcome Failed -txtOutputFilePath $txtFilePath
+    Write-Host "--------------------"
+  displayName: 'Print unexpected test results'
+  workingDirectory: '$(Build.SourcesDirectory)'
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish test results as artifact'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/RegularTests'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/RegularTests/*.trx;$(Build.ArtifactStagingDirectory)/RegularTests/FailedTests.txt'
     ArtifactName: 'RegularTests'
     publishLocation: 'Container'
 
