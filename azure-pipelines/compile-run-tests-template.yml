@@ -50,4 +50,4 @@ steps:
     searchFolder: '$(Build.ArtifactStagingDirectory)/TestResults'
     testResultsFiles: '**/*.trx'
     testRunTitle: '${{ parameters.runName }}'
-  displayName: 'Publish Test Results for Regular Tests'
+  displayName: 'Publish Test Results'
