@@ -16,16 +16,38 @@ steps:
   inputs:
     command: 'test'
     projects: '**/${{ parameters.projectFileName }}.csproj'
-    arguments: '--configuration $(buildConfiguration) --logger "trx;logfilename=${{ parameters.runName }}.trx" --results-directory $(Agent.TempDirectory) --settings $(Build.SourcesDirectory)/msgraph-sdk-raptor/${{ parameters.projectFileName}}/Test.runsettings'
+    arguments: '--configuration $(buildConfiguration) --logger "trx;logfilename=${{ parameters.runName }}.trx" --results-directory $(Build.ArtifactStagingDirectory)/TestResults --settings $(Build.SourcesDirectory)/msgraph-sdk-raptor/${{ parameters.projectFileName}}/Test.runsettings'
     publishTestResults: false
   displayName: '${{ parameters.projectFileName }} ${{ parameters.testType }} Tests'
   continueOnError: true
 
+- pwsh: |
+    $trxFilePathRegex = "$(Build.ArtifactStagingDirectory)/TestResults/*.trx"
+    $trxFilePath = (Resolve-Path $trxFilePathRegex).Path
+    $txtFilePath = "$(Build.ArtifactStagingDirectory)/TestResults/UnexpectedTestResults.txt"
+
+    # Known issue tests are expected to fail
+    $unexpectedTestOutcome = ($env:PROJECT_FILE_NAME -contains "Known") ? "Passed" : "Failed"
+
+    Write-Host "--- $unexpectedTestOutcome Tests ---"
+    ./msgraph-sdk-raptor/scripts/filterTests.ps1  -trxFilePath $trxFilePath -outcome $unexpectedTestOutcome -txtOutputFilePath $txtFilePath
+    Write-Host "--------------------"
+  displayName: 'Print unexpected test results'
+  workingDirectory: '$(Build.SourcesDirectory)'
+  env:
+    PROJECT_FILE_NAME: ${{ parameters.projectFileName }}
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish test results as artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/TestResults'
+    ArtifactName: 'TestResults'
+    publishLocation: 'Container'
+
 - task: PublishTestResults@2
-  condition: succeededOrFailed()
   inputs:
     testResultsFormat: 'VSTest'
-    searchFolder: '$(Agent.TempDirectory)'
-    testResultsFiles: '**/${{ parameters.runName }}.trx'
+    searchFolder: '$(Build.ArtifactStagingDirectory)/TestResults'
+    testResultsFiles: '**/*.trx'
     testRunTitle: '${{ parameters.runName }}'
-  displayName: 'Publish Test Results'
+  displayName: 'Publish Test Results for Regular Tests'
