@@ -23,7 +23,7 @@ $printerOperationUrl = $printerHeaderResp."Operation-Location" | Select-Object -
 $printerOperationRequestUri = $printerOperationUrl.Split("v1.0/")[1]
 $createPrinterOps = Request-DelegatedResource -Uri $printerOperationRequestUri
 if (@("running", "notStarted") -contains $createPrinterOps.status.state){
-    start-Sleep -Milliseconds 100  # wait for 10seconds before retrying
+    start-Sleep -Milliseconds 1000  # wait for 1second before retrying
     $createPrinterOps = Request-DelegatedResource -Uri $printerOperationRequestUri
 }
 if ($createPrinterOps.status.state -ne "succeeded") {
