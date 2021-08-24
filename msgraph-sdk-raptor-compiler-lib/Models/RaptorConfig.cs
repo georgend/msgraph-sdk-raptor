@@ -26,7 +26,6 @@ namespace MsGraphSDKSnippetsCompiler.Models
                 DelegatedRoutesPath = config.GetNonEmptyValue(nameof(DelegatedRoutesPath)),
                 DocsRepoCheckoutDirectory = config.GetNonEmptyValue(nameof(DocsRepoCheckoutDirectory)),
                 RaptorStorageConnectionString = config.GetNonEmptyValue(nameof(RaptorStorageConnectionString)),
-                SASUrl = config.GetNonEmptyValue(nameof(SASUrl)),
                 IsLocalRun = bool.Parse(config.GetNonEmptyValue(nameof(IsLocalRun)))
             };
             return raptorConfig;
@@ -81,12 +80,6 @@ namespace MsGraphSDKSnippetsCompiler.Models
         }
 
         public string RaptorStorageConnectionString
-        {
-            get;
-            init;
-        }
-
-        public string SASUrl
         {
             get;
             init;

@@ -15,7 +15,7 @@ $userId
 
 if($null -eq $dataPolicyOperation) {
     $dataPolicyOperationContent = Get-RequestData -ChildEntity "dataPolicyOperation"
-    $dataPolicyOperationContent.storageLocation = $appSettings.SASUrl
+    $dataPolicyOperationContent.storageLocation = Get-AzKeyVaultSecret -VaultName $appSettings.AzureKeyVaultName -Name "SASUrl" -AsPlainText  # Retrieve SASUrl from azure key-Vault
     $dataPolicyOperation = Request-DelegatedResource -Uri "users/$($userId)/exportPersonalData" -Method "Post" -Body $dataPolicyOperationContent
     $dataPolicyOperation.Location
     $dataPolicyOperation_id = $dataPolicyOperation.Location -split "/" | Select-Object -last 1
