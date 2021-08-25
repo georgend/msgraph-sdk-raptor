@@ -10,6 +10,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client;
+using System.Collections.Generic;
 
 namespace TestsCommon
 {
@@ -117,7 +118,7 @@ public class GraphSDKTest
         /// <param name="config"></param>
         /// <param name="publicClientApplication"></param>
         /// <param name="confidentialClientApplication"></param>
-        public static async Task Execute(ExecutionTestData executionTestData, RaptorConfig config, IPublicClientApplication publicClientApplication, IConfidentialClientApplication confidentialClientApplication)
+        public static async Task Execute(ExecutionTestData executionTestData, RaptorConfig config, IDictionary<string, string> tokenCache, IConfidentialClientApplication confidentialClientApplication)
         {
             if (executionTestData == null)
             {
@@ -129,7 +130,7 @@ public class GraphSDKTest
             var (codeToCompile, codeSnippetFormatted) = GetCodeToExecute(executionTestData.FileContent);
 
             // Compile Code
-            var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData.FileName, testData.DllPath, config, publicClientApplication, confidentialClientApplication);
+            var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData.FileName, testData.DllPath, config, tokenCache, confidentialClientApplication);
             var executionResultsModel = await microsoftGraphCSharpCompiler
                 .ExecuteSnippet(codeToCompile, testData.Version)
                 .ConfigureAwait(false);

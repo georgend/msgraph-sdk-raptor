@@ -1,4 +1,7 @@
-﻿using Microsoft.Identity.Client;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Identity.Client;
 
 namespace MsGraphSDKSnippetsCompiler.Models
 {
@@ -19,6 +22,23 @@ namespace MsGraphSDKSnippetsCompiler.Models
                 .Build();
             return confidentialClientApp;
         }
+
+        public static async Task<IDictionary<string, string>> GetTokenCache(RaptorConfig _raptorConfig, Scope[] scopes)
+        {
+            var tokenCache = new Dictionary<string, string>();
+            var permissionManagerApplication = new PermissionManagerApplication(_raptorConfig.PermissionManagerClientID, _raptorConfig.TenantID, _raptorConfig.PermissionManagerClientSecret);
+
+            foreach (var scope in scopes)
+            {
+                var application = await permissionManagerApplication.GetOrCreateApplication(scope);
+                var delegatedPermissionApplication = new DelegatedPermissionApplication(application.AppId, _raptorConfig.Authority);
+                var token = await delegatedPermissionApplication.GetToken(_raptorConfig.Username, _raptorConfig.Password, scope.value);
+                tokenCache[scope.value] = token;
+            }
+
+            return tokenCache;
+        }
+
         public static IPublicClientApplication SetupPublicClientApp(RaptorConfig config)
         {
             var publicClientApp = PublicClientApplicationBuilder

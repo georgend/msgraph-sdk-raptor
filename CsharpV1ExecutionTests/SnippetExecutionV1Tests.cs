@@ -11,15 +11,20 @@ namespace CsharpV1ExecutionTests
     public class SnippetExecutionV1Tests
     {
         private RaptorConfig _raptorConfig;
-        private IPublicClientApplication _publicClientApp;
         private IConfidentialClientApplication _confidentialClientApp;
+        private IDictionary<string, string> _tokenCache;
 
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
             _raptorConfig = TestsSetup.GetConfig();
-            _publicClientApp = TestsSetup.SetupPublicClientApp(_raptorConfig);
             _confidentialClientApp = TestsSetup.SetupConfidentialClientApp(_raptorConfig);
+            var scopes = new Scope[]
+            {
+                new Scope("User.Read", false, "e1fe6dd8-ba31-4d61-89e7-88639da4683d") // todo
+            };
+
+            _tokenCache = TestsSetup.GetTokenCache(_raptorConfig, scopes).Result;
         }
 
         /// <summary>
@@ -28,7 +33,6 @@ namespace CsharpV1ExecutionTests
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            TestsSetup.CleanUpApplication(_publicClientApp);
             TestsSetup.CleanUpApplication(_confidentialClientApp);
         }
 
@@ -52,7 +56,7 @@ namespace CsharpV1ExecutionTests
         [RetryTestCaseSource(typeof(SnippetExecutionV1Tests), nameof(TestDataV1), MaxTries = 3)]
         public async Task Test(ExecutionTestData testData)
         {
-            await CSharpTestRunner.Execute(testData, _raptorConfig, _publicClientApp, _confidentialClientApp);
+            await CSharpTestRunner.Execute(testData, _raptorConfig, _tokenCache, _confidentialClientApp);
         }
     }
 }

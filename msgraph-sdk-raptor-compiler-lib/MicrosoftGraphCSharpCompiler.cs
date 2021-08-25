@@ -36,7 +36,7 @@ namespace MsGraphSDKSnippetsCompiler
         private readonly string _markdownFileName;
         private readonly string _dllPath;
         private readonly RaptorConfig _config;
-        private readonly IPublicClientApplication _publicClientApplication;
+        private readonly IDictionary<string, string> _tokenCache;
         private readonly IConfidentialClientApplication _confidentialClientApp;
 
         /// for hiding bearer token
@@ -51,13 +51,13 @@ namespace MsGraphSDKSnippetsCompiler
         public MicrosoftGraphCSharpCompiler(string markdownFileName,
             string dllPath,
             RaptorConfig config,
-            IPublicClientApplication publicClientApplication,
+            IDictionary<string, string> tokenCache,
             IConfidentialClientApplication confidentialClientApp)
         {
             _markdownFileName = markdownFileName;
             _dllPath = dllPath;
             _config = config;
-            _publicClientApplication = publicClientApplication;
+            _tokenCache = tokenCache;
             _confidentialClientApp = confidentialClientApp;
         }
         public MicrosoftGraphCSharpCompiler(string markdownFileName,
@@ -168,10 +168,10 @@ namespace MsGraphSDKSnippetsCompiler
                     {
                         // delegated permissions
                         using var httpRequestMessage = instance.GetRequestMessage(null);
-                        var scopes = await GetScopes(httpRequestMessage);
+                        var scopes = new string[] { "User.Read" }; //await GetScopes(httpRequestMessage);
                         authProvider = new DelegateAuthenticationProvider(async request =>
                         {
-                            var token = await GetATokenForGraph(scopes);
+                            var token = _tokenCache[scopes[0]]; // TODO get all scopes
                             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
                         });
                     }
@@ -233,47 +233,6 @@ namespace MsGraphSDKSnippetsCompiler
             {
                 // some URLs don't return scopes from the permissions endpoint of DevX API
                 return new[] { DefaultAuthScope };
-            }
-        }
-
-        /// <summary>
-        /// Acquires a token for given context
-        /// </summary>
-        /// <param name="scopes">requested scopes in the token</param>
-        /// <returns>token for the given context</returns>
-        private async Task<string> GetATokenForGraph(string[] scopes)
-        {
-            IAccount account = null;
-            if (TokenCache.ContainsKey(_config.Username))
-            {
-                account = TokenCache[_config.Username];
-            }
-            using var securePassword = new SecureString();
-            // convert plain password into a secure string.
-            _config.Password.ToList().ForEach(c => securePassword.AppendChar(c));
-
-            try
-            {
-                AuthenticationResult authResult;
-                if (account == null)
-                {
-                    authResult = await _publicClientApplication
-                        .AcquireTokenByUsernamePassword(scopes, _config.Username, securePassword)
-                        .ExecuteAsync();
-                }
-                else
-                {
-                    authResult = await _publicClientApplication.AcquireTokenSilent(scopes, account).ExecuteAsync();
-                }
-
-                TokenCache[_config.Username] = authResult.Account;
-                return authResult.AccessToken;
-            }
-            catch (Exception e)
-            {
-                var prefixLength = "https://graph.microsoft.com/".Length;
-                var scopeShortNames = scopes.Select(s => s[prefixLength..]).ToArray();
-                throw new AggregateException("scopes: " + string.Join(", ", scopeShortNames), e);
             }
         }
 
