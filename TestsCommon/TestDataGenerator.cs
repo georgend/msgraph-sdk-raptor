@@ -23,12 +23,11 @@ namespace TestsCommon
         private const string CountIsNotSupported = "OData $count is not supported by the SDK at the moment.\r\n"
             + "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/402";
         private const string MissingContentProperty = "IReportRootGetM365AppPlatformUserCountsRequestBuilder is missing Content property";
-        private const string PutAsyncIsNotSupported = "PutAsync methods are not auto generated.\r\n"
-            + "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/844";
         private const string StreamRequestDoesNotSupportDelete = "Stream requests only support PUT and GET.";
         private const string DeleteAsyncIsNotSupportedForReferences = "DeleteAsync is not supported for reference collections\r\n"
             + "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/471";
-        private const string TypeCastIsNotSupported = "Type cast operation is not supported in SDK.";
+        private const string TypeCastIsNotSupported = "Type cast operation is not supported in SDK.\n"
+            + "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/304";
 
         private const string ComplexTypeNavigationProperties = "Complex Type navigation properties are not generated\r\n"
             + "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1003";
@@ -160,7 +159,7 @@ namespace TestsCommon
 
                 { $"create-educationschool-from-educationroot-{lng}-Beta-compiles", new KnownIssue(HTTP, GetPropertyNotFoundMessage("EducationSchool", "Status")) },
                 { $"create-homerealmdiscoverypolicy-from-serviceprincipal-{lng}-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
-                { $"create-certificatebasedauthconfiguration-from-certificatebasedauthconfiguration-{lng}-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
+                { $"create-certificatebasedauthconfiguration-from-certificatebasedauthconfiguration-{lng}-{version}-compiles", new KnownIssue(HTTP, RefNeeded + "\n https://github.com/microsoftgraph/microsoft-graph-docs/issues/14004") },
                 { $"create-tokenlifetimepolicy-from-application-{lng}-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
                 { $"create-onpremisesagentgroup-from-publishedresource-{lng}-Beta-compiles", new KnownIssue(HTTP, RefShouldBeRemoved) },
                 { $"create-reference-attachment-with-post-{lng}-V1-compiles", new KnownIssue(HTTP, GetPropertyNotFoundMessage("ReferenceAttachment", "SourceUrl, ProviderType, Permission and IsFolder")) },
@@ -215,32 +214,13 @@ namespace TestsCommon
                 {$"get-wa-count-csharp-{version}-compiles", new KnownIssue(SDK, SearchHeaderIsNotSupported) },
                 {$"get-web-count-csharp-{version}-compiles", new KnownIssue(SDK, SearchHeaderIsNotSupported) },
                 {$"get-rooms-in-roomlist-csharp-{version}-compiles", new KnownIssue(SDK, "SDK doesn't generate type segment in OData URL. https://microsoftgraph.visualstudio.com/Graph%20Developer%20Experiences/_workitems/edit/4997") },
-                { "put-privilegedrolesettings-csharp-Beta-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                { "put-regionalandlanguagesettings-csharp-Beta-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                { "team-put-schedule-csharp-Beta-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                { "update-organizationalbrandingproperties-csharp-Beta-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                {$"get-organizationalbrandingproperties-1-csharp-{version}-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                {$"update-organizationalbrandingproperties-4-csharp-{version}-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                {$"update-organizationalbrandingproperties-8-csharp-{version}-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                {$"timeoff-put-csharp-{version}-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                {$"timeoffreason-put-csharp-{version}-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                {$"schedule-put-schedulinggroups-csharp-{version}-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                { "update-emailauthenticationmethod-csharp-Beta-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                { "update-accesspackageassignmentpolicy-csharp-Beta-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                { "create-externalitem-from-connections-csharp-Beta-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                { "create-userflowlanguageconfiguration-from--1-csharp-Beta-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                { "create-userflowlanguageconfiguration-from--2-csharp-Beta-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                { "shift-get-3-csharp-Beta-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                {$"update-adminconsentrequestpolicy-csharp-{version}-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported) },
-                { "update-accessreviewscheduledefinition-csharp-V1-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported)},
+                { "list-updatableasset-csharp-Beta-compiles", new KnownIssue(SDK, TypeCastIsNotSupported)},
                 { "reportroot-getm365appplatformusercounts-csv-csharp-Beta-compiles", new KnownIssue(SDK, MissingContentProperty) },
                 { "reportroot-getm365appplatformusercounts-json-csharp-Beta-compiles", new KnownIssue(SDK, MissingContentProperty) },
                 { "reportroot-getm365appusercoundetail-csharp-Beta-compiles", new KnownIssue(SDK, MissingContentProperty) },
                 { "reportroot-getm365appusercountdetail-csharp-Beta-compiles", new KnownIssue(SDK, MissingContentProperty) },
                 { "reportroot-getm365appusercounts-csv-csharp-Beta-compiles", new KnownIssue(SDK, MissingContentProperty) },
                 { "reportroot-getm365appusercounts-json-csharp-Beta-compiles", new KnownIssue(SDK, MissingContentProperty) },
-                { "team-put-schedule-2-csharp-Beta-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported)},
-                { "timecard-replace-csharp-Beta-compiles", new KnownIssue(SDK, PutAsyncIsNotSupported)},
                 { "get-transitivereports-user-csharp-Beta-compiles", new KnownIssue(SDK, CountIsNotSupported)},
                 { "caseexportoperation-getdownloadurl-csharp-Beta-compiles", new KnownIssue(SDK, TypeCastIsNotSupported) },
                 { "remove-rejectedsender-from-group-csharp-V1-compiles", new KnownIssue(SDK, DeleteAsyncIsNotSupportedForReferences) },
@@ -302,6 +282,8 @@ namespace TestsCommon
                 { "educationsubmission-setupresourcesfolder-csharp-Beta-compiles", new KnownIssue(Metadata, "EducationAssignmentSetUpResourcesFolder defined as odata action instead of function for 'PostAsync' generation")},
                 { "educationassignment-setupresourcesfolder-csharp-Beta-compiles", new KnownIssue(Metadata, "EducationAssignmentSetUpResourcesFolder defined as odata action instead of function for 'PostAsync' generation")},
 
+                { "update-accessreviewscheduledefinition-csharp-V1-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText)},
+                { "team-put-schedule-2-csharp-Beta-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText)},
                 { "add-incompatibleaccesspackage-to-accesspackage-csharp-Beta-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText)},
                 { "create-role-enabled-group-csharp-V1-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText)},
                 { "appconsentrequest-filterbycurrentuser-csharp-Beta-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText) },
