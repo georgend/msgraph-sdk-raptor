@@ -5,7 +5,7 @@ pr: none # disable this as a PR check
 name: 'Daily V1 C# Snippet Execution Tests - Known Issues'
 
 schedules:
-  - cron: "0 12 * * *" # everyday at noon UTC
+  - cron: "0 3 * * *" # everyday at 3AM UTC (off hours for Redmond, Nairobi and Montréal)
     displayName: 'Daily PROD V1 Execution Pipeline - Known Issues'
     branches:
       include:
