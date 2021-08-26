@@ -13,7 +13,7 @@ pr:
       - msgraph-sdk-raptor-compiler-lib/MicrosoftGraphJavaCompiler.cs
       - TestsCommon/JavaTestRunner.cs
 schedules:
-  - cron: "0 3 * * *" # everyday at 3AM UTC (off hours for Redmond, Nairobi and Montreal)
+  - cron: "0 3 * * *" # everyday at 3AM UTC (off hours for Redmond, Nairobi and Montréal)
     displayName: 'Daily Preview Java Snippet Compilation Tests'
     branches:
       include:

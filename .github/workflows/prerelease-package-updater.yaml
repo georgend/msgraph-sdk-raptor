@@ -6,7 +6,7 @@ on:
   repository_dispatch:
     types: update-prerelease-packages
   schedule:
-    - cron: "0 12 * * *" # everyday at noon
+    - cron: "0 3 * * *" # everyday at 3AM UTC (off hours for Redmond, Nairobi and Montréal)
 
 jobs:
   update-prerelease-packages:

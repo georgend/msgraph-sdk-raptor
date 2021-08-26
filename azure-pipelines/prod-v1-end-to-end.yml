@@ -4,7 +4,7 @@
 trigger: none
 pr: none
 schedules:
-- cron: "0 12 * * *" # everyday at noon
+- cron: "0 3 * * *" # everyday at 3AM UTC (off hours for Redmond, Nairobi and Montréal)
   displayName: 'Daily PROD V1 Validation Pipeline'
   branches:
     include:
