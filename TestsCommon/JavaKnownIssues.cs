@@ -88,9 +88,6 @@ namespace TestsCommon
 
                 { "create-printer-java-Beta-compiles", new KnownIssue(SnippetGeneration, "Parameters with null values are not accounted for as action parameters") },
 
-                { "update-b2xuserflows-identityprovider-java-Beta-compiles", new KnownIssue(HTTPMethodWrong, GetMethodWrongMessage(PUT, PATCH)) },
-                { "update-b2cuserflows-identityprovider-java-Beta-compiles", new KnownIssue(HTTPMethodWrong, GetMethodWrongMessage(PUT, PATCH)) },
-
                 { "get-group-java-Beta-compiles", new KnownIssue(TestGeneration, "Imports need to be deduplicated for namespaces") },
                 { "get-set-java-Beta-compiles", new KnownIssue(TestGeneration, "Imports need to be deduplicated for namespaces") },
                 { "update-set-java-Beta-compiles", new KnownIssue(TestGeneration, "Imports need to be deduplicated for namespaces") },
@@ -432,6 +429,8 @@ namespace TestsCommon
                 { "update-externalitem-java-V1-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText) },
                 { "update-organizationalbrandingproperties-5-java-V1-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText) },
                 { "userconsentrequest-filterbycurrentuser-java-V1-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText) },
+                { "update-b2cuserflows-userflowidentityproviders-java-Beta-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText) },
+                { "update-b2xuserflows-userflowidentityprovider-java-Beta-compiles ", new KnownIssue(NeedsAnalysis, NeedsAnalysisText) },
             };
         }
     }
