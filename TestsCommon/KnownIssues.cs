@@ -144,17 +144,8 @@ namespace TestsCommon
                 { $"delete-internalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "internalSponsor")) },
                 { $"directoryobject-delta-{lng}-Beta-compiles", new KnownIssue(Metadata, "Delta is not defined on directoryObject, but on user and group") },
                 { $"remove-incompatiblegroup-from-accesspackage-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("accessPackage", "incompatibleGroups"))},
-                { $"event-accept-{lng}-Beta-compiles", new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered) },
-                { $"event-decline-{lng}-Beta-compiles", new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered) },
-                { $"event-tentativelyaccept-{lng}-Beta-compiles", new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered) },
-                { $"event-accept-{lng}-V1-compiles", new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered) },
-                { $"event-decline-{lng}-V1-compiles", new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered) },
-                { $"event-tentativelyaccept-{lng}-V1-compiles", new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered) },
-
+                
                 { $"create-educationschool-from-educationroot-{lng}-Beta-compiles", new KnownIssue(HTTP, GetPropertyNotFoundMessage("EducationSchool", "Status")) },
-                { $"create-homerealmdiscoverypolicy-from-serviceprincipal-{lng}-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
-                { $"create-certificatebasedauthconfiguration-from-certificatebasedauthconfiguration-{lng}-{version}-compiles", new KnownIssue(HTTP, RefNeeded + "\n https://github.com/microsoftgraph/microsoft-graph-docs/issues/14004") },
-                { $"create-tokenlifetimepolicy-from-application-{lng}-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
                 { $"create-onpremisesagentgroup-from-publishedresource-{lng}-Beta-compiles", new KnownIssue(HTTP, RefShouldBeRemoved) },
                 { $"create-reference-attachment-with-post-{lng}-V1-compiles", new KnownIssue(HTTP, GetPropertyNotFoundMessage("ReferenceAttachment", "SourceUrl, ProviderType, Permission and IsFolder")) },
                 { $"create-directoryobject-from-orgcontact-{lng}-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
@@ -163,7 +154,7 @@ namespace TestsCommon
                 { $"get-endpoints-{lng}-V1-compiles", new KnownIssue(HTTP, "This is only available in Beta") },
                 { $"get-identityriskevent-{lng}-Beta-compiles", new KnownIssue(HTTP, IdentityRiskEvents) },
                 { $"get-identityriskevents-{lng}-Beta-compiles", new KnownIssue(HTTP, IdentityRiskEvents) },
-                { $"list-conversation-members-1-{lng}-V1-compiles", new KnownIssue(HTTP, HttpSnippetWrong + "Me doesn't have \"Chats\". \"Chats\" is a high level EntitySet.") },
+                
                 { $"participant-configuremixer-{lng}-Beta-compiles", new KnownIssue(Metadata, "ConfigureMixer doesn't exist in metadata") },
                 { $"remove-group-from-rejectedsenderslist-of-group-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("group", "rejectedSender")) },
                 { $"remove-user-from-rejectedsenderslist-of-group-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("group", "rejectedSender")) },

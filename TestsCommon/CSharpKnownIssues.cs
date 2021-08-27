@@ -102,6 +102,14 @@ namespace TestsCommon
                 { "educationsubmission-setupresourcesfolder-csharp-Beta-compiles", new KnownIssue(Metadata, "EducationAssignmentSetUpResourcesFolder defined as odata action instead of function for 'PostAsync' generation")},
                 { "educationassignment-setupresourcesfolder-csharp-Beta-compiles", new KnownIssue(Metadata, "EducationAssignmentSetUpResourcesFolder defined as odata action instead of function for 'PostAsync' generation")},
 
+                { $"event-accept-csharp-{version}-compiles", new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered) },
+                { $"event-decline-csharp-{version}-compiles", new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered) },
+                { $"event-tentativelyaccept-csharp-{version}-compiles", new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered) },
+                { $"create-homerealmdiscoverypolicy-from-serviceprincipal-csharp-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
+                { $"create-certificatebasedauthconfiguration-from-certificatebasedauthconfiguration-csharp-{version}-compiles", new KnownIssue(HTTP, RefNeeded + "\n https://github.com/microsoftgraph/microsoft-graph-docs/issues/14004") },
+                { $"create-tokenlifetimepolicy-from-application-csharp-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
+                { $"list-conversation-members-1-csharp-V1-compiles", new KnownIssue(HTTP, HttpSnippetWrong + "Me doesn't have \"Chats\". \"Chats\" is a high level EntitySet.") },
+
                 { "update-accessreviewscheduledefinition-csharp-V1-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText)},
                 { "team-put-schedule-2-csharp-Beta-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText)},
                 { "add-incompatibleaccesspackage-to-accesspackage-csharp-Beta-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText)},
