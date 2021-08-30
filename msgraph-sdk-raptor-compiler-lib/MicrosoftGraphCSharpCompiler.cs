@@ -18,12 +18,13 @@ using System.Runtime.Loader;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Security;
 using System.Text.Json;
 using System.Collections.Concurrent;
 using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.CodeAnalysis.Text;
+using System.Threading;
+using NUnit.Framework;
 
 namespace MsGraphSDKSnippetsCompiler
 {
@@ -36,8 +37,8 @@ namespace MsGraphSDKSnippetsCompiler
         private readonly string _markdownFileName;
         private readonly string _dllPath;
         private readonly RaptorConfig _config;
-        private readonly IDictionary<string, string> _tokenCache;
         private readonly IConfidentialClientApplication _confidentialClientApp;
+        private readonly PermissionManagerApplication _permissionManagerApplication;
 
         /// for hiding bearer token
         private const string AuthHeaderPattern = "Authorization: Bearer .*";
@@ -51,14 +52,14 @@ namespace MsGraphSDKSnippetsCompiler
         public MicrosoftGraphCSharpCompiler(string markdownFileName,
             string dllPath,
             RaptorConfig config,
-            IDictionary<string, string> tokenCache,
-            IConfidentialClientApplication confidentialClientApp)
+            IConfidentialClientApplication confidentialClientApp,
+            PermissionManagerApplication permissionManagerApplication)
         {
             _markdownFileName = markdownFileName;
             _dllPath = dllPath;
             _config = config;
-            _tokenCache = tokenCache;
             _confidentialClientApp = confidentialClientApp;
+            _permissionManagerApplication = permissionManagerApplication;
         }
         public MicrosoftGraphCSharpCompiler(string markdownFileName,
             string dllPath)
@@ -160,19 +161,34 @@ namespace MsGraphSDKSnippetsCompiler
             {
                 try
                 {
-                    var requiresDelegatedPermissions = RequiresDelegatedPermissions(codeSnippet, _config);
                     dynamic instance = assembly.CreateInstance("GraphSDKTest");
                     IAuthenticationProvider authProvider;
 
+                    // delegated permissions
+                    using var httpRequestMessage = instance.GetRequestMessage(null);
+                    var scopes = await GetScopes(httpRequestMessage);
+                    var requiresDelegatedPermissions = scopes != null;
+
                     if (requiresDelegatedPermissions)
                     {
-                        // delegated permissions
-                        using var httpRequestMessage = instance.GetRequestMessage(null);
-                        var scopes = new string[] { "User.Read" }; //await GetScopes(httpRequestMessage);
                         authProvider = new DelegateAuthenticationProvider(async request =>
                         {
-                            var token = _tokenCache[scopes[0]]; // TODO get all scopes
+                            Application application = await _permissionManagerApplication.GetOrCreateApplication(scopes[0], $"{ Guid.NewGuid() } ");
+                            string token = null;
+                            try
+                            {
+                                token = await GetDelegatedAccessToken(application, scopes[0]);
+                            }
+                            catch (Exception e)
+                            {
+                                await _permissionManagerApplication.DeleteApplication(application.Id);
+                                await _permissionManagerApplication.PermanentlyDeleteApplication(application.Id);
+                                throw new AggregateException($"Can't get a token with application created: { application.DisplayName }", e);
+                            }
+                            
                             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                            await _permissionManagerApplication.DeleteApplication(application.Id);
+                            await _permissionManagerApplication.PermanentlyDeleteApplication(application.Id);
                         });
                     }
                     else
@@ -181,6 +197,7 @@ namespace MsGraphSDKSnippetsCompiler
                     }
                     // Pass custom http provider to provide interception and logging
                     await (instance.Main(authProvider, new CustomHttpProvider()) as Task);
+
                     success = true;
                 }
                 catch (Exception e)
@@ -202,7 +219,7 @@ namespace MsGraphSDKSnippetsCompiler
         /// </summary>
         /// <param name="httpRequestMessage"></param>
         /// <returns></returns>
-        static async Task<string[]> GetScopes(HttpRequestMessage httpRequestMessage)
+        static async Task<Scope[]> GetScopes(HttpRequestMessage httpRequestMessage)
         {
             var path = httpRequestMessage.RequestUri.LocalPath;
             var versionSegmentLength = "/v1.0".Length;
@@ -220,20 +237,43 @@ namespace MsGraphSDKSnippetsCompiler
             {
                 using var response = await httpClient.SendAsync(scopesRequest).ConfigureAwait(false);
                 var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var scopes = JsonSerializer.Deserialize<Scope[]>(responseString);
-                var fullReadScopes = scopes
-                    .ToList()
-                    .Where(x => x.value.Contains("Read") && !x.value.Contains("Write"))
-                    .Select(x => $"https://graph.microsoft.com/{ x.value }")
-                    .ToArray();
-
-                return fullReadScopes.Length == 0 ? new[] { DefaultAuthScope } : fullReadScopes;
+                return JsonSerializer.Deserialize<Scope[]>(responseString);
             }
             catch (Exception)
             {
                 // some URLs don't return scopes from the permissions endpoint of DevX API
-                return new[] { DefaultAuthScope };
+                return null;
             }
+        }
+
+        /// <summary>
+        /// Acquires a token for given context
+        /// </summary>
+        /// <param name="scopes">requested scopes in the token</param>
+        /// <returns>token for the given context</returns>
+        private async Task<string> GetDelegatedAccessToken(Application application, Scope scope)
+        {
+            var delegatedPermissionApplication = new DelegatedPermissionApplication(application.AppId, _config.Authority);
+
+            const int numberOfAttempts = 12;
+            const int retryIntervalInSeconds = 5;
+            Exception lastException = null;
+            for (int attempt = 0; attempt < numberOfAttempts; attempt++)
+            {
+                try
+                {
+                    var token = await delegatedPermissionApplication?.GetToken(_config.Username, _config.Password, scope.value);
+                    return token;
+                }
+                catch (Exception e)
+                {
+                    TestContext.Out.WriteLine($"Sleeping {retryIntervalInSeconds} seconds for token!");
+                    lastException = e;
+                    Thread.Sleep(retryIntervalInSeconds * 1000);
+                }
+            }
+
+            throw new AggregateException("Can't get the delegated access token", lastException);
         }
 
         /// <summary>
@@ -270,24 +310,6 @@ namespace MsGraphSDKSnippetsCompiler
                 : emitResult.Diagnostics.Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);
 
             return new CompilationResultsModel(emitResult.Success, failures, _markdownFileName);
-        }
-
-        /// <summary>
-        /// Determines whether code snippet requires delegated permissions (as opposed to application permissions)
-        /// </summary>
-        /// <param name="codeSnippet">code snippet</param>
-        /// <param name="raptorConfig"></param>
-        /// <returns>true if the snippet requires delegated permissions</returns>
-        internal static bool RequiresDelegatedPermissions(string codeSnippet, RaptorConfig raptorConfig)
-        {
-            // TODO: https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/164
-            const string graphClient = "graphClient.";
-            var apiPathStart = codeSnippet.IndexOf(graphClient, StringComparison.Ordinal) + graphClient.Length;
-            var apiPath = codeSnippet[apiPathStart..];
-
-            var routeRegexes = raptorConfig.RouteRegexes.Value;
-            var matchResult = routeRegexes.Any(x => x.IsMatch(apiPath));
-            return matchResult;
         }
     }
 }

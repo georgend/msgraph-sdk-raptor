@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client;
+using MsGraphSDKSnippetsCompiler;
 using MsGraphSDKSnippetsCompiler.Models;
 using NUnit.Framework;
 using TestsCommon;
@@ -12,19 +13,14 @@ namespace CsharpV1ExecutionTests
     {
         private RaptorConfig _raptorConfig;
         private IConfidentialClientApplication _confidentialClientApp;
-        private IDictionary<string, string> _tokenCache;
+        private PermissionManagerApplication _permissionManagerApplication;
 
         [OneTimeSetUp]
-        public void OneTimeSetup()
+        public async Task OneTimeSetup()
         {
             _raptorConfig = TestsSetup.GetConfig();
             _confidentialClientApp = TestsSetup.SetupConfidentialClientApp(_raptorConfig);
-            var scopes = new Scope[]
-            {
-                new Scope("User.Read", false, "e1fe6dd8-ba31-4d61-89e7-88639da4683d") // todo
-            };
-
-            _tokenCache = TestsSetup.GetTokenCache(_raptorConfig, scopes).Result;
+            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication(_raptorConfig);
         }
 
         /// <summary>
@@ -56,7 +52,7 @@ namespace CsharpV1ExecutionTests
         [RetryTestCaseSource(typeof(SnippetExecutionV1Tests), nameof(TestDataV1), MaxTries = 3)]
         public async Task Test(ExecutionTestData testData)
         {
-            await CSharpTestRunner.Execute(testData, _raptorConfig, _tokenCache, _confidentialClientApp);
+            await CSharpTestRunner.Execute(testData, _raptorConfig, _confidentialClientApp, _permissionManagerApplication);
         }
     }
 }

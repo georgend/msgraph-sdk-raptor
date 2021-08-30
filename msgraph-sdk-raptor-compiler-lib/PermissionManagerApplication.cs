@@ -6,19 +6,21 @@ using Microsoft.Graph;
 using Microsoft.Graph.Auth;
 using Microsoft.Identity.Client;
 using MsGraphSDKSnippetsCompiler.Models;
+using NUnit.Framework;
 
 namespace MsGraphSDKSnippetsCompiler
 {
-    internal class PermissionManagerApplication
+    public class PermissionManagerApplication
     {
         private readonly GraphServiceClient _client;
         private readonly string _graphResourceIdInTenant;
+        private readonly IDictionary<string, string> _scopeValueIdMap;
 
         private const string GraphResourceAppId = "00000003-0000-0000-c000-000000000000";
         private const string DelegatedResourceAccessType = "Scope";
         private const string RedirectUri = "http://localhost";
 
-        public PermissionManagerApplication(string clientID, string tenantID, string clientSecret)
+        public PermissionManagerApplication(string clientID, string tenantID, string clientSecret, IDictionary<string, string> scopeValueIdMap)
         {
             var confidentialClientApp = ConfidentialClientApplicationBuilder
                 .Create(clientID)
@@ -32,12 +34,14 @@ namespace MsGraphSDKSnippetsCompiler
 
             _client = new GraphServiceClient(authProvider);
             _graphResourceIdInTenant = GetMicrosoftGraphServicePrincipalId().Result;
+            _scopeValueIdMap = scopeValueIdMap;
         }
 
-        internal async Task<Application> GetOrCreateApplication(Scope scope)
+        internal async Task<Application> GetOrCreateApplication(Scope scope, string randomPrefix = "")
         {
-            const string AppDisplayNamePrefix = "DelegatedApp ";
-            const int SleepTimeForApplicationToBeReady = 3000;
+            const int SleepTimeForApplicationToBeReady = 30000;
+
+            var AppDisplayNamePrefix = "DelegatedApp " + randomPrefix;
 
             var appDisplayName = AppDisplayNamePrefix + scope.value;
 
@@ -47,20 +51,44 @@ namespace MsGraphSDKSnippetsCompiler
                 .GetAsync();
 
             Application result;
-            if (collectionPage.Count == 0)
+            try
             {
-                result = await CreateApplication(appDisplayName, scope.id); // TODO: what if two different executions try to create an app with the same name
-                var servicePrincipal = await CreateServicePrincipalForApp(result.AppId);
-                _ = await CreatePermissionGrant(servicePrincipal.Id, _graphResourceIdInTenant, scope.value);
-
-                Thread.Sleep(SleepTimeForApplicationToBeReady);
+                if (collectionPage.Count == 0)
+                {
+                    result = await CreateApplication(appDisplayName, _scopeValueIdMap[scope.value]);
+                    var servicePrincipal = await CreateServicePrincipalForApp(result.AppId);
+                    _ = await CreatePermissionGrant(servicePrincipal.Id, _graphResourceIdInTenant, scope.value);
+                    TestContext.Out.WriteLine($"Created Application {appDisplayName} {result.Id}");
+                    //Thread.Sleep(SleepTimeForApplicationToBeReady);
+                }
+                else
+                {
+                    result = collectionPage[0];
+                }
             }
-            else
+            catch (Exception e)
             {
-                result = collectionPage[0];
+                throw new AggregateException("Creating application failed!", e);
             }
 
             return result;
+        }
+
+        internal async Task DeleteApplication(string id)
+        {
+            await _client.Applications[id]
+                .Request()
+                .DeleteAsync();
+            TestContext.Out.WriteLine($"Deleted application {id}");
+        }
+
+        internal async Task PermanentlyDeleteApplication(string id)
+        {
+            await _client.Directory.DeletedItems[id]
+                .Request()
+                .DeleteAsync();
+
+            TestContext.Out.WriteLine($"Permanently deleted application {id}");
         }
 
         private async Task<OAuth2PermissionGrant> CreatePermissionGrant(string clientID, string resourceID, string scope)

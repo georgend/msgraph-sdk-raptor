@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using Microsoft.Identity.Client;
+using MsGraphSDKSnippetsCompiler;
 using MsGraphSDKSnippetsCompiler.Models;
 using NUnit.Framework;
 using TestsCommon;
@@ -12,14 +13,16 @@ namespace CsharpV1ExecutionKnownFailureTests
     public class SnippetExecutionV1KnownFailureTests
     {
         private RaptorConfig _raptorConfig;
-        private IPublicClientApplication _publicClientApp;
+        //private IPublicClientApplication _publicClientApp;
+        private PermissionManagerApplication _permissionManagerApplication;
         private IConfidentialClientApplication _confidentialClientApp;
 
         [OneTimeSetUp]
-        public void OneTimeSetup()
+        public async Task OneTimeSetup()
         {
             _raptorConfig = TestsSetup.GetConfig();
-            _publicClientApp = TestsSetup.SetupPublicClientApp(_raptorConfig);
+            //_publicClientApp = TestsSetup.SetupPublicClientApp(_raptorConfig);
+            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication(_raptorConfig);
             _confidentialClientApp = TestsSetup.SetupConfidentialClientApp(_raptorConfig);
         }
         /// <summary>
@@ -44,7 +47,7 @@ namespace CsharpV1ExecutionKnownFailureTests
         [RetryTestCaseSource(typeof(SnippetExecutionV1KnownFailureTests), nameof(TestDataV1), MaxTries = 3)]
         public async Task Test(ExecutionTestData testData)
         {
-            await CSharpTestRunner.Execute(testData, _raptorConfig, _publicClientApp, _confidentialClientApp);
+            await CSharpTestRunner.Execute(testData, _raptorConfig, _confidentialClientApp, _permissionManagerApplication);
         }
     }
 }

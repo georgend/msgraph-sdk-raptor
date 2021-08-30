@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client;
 
@@ -23,21 +25,38 @@ namespace MsGraphSDKSnippetsCompiler.Models
             return confidentialClientApp;
         }
 
-        public static async Task<IDictionary<string, string>> GetTokenCache(RaptorConfig _raptorConfig, Scope[] scopes)
+        public static async Task<PermissionManagerApplication> GetPermissionManagerApplication(RaptorConfig raptorConfig)
         {
-            var tokenCache = new Dictionary<string, string>();
-            var permissionManagerApplication = new PermissionManagerApplication(_raptorConfig.PermissionManagerClientID, _raptorConfig.TenantID, _raptorConfig.PermissionManagerClientSecret);
-
-            foreach (var scope in scopes)
-            {
-                var application = await permissionManagerApplication.GetOrCreateApplication(scope);
-                var delegatedPermissionApplication = new DelegatedPermissionApplication(application.AppId, _raptorConfig.Authority);
-                var token = await delegatedPermissionApplication.GetToken(_raptorConfig.Username, _raptorConfig.Password, scope.value);
-                tokenCache[scope.value] = token;
-            }
-
-            return tokenCache;
+            var scopeValueIdMap = await GetScopeValueIdMap();
+            return new PermissionManagerApplication(raptorConfig.PermissionManagerClientID, raptorConfig.TenantID, raptorConfig.PermissionManagerClientSecret, scopeValueIdMap);
         }
+
+        private static async Task<IDictionary<string, string>> GetScopeValueIdMap()
+        {
+            using var httpClient = new HttpClient();
+
+            using var scopesRequest = new HttpRequestMessage(HttpMethod.Get, "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/dev/permissions/permissions-descriptions.json");
+
+            var result = new Dictionary<string, string>();
+            try
+            {
+                using var response = await httpClient.SendAsync(scopesRequest).ConfigureAwait(false);
+                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var permissionDescriptions = JsonSerializer.Deserialize<PermissionDescriptions>(responseString);
+                foreach (var delegatedScope in permissionDescriptions.delegatedScopesList)
+                {
+                    result[delegatedScope.value] = delegatedScope.id;
+                }
+
+                return result;
+            }
+            catch (Exception)
+            {
+                // some URLs don't return scopes from the permissions endpoint of DevX API
+                return null;
+            }
+        }
+
 
         public static IPublicClientApplication SetupPublicClientApp(RaptorConfig config)
         {
