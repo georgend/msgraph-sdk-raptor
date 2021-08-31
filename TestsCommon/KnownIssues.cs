@@ -67,6 +67,10 @@ namespace TestsCommon
         internal const string NeedsAnalysisText = "This is a consistently failing test, the root cause is not yet identified";
         #endregion
 
+        #region Missing data
+        internal const string MissingDataText = "This test is missing data in identifiers.json file";
+        #endregion
+
         #region Test Owner values (to categorize results in Azure DevOps)
         internal const string SDK = nameof(SDK);
         internal const string HTTP = nameof(HTTP);
@@ -77,6 +81,7 @@ namespace TestsCommon
         internal const string SnippetGeneration = nameof(SnippetGeneration);
         internal const string TestGeneration = nameof(TestGeneration);
         internal const string NeedsAnalysis = nameof(NeedsAnalysis);
+        internal const string MissingData = nameof(MissingData);
         #endregion
 
         #region HTTP methods
