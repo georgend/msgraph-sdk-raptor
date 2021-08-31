@@ -22,32 +22,34 @@ steps:
   continueOnError: true
 
 - pwsh: |
-    $trxFilePathRegex = "$(Build.ArtifactStagingDirectory)/TestResults/*.trx"
+    $trxFilePathRegex = "$(Build.ArtifactStagingDirectory)/TestResults/$env:RUN_NAME.trx"
     $trxFilePath = (Resolve-Path $trxFilePathRegex).Path
-    $txtFilePath = "$(Build.ArtifactStagingDirectory)/TestResults/UnexpectedTestResults.txt"
 
     # Known issue tests are expected to fail
-    $unexpectedTestOutcome = ($env:PROJECT_FILE_NAME -contains "Known") ? "Passed" : "Failed"
+    $unexpectedTestOutcome = ($env:PROJECT_FILE_NAME.Contains("Known")) ? "Passed" : "Failed"
+
+    $txtFilePath = "$(Build.ArtifactStagingDirectory)/TestResults/$($unexpectedTestOutcome)TestResults.txt"
 
     Write-Host "--- $unexpectedTestOutcome Tests ---"
-    ./msgraph-sdk-raptor/scripts/filterTests.ps1  -trxFilePath $trxFilePath -outcome $unexpectedTestOutcome -txtOutputFilePath $txtFilePath
+    ./msgraph-sdk-raptor/scripts/filterTests.ps1  -trxFilePath "$trxFilePath" -outcome "$unexpectedTestOutcome" -txtOutputFilePath "$txtFilePath"
     Write-Host "--------------------"
   displayName: 'Print unexpected test results'
   workingDirectory: '$(Build.SourcesDirectory)'
   env:
     PROJECT_FILE_NAME: ${{ parameters.projectFileName }}
+    RUN_NAME: ${{ parameters.runName }}
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish test results as artifact'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/TestResults'
-    ArtifactName: 'TestResults'
+    ArtifactName: '${{ parameters.runName }} Test Results'
     publishLocation: 'Container'
 
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'VSTest'
     searchFolder: '$(Build.ArtifactStagingDirectory)/TestResults'
-    testResultsFiles: '**/*.trx'
+    testResultsFiles: '**/${{ parameters.runName }}.trx'
     testRunTitle: '${{ parameters.runName }}'
   displayName: 'Publish Test Results'
