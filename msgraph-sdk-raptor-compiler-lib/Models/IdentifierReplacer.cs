@@ -89,6 +89,10 @@ namespace MsGraphSDKSnippetsCompiler.Models
                     currentIdNode = localTree;
                     input = input.Replace(id, currentIdNode.Value);
                 }
+                else
+                {
+                    throw new InvalidDataException($"no data found for id: {id} in identifiers.json file");
+                }
             }
 
             return input;
