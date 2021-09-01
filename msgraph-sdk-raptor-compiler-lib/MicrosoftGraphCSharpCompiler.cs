@@ -162,43 +162,20 @@ namespace MsGraphSDKSnippetsCompiler
                 try
                 {
                     dynamic instance = assembly.CreateInstance("GraphSDKTest");
-                    IAuthenticationProvider authProvider;
 
                     // delegated permissions
                     using var httpRequestMessage = instance.GetRequestMessage(null);
-                    var scopes = await GetScopes(httpRequestMessage);
-                    var requiresDelegatedPermissions = scopes != null;
+                    var delegatedScopes = await GetScopes(httpRequestMessage);
 
-                    if (requiresDelegatedPermissions)
+                    if (delegatedScopes != null)
                     {
-                        authProvider = new DelegateAuthenticationProvider(async request =>
-                        {
-                            Application application = await _permissionManagerApplication.GetOrCreateApplication(scopes[0], $"{ Guid.NewGuid() } ");
-                            string token = null;
-                            try
-                            {
-                                token = await GetDelegatedAccessToken(application, scopes[0]);
-                            }
-                            catch (Exception e)
-                            {
-                                await _permissionManagerApplication.DeleteApplication(application.Id);
-                                await _permissionManagerApplication.PermanentlyDeleteApplication(application.Id);
-                                throw new AggregateException($"Can't get a token with application created: { application.DisplayName }", e);
-                            }
-                            
-                            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                            await _permissionManagerApplication.DeleteApplication(application.Id);
-                            await _permissionManagerApplication.PermanentlyDeleteApplication(application.Id);
-                        });
+                        success = await RunWithDelegatedPermissions(instance, delegatedScopes);
                     }
-                    else
-                    {
-                        authProvider = new ClientCredentialProvider(_confidentialClientApp, DefaultAuthScope);
-                    }
-                    // Pass custom http provider to provide interception and logging
-                    await (instance.Main(authProvider, new CustomHttpProvider()) as Task);
 
-                    success = true;
+                    if (!success)
+                    {
+                        success = await RunWithApplicationPermissions(instance);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -212,6 +189,59 @@ namespace MsGraphSDKSnippetsCompiler
             }
 
             return new ExecutionResultsModel(compilationResult, success, exceptionMessage);
+        }
+
+        private async Task<bool> RunWithDelegatedPermissions(dynamic instance, Scope[] scopes)
+        {
+            foreach (var scope in scopes)
+            {
+                try
+                {
+                    var authProvider = new DelegateAuthenticationProvider(async request =>
+                    {
+                        var application = await _permissionManagerApplication.GetOrCreateApplication(scope, $"{ Guid.NewGuid() } ");
+                        try
+                        {
+                            var token = await GetDelegatedAccessToken(application, scope);
+                            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new AggregateException($"Can't get a token with application created: { application.DisplayName }", e);
+                        }
+                        finally
+                        {
+                            await CleanUpApplication(application.Id);
+                        }
+                    });
+
+                    // Pass custom http provider to provide interception and logging
+                    await (instance.Main(authProvider, new CustomHttpProvider()) as Task);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    TestContext.Out.WriteLine($"Failed for delegated scope: {scope}");
+                    TestContext.Out.WriteLine(e.Message);
+                }
+            }
+
+            TestContext.Out.WriteLine($"None of the delegated permissions work!");
+            return false;
+        }
+
+        private async Task<bool> RunWithApplicationPermissions(dynamic instance)
+        {
+            var authProvider = new ClientCredentialProvider(_confidentialClientApp, DefaultAuthScope);
+            // Pass custom http provider to provide interception and logging
+            await (instance.Main(authProvider, new CustomHttpProvider()) as Task);
+            return true;
+        }
+
+        private async Task CleanUpApplication(string applicationId)
+        {
+            await _permissionManagerApplication.DeleteApplication(applicationId);
+            await _permissionManagerApplication.PermanentlyDeleteApplication(applicationId);
         }
 
         /// <summary>
