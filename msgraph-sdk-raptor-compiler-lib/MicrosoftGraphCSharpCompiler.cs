@@ -142,11 +142,11 @@ namespace MsGraphSDKSnippetsCompiler
         }
 
         /// <summary>
-        ///     Returns CompilationResultsModel which has the results status and the compilation diagnostics.
+        ///     Returns ExecutionResultsModel which has the results status and the compilation diagnostics.
         /// </summary>
-        /// <param name="codeSnippet">The code snippet to be compiled.</param>
-        /// <param name="version"></param>
-        /// <returns>CompilationResultsModel</returns>
+        /// <param name="codeSnippet">The code snippet to be compiled and executed.</param>
+        /// <param name="version">Graph API version</param>
+        /// <returns>ExecutionResultsModel</returns>
         public async Task<ExecutionResultsModel> ExecuteSnippet(string codeSnippet, Versions version)
         {
             var (compilationResult, assembly) = CompileSnippetAndGetAssembly(codeSnippet, version);
@@ -165,12 +165,12 @@ namespace MsGraphSDKSnippetsCompiler
                     if (delegatedScopes != null)
                     {
                         // succeeding for one scope is OK for now.
-                        success = await RunWithDelegatedPermissions(instance, delegatedScopes);
+                        success = await ExecuteWithDelegatedPermissions(instance, delegatedScopes);
                     }
 
                     if (!success)
                     {
-                        success = await RunWithApplicationPermissions(instance);
+                        success = await ExecuteWithApplicationPermissions(instance);
                     }
                 }
                 catch (Exception e)
@@ -187,7 +187,16 @@ namespace MsGraphSDKSnippetsCompiler
             return new ExecutionResultsModel(compilationResult, success, exceptionMessage);
         }
 
-        private async Task<bool> RunWithDelegatedPermissions(dynamic instance, Scope[] scopes)
+        /// <summary>
+        /// Executes the compiled snippet with tokens from given scope.
+        /// </summary>
+        /// <param name="instance">snippet instance</param>
+        /// <param name="scopes">delegated permission scopes</param>
+        /// <returns>
+        /// true if a token from one of the scopes executes successfully
+        /// false if none of them.
+        /// </returns>
+        private async Task<bool> ExecuteWithDelegatedPermissions(dynamic instance, Scope[] scopes)
         {
             foreach (var scope in scopes)
             {
@@ -223,7 +232,12 @@ namespace MsGraphSDKSnippetsCompiler
             return false;
         }
 
-        private async Task<bool> RunWithApplicationPermissions(dynamic instance)
+        /// <summary>
+        /// Executes the compiled snippet with an auth provider that that has all the application permissions
+        /// </summary>
+        /// <param name="instance">snippet instance</param>
+        /// <returns>true if the call succeeds</returns>
+        private async Task<bool> ExecuteWithApplicationPermissions(dynamic instance)
         {
             var authProvider = new ClientCredentialProvider(_permissionManagerApplication.AuthProvider, DefaultAuthScope);
             // Pass custom http provider to provide interception and logging
@@ -234,9 +248,16 @@ namespace MsGraphSDKSnippetsCompiler
         /// <summary>
         /// Calls DevX Api to get required permissions
         /// </summary>
-        /// <param name="httpRequestMessage"></param>
-        /// <returns></returns>
-        static async Task<Scope[]> GetScopes(HttpRequestMessage httpRequestMessage)
+        /// <param name="httpRequestMessage">HttpRequestMessage that the C# SDK built for the snippet</param>
+        /// <returns>
+        /// 1. delegated scopes if found
+        /// 2. null only if application scopes are found (we don't care about the specific application permission as our app has all of them)
+        /// </returns>
+        /// <exception cref="AggregateException">
+        /// If DevX API fails to return scopes for both application and delegation permissions,
+        /// throws an AggregateException containing the last exception from the service
+        /// </exception>
+        private static async Task<Scope[]> GetScopes(HttpRequestMessage httpRequestMessage)
         {
             var path = httpRequestMessage.RequestUri.LocalPath;
             var versionSegmentLength = "/v1.0".Length;

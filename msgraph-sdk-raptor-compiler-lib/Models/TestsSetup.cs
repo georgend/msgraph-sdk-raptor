@@ -12,20 +12,17 @@ namespace MsGraphSDKSnippetsCompiler.Models
             return raptorConfig;
         }
 
+        /// <summary>
+        /// Initilizes permission manager application with the tenant and application specified in the config
+        /// Fetches delegated tokens and caches them
+        /// </summary>
+        /// <param name="raptorConfig">Raptor configuration</param>
+        /// <returns>Permission manager application to access auth providers and tokens</returns>
         public static async Task<PermissionManager> GetPermissionManagerApplication(RaptorConfig raptorConfig)
         {
             var permissionManagerApplication = new PermissionManager(raptorConfig);
             await permissionManagerApplication.PopulateTokenCache();
             return permissionManagerApplication;
-        }
-
-        public static IPublicClientApplication SetupPublicClientApp(RaptorConfig config)
-        {
-            var publicClientApp = PublicClientApplicationBuilder
-                .Create(config.ClientID)
-                .WithAuthority(config.Authority)
-                .Build();
-            return publicClientApp;
         }
 
         public static void CleanUpApplication(IClientApplicationBase clientApplication)

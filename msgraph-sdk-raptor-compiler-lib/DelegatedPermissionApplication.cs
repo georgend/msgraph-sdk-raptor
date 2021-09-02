@@ -16,6 +16,13 @@ namespace MsGraphSDKSnippetsCompiler
                 .Build();
         }
 
+        /// <summary>
+        /// Gets delegated access token for given scope
+        /// </summary>
+        /// <param name="username">admin username</param>
+        /// <param name="password">admin password</param>
+        /// <param name="scope">delegated permission scope</param>
+        /// <returns>delegated access token</returns>
         internal async Task<string> GetToken(string username, string password, string scope)
         {
             using var securePassword = new SecureString();

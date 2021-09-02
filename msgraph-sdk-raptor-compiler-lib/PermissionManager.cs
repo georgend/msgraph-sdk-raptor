@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
@@ -15,11 +15,25 @@ namespace MsGraphSDKSnippetsCompiler
 {
     public class PermissionManager
     {
+        /// <summary>
+        /// Graph service client with application permissions
+        /// </summary>
         private readonly GraphServiceClient _client;
+
         private readonly RaptorConfig _config;
 
+        /// <summary>
+        /// Delegated access tokens
+        /// key: scopeName
+        /// value: JWT
+        /// e.g. User.Read : JWT...
+        /// </summary>
         private IDictionary<string, string> _tokenCache;
 
+        /// <summary>
+        /// Auth provider to initialize GraphServiceClients within the snippets
+        /// when application permissions are needed
+        /// </summary>
         public IConfidentialClientApplication AuthProvider
         {
             get; init;
@@ -40,6 +54,15 @@ namespace MsGraphSDKSnippetsCompiler
             _client = new GraphServiceClient(authProvider);
         }
 
+        /// <summary>
+        /// Populates delegated access token cache
+        /// 1. Gets the list of all delegated permission scopes
+        /// 2. For all scopes
+        ///   2. a. Gets the corresponding preconfigured app in the tenant for a particular scope
+        ///   2. b. Acquires a token using that preconfigured app
+        ///   2. c. Saves the result in the token cache for immediate use in the test.
+        /// </summary>
+        /// <returns></returns>
         internal async Task PopulateTokenCache()
         {
             _tokenCache = new Dictionary<string, string>();
@@ -69,9 +92,15 @@ namespace MsGraphSDKSnippetsCompiler
             }
         }
 
-        internal async Task<Application> GetApplication(Scope scope, string randomPrefix = "")
+        /// <summary>
+        /// Gets the preconfigured app corresponding to the scope using app's display name
+        /// e.g. for User.Read -> DelegatedApp User.Read
+        /// </summary>
+        /// <param name="scope">delegated permission scope, e.g. User.Read</param>
+        /// <returns>Application to acquire a token in given scope</returns>
+        internal async Task<Application> GetApplication(Scope scope)
         {
-            var AppDisplayNamePrefix = "DelegatedApp " + randomPrefix;
+            var AppDisplayNamePrefix = "DelegatedApp ";
 
             var appDisplayName = AppDisplayNamePrefix + scope.value;
 
@@ -79,7 +108,7 @@ namespace MsGraphSDKSnippetsCompiler
                               .Request()
                               .Filter($"displayName eq '{ appDisplayName }'")
                               .GetAsync();
-            return collectionPage[0];
+            return collectionPage?.FirstOrDefault();
         }
 
         /// <summary>
@@ -113,10 +142,15 @@ namespace MsGraphSDKSnippetsCompiler
             throw new AggregateException("Can't get the delegated access token", lastException);
         }
 
+        /// <summary>
+        /// Gets delegated access token from token cache
+        /// </summary>
+        /// <param name="delegatedScope">delegated scope</param>
+        /// <exception cref="KeyNotFoundException">throws key not found if the token is not already cached. Caller is expected to handle the exception.</exception>
+        /// <returns>cached token</returns>
         internal string GetCachedToken(Scope delegatedScope)
         {
-            // throwing exception is OK on KeyNotFound
-            return _tokenCache[delegatedScope.value];
+            return _tokenCache[delegatedScope?.value];
         }
     }
 }
