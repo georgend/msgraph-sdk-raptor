@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Graph;
@@ -13,19 +17,17 @@ namespace MsGraphSDKSnippetsCompiler
     public class PermissionManagerApplication
     {
         private readonly GraphServiceClient _client;
-        private readonly string _graphResourceIdInTenant;
-        private readonly IDictionary<string, string> _scopeValueIdMap;
+        private readonly RaptorConfig _config;
 
-        private const string GraphResourceAppId = "00000003-0000-0000-c000-000000000000";
-        private const string DelegatedResourceAccessType = "Scope";
-        private const string RedirectUri = "http://localhost";
+        private IDictionary<string, string> _tokenCache;
 
-        public PermissionManagerApplication(string clientID, string tenantID, string clientSecret, IDictionary<string, string> scopeValueIdMap)
+        public PermissionManagerApplication(RaptorConfig raptorConfig)
         {
+            _config = raptorConfig;
             var confidentialClientApp = ConfidentialClientApplicationBuilder
-                .Create(clientID)
-                .WithTenantId(tenantID)
-                .WithClientSecret(clientSecret)
+                .Create(_config.PermissionManagerClientID)
+                .WithTenantId(_config.TenantID)
+                .WithClientSecret(_config.PermissionManagerClientSecret)
                 .Build();
 
             const string DefaultAuthScope = "https://graph.microsoft.com/.default";
@@ -33,45 +35,86 @@ namespace MsGraphSDKSnippetsCompiler
             var authProvider = new ClientCredentialProvider(confidentialClientApp, DefaultAuthScope);
 
             _client = new GraphServiceClient(authProvider);
-            _graphResourceIdInTenant = GetMicrosoftGraphServicePrincipalId().Result;
-            _scopeValueIdMap = scopeValueIdMap;
         }
 
-        internal async Task<Application> GetOrCreateApplication(Scope scope, string randomPrefix = "")
+        internal async Task PopulateTokenCache()
         {
-            const int SleepTimeForApplicationToBeReady = 30000;
+            _tokenCache = new ConcurrentDictionary<string, string>();
+            using var httpClient = new HttpClient();
 
+            using var scopesRequest = new HttpRequestMessage(HttpMethod.Get, "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/dev/permissions/permissions-descriptions.json");
+
+            var result = new Dictionary<string, string>();
+
+            using var response = await httpClient.SendAsync(scopesRequest).ConfigureAwait(false);
+            var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var permissionDescriptions = JsonSerializer.Deserialize<PermissionDescriptions>(responseString);
+
+            foreach (var delegatedPermissionScope in permissionDescriptions.delegatedScopesList)
+            {
+                var scopeName = delegatedPermissionScope.value;
+                try
+                {
+                    var application = await GetApplication(delegatedPermissionScope);
+                    var token = await GetDelegatedAccessToken(application, scopeName);
+                    _tokenCache[delegatedPermissionScope.value] = token;
+                }
+                catch
+                {
+                    Console.WriteLine($"Couldn't get the token for scope: {scopeName}");
+                    TestContext.Out.WriteLine($"Couldn't get the token for scope: {scopeName}");
+                }
+            }
+        }
+
+        internal async Task<Application> GetApplication(Scope scope, string randomPrefix = "")
+        {
             var AppDisplayNamePrefix = "DelegatedApp " + randomPrefix;
 
             var appDisplayName = AppDisplayNamePrefix + scope.value;
 
             var collectionPage = await _client.Applications
-                .Request()
-                .Filter($"displayName eq '{ appDisplayName }'")
-                .GetAsync();
+                              .Request()
+                              .Filter($"displayName eq '{ appDisplayName }'")
+                              .GetAsync();
+            return collectionPage[0];
+        }
 
-            Application result;
-            try
+        /// <summary>
+        /// Acquires a token for given context
+        /// </summary>
+        /// <param name="application">application with delegated permissions</param>
+        /// <param name="scope">scope for the token request</param>
+        /// <returns>token for the given context</returns>
+        private async Task<string> GetDelegatedAccessToken(Application application, string scope)
+        {
+            var delegatedPermissionApplication = new DelegatedPermissionApplication(application.AppId, _config.Authority);
+
+            const int numberOfAttempts = 2;
+            const int retryIntervalInSeconds = 5;
+            Exception lastException = null;
+            for (int attempt = 0; attempt < numberOfAttempts; attempt++)
             {
-                if (collectionPage.Count == 0)
+                try
                 {
-                    result = await CreateApplication(appDisplayName, _scopeValueIdMap[scope.value]);
-                    var servicePrincipal = await CreateServicePrincipalForApp(result.AppId);
-                    _ = await CreatePermissionGrant(servicePrincipal.Id, _graphResourceIdInTenant, scope.value);
-                    TestContext.Out.WriteLine($"Created Application {appDisplayName} {result.Id}");
-                    //Thread.Sleep(SleepTimeForApplicationToBeReady);
+                    var token = await delegatedPermissionApplication?.GetToken(_config.Username, _config.Password, scope);
+                    return token;
                 }
-                else
+                catch (Exception e)
                 {
-                    result = collectionPage[0];
+                    TestContext.Out.WriteLine($"Sleeping {retryIntervalInSeconds} seconds for token!");
+                    lastException = e;
+                    Thread.Sleep(retryIntervalInSeconds * 1000);
                 }
             }
-            catch (Exception e)
-            {
-                throw new AggregateException("Creating application failed!", e);
-            }
 
-            return result;
+            throw new AggregateException("Can't get the delegated access token", lastException);
+        }
+
+        internal string GetCachedToken(Scope delegatedScope)
+        {
+            // throwing exception is OK on KeyNotFound
+            return _tokenCache[delegatedScope.value];
         }
 
         internal async Task DeleteApplication(string id)
@@ -89,74 +132,6 @@ namespace MsGraphSDKSnippetsCompiler
                 .DeleteAsync();
 
             TestContext.Out.WriteLine($"Permanently deleted application {id}");
-        }
-
-        private async Task<OAuth2PermissionGrant> CreatePermissionGrant(string clientID, string resourceID, string scope)
-        {
-            var oauthPermission = new OAuth2PermissionGrant
-            {
-                ClientId = clientID,
-                ConsentType = "AllPrincipals",
-                PrincipalId = null,
-                ResourceId = resourceID,
-                Scope = scope,
-                // ExpiryTime = DateTimeOffset.Now.AddDays(1) TODO: Beta
-            };
-
-            return await _client.Oauth2PermissionGrants
-                .Request()
-                .AddAsync(oauthPermission);
-        }
-
-        private async Task<Application> CreateApplication(string applicationName, string scopeGuid)
-        {
-            var resourceAccess = new ResourceAccess
-            {
-                Type = DelegatedResourceAccessType,
-                Id = new Guid(scopeGuid)
-            };
-
-            var requiredResourceAccess = new RequiredResourceAccess()
-            {
-                ResourceAccess = new List<ResourceAccess> { resourceAccess },
-                ResourceAppId = GraphResourceAppId
-            };
-
-            var application = new Application
-            {
-                DisplayName = applicationName,
-                RequiredResourceAccess = new List<RequiredResourceAccess> { requiredResourceAccess },
-                IsFallbackPublicClient = true, // allowPublicClient: true in application manifest
-
-                PublicClient = new Microsoft.Graph.PublicClientApplication
-                {
-                    RedirectUris = new string[] { RedirectUri }
-                }
-            };
-
-            return await _client.Applications
-                .Request()
-                .AddAsync(application);
-        }
-
-        private async Task<ServicePrincipal> CreateServicePrincipalForApp(string appID)
-        {
-            return await _client.ServicePrincipals
-                .Request()
-                .AddAsync(new ServicePrincipal
-                {
-                    AppId = appID
-                });
-        }
-
-        private async Task<string> GetMicrosoftGraphServicePrincipalId()
-        {
-            var servicePrincipals = await _client.ServicePrincipals
-                .Request()
-                .Filter("servicePrincipalNames/any(n:n eq 'https://graph.microsoft.com')")
-                .GetAsync();
-
-            return servicePrincipals[0].Id;
         }
     }
 }

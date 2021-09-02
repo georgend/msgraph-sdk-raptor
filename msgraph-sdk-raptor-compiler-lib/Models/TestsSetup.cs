@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.Identity.Client;
 
 namespace MsGraphSDKSnippetsCompiler.Models
@@ -27,36 +23,10 @@ namespace MsGraphSDKSnippetsCompiler.Models
 
         public static async Task<PermissionManagerApplication> GetPermissionManagerApplication(RaptorConfig raptorConfig)
         {
-            var scopeValueIdMap = await GetScopeValueIdMap();
-            return new PermissionManagerApplication(raptorConfig.PermissionManagerClientID, raptorConfig.TenantID, raptorConfig.PermissionManagerClientSecret, scopeValueIdMap);
+            var permissionManagerApplication = new PermissionManagerApplication(raptorConfig);
+            await permissionManagerApplication.PopulateTokenCache();
+            return permissionManagerApplication;
         }
-
-        private static async Task<IDictionary<string, string>> GetScopeValueIdMap()
-        {
-            using var httpClient = new HttpClient();
-
-            using var scopesRequest = new HttpRequestMessage(HttpMethod.Get, "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/dev/permissions/permissions-descriptions.json");
-
-            var result = new Dictionary<string, string>();
-            try
-            {
-                using var response = await httpClient.SendAsync(scopesRequest).ConfigureAwait(false);
-                var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var permissionDescriptions = JsonSerializer.Deserialize<PermissionDescriptions>(responseString);
-                foreach (var delegatedScope in permissionDescriptions.delegatedScopesList)
-                {
-                    result[delegatedScope.value] = delegatedScope.id;
-                }
-
-                return result;
-            }
-            catch (Exception)
-            {
-                // some URLs don't return scopes from the permissions endpoint of DevX API
-                return null;
-            }
-        }
-
 
         public static IPublicClientApplication SetupPublicClientApp(RaptorConfig config)
         {

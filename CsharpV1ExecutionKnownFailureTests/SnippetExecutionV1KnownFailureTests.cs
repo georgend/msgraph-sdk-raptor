@@ -13,18 +13,26 @@ namespace CsharpV1ExecutionKnownFailureTests
     public class SnippetExecutionV1KnownFailureTests
     {
         private RaptorConfig _raptorConfig;
-        //private IPublicClientApplication _publicClientApp;
-        private PermissionManagerApplication _permissionManagerApplication;
         private IConfidentialClientApplication _confidentialClientApp;
+        private PermissionManagerApplication _permissionManagerApplication;
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
         {
             _raptorConfig = TestsSetup.GetConfig();
-            //_publicClientApp = TestsSetup.SetupPublicClientApp(_raptorConfig);
-            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication(_raptorConfig);
             _confidentialClientApp = TestsSetup.SetupConfidentialClientApp(_raptorConfig);
+            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication(_raptorConfig);
         }
+
+        /// <summary>
+        ///     Clean-Up Public Client and Confidential Client by Removing all accounts
+        /// </summary>
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            TestsSetup.CleanUpApplication(_confidentialClientApp);
+        }
+
         /// <summary>
         /// Gets TestCaseData for V1
         /// TestCaseData contains snippet file name, version and test case name
