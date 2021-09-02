@@ -2,7 +2,6 @@ param(
     [bool]$IsLocalRun = $false,
     [bool]$GenerateLinqPadOutputInLocalRun = $false,
     [string]$DocsRepoCheckoutDirectory = "C:/github",
-    [string]$DelegatedRoutesPath = "../../../../config/DelegatedRoutes.jsonc",
     [string]$CertificateThumbprint = "",
     [Parameter(Mandatory=$true)][string]$TenantID,
     [Parameter(Mandatory=$true)][string]$ClientID,
@@ -22,7 +21,6 @@ $json = @{
     IsLocalRun = $IsLocalRun;
     GenerateLinqPadOutputInLocalRun = $GenerateLinqPadOutputInLocalRun;
     DocsRepoCheckoutDirectory = $DocsRepoCheckoutDirectory;
-    DelegatedRoutesPath = $DelegatedRoutesPath;
     Username = $Username;
     Password = $Password;
     Authority = $Authority;
