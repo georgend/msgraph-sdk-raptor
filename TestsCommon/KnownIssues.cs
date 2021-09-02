@@ -71,6 +71,10 @@ namespace TestsCommon
         internal const string MissingDataText = "This test is missing data in identifiers.json file";
         #endregion
 
+        #region Missing data
+        internal const string MissingPermissionScopeText = "DevX API is not returning any delegated or application permissions for the URI.";
+        #endregion
+
         #region Test Owner values (to categorize results in Azure DevOps)
         internal const string SDK = nameof(SDK);
         internal const string HTTP = nameof(HTTP);
@@ -82,6 +86,7 @@ namespace TestsCommon
         internal const string TestGeneration = nameof(TestGeneration);
         internal const string NeedsAnalysis = nameof(NeedsAnalysis);
         internal const string MissingData = nameof(MissingData);
+        internal const string MissingPermissionScope = nameof(MissingPermissionScope);
         #endregion
 
         #region HTTP methods
@@ -91,6 +96,10 @@ namespace TestsCommon
         internal const string GET = nameof(GET);
         internal const string PATCH = nameof(PATCH);
         #endregion
+
+        internal static readonly KnownIssue NeedsAnalysisKnownIssue = new KnownIssue(NeedsAnalysis, NeedsAnalysisText);
+        internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(MissingData, MissingDataText);
+        internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(MissingPermissionScope, MissingPermissionScopeText);
 
         /// <summary>
         /// Constructs property not found message
