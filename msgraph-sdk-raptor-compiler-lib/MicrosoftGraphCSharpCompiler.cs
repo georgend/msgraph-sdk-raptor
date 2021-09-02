@@ -36,8 +36,7 @@ namespace MsGraphSDKSnippetsCompiler
         private readonly string _markdownFileName;
         private readonly string _dllPath;
         private readonly RaptorConfig _config;
-        private readonly IConfidentialClientApplication _confidentialClientApp;
-        private readonly PermissionManagerApplication _permissionManagerApplication;
+        private readonly PermissionManager _permissionManagerApplication;
 
         /// for hiding bearer token
         private const string AuthHeaderPattern = "Authorization: Bearer .*";
@@ -51,13 +50,11 @@ namespace MsGraphSDKSnippetsCompiler
         public MicrosoftGraphCSharpCompiler(string markdownFileName,
             string dllPath,
             RaptorConfig config,
-            IConfidentialClientApplication confidentialClientApp,
-            PermissionManagerApplication permissionManagerApplication)
+            PermissionManager permissionManagerApplication)
         {
             _markdownFileName = markdownFileName;
             _dllPath = dllPath;
             _config = config;
-            _confidentialClientApp = confidentialClientApp;
             _permissionManagerApplication = permissionManagerApplication;
         }
         public MicrosoftGraphCSharpCompiler(string markdownFileName,
@@ -196,7 +193,9 @@ namespace MsGraphSDKSnippetsCompiler
             {
                 try
                 {
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
                     var authProvider = new DelegateAuthenticationProvider(async request =>
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
                     {
                         try
                         {
@@ -226,7 +225,7 @@ namespace MsGraphSDKSnippetsCompiler
 
         private async Task<bool> RunWithApplicationPermissions(dynamic instance)
         {
-            var authProvider = new ClientCredentialProvider(_confidentialClientApp, DefaultAuthScope);
+            var authProvider = new ClientCredentialProvider(_permissionManagerApplication.AuthProvider, DefaultAuthScope);
             // Pass custom http provider to provide interception and logging
             await (instance.Main(authProvider, new CustomHttpProvider()) as Task);
             return true;

@@ -23,8 +23,6 @@ namespace MsGraphSDKSnippetsCompiler.Models
                 TenantID = config.GetNonEmptyValue(nameof(TenantID)),
                 ClientID = config.GetNonEmptyValue(nameof(ClientID)),
                 ClientSecret = config.GetNonEmptyValue(nameof(ClientSecret)),
-                PermissionManagerClientID = config.GetNonEmptyValue(nameof(PermissionManagerClientID)),
-                PermissionManagerClientSecret = config.GetNonEmptyValue(nameof(PermissionManagerClientSecret)),
                 DelegatedRoutesPath = config.GetNonEmptyValue(nameof(DelegatedRoutesPath)),
                 DocsRepoCheckoutDirectory = config.GetNonEmptyValue(nameof(DocsRepoCheckoutDirectory)),
                 RaptorStorageConnectionString = config.GetNonEmptyValue(nameof(RaptorStorageConnectionString)),
@@ -64,18 +62,6 @@ namespace MsGraphSDKSnippetsCompiler.Models
         }
 
         public string ClientSecret
-        {
-            get;
-            init;
-        }
-
-        public string PermissionManagerClientID
-        {
-            get;
-            init;
-        }
-
-        public string PermissionManagerClientSecret
         {
             get;
             init;

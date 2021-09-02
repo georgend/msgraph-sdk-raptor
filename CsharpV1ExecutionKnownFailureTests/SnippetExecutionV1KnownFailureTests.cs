@@ -13,14 +13,12 @@ namespace CsharpV1ExecutionKnownFailureTests
     public class SnippetExecutionV1KnownFailureTests
     {
         private RaptorConfig _raptorConfig;
-        private IConfidentialClientApplication _confidentialClientApp;
-        private PermissionManagerApplication _permissionManagerApplication;
+        private PermissionManager _permissionManagerApplication;
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
         {
             _raptorConfig = TestsSetup.GetConfig();
-            _confidentialClientApp = TestsSetup.SetupConfidentialClientApp(_raptorConfig);
             _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication(_raptorConfig);
         }
 
@@ -30,7 +28,7 @@ namespace CsharpV1ExecutionKnownFailureTests
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            TestsSetup.CleanUpApplication(_confidentialClientApp);
+            TestsSetup.CleanUpApplication(_permissionManagerApplication.AuthProvider);
         }
 
         /// <summary>
@@ -55,7 +53,7 @@ namespace CsharpV1ExecutionKnownFailureTests
         [RetryTestCaseSource(typeof(SnippetExecutionV1KnownFailureTests), nameof(TestDataV1), MaxTries = 3)]
         public async Task Test(ExecutionTestData testData)
         {
-            await CSharpTestRunner.Execute(testData, _raptorConfig, _confidentialClientApp, _permissionManagerApplication);
+            await CSharpTestRunner.Execute(testData, _raptorConfig, _permissionManagerApplication);
         }
     }
 }

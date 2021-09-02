@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
@@ -14,32 +13,36 @@ using NUnit.Framework;
 
 namespace MsGraphSDKSnippetsCompiler
 {
-    public class PermissionManagerApplication
+    public class PermissionManager
     {
         private readonly GraphServiceClient _client;
         private readonly RaptorConfig _config;
 
         private IDictionary<string, string> _tokenCache;
 
-        public PermissionManagerApplication(RaptorConfig raptorConfig)
+        public IConfidentialClientApplication AuthProvider
+        {
+            get; init;
+        }
+
+        public PermissionManager(RaptorConfig raptorConfig)
         {
             _config = raptorConfig;
-            var confidentialClientApp = ConfidentialClientApplicationBuilder
-                .Create(_config.PermissionManagerClientID)
+            AuthProvider = ConfidentialClientApplicationBuilder
+                .Create(_config.ClientID)
                 .WithTenantId(_config.TenantID)
-                .WithClientSecret(_config.PermissionManagerClientSecret)
+                .WithClientSecret(_config.ClientSecret)
                 .Build();
 
             const string DefaultAuthScope = "https://graph.microsoft.com/.default";
 
-            var authProvider = new ClientCredentialProvider(confidentialClientApp, DefaultAuthScope);
-
+            var authProvider = new ClientCredentialProvider(AuthProvider, DefaultAuthScope);
             _client = new GraphServiceClient(authProvider);
         }
 
         internal async Task PopulateTokenCache()
         {
-            _tokenCache = new ConcurrentDictionary<string, string>();
+            _tokenCache = new Dictionary<string, string>();
             using var httpClient = new HttpClient();
 
             using var scopesRequest = new HttpRequestMessage(HttpMethod.Get, "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/dev/permissions/permissions-descriptions.json");
@@ -61,7 +64,6 @@ namespace MsGraphSDKSnippetsCompiler
                 }
                 catch
                 {
-                    Console.WriteLine($"Couldn't get the token for scope: {scopeName}");
                     TestContext.Out.WriteLine($"Couldn't get the token for scope: {scopeName}");
                 }
             }
@@ -102,7 +104,7 @@ namespace MsGraphSDKSnippetsCompiler
                 }
                 catch (Exception e)
                 {
-                    TestContext.Out.WriteLine($"Sleeping {retryIntervalInSeconds} seconds for token!");
+                    TestContext.Out.WriteLine($"Sleeping {retryIntervalInSeconds} seconds for next token attempt!");
                     lastException = e;
                     Thread.Sleep(retryIntervalInSeconds * 1000);
                 }
@@ -115,23 +117,6 @@ namespace MsGraphSDKSnippetsCompiler
         {
             // throwing exception is OK on KeyNotFound
             return _tokenCache[delegatedScope.value];
-        }
-
-        internal async Task DeleteApplication(string id)
-        {
-            await _client.Applications[id]
-                .Request()
-                .DeleteAsync();
-            TestContext.Out.WriteLine($"Deleted application {id}");
-        }
-
-        internal async Task PermanentlyDeleteApplication(string id)
-        {
-            await _client.Directory.DeletedItems[id]
-                .Request()
-                .DeleteAsync();
-
-            TestContext.Out.WriteLine($"Permanently deleted application {id}");
         }
     }
 }

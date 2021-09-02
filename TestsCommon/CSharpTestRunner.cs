@@ -118,7 +118,7 @@ public class GraphSDKTest
         /// <param name="config"></param>
         /// <param name="publicClientApplication"></param>
         /// <param name="confidentialClientApplication"></param>
-        public static async Task Execute(ExecutionTestData executionTestData, RaptorConfig config, IConfidentialClientApplication confidentialClientApplication, PermissionManagerApplication permissionManagerApplication)
+        public static async Task Execute(ExecutionTestData executionTestData, RaptorConfig config, PermissionManager permissionManagerApplication)
         {
             if (executionTestData == null)
             {
@@ -130,7 +130,7 @@ public class GraphSDKTest
             var (codeToCompile, codeSnippetFormatted) = GetCodeToExecute(executionTestData.FileContent);
 
             // Compile Code
-            var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData.FileName, testData.DllPath, config, confidentialClientApplication, permissionManagerApplication);
+            var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData.FileName, testData.DllPath, config, permissionManagerApplication);
             var executionResultsModel = await microsoftGraphCSharpCompiler
                 .ExecuteSnippet(codeToCompile, testData.Version)
                 .ConfigureAwait(false);

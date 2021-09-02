@@ -11,19 +11,10 @@ namespace MsGraphSDKSnippetsCompiler.Models
             var raptorConfig = RaptorConfig.Create(config);
             return raptorConfig;
         }
-        public static IConfidentialClientApplication SetupConfidentialClientApp(RaptorConfig config)
-        {
-            var confidentialClientApp = ConfidentialClientApplicationBuilder
-                .Create(config.ClientID)
-                .WithTenantId(config.TenantID)
-                .WithClientSecret(config.ClientSecret)
-                .Build();
-            return confidentialClientApp;
-        }
 
-        public static async Task<PermissionManagerApplication> GetPermissionManagerApplication(RaptorConfig raptorConfig)
+        public static async Task<PermissionManager> GetPermissionManagerApplication(RaptorConfig raptorConfig)
         {
-            var permissionManagerApplication = new PermissionManagerApplication(raptorConfig);
+            var permissionManagerApplication = new PermissionManager(raptorConfig);
             await permissionManagerApplication.PopulateTokenCache();
             return permissionManagerApplication;
         }
