@@ -284,7 +284,7 @@ namespace MsGraphSDKSnippetsCompiler
             }
             catch
             {
-                TestContext.Out.WriteLine($"Can't get scopes for scopeType=Delegated, url={httpRequestMessage.RequestUri}");
+                TestContext.Out.WriteLine($"Can't get scopes for scopeType=DelegatedWork, url={httpRequestMessage.RequestUri}");
             }
 
             try

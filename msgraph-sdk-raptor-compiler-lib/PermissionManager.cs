@@ -13,6 +13,9 @@ using NUnit.Framework;
 
 namespace MsGraphSDKSnippetsCompiler
 {
+    /// <summary>
+    /// A Graph client to get information about all of the Azure Applications that have the permissions used in the test cases.
+    /// </summary>
     public class PermissionManager
     {
         /// <summary>
