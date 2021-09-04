@@ -18,12 +18,12 @@ using System.Runtime.Loader;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Security;
 using System.Text.Json;
 using System.Collections.Concurrent;
 using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.CodeAnalysis.Text;
+using NUnit.Framework;
 
 namespace MsGraphSDKSnippetsCompiler
 {
@@ -36,8 +36,7 @@ namespace MsGraphSDKSnippetsCompiler
         private readonly string _markdownFileName;
         private readonly string _dllPath;
         private readonly RaptorConfig _config;
-        private readonly IPublicClientApplication _publicClientApplication;
-        private readonly IConfidentialClientApplication _confidentialClientApp;
+        private readonly PermissionManager _permissionManagerApplication;
 
         /// for hiding bearer token
         private const string AuthHeaderPattern = "Authorization: Bearer .*";
@@ -51,14 +50,12 @@ namespace MsGraphSDKSnippetsCompiler
         public MicrosoftGraphCSharpCompiler(string markdownFileName,
             string dllPath,
             RaptorConfig config,
-            IPublicClientApplication publicClientApplication,
-            IConfidentialClientApplication confidentialClientApp)
+            PermissionManager permissionManagerApplication)
         {
             _markdownFileName = markdownFileName;
             _dllPath = dllPath;
             _config = config;
-            _publicClientApplication = publicClientApplication;
-            _confidentialClientApp = confidentialClientApp;
+            _permissionManagerApplication = permissionManagerApplication;
         }
         public MicrosoftGraphCSharpCompiler(string markdownFileName,
             string dllPath)
@@ -145,11 +142,11 @@ namespace MsGraphSDKSnippetsCompiler
         }
 
         /// <summary>
-        ///     Returns CompilationResultsModel which has the results status and the compilation diagnostics.
+        ///     Returns ExecutionResultsModel which has the results status and the compilation diagnostics.
         /// </summary>
-        /// <param name="codeSnippet">The code snippet to be compiled.</param>
-        /// <param name="version"></param>
-        /// <returns>CompilationResultsModel</returns>
+        /// <param name="codeSnippet">The code snippet to be compiled and executed.</param>
+        /// <param name="version">Graph API version</param>
+        /// <returns>ExecutionResultsModel</returns>
         public async Task<ExecutionResultsModel> ExecuteSnippet(string codeSnippet, Versions version)
         {
             var (compilationResult, assembly) = CompileSnippetAndGetAssembly(codeSnippet, version);
@@ -160,28 +157,21 @@ namespace MsGraphSDKSnippetsCompiler
             {
                 try
                 {
-                    var requiresDelegatedPermissions = RequiresDelegatedPermissions(codeSnippet, _config);
                     dynamic instance = assembly.CreateInstance("GraphSDKTest");
-                    IAuthenticationProvider authProvider;
 
-                    if (requiresDelegatedPermissions)
+                    using var httpRequestMessage = instance.GetRequestMessage(null);
+                    var delegatedScopes = await GetScopes(httpRequestMessage);
+
+                    if (delegatedScopes != null)
                     {
-                        // delegated permissions
-                        using var httpRequestMessage = instance.GetRequestMessage(null);
-                        var scopes = await GetScopes(httpRequestMessage);
-                        authProvider = new DelegateAuthenticationProvider(async request =>
-                        {
-                            var token = await GetATokenForGraph(scopes);
-                            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                        });
+                        // succeeding for one scope is OK for now.
+                        success = await ExecuteWithDelegatedPermissions(instance, delegatedScopes);
                     }
-                    else
+
+                    if (!success)
                     {
-                        authProvider = new ClientCredentialProvider(_confidentialClientApp, DefaultAuthScope);
+                        success = await ExecuteWithApplicationPermissions(instance);
                     }
-                    // Pass custom http provider to provide interception and logging
-                    await (instance.Main(authProvider, new CustomHttpProvider()) as Task);
-                    success = true;
                 }
                 catch (Exception e)
                 {
@@ -198,11 +188,76 @@ namespace MsGraphSDKSnippetsCompiler
         }
 
         /// <summary>
+        /// Executes the compiled snippet with tokens from given scope.
+        /// </summary>
+        /// <param name="instance">snippet instance</param>
+        /// <param name="scopes">delegated permission scopes</param>
+        /// <returns>
+        /// true if a token from one of the scopes executes successfully
+        /// false if none of them.
+        /// </returns>
+        private async Task<bool> ExecuteWithDelegatedPermissions(dynamic instance, Scope[] scopes)
+        {
+            foreach (var scope in scopes)
+            {
+                try
+                {
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+                    var authProvider = new DelegateAuthenticationProvider(async request =>
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+                    {
+                        try
+                        {
+                            var token = _permissionManagerApplication.GetCachedToken(scope);
+                            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new AggregateException($"Can't get a token for scope: { scope.value }", e);
+                        }
+                    });
+
+                    // Pass custom http provider to provide interception and logging
+                    await (instance.Main(authProvider, new CustomHttpProvider()) as Task);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    TestContext.Out.WriteLine($"Failed for delegated scope: {scope}");
+                    TestContext.Out.WriteLine(e.Message);
+                }
+            }
+
+            TestContext.Out.WriteLine($"None of the delegated permissions work!");
+            return false;
+        }
+
+        /// <summary>
+        /// Executes the compiled snippet with an auth provider that that has all the application permissions
+        /// </summary>
+        /// <param name="instance">snippet instance</param>
+        /// <returns>true if the call succeeds</returns>
+        private async Task<bool> ExecuteWithApplicationPermissions(dynamic instance)
+        {
+            var authProvider = new ClientCredentialProvider(_permissionManagerApplication.AuthProvider, DefaultAuthScope);
+            // Pass custom http provider to provide interception and logging
+            await (instance.Main(authProvider, new CustomHttpProvider()) as Task);
+            return true;
+        }
+
+        /// <summary>
         /// Calls DevX Api to get required permissions
         /// </summary>
-        /// <param name="httpRequestMessage"></param>
-        /// <returns></returns>
-        static async Task<string[]> GetScopes(HttpRequestMessage httpRequestMessage)
+        /// <param name="httpRequestMessage">HttpRequestMessage that the C# SDK built for the snippet</param>
+        /// <returns>
+        /// 1. delegated scopes if found
+        /// 2. null only if application scopes are found (we don't care about the specific application permission as our app has all of them)
+        /// </returns>
+        /// <exception cref="AggregateException">
+        /// If DevX API fails to return scopes for both application and delegation permissions,
+        /// throws an AggregateException containing the last exception from the service
+        /// </exception>
+        private static async Task<Scope[]> GetScopes(HttpRequestMessage httpRequestMessage)
         {
             var path = httpRequestMessage.RequestUri.LocalPath;
             var versionSegmentLength = "/v1.0".Length;
@@ -213,67 +268,36 @@ namespace MsGraphSDKSnippetsCompiler
 
             using var httpClient = new HttpClient();
 
-            using var scopesRequest = new HttpRequestMessage(HttpMethod.Get, $"https://graphexplorerapi.azurewebsites.net/permissions?requesturl={path}&method={httpRequestMessage.Method}");
-            scopesRequest.Headers.Add("Accept-Language", "en-US");
-
-            try
+            async Task<Scope[]> getScopesForScopeType(string scopeType)
             {
+                using var scopesRequest = new HttpRequestMessage(HttpMethod.Get, $"https://graphexplorerapi.azurewebsites.net/permissions?requesturl={path}&method={httpRequestMessage.Method}&scopeType={scopeType}");
+                scopesRequest.Headers.Add("Accept-Language", "en-US");
+
                 using var response = await httpClient.SendAsync(scopesRequest).ConfigureAwait(false);
                 var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var scopes = JsonSerializer.Deserialize<Scope[]>(responseString);
-                var fullReadScopes = scopes
-                    .ToList()
-                    .Where(x => x.value.Contains("Read") && !x.value.Contains("Write"))
-                    .Select(x => $"https://graph.microsoft.com/{ x.value }")
-                    .ToArray();
-
-                return fullReadScopes.Length == 0 ? new[] { DefaultAuthScope } : fullReadScopes;
+                return JsonSerializer.Deserialize<Scope[]>(responseString);
             }
-            catch (Exception)
-            {
-                // some URLs don't return scopes from the permissions endpoint of DevX API
-                return new[] { DefaultAuthScope };
-            }
-        }
-
-        /// <summary>
-        /// Acquires a token for given context
-        /// </summary>
-        /// <param name="scopes">requested scopes in the token</param>
-        /// <returns>token for the given context</returns>
-        private async Task<string> GetATokenForGraph(string[] scopes)
-        {
-            IAccount account = null;
-            if (TokenCache.ContainsKey(_config.Username))
-            {
-                account = TokenCache[_config.Username];
-            }
-            using var securePassword = new SecureString();
-            // convert plain password into a secure string.
-            _config.Password.ToList().ForEach(c => securePassword.AppendChar(c));
 
             try
             {
-                AuthenticationResult authResult;
-                if (account == null)
-                {
-                    authResult = await _publicClientApplication
-                        .AcquireTokenByUsernamePassword(scopes, _config.Username, securePassword)
-                        .ExecuteAsync();
-                }
-                else
-                {
-                    authResult = await _publicClientApplication.AcquireTokenSilent(scopes, account).ExecuteAsync();
-                }
+                return await getScopesForScopeType("DelegatedWork");
+            }
+            catch
+            {
+                TestContext.Out.WriteLine($"Can't get scopes for scopeType=DelegatedWork, url={httpRequestMessage.RequestUri}");
+            }
 
-                TokenCache[_config.Username] = authResult.Account;
-                return authResult.AccessToken;
+            try
+            {
+                // we don't care about a specific Application permission, we only want to make sure that DevX API returns
+                // either delegated or application permissions.
+                _ = await getScopesForScopeType("Application");
+                return null;
             }
             catch (Exception e)
             {
-                var prefixLength = "https://graph.microsoft.com/".Length;
-                var scopeShortNames = scopes.Select(s => s[prefixLength..]).ToArray();
-                throw new AggregateException("scopes: " + string.Join(", ", scopeShortNames), e);
+                TestContext.Out.WriteLine($"Can't get scopes for both delegated and application scopes, url={httpRequestMessage.RequestUri}");
+                throw new AggregateException("Can't get scopes for both delegated and application scopes", e);
             }
         }
 
@@ -311,24 +335,6 @@ namespace MsGraphSDKSnippetsCompiler
                 : emitResult.Diagnostics.Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);
 
             return new CompilationResultsModel(emitResult.Success, failures, _markdownFileName);
-        }
-
-        /// <summary>
-        /// Determines whether code snippet requires delegated permissions (as opposed to application permissions)
-        /// </summary>
-        /// <param name="codeSnippet">code snippet</param>
-        /// <param name="raptorConfig"></param>
-        /// <returns>true if the snippet requires delegated permissions</returns>
-        internal static bool RequiresDelegatedPermissions(string codeSnippet, RaptorConfig raptorConfig)
-        {
-            // TODO: https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/164
-            const string graphClient = "graphClient.";
-            var apiPathStart = codeSnippet.IndexOf(graphClient, StringComparison.Ordinal) + graphClient.Length;
-            var apiPath = codeSnippet[apiPathStart..];
-
-            var routeRegexes = raptorConfig.RouteRegexes.Value;
-            var matchResult = routeRegexes.Any(x => x.IsMatch(apiPath));
-            return matchResult;
         }
     }
 }

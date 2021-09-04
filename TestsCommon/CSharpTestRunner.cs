@@ -10,6 +10,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client;
+using System.Collections.Generic;
 
 namespace TestsCommon
 {
@@ -114,14 +115,23 @@ public class GraphSDKTest
         /// 5. It uses the compiled binary to make a request to the demo tenant and reports error if there's a service exception i.e 4XX or 5xx response
         /// </summary>
         /// <param name="executionTestData">Test data containing information such as snippet file name</param>
-        /// <param name="config"></param>
-        /// <param name="publicClientApplication"></param>
-        /// <param name="confidentialClientApplication"></param>
-        public static async Task Execute(ExecutionTestData executionTestData, RaptorConfig config, IPublicClientApplication publicClientApplication, IConfidentialClientApplication confidentialClientApplication)
+        /// <param name="config">Raptor configuration</param>
+        /// <param name="permissionManagerApplication">Permission manager application to provide auth providers and tokens</param>
+        public static async Task Execute(ExecutionTestData executionTestData, RaptorConfig config, PermissionManager permissionManagerApplication)
         {
             if (executionTestData == null)
             {
                 throw new ArgumentNullException(nameof(executionTestData));
+            }
+
+            if (config == null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+
+            if (permissionManagerApplication == null)
+            {
+                throw new ArgumentNullException(nameof(permissionManagerApplication));
             }
 
             var testData = executionTestData.LanguageTestData;
@@ -129,7 +139,7 @@ public class GraphSDKTest
             var (codeToCompile, codeSnippetFormatted) = GetCodeToExecute(executionTestData.FileContent);
 
             // Compile Code
-            var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData.FileName, testData.DllPath, config, publicClientApplication, confidentialClientApplication);
+            var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData.FileName, testData.DllPath, config, permissionManagerApplication);
             var executionResultsModel = await microsoftGraphCSharpCompiler
                 .ExecuteSnippet(codeToCompile, testData.Version)
                 .ConfigureAwait(false);

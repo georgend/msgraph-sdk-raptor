@@ -84,7 +84,8 @@ namespace TestsCommon
                    where !testData.IsCompilationKnownIssue // select compiling tests
                    && !(testData.IsExecutionKnownIssue ^ runSettings.TestType == TestType.ExecutionKnownIssues) // select known execution issues iff requested
                    && fileContent.Contains("GetAsync()") // select only the get tests
-                   select new TestCaseData(executionTestData).SetName(testData.TestName).SetProperty("Owner", testData.Owner);
+                   //&& executionTestData.LanguageTestData.TestName.Equals("get-user-csharp-V1-executes", StringComparison.OrdinalIgnoreCase)
+                   select new TestCaseData(executionTestData).SetName(executionTestData.LanguageTestData.TestName).SetProperty("Owner", executionTestData.LanguageTestData.Owner);
         }
 
         private static IEnumerable<LanguageTestData> GetLanguageTestData(RunSettings runSettings)

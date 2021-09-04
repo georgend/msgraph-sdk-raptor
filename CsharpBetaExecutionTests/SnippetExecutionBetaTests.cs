@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client;
+using MsGraphSDKSnippetsCompiler;
 using MsGraphSDKSnippetsCompiler.Models;
 
 using NUnit.Framework;
@@ -12,16 +13,23 @@ namespace CsharpBetaExecutionTests
     [TestFixture]
     public class SnippetExecutionBetaTests
     {
-        private IConfidentialClientApplication _confidentialClientApp;
-        private IPublicClientApplication _publicClientApp;
         private RaptorConfig _raptorConfig;
+        private PermissionManager _permissionManagerApplication;
 
         [OneTimeSetUp]
-        public void OneTimeSetup()
+        public async Task OneTimeSetup()
         {
             _raptorConfig = TestsSetup.GetConfig();
-            _publicClientApp = TestsSetup.SetupPublicClientApp(_raptorConfig);
-            _confidentialClientApp = TestsSetup.SetupConfidentialClientApp(_raptorConfig);
+            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication(_raptorConfig);
+        }
+
+        /// <summary>
+        ///     Clean-Up Public Client and Confidential Client by Removing all accounts
+        /// </summary>
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            TestsSetup.CleanUpApplication(_permissionManagerApplication.AuthProvider);
         }
 
         /// <summary>
@@ -46,7 +54,7 @@ namespace CsharpBetaExecutionTests
         [RetryTestCaseSource(typeof(SnippetExecutionBetaTests), nameof(TestDataBeta), MaxTries = 3)]
         public async Task Test(ExecutionTestData testData)
         {
-            await CSharpTestRunner.Execute(testData, _raptorConfig, _publicClientApp, _confidentialClientApp);
+            await CSharpTestRunner.Execute(testData, _raptorConfig, _permissionManagerApplication);
         }
     }
 }

@@ -162,10 +162,12 @@ application {
             );
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<ExecutionResultsModel> ExecuteSnippet(string codeSnippet, Versions version)
         {
             throw new NotImplementedException("not yet implemented for Java");
         }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
         private const string errorsSuffix = "FAILURE";
         private static readonly Regex notesFilterRegex = new Regex(@"^Note:\s[^\n]*$", RegexOptions.Compiled | RegexOptions.Multiline);

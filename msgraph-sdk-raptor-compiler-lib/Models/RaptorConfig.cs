@@ -23,7 +23,6 @@ namespace MsGraphSDKSnippetsCompiler.Models
                 TenantID = config.GetNonEmptyValue(nameof(TenantID)),
                 ClientID = config.GetNonEmptyValue(nameof(ClientID)),
                 ClientSecret = config.GetNonEmptyValue(nameof(ClientSecret)),
-                DelegatedRoutesPath = config.GetNonEmptyValue(nameof(DelegatedRoutesPath)),
                 DocsRepoCheckoutDirectory = config.GetNonEmptyValue(nameof(DocsRepoCheckoutDirectory)),
                 RaptorStorageConnectionString = config.GetNonEmptyValue(nameof(RaptorStorageConnectionString)),
                 IsLocalRun = bool.Parse(config.GetNonEmptyValue(nameof(IsLocalRun)))
@@ -89,46 +88,6 @@ namespace MsGraphSDKSnippetsCompiler.Models
         {
             get;
             init;
-        }
-
-        public string DelegatedRoutesPath
-        {
-            get;
-            init;
-        }
-
-        private IEnumerable<Regex> _routeRegexes;
-
-        public Lazy<IEnumerable<Regex>> RouteRegexes => new(() =>
-        {
-            if (_routeRegexes != null)
-            {
-                // Re-use Prior generated Regexes.
-                return _routeRegexes;
-            }
-
-            var delegatedRoutes = GetDelegatedRoutes(DelegatedRoutesPath)
-                .GetAwaiter()
-                .GetResult();
-            var regexes = delegatedRoutes.Select(delegatedRoute =>
-                new Regex(delegatedRoute.Value, RegexCompilationOptions));
-            // Store an instance of the Regexes.
-            _routeRegexes = regexes;
-
-            return _routeRegexes;
-        });
-
-        private static async Task<Dictionary<string, string>> GetDelegatedRoutes(string delegatedRoutesPath)
-        {
-            if (!File.Exists(delegatedRoutesPath))
-            {
-                return default;
-            }
-
-            await using var delegatedRoutesFile = File.OpenRead(delegatedRoutesPath);
-            var delegatedRoutes =
-                await JsonSerializer.DeserializeAsync<Dictionary<string, string>>(delegatedRoutesFile);
-            return delegatedRoutes;
         }
     }
 }
