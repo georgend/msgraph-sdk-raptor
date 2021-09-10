@@ -22,7 +22,7 @@ steps:
 - checkout: self
   clean: true
   fetchDepth: 1
-- template: common-templates/transform-app-settings.yml
+- template: common-templates/transform-app-settings-single-repo.yml
 - template: common-templates/use-dotnet-sdk.yml
 - task: DotNetCoreCLI@2
   inputs:
