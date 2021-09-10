@@ -37,3 +37,4 @@ steps:
     chmod +x ./DelegatedAppCreator
     ./DelegatedAppCreator
   workingDirectory: '$(Build.SourcesDirectory)/DelegatedAppCreator/bin/Release/net5.0'
+  displayName: 'Create delegated apps'
