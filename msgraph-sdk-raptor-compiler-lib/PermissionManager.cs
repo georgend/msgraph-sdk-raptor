@@ -58,17 +58,11 @@ namespace MsGraphSDKSnippetsCompiler
         }
 
         /// <summary>
-        /// Populates delegated access token cache
-        /// 1. Gets the list of all delegated permission scopes
-        /// 2. For all scopes
-        ///   2. a. Gets the corresponding preconfigured app in the tenant for a particular scope
-        ///   2. b. Acquires a token using that preconfigured app
-        ///   2. c. Saves the result in the token cache for immediate use in the test.
+        /// Gets permission descriptions from DevX API
         /// </summary>
-        /// <returns></returns>
-        internal async Task PopulateTokenCache()
+        /// <returns>permission descriptions</returns>
+        public static async Task<PermissionDescriptions> GetPermissionDescriptions()
         {
-            _tokenCache = new Dictionary<string, string>();
             using var httpClient = new HttpClient();
 
             using var scopesRequest = new HttpRequestMessage(HttpMethod.Get, "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/dev/permissions/permissions-descriptions.json");
@@ -77,22 +71,159 @@ namespace MsGraphSDKSnippetsCompiler
 
             using var response = await httpClient.SendAsync(scopesRequest).ConfigureAwait(false);
             var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var permissionDescriptions = JsonSerializer.Deserialize<PermissionDescriptions>(responseString);
+            return JsonSerializer.Deserialize<PermissionDescriptions>(responseString);
+        }
 
-            foreach (var delegatedPermissionScope in permissionDescriptions.delegatedScopesList)
+        /// <summary>
+        /// Gets existing applications from the tenant with the given prefix in app display name
+        /// </summary>
+        /// <param name="prefix">prefix for the application name. e.g. DelegatedApp for querying DelegatedApp User.Read, DelegatedApp Group.Read etc.</param>
+        /// <returns>application names matching the query</returns>
+        public async Task<HashSet<string>> GetExistingApplicationsWithPrefix(string prefix = "DelegatedApp ")
+        {
+            var query = $"startswith(displayName, '{prefix}')";
+            var result = new HashSet<string>();
+            var applications = await _client.Applications
+                .Request()
+                .Filter(query)
+                .Select("displayName")
+                .GetAsync();
+
+            var pageIterator = PageIterator<Application>
+                .CreatePageIterator(
+                _client,
+                applications,
+                (application) =>
+                {
+                    result.Add(application.DisplayName);
+                    return true;
+                });
+            await pageIterator.IterateAsync();
+            return result;
+        }
+
+        /// <summary>
+        /// Gets id of the service principal representing Microsoft Graph Service in the tenant.
+        /// </summary>
+        /// <returns>Microsoft Graph Service Principal id</returns>
+        public async Task<string> GetMicrosoftGraphServicePrincipalId()
+        {
+            var servicePrincipals = await _client.ServicePrincipals
+                .Request()
+                .Filter("servicePrincipalNames/any(n:n eq 'https://graph.microsoft.com')")
+                .GetAsync();
+
+            return servicePrincipals?.FirstOrDefault()?.Id;
+        }
+
+        /// <summary>
+        /// Creates an application with desired Microsoft Graph delegated scopes
+        /// </summary>
+        /// <param name="applicationName">application name</param>
+        /// <param name="scopeGuid">Guid representing the delegated scope</param>
+        /// <returns>created application</returns>
+        public async Task<Application> CreateApplication(string applicationName, string scopeGuid)
+        {
+            if (applicationName is null)
             {
-                var scopeName = delegatedPermissionScope.value;
-                try
-                {
-                    var application = await GetApplication(delegatedPermissionScope);
-                    var token = await GetDelegatedAccessToken(application, scopeName);
-                    _tokenCache[delegatedPermissionScope.value] = token;
-                }
-                catch
-                {
-                    TestContext.Out.WriteLine($"Couldn't get the token for scope: {scopeName}");
-                }
+                throw new ArgumentNullException(nameof(applicationName));
             }
+
+            if (scopeGuid is null)
+            {
+                throw new ArgumentNullException(nameof(scopeGuid));
+            }
+
+            var resourceAccess = new ResourceAccess
+            {
+                Type = "Scope",
+                Id = new Guid(scopeGuid)
+            };
+
+            var requiredResourceAccess = new RequiredResourceAccess()
+            {
+                ResourceAccess = new List<ResourceAccess> { resourceAccess },
+                ResourceAppId = "00000003-0000-0000-c000-000000000000"
+            };
+
+            var application = new Application
+            {
+                DisplayName = applicationName,
+                PublicClient = new Microsoft.Graph.PublicClientApplication
+                {
+                    RedirectUris = new string[] { "http://localhost" }
+                },
+                RequiredResourceAccess = new List<RequiredResourceAccess> { requiredResourceAccess },
+                IsFallbackPublicClient = true // allowPublicClient: true in application manifest
+            };
+
+            var createdApplication = await _client.Applications
+                .Request()
+                .AddAsync(application);
+
+            return createdApplication;
+        }
+
+        /// <summary>
+        /// Creates an oauth2 permission grant
+        /// </summary>
+        /// <param name="clientId">object id of the service principal representing the application</param>
+        /// <param name="resourceId">Microsoft Graph Resource id</param>
+        /// <param name="scope">desired scope</param>
+        /// <returns>created permission grant object</returns>
+        public async Task<OAuth2PermissionGrant> CreateOAuthPermission(string clientId, string resourceId, string scope)
+        {
+            if (clientId is null)
+            {
+                throw new ArgumentNullException(nameof(clientId));
+            }
+
+            if (resourceId is null)
+            {
+                throw new ArgumentNullException(nameof(resourceId));
+            }
+
+            if (scope is null)
+            {
+                throw new ArgumentNullException(nameof(scope));
+            }
+
+            var oauthPermission = new OAuth2PermissionGrant
+            {
+                ClientId = clientId,
+                ConsentType = "AllPrincipals",
+                PrincipalId = null,
+                ResourceId = resourceId,
+                Scope = scope
+            };
+
+            var createdOauthPermission = await _client.Oauth2PermissionGrants
+                .Request()
+                .AddAsync(oauthPermission);
+
+            return createdOauthPermission;
+        }
+
+        /// <summary>
+        /// Creates a service principal to represent an application
+        /// </summary>
+        /// <param name="appId">appId of the application</param>
+        /// <returns>created service principal</returns>
+        public async Task<ServicePrincipal> CreateServicePrincipal(string appId)
+        {
+            if (appId is null)
+            {
+                throw new ArgumentNullException(nameof(appId));
+            }
+
+            var servicePrincipal = new ServicePrincipal
+            {
+                AppId = appId
+            };
+
+            return await _client.ServicePrincipals
+                .Request()
+                .AddAsync(servicePrincipal);
         }
 
         /// <summary>
@@ -112,6 +243,47 @@ namespace MsGraphSDKSnippetsCompiler
                               .Filter($"displayName eq '{ appDisplayName }'")
                               .GetAsync();
             return collectionPage?.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets delegated access token from token cache
+        /// </summary>
+        /// <param name="delegatedScope">delegated scope</param>
+        /// <exception cref="KeyNotFoundException">throws key not found if the token is not already cached. Caller is expected to handle the exception.</exception>
+        /// <returns>cached token</returns>
+        internal string GetCachedToken(Scope delegatedScope)
+        {
+            return _tokenCache[delegatedScope?.value];
+        }
+
+        /// <summary>
+        /// Populates delegated access token cache
+        /// 1. Gets the list of all delegated permission scopes
+        /// 2. For all scopes
+        ///   2. a. Gets the corresponding preconfigured app in the tenant for a particular scope
+        ///   2. b. Acquires a token using that preconfigured app
+        ///   2. c. Saves the result in the token cache for immediate use in the test.
+        /// </summary>
+        /// <returns></returns>
+        internal async Task PopulateTokenCache()
+        {
+            _tokenCache = new Dictionary<string, string>();
+            var permissionDescriptions = await GetPermissionDescriptions();
+
+            foreach (var delegatedPermissionScope in permissionDescriptions.delegatedScopesList)
+            {
+                var scopeName = delegatedPermissionScope.value;
+                try
+                {
+                    var application = await GetApplication(delegatedPermissionScope);
+                    var token = await GetDelegatedAccessToken(application, scopeName);
+                    _tokenCache[delegatedPermissionScope.value] = token;
+                }
+                catch
+                {
+                    TestContext.Out.WriteLine($"Couldn't get the token for scope: {scopeName}");
+                }
+            }
         }
 
         /// <summary>
@@ -143,17 +315,6 @@ namespace MsGraphSDKSnippetsCompiler
             }
 
             throw new AggregateException("Can't get the delegated access token", lastException);
-        }
-
-        /// <summary>
-        /// Gets delegated access token from token cache
-        /// </summary>
-        /// <param name="delegatedScope">delegated scope</param>
-        /// <exception cref="KeyNotFoundException">throws key not found if the token is not already cached. Caller is expected to handle the exception.</exception>
-        /// <returns>cached token</returns>
-        internal string GetCachedToken(Scope delegatedScope)
-        {
-            return _tokenCache[delegatedScope?.value];
         }
     }
 }
