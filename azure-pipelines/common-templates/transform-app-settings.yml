@@ -8,7 +8,7 @@ steps:
       {
         $scriptPath = $(Build.SourcesDirectory)/scripts/transformAppSettings.ps1
       }
-      . $scriptPath -TenantID $env:TenantID -ClientID $env:ClientID -ClientSecret $env:ClientSecret -Authority $env:Authority-Username $env:Username -Password $env:Password -RaptorStorageConnectionString $env:RaptorStorageConnectionString -EducationClientId $env:EducationClientId -EducationTenantId $env:EducationTenantId
+      . $scriptPath -TenantID $env:TenantID -ClientID $env:ClientID -ClientSecret $env:ClientSecret -Authority $env:Authority -Username $env:Username -Password $env:Password -RaptorStorageConnectionString $env:RaptorStorageConnectionString -EducationClientId $env:EducationClientId -EducationTenantId $env:EducationTenantId
     displayName: 'Transform app settings with the secrets'
     env:
       TenantID: $(TenantID)
