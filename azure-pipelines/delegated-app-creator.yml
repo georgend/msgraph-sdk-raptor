@@ -22,7 +22,6 @@ steps:
 - checkout: self
   clean: true
   fetchDepth: 1
-- template: common-templates/transform-app-settings-single-repo.yml
 - template: common-templates/use-dotnet-sdk.yml
 - task: DotNetCoreCLI@2
   inputs:
@@ -38,3 +37,5 @@ steps:
     ./DelegatedAppCreator
   workingDirectory: '$(Build.SourcesDirectory)/DelegatedAppCreator/bin/Release/net5.0'
   displayName: 'Create delegated apps'
+  env:
+    RAPTOR_CONFIGCONNECTIONSTRING: $(RAPTOR_CONFIGCONNECTIONSTRING)

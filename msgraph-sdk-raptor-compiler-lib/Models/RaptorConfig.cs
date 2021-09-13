@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace MsGraphSDKSnippetsCompiler.Models
 {
     public class RaptorConfig
     {
-        const RegexOptions RegexCompilationOptions = RegexOptions.Compiled | RegexOptions.Singleline;
-
         public static RaptorConfig Create(IConfigurationRoot config)
         {
             var raptorConfig = new RaptorConfig

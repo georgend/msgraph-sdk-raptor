@@ -1,0 +1,12 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <Deterministic>true</Deterministic>
+        <TieredCompilation>true</TieredCompilation>
+        <TieredCompilationQuickJit>true</TieredCompilationQuickJit>
+        <TieredCompilationQuickJitForLoops>true</TieredCompilationQuickJitForLoops>
+        <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+        <IsPackable>false</IsPackable>
+        <RunSettingsFilePath>$(MSBuildProjectDirectory)\..\Test.runsettings</RunSettingsFilePath>
+    </PropertyGroup>
+</Project>

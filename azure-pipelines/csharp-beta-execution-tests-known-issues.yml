@@ -19,7 +19,6 @@ variables:
 
 steps:
 - template: common-templates/checkout.yml
-- template: common-templates/transform-app-settings.yml
 - template: compile-run-tests-template.yml
   parameters:
     projectFileName: CsharpBetaExecutionKnownFailureTests

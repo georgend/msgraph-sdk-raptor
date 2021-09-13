@@ -5,7 +5,7 @@ parameters:
 steps:
 - pwsh: $(Build.SourcesDirectory)/msgraph-sdk-raptor/azure-pipelines/e2e-templates/transformSettings.ps1 -JavaPreviewLibPath $env:JavaPreviewLibPath -Language "Java" -RunSettingsPath $env:RunSettingsPath -JavaLibVersion $env:JavaLibVersion
   env:
-    RunSettingsPath: '$(Build.SourcesDirectory)/msgraph-sdk-raptor/${{ parameters.projectFileName}}/Test.runsettings'
+    RunSettingsPath: '$(Build.SourcesDirectory)/msgraph-sdk-raptor/Test.runsettings'
     JavaPreviewLibPath: ${{ parameters.javaPreviewLibPath }}
     JavaLibVersion: ${{ parameters.javaLibVersion }}
   displayName: 'Replace test settings parameters'

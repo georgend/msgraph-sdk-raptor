@@ -15,6 +15,6 @@ variables:
   typewriterSolution: 'MSGraph-SDK-Code-Generator/**/Typewriter.sln'
   apidoctorSolution: 'apidoctor/**/*.sln'
   snippetLanguages: 'C#' # possible values: 'C#,JavaScript,Objective-C,Java'
-  runSettingsFile: '$(Build.SourcesDirectory)/msgraph-sdk-raptor/CSharpArbitraryDllTests/Test.runsettings'
+  runSettingsFile: '$(Build.SourcesDirectory)/msgraph-sdk-raptor/Test.runsettings'
   metadataURL: ${{ parameters.metadataURL }}
   metadataVersion: ${{ parameters.metadataVersion }}

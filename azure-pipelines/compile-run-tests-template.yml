@@ -16,10 +16,12 @@ steps:
   inputs:
     command: 'test'
     projects: '**/${{ parameters.projectFileName }}.csproj'
-    arguments: '--configuration $(buildConfiguration) --logger "trx;logfilename=${{ parameters.runName }}.trx" --results-directory $(Build.ArtifactStagingDirectory)/TestResults --settings $(Build.SourcesDirectory)/msgraph-sdk-raptor/${{ parameters.projectFileName}}/Test.runsettings'
+    arguments: '--configuration $(buildConfiguration) --logger "trx;logfilename=${{ parameters.runName }}.trx" --results-directory $(Build.ArtifactStagingDirectory)/TestResults --settings $(Build.SourcesDirectory)/msgraph-sdk-raptor/Test.runsettings'
     publishTestResults: false
   displayName: '${{ parameters.projectFileName }} ${{ parameters.testType }} Tests'
   continueOnError: true
+  env:
+    RAPTOR_CONFIGCONNECTIONSTRING: $(RAPTOR_CONFIGCONNECTIONSTRING)
 
 - pwsh: |
     $trxFilePathRegex = "$(Build.ArtifactStagingDirectory)/TestResults/$env:RUN_NAME.trx"

@@ -1,39 +1,47 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>MsGraphSDKSnippetsCompiler</RootNamespace>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Azure.Core" Version="1.19.0" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.11.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Graph" Version="4.5.0" />
-    <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.7" />
-    <PackageReference Include="Microsoft.Graph.Beta" Version="4.12.0-preview" />
-    <PackageReference Include="Microsoft.Graph.Core" Version="2.*" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.36.1" />
-    <PackageReference Include="NUnit" Version="3.13.2" />
-    <PackageReference Include="System.CodeDom" Version="5.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="identifiers.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-  <Target Name="ChangeAliasesOfStrongNameAssemblies" BeforeTargets="FindReferenceAssembliesForReferences;ResolveReferences">
+
+    <Import Project="$(MSBuildProjectDirectory)\..\RaptorShared.targets" />
+
+    <PropertyGroup>
+        <RootNamespace>MsGraphSDKSnippetsCompiler</RootNamespace>
+    </PropertyGroup>
     <ItemGroup>
-      <ReferencePath Condition="'%(FileName)' == 'Microsoft.Graph.Beta'">
-        <Aliases>beta</Aliases>
-      </ReferencePath>
+        <PackageReference Include="Azure.Core" Version="1.19.0" />
+        <PackageReference Include="Azure.Identity" Version="1.4.1" />
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.11.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="4.5.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="5.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+        <PackageReference Include="Microsoft.Graph" Version="4.5.0" />
+        <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.7" />
+        <PackageReference Include="Microsoft.Graph.Beta" Version="4.12.0-preview" />
+        <PackageReference Include="Microsoft.Graph.Core" Version="2.*" />
+        <PackageReference Include="Microsoft.Identity.Client" Version="4.36.1" />
+        <PackageReference Include="NUnit" Version="3.13.2" />
+        <PackageReference Include="System.CodeDom" Version="5.0.0" />
     </ItemGroup>
-  </Target>
+    <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="identifiers.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    </ItemGroup>
+
+    <Target Name="ChangeAliasesOfStrongNameAssemblies" BeforeTargets="FindReferenceAssembliesForReferences;ResolveReferences">
+        <ItemGroup>
+            <ReferencePath Condition="'%(FileName)' == 'Microsoft.Graph.Beta'">
+                <Aliases>beta</Aliases>
+            </ReferencePath>
+        </ItemGroup>
+    </Target>
 </Project>
