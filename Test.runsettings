@@ -2,7 +2,7 @@
 <RunSettings>
     <RunConfiguration>
         <MaxCpuCount>0</MaxCpuCount>
-        <ResultsDirectory>.\TestResults</ResultsDirectory>
+        <ResultsDirectory>./TestResults</ResultsDirectory>
         <TreatNoTestsAsError>true</TreatNoTestsAsError>
         <EnvironmentVariables>
             <!-- Uncomment and Set these variables for Local Runs.
