@@ -88,10 +88,6 @@ namespace TestsCommon
                 { "create-directorysetting-from-settings-for-guests-csharp-Beta-compiles", new KnownIssue(Metadata, "GroupSetting undefined in metadata")},
                 { "delete-educationrubric-from-educationassignment-csharp-V1-compiles", new KnownIssue(Metadata, EducationAssignmentRubricContainsTargetPreprocessor)},
                 { "add-educationcategory-to-educationassignment-csharp-V1-compiles", new KnownIssue(Metadata, EducationAssignmentRubricContainsTargetPreprocessor)},
-                { "educationassignment-setupresourcesfolder-csharp-V1-compiles", new KnownIssue(Metadata, "EducationAssignmentSetUpResourcesFolder defined as odata action instead of function for 'PostAsync' generation")},
-                { "educationsubmission-setupresourcesfolder-csharp-V1-compiles", new KnownIssue(Metadata, "EducationAssignmentSetUpResourcesFolder defined as odata action instead of function for 'PostAsync' generation")},
-                { "educationsubmission-setupresourcesfolder-csharp-Beta-compiles", new KnownIssue(Metadata, "EducationAssignmentSetUpResourcesFolder defined as odata action instead of function for 'PostAsync' generation")},
-                { "educationassignment-setupresourcesfolder-csharp-Beta-compiles", new KnownIssue(Metadata, "EducationAssignmentSetUpResourcesFolder defined as odata action instead of function for 'PostAsync' generation")},
 
                 { $"event-accept-csharp-{version}-compiles", new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered) },
                 { $"event-decline-csharp-{version}-compiles", new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered) },
