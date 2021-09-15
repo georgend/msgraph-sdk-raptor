@@ -9,8 +9,6 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Microsoft.Identity.Client;
-using System.Collections.Generic;
 
 namespace TestsCommon
 {

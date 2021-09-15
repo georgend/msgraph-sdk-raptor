@@ -5,8 +5,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.Graph;
-using Microsoft.Graph.Auth;
-using Microsoft.Identity.Client;
 using MsGraphSDKSnippetsCompiler.Models;
 using System;
 using System.Collections.Generic;
@@ -19,8 +17,6 @@ using System.Threading.Tasks;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Text.Json;
-using System.Collections.Concurrent;
-using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.CodeAnalysis.Text;
 using NUnit.Framework;
@@ -42,10 +38,6 @@ namespace MsGraphSDKSnippetsCompiler
         private const string AuthHeaderPattern = "Authorization: Bearer .*";
         private const string AuthHeaderReplacement = "Authorization: Bearer <token>";
         private static readonly Regex AuthHeaderRegex = new Regex(AuthHeaderPattern, RegexOptions.Compiled);
-
-        private static readonly ConcurrentDictionary<string, IAccount> TokenCache = new();
-
-        private const string DefaultAuthScope = "https://graph.microsoft.com/.default";
 
         public MicrosoftGraphCSharpCompiler(string markdownFileName,
             string dllPath,
@@ -95,7 +87,7 @@ namespace MsGraphSDKSnippetsCompiler
                 MetadataReference.CreateFromFile(Path.Combine(commonAssemblyPath, "netstandard.dll")),
                 MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(IAuthenticationProvider).Assembly.Location), "Microsoft.Graph.Core.dll")),
                 MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(TokenCredential).Assembly.Location), "Azure.Core.dll")),
-                MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(AuthenticationProvider).Assembly.Location), "msgraph-sdk-raptor-compiler-lib.dll")),
+                MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(MicrosoftGraphCSharpCompiler).Assembly.Location), "msgraph-sdk-raptor-compiler-lib.dll")),
                 MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(Task).Assembly.Location), "System.Threading.Tasks.dll")),
                 MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(HttpClient).Assembly.Location), "System.Net.Http.dll")),
                 MetadataReference.CreateFromFile(Path.Combine(Path.GetDirectoryName(typeof(Expression).Assembly.Location), "System.Linq.Expressions.dll")),
@@ -202,20 +194,7 @@ namespace MsGraphSDKSnippetsCompiler
             {
                 try
                 {
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-                    var authProvider = new DelegateAuthenticationProvider(async request =>
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-                    {
-                        try
-                        {
-                            var token = _permissionManagerApplication.GetCachedToken(scope);
-                            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new AggregateException($"Can't get a token for scope: { scope.value }", e);
-                        }
-                    });
+                    var authProvider = _permissionManagerApplication.GetDelegatedAuthProvider(scope);
 
                     // Pass custom http provider to provide interception and logging
                     await (instance.Main(authProvider, new CustomHttpProvider()) as Task);
@@ -239,9 +218,8 @@ namespace MsGraphSDKSnippetsCompiler
         /// <returns>true if the call succeeds</returns>
         private async Task<bool> ExecuteWithApplicationPermissions(dynamic instance)
         {
-            var authProvider = new ClientCredentialProvider(_permissionManagerApplication.AuthProvider, DefaultAuthScope);
             // Pass custom http provider to provide interception and logging
-            await (instance.Main(authProvider, new CustomHttpProvider()) as Task);
+            await (instance.Main(_permissionManagerApplication.AuthProvider, new CustomHttpProvider()) as Task);
             return true;
         }
 
