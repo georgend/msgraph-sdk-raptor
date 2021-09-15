@@ -273,7 +273,12 @@ namespace MsGraphSDKSnippetsCompiler
                         {
                             TokenCachePersistenceOptions = new TokenCachePersistenceOptions
                             {
-                                Name = _config.Username + delegatedPermissionScope.value
+                                Name = _config.Username + delegatedPermissionScope.value,
+                                // there is no default linux implementation for safe storage. This project is run in 2 environments:
+                                // 1. local development
+                                // 2. disposable Azure DevOps machines
+                                // So we are OK to use unencrypted storage for Raptor tokens at the moment.
+                                UnsafeAllowUnencryptedStorage = true
                             }
                         }),
                         new List<string> { scopeName });
