@@ -30,6 +30,8 @@ steps:
     arguments: '--configuration $(buildConfiguration) --logger trx --results-directory $(Build.ArtifactStagingDirectory)/KnownFailures --settings $(runSettingsFile)'
     publishTestResults: false
   continueOnError: true
+  env:
+    RAPTOR_CONFIGCONNECTIONSTRING: $(RAPTOR_CONFIGCONNECTIONSTRING)
 
 - pwsh: |
     $trxFilePathRegex = "$(Build.ArtifactStagingDirectory)/KnownFailures/*.trx"
