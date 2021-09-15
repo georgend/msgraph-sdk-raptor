@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.Identity.Client;
 
 namespace MsGraphSDKSnippetsCompiler.Models
 {
@@ -21,26 +20,8 @@ namespace MsGraphSDKSnippetsCompiler.Models
         public static async Task<PermissionManager> GetPermissionManagerApplication(RaptorConfig raptorConfig)
         {
             var permissionManagerApplication = new PermissionManager(raptorConfig);
-            await permissionManagerApplication.PopulateTokenCache();
+            await permissionManagerApplication.CreateDelegatedAuthProviders();
             return permissionManagerApplication;
-        }
-
-        public static void CleanUpApplication(IClientApplicationBase clientApplication)
-        {
-            if (clientApplication == null)
-            {
-                return;
-            }
-
-            var accounts = clientApplication.GetAccountsAsync()
-                .GetAwaiter()
-                .GetResult();
-            foreach (var account in accounts)
-            {
-                clientApplication.RemoveAsync(account)
-                    .GetAwaiter()
-                    .GetResult();
-            }
         }
     }
 }

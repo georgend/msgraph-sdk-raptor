@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
-using Microsoft.Identity.Client;
 using MsGraphSDKSnippetsCompiler;
 using MsGraphSDKSnippetsCompiler.Models;
 using NUnit.Framework;
@@ -20,15 +18,6 @@ namespace CsharpV1ExecutionKnownFailureTests
         {
             _raptorConfig = TestsSetup.GetConfig();
             _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication(_raptorConfig);
-        }
-
-        /// <summary>
-        ///     Clean-Up Public Client and Confidential Client by Removing all accounts
-        /// </summary>
-        [OneTimeTearDown]
-        public void OneTimeTearDown()
-        {
-            TestsSetup.CleanUpApplication(_permissionManagerApplication.AuthProvider);
         }
 
         /// <summary>

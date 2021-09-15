@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TestsCommon
+﻿namespace TestsCommon
 {
     public static class BaseTestRunner
     {

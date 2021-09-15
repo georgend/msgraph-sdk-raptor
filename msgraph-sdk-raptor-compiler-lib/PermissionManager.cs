@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
+using Azure.Identity;
 using Microsoft.Graph;
-using Microsoft.Graph.Auth;
-using Microsoft.Identity.Client;
 using MsGraphSDKSnippetsCompiler.Models;
 using NUnit.Framework;
 
@@ -26,18 +24,17 @@ namespace MsGraphSDKSnippetsCompiler
         private readonly RaptorConfig _config;
 
         /// <summary>
-        /// Delegated access tokens
+        /// Delegated auth providers
         /// key: scopeName
-        /// value: JWT
-        /// e.g. User.Read : JWT...
+        /// value: token credential auth provider instance
         /// </summary>
-        private IDictionary<string, string> _tokenCache;
+        private IDictionary<string, TokenCredentialAuthProvider> _authProviders;
 
         /// <summary>
         /// Auth provider to initialize GraphServiceClients within the snippets
         /// when application permissions are needed
         /// </summary>
-        public IConfidentialClientApplication AuthProvider
+        public IAuthenticationProvider AuthProvider
         {
             get; init;
         }
@@ -45,16 +42,12 @@ namespace MsGraphSDKSnippetsCompiler
         public PermissionManager(RaptorConfig raptorConfig)
         {
             _config = raptorConfig;
-            AuthProvider = ConfidentialClientApplicationBuilder
-                .Create(_config.ClientID)
-                .WithTenantId(_config.TenantID)
-                .WithClientSecret(_config.ClientSecret)
-                .Build();
 
             const string DefaultAuthScope = "https://graph.microsoft.com/.default";
-
-            var authProvider = new ClientCredentialProvider(AuthProvider, DefaultAuthScope);
-            _client = new GraphServiceClient(authProvider);
+            AuthProvider = new TokenCredentialAuthProvider(
+                new Azure.Identity.ClientSecretCredential(_config.TenantID, _config.ClientID, _config.ClientSecret),
+                new List<string> { DefaultAuthScope });
+            _client = new GraphServiceClient(AuthProvider);
         }
 
         /// <summary>
@@ -149,7 +142,7 @@ namespace MsGraphSDKSnippetsCompiler
             var application = new Application
             {
                 DisplayName = applicationName,
-                PublicClient = new Microsoft.Graph.PublicClientApplication
+                PublicClient = new PublicClientApplication
                 {
                     RedirectUris = new string[] { "http://localhost" }
                 },
@@ -246,28 +239,27 @@ namespace MsGraphSDKSnippetsCompiler
         }
 
         /// <summary>
-        /// Gets delegated access token from token cache
+        /// Gets delegated auth provider
         /// </summary>
         /// <param name="delegatedScope">delegated scope</param>
-        /// <exception cref="KeyNotFoundException">throws key not found if the token is not already cached. Caller is expected to handle the exception.</exception>
-        /// <returns>cached token</returns>
-        internal string GetCachedToken(Scope delegatedScope)
+        /// <exception cref="KeyNotFoundException">throws key not found if there is no app in the tenant representing the given scope</exception>
+        /// <returns>token credential provider for the delegated scope</returns>
+        internal TokenCredentialAuthProvider GetDelegatedAuthProvider(Scope delegatedScope)
         {
-            return _tokenCache[delegatedScope?.value];
+            return _authProviders[delegatedScope?.value];
         }
 
         /// <summary>
-        /// Populates delegated access token cache
+        /// Creates delegated auth providers
         /// 1. Gets the list of all delegated permission scopes
         /// 2. For all scopes
         ///   2. a. Gets the corresponding preconfigured app in the tenant for a particular scope
-        ///   2. b. Acquires a token using that preconfigured app
-        ///   2. c. Saves the result in the token cache for immediate use in the test.
+        ///   2. b. Creates a token credential provider for the app
         /// </summary>
         /// <returns></returns>
-        internal async Task PopulateTokenCache()
+        internal async Task CreateDelegatedAuthProviders()
         {
-            _tokenCache = new Dictionary<string, string>();
+            _authProviders = new Dictionary<string, TokenCredentialAuthProvider>();
             var permissionDescriptions = await GetPermissionDescriptions();
 
             foreach (var delegatedPermissionScope in permissionDescriptions.delegatedScopesList)
@@ -276,45 +268,21 @@ namespace MsGraphSDKSnippetsCompiler
                 try
                 {
                     var application = await GetApplication(delegatedPermissionScope);
-                    var token = await GetDelegatedAccessToken(application, scopeName);
-                    _tokenCache[delegatedPermissionScope.value] = token;
+                    _authProviders[delegatedPermissionScope.value] = new TokenCredentialAuthProvider(
+                        new UsernamePasswordCredential(_config.Username, _config.Password, _config.TenantID, application.AppId, new UsernamePasswordCredentialOptions
+                        {
+                            TokenCachePersistenceOptions = new TokenCachePersistenceOptions
+                            {
+                                Name = _config.Username + delegatedPermissionScope.value
+                            }
+                        }),
+                        new List<string> { scopeName });
                 }
                 catch
                 {
-                    TestContext.Out.WriteLine($"Couldn't get the token for scope: {scopeName}");
+                    TestContext.Out.WriteLine($"Couldn't create an auth provider for scope: {scopeName}");
                 }
             }
-        }
-
-        /// <summary>
-        /// Acquires a token for given context
-        /// </summary>
-        /// <param name="application">application with delegated permissions</param>
-        /// <param name="scope">scope for the token request</param>
-        /// <returns>token for the given context</returns>
-        private async Task<string> GetDelegatedAccessToken(Application application, string scope)
-        {
-            var delegatedPermissionApplication = new DelegatedPermissionApplication(application.AppId, _config.Authority);
-
-            const int numberOfAttempts = 2;
-            const int retryIntervalInSeconds = 5;
-            Exception lastException = null;
-            for (int attempt = 0; attempt < numberOfAttempts; attempt++)
-            {
-                try
-                {
-                    var token = await delegatedPermissionApplication?.GetToken(_config.Username, _config.Password, scope);
-                    return token;
-                }
-                catch (Exception e)
-                {
-                    TestContext.Out.WriteLine($"Sleeping {retryIntervalInSeconds} seconds for next token attempt!");
-                    lastException = e;
-                    Thread.Sleep(retryIntervalInSeconds * 1000);
-                }
-            }
-
-            throw new AggregateException("Can't get the delegated access token", lastException);
         }
     }
 }
