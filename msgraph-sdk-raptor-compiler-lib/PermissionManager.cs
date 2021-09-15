@@ -28,7 +28,7 @@ namespace MsGraphSDKSnippetsCompiler
         /// key: scopeName
         /// value: token credential auth provider instance
         /// </summary>
-        private IDictionary<string, TokenCredentialAuthProvider> _authProviders;
+        private readonly IDictionary<string, TokenCredentialAuthProvider> _authProviders;
 
         /// <summary>
         /// Auth provider to initialize GraphServiceClients within the snippets
@@ -45,9 +45,10 @@ namespace MsGraphSDKSnippetsCompiler
 
             const string DefaultAuthScope = "https://graph.microsoft.com/.default";
             AuthProvider = new TokenCredentialAuthProvider(
-                new Azure.Identity.ClientSecretCredential(_config.TenantID, _config.ClientID, _config.ClientSecret),
+                new ClientSecretCredential(_config.TenantID, _config.ClientID, _config.ClientSecret),
                 new List<string> { DefaultAuthScope });
             _client = new GraphServiceClient(AuthProvider);
+            _authProviders = new Dictionary<string, TokenCredentialAuthProvider>();
         }
 
         /// <summary>
@@ -259,7 +260,6 @@ namespace MsGraphSDKSnippetsCompiler
         /// <returns></returns>
         internal async Task CreateDelegatedAuthProviders()
         {
-            _authProviders = new Dictionary<string, TokenCredentialAuthProvider>();
             var permissionDescriptions = await GetPermissionDescriptions();
 
             foreach (var delegatedPermissionScope in permissionDescriptions.delegatedScopesList)
