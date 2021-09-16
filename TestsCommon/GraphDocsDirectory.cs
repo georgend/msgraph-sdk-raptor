@@ -30,7 +30,7 @@ namespace TestsCommon
                 return SnippetsDirectory;
             }
 
-            var msGraphDocsRepoLocation = TestsSetup.GetConfig().DocsRepoCheckoutDirectory;
+            var msGraphDocsRepoLocation = TestsSetup.Config.Value.DocsRepoCheckoutDirectory;
             SnippetsDirectory = Path.Join(msGraphDocsRepoLocation, $@"microsoft-graph-docs{Path.DirectorySeparatorChar}api-reference{Path.DirectorySeparatorChar}{new VersionString(version)}{Path.DirectorySeparatorChar}includes{Path.DirectorySeparatorChar}snippets{Path.DirectorySeparatorChar}{language.AsString()}");
 
             return SnippetsDirectory;
@@ -45,7 +45,7 @@ namespace TestsCommon
         /// </returns>
         public static string GetDocumentationDirectory(Versions version)
         {
-            var msGraphDocsRepoLocation = TestsSetup.GetConfig().DocsRepoCheckoutDirectory;
+            var msGraphDocsRepoLocation = TestsSetup.Config.Value.DocsRepoCheckoutDirectory;
             return Path.Join(msGraphDocsRepoLocation, $@"microsoft-graph-docs{Path.DirectorySeparatorChar}api-reference{Path.DirectorySeparatorChar}{new VersionString(version)}{Path.DirectorySeparatorChar}api");
         }
     }

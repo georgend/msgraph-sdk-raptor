@@ -12,14 +12,12 @@ namespace CsharpBetaExecutionKnownFailureTests
     [TestFixture]
     public class SnippetExecutionBetaKnownFailureTests
     {
-        private RaptorConfig _raptorConfig;
         private PermissionManager _permissionManagerApplication;
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
         {
-            _raptorConfig = TestsSetup.GetConfig();
-            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication(_raptorConfig);
+            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication();
         }
 
         /// <summary>
@@ -44,7 +42,7 @@ namespace CsharpBetaExecutionKnownFailureTests
         [RetryTestCaseSource(typeof(SnippetExecutionBetaKnownFailureTests), nameof(TestDataBeta), MaxTries = 3)]
         public async Task Test(ExecutionTestData testData)
         {
-            await CSharpTestRunner.Execute(testData, _raptorConfig, _permissionManagerApplication);
+            await CSharpTestRunner.Execute(testData, _permissionManagerApplication);
         }
     }
 }

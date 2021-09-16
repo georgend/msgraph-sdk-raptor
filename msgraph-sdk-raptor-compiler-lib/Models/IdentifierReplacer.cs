@@ -38,7 +38,7 @@ namespace MsGraphSDKSnippetsCompiler.Models
         /// </summary>
         private IdentifierReplacer()
         {
-            var config = TestsSetup.GetConfig();
+            var config = TestsSetup.Config.Value;
 
             string json;
             if (config.IsLocalRun)
