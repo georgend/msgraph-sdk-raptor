@@ -1,12 +1,8 @@
-# updates prerelease dependencies for packages listed below as $packages
+# updates prerelease dependencies for the package listed below as $package
 # expected to be run where working directory is the root of the repo
 
-$packages = "Microsoft.Graph.Beta","Microsoft.Graph.Auth"
-
+$package = "Microsoft.Graph.Beta"
 $projectFile = "msgraph-sdk-raptor-compiler-lib/msgraph-sdk-raptor-compiler-lib.csproj"
 
-foreach ($package in $packages)
-{
-    dotnet remove $projectFile package $package
-    dotnet add $projectFile package $package --prerelease
-}
+dotnet remove $projectFile package $package
+dotnet add $projectFile package $package --prerelease
