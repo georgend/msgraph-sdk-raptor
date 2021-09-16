@@ -38,9 +38,10 @@ namespace MsGraphSDKSnippetsCompiler.Models
         /// </summary>
         private IdentifierReplacer()
         {
-            var config = AppSettings.Config();
+            var config = TestsSetup.GetConfig();
+
             string json;
-            if (bool.Parse(config.GetSection("IsLocalRun").Value))
+            if (config.IsLocalRun)
             {
                 json = File.ReadAllText(@"identifiers.json");
             }
@@ -49,7 +50,7 @@ namespace MsGraphSDKSnippetsCompiler.Models
                 const string blobContainerName = "raptoridentifiers";
                 const string blobName = "identifiers.json";
 
-                var raptorStorageConnectionString = config.GetNonEmptyValue("RaptorStorageConnectionString");
+                var raptorStorageConnectionString = config.RaptorStorageConnectionString;
                 var blobClient = new BlobClient(raptorStorageConnectionString, blobContainerName, blobName);
 
                 using var stream = new MemoryStream();
