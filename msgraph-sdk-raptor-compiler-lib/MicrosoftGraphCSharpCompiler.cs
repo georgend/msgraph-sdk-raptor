@@ -31,7 +31,6 @@ namespace MsGraphSDKSnippetsCompiler
         const string SourceCodePath = "generated.cs";
         private readonly string _markdownFileName;
         private readonly string _dllPath;
-        private readonly RaptorConfig _config;
         private readonly PermissionManager _permissionManagerApplication;
 
         /// for hiding bearer token
@@ -41,12 +40,10 @@ namespace MsGraphSDKSnippetsCompiler
 
         public MicrosoftGraphCSharpCompiler(string markdownFileName,
             string dllPath,
-            RaptorConfig config,
             PermissionManager permissionManagerApplication)
         {
             _markdownFileName = markdownFileName;
             _dllPath = dllPath;
-            _config = config;
             _permissionManagerApplication = permissionManagerApplication;
         }
         public MicrosoftGraphCSharpCompiler(string markdownFileName,
@@ -169,7 +166,7 @@ namespace MsGraphSDKSnippetsCompiler
                 {
                     var innerExceptionMessage = e.InnerException?.Message ?? string.Empty;
                     exceptionMessage = e.Message + Environment.NewLine + innerExceptionMessage;
-                    if (!_config.IsLocalRun)
+                    if (!TestsSetup.Config.Value.IsLocalRun)
                     {
                         exceptionMessage = AuthHeaderRegex.Replace(exceptionMessage, AuthHeaderReplacement);
                     }

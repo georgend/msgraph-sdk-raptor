@@ -10,14 +10,12 @@ namespace CsharpV1ExecutionKnownFailureTests
     [TestFixture]
     public class SnippetExecutionV1KnownFailureTests
     {
-        private RaptorConfig _raptorConfig;
         private PermissionManager _permissionManagerApplication;
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
         {
-            _raptorConfig = TestsSetup.GetConfig();
-            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication(_raptorConfig);
+            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication();
         }
 
         /// <summary>
@@ -42,7 +40,7 @@ namespace CsharpV1ExecutionKnownFailureTests
         [RetryTestCaseSource(typeof(SnippetExecutionV1KnownFailureTests), nameof(TestDataV1), MaxTries = 3)]
         public async Task Test(ExecutionTestData testData)
         {
-            await CSharpTestRunner.Execute(testData, _raptorConfig, _permissionManagerApplication);
+            await CSharpTestRunner.Execute(testData, _permissionManagerApplication);
         }
     }
 }

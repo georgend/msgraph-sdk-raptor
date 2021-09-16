@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using Azure.Identity;
 
 using Microsoft.Extensions.Configuration;
@@ -15,13 +15,24 @@ namespace MsGraphSDKSnippetsCompiler
         {
             const string RaptorConnectionString = "RAPTOR_CONFIGCONNECTIONSTRING";
             const string RaptorConfigEndpoint = "RAPTOR_CONFIGENDPOINT";
+
+            // environment variables expected to be set only in Azure DevOps runs.
             const string BuildReason = "BUILD_REASON";
+            const string BuildBuildId = "BUILD_BUILDID";
 
             var configBuilder = new ConfigurationBuilder()
                 .SetBasePath(System.IO.Directory.GetCurrentDirectory())
                 .AddEnvironmentVariables();
 
             var config = configBuilder.Build();
+
+            var isAzureDevOpsEnvironment = !string.IsNullOrEmpty(config[BuildReason]) && !string.IsNullOrEmpty(config[BuildBuildId]);
+            var isLocalRun = !isAzureDevOpsEnvironment;
+
+            configBuilder.AddInMemoryCollection(new Dictionary<string, string>()
+            {
+                { "IsLocalRun", isLocalRun.ToString() }
+            });
 
             configBuilder.AddAzureAppConfiguration(options =>
             {
@@ -43,10 +54,8 @@ namespace MsGraphSDKSnippetsCompiler
                         Assert.Fail($"Incorrect Raptor Config. Please Set {RaptorConnectionString} or {RaptorConfigEndpoint}");
                     }
                 }
-                // Get a variable that would only exist in Azure Devops.
-                // if Variable is set assume CI/CD.
-                var devopsVariable = config[BuildReason];
-                var runEnvironmentLabel = string.IsNullOrWhiteSpace(devopsVariable) ? "Development" : "CI";
+
+                var runEnvironmentLabel = GetAppConfigLabel(config, isLocalRun);
                 options.Select(keyFilter: KeyFilter.Any, runEnvironmentLabel)
                     .UseFeatureFlags(flagOptions =>
                     {
@@ -54,9 +63,34 @@ namespace MsGraphSDKSnippetsCompiler
                     });
             });
 
-            var currentConfig = configBuilder.Build();
-            return currentConfig;
+            return configBuilder.Build();
+        }
 
+        /// <summary>
+        /// determines which label to pick in Azure App Config
+        /// </summary>
+        /// <param name="config">config containing environment variables</param>
+        /// <param name="isLocalRun">whether the context is local run or not</param>
+        /// <returns>
+        /// - custom label if specified in environment variable RAPTOR_CONFIGLABEL
+        /// - "Development" if running locally
+        /// - "CI" if running in Azure DevOps
+        /// </returns>
+        public static string GetAppConfigLabel(IConfigurationRoot config, bool isLocalRun)
+        {
+            if (config == null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+
+            const string RaptorConfigLabel = "RAPTOR_CONFIGLABEL";
+            var customLabel = config[RaptorConfigLabel];
+            if (!string.IsNullOrEmpty(customLabel))
+            {
+                return customLabel;
+            }
+
+            return isLocalRun ? "Development" : "CI";
         }
 
         /// <summary>

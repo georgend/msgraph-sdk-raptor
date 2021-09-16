@@ -39,9 +39,9 @@ namespace MsGraphSDKSnippetsCompiler
             get; init;
         }
 
-        public PermissionManager(RaptorConfig raptorConfig)
+        public PermissionManager()
         {
-            _config = raptorConfig;
+            _config = TestsSetup.Config.Value;
 
             const string DefaultAuthScope = "https://graph.microsoft.com/.default";
             AuthProvider = new TokenCredentialAuthProvider(

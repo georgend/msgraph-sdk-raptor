@@ -113,18 +113,12 @@ public class GraphSDKTest
         /// 5. It uses the compiled binary to make a request to the demo tenant and reports error if there's a service exception i.e 4XX or 5xx response
         /// </summary>
         /// <param name="executionTestData">Test data containing information such as snippet file name</param>
-        /// <param name="config">Raptor configuration</param>
         /// <param name="permissionManagerApplication">Permission manager application to provide auth providers and tokens</param>
-        public static async Task Execute(ExecutionTestData executionTestData, RaptorConfig config, PermissionManager permissionManagerApplication)
+        public static async Task Execute(ExecutionTestData executionTestData, PermissionManager permissionManagerApplication)
         {
             if (executionTestData == null)
             {
                 throw new ArgumentNullException(nameof(executionTestData));
-            }
-
-            if (config == null)
-            {
-                throw new ArgumentNullException(nameof(config));
             }
 
             if (permissionManagerApplication == null)
@@ -137,7 +131,7 @@ public class GraphSDKTest
             var (codeToCompile, codeSnippetFormatted) = GetCodeToExecute(executionTestData.FileContent);
 
             // Compile Code
-            var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData.FileName, testData.DllPath, config, permissionManagerApplication);
+            var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData.FileName, testData.DllPath, permissionManagerApplication);
             var executionResultsModel = await microsoftGraphCSharpCompiler
                 .ExecuteSnippet(codeToCompile, testData.Version)
                 .ConfigureAwait(false);
@@ -163,11 +157,19 @@ public class GraphSDKTest
             if (!compilationResult.IsSuccess)
             {
                 // environment variable for sources directory is defined only for cloud runs
-                var config = AppSettings.Config();
-                if (bool.Parse(config.GetSection("IsLocalRun").Value)
-                    && bool.Parse(config.GetSection("GenerateLinqPadOutputInLocalRun").Value))
+                var config = TestsSetup.Config.Value;
+                if (config.IsLocalRun)
                 {
-                    WriteLinqFile(testData, codeSnippetFormatted);
+                    var linqPadQueriesDefaultFolder = Path.Join(
+                        Environment.GetEnvironmentVariable("USERPROFILE"),
+                        "/OneDrive - Microsoft", // remove this if you are not syncing your Documents to OneDrive
+                        "/Documents",
+                        "/LINQPad Queries");
+
+                    if (Directory.Exists(linqPadQueriesDefaultFolder))
+                    {
+                        WriteLinqFile(testData, linqPadQueriesDefaultFolder, codeSnippetFormatted);
+                    }
                 }
 
                 Assert.Fail($"{compilationOutputMessage}");
@@ -265,15 +267,10 @@ public class GraphSDKTest
         /// Generates .linq file in default My Queries folder so that the results are visible in LinqPad right away
         /// </summary>
         /// <param name="testData">test data</param>
+        /// <param name="linqPadQueriesDefaultFolder">path to linqpad queries folder</param>
         /// <param name="codeSnippetFormatted">code snippet</param>
-        private static void WriteLinqFile(LanguageTestData testData, string codeSnippetFormatted)
+        private static void WriteLinqFile(LanguageTestData testData, string linqPadQueriesDefaultFolder, string codeSnippetFormatted)
         {
-            var linqPadQueriesDefaultFolder = Path.Join(
-                    Environment.GetEnvironmentVariable("USERPROFILE"),
-                    "/OneDrive - Microsoft", // remove this if you are not syncing your Documents to OneDrive
-                    "/Documents",
-                    "/LINQPad Queries");
-
             var linqDirectory = Path.Join(
                     linqPadQueriesDefaultFolder,
                     "/RaptorResults",
