@@ -4,11 +4,21 @@ namespace MsGraphSDKSnippetsCompiler.Models
 {
     public static class TestsSetup
     {
+        private static RaptorConfig _raptorConfig;
+        private static readonly object _configLock = new { };
+
         public static RaptorConfig GetConfig()
         {
-            var config = AppSettings.Config();
-            var raptorConfig = RaptorConfig.Create(config);
-            return raptorConfig;
+            lock (_configLock)
+            {
+                if (_raptorConfig == null)
+                {
+                    var config = AppSettings.Config();
+                    _raptorConfig = RaptorConfig.Create(config);
+                }
+
+                return _raptorConfig;
+            }
         }
 
         /// <summary>
