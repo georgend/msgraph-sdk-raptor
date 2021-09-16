@@ -17,8 +17,7 @@ namespace DelegatedAppCreator
         static async Task Main(string[] args)
         {
             const string Prefix = "DelegatedApp ";
-            var config = AppSettings.Config();
-            var raptorConfig = RaptorConfig.Create(config);
+            var raptorConfig = TestsSetup.GetConfig();
             var permissionManagerApplication = new PermissionManager(raptorConfig);
 
             // get existing applications
