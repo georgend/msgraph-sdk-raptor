@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace MsGraphSDKSnippetsCompiler.Models
 {
@@ -14,10 +15,17 @@ namespace MsGraphSDKSnippetsCompiler.Models
                 TenantID = config.GetNonEmptyValue(nameof(TenantID)),
                 ClientID = config.GetNonEmptyValue(nameof(ClientID)),
                 ClientSecret = config.GetNonEmptyValue(nameof(ClientSecret)),
-                DocsRepoCheckoutDirectory = config.GetNonEmptyValue(nameof(DocsRepoCheckoutDirectory)),
+                DocsRepoCheckoutDirectory = config.GetNonEmptyValue("BUILD_SOURCESDIRECTORY"),
                 RaptorStorageConnectionString = config.GetNonEmptyValue(nameof(RaptorStorageConnectionString)),
                 IsLocalRun = bool.Parse(config.GetNonEmptyValue(nameof(IsLocalRun)))
             };
+
+            if (!Directory.Exists(Path.Join(raptorConfig.DocsRepoCheckoutDirectory, "microsoft-graph-docs")))
+            {
+                throw new FileNotFoundException("If you are running this locally, please set environment" +
+                    " variable BUILD_SOURCESDIRECTORY to the docs repo checkout location.");
+            }
+
             return raptorConfig;
         }
 
