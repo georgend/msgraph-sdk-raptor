@@ -163,8 +163,8 @@ public class GraphSDKTest
             if (!compilationResult.IsSuccess)
             {
                 // environment variable for sources directory is defined only for cloud runs
-                var config = AppSettings.Config();
-                if (bool.Parse(config.GetSection("IsLocalRun").Value))
+                var config = TestsSetup.GetConfig();
+                if (config.IsLocalRun)
                 {
                     var linqPadQueriesDefaultFolder = Path.Join(
                         Environment.GetEnvironmentVariable("USERPROFILE"),
