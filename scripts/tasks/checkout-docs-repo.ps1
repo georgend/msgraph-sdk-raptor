@@ -13,7 +13,7 @@ param(
 
 if ($confirmation -ne "YES")
 {
-    Write-Warning "will not proceed to checkout docs repo!"
+    Write-Warning "will not proceed to checkout docs repo because the operation was not confirmed!"
     exit
 }
 
