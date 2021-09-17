@@ -34,7 +34,7 @@ $obj.tasks += [ordered]@{
 $obj.tasks += [ordered]@{
     label = "checkout docs repo"
     type = "shell"
-    command = "`${workspaceFolder}/scripts/tasks/checkout-docs-repo.ps1 '`${workspaceFolder}/..' -branchName '`${input:branchName}'"
+    command = "`${workspaceFolder}/scripts/tasks/checkout-docs-repo.ps1 '`${workspaceFolder}/..' -branchName '`${input:branchName}' -confirmation '`${input:docsRepoCheckoutConfirmation}'"
     presentation = [ordered]@{
         echo = $true
         reveal = "always"
@@ -90,6 +90,12 @@ $obj.inputs = @(
         type = "promptString"
         description = "test filter"
         default = "."
+    },
+    [ordered]@{
+        id = "docsRepoCheckoutConfirmation"
+        type = "promptString"
+        description = "This script will delete local changes in docs repo if you have any. Type YES to proceed."
+        default = "NO"
     }
 )
 

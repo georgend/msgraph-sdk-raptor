@@ -7,8 +7,15 @@
 
 param(
     [Parameter(Mandatory=$true)][string]$rootDirectory,
-    [string]$branchName = "main"
+    [string]$branchName = "main",
+    [string]$confirmation = "NO"
 )
+
+if ($confirmation -ne "YES")
+{
+    Write-Warning "will not proceed to checkout docs repo!"
+    exit
+}
 
 $docsRepoName = "microsoft-graph-docs"
 
