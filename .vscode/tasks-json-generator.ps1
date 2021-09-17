@@ -94,7 +94,7 @@ $obj.inputs = @(
     [ordered]@{
         id = "docsRepoCheckoutConfirmation"
         type = "promptString"
-        description = "This script will delete local changes in docs repo if you have any. Type YES to proceed."
+        description = "If this is your first checkout type YES. If not, this script will delete local changes in the docs repo to hard reset to the remote branch. Type YES to proceed."
         default = "NO"
     }
 )
