@@ -72,6 +72,7 @@ $obj.inputs = @(
         id = "branchName"
         type = "promptString"
         description = "documentation repo branch name"
+        default = "main"
     },
     [ordered]@{
         id = "testFilter"

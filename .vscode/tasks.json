@@ -483,7 +483,8 @@
     {
       "id": "branchName",
       "type": "promptString",
-      "description": "documentation repo branch name"
+      "description": "documentation repo branch name",
+      "default": "main"
     },
     {
       "id": "testFilter",
