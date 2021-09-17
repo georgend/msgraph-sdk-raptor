@@ -1,24 +1,502 @@
 {
-	// See https://go.microsoft.com/fwlink/?LinkId=733558
-	// for the documentation about the tasks.json format
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "build",
-			"command": "dotnet",
-			"type": "shell",
-			"args": [
-				"build",
-				// Ask dotnet build to generate full paths for file names.
-				"/property:GenerateFullPaths=true",
-				// Do not generate summary otherwise it leads to duplicate errors in Problems panel
-				"/consoleloggerparameters:NoSummary"
-			],
-			"group": "build",
-			"presentation": {
-				"reveal": "silent"
-			},
-			"problemMatcher": "$msCompile"
-		}
-	]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "build",
+        "${workspaceFolder}/msgraph-sdk-raptor.sln",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "checkout docs repo",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/tasks/checkout-docs-repo.ps1 '${workspaceFolder}/..' -branchName '${input:branchName}' -confirmation '${input:docsRepoCheckoutConfirmation}'",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      }
+    },
+    {
+      "label": "Run CSharpArbitraryDllTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CSharpArbitraryDllTests/CSharpArbitraryDllTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Debug CSharpArbitraryDllTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CSharpArbitraryDllTests/CSharpArbitraryDllTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSTEST_HOST_DEBUG": "1"
+        }
+      }
+    },
+    {
+      "label": "Run CsharpBetaExecutionKnownFailureTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpBetaExecutionKnownFailureTests/CsharpBetaExecutionKnownFailureTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Debug CsharpBetaExecutionKnownFailureTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpBetaExecutionKnownFailureTests/CsharpBetaExecutionKnownFailureTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSTEST_HOST_DEBUG": "1"
+        }
+      }
+    },
+    {
+      "label": "Run CsharpBetaExecutionTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpBetaExecutionTests/CsharpBetaExecutionTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Debug CsharpBetaExecutionTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpBetaExecutionTests/CsharpBetaExecutionTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSTEST_HOST_DEBUG": "1"
+        }
+      }
+    },
+    {
+      "label": "Run CsharpBetaKnownFailureTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpBetaKnownFailureTests/CsharpBetaKnownFailureTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Debug CsharpBetaKnownFailureTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpBetaKnownFailureTests/CsharpBetaKnownFailureTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSTEST_HOST_DEBUG": "1"
+        }
+      }
+    },
+    {
+      "label": "Run CsharpBetaTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpBetaTests/CsharpBetaTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Debug CsharpBetaTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpBetaTests/CsharpBetaTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSTEST_HOST_DEBUG": "1"
+        }
+      }
+    },
+    {
+      "label": "Run CsharpV1ExecutionKnownFailureTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpV1ExecutionKnownFailureTests/CsharpV1ExecutionKnownFailureTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Debug CsharpV1ExecutionKnownFailureTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpV1ExecutionKnownFailureTests/CsharpV1ExecutionKnownFailureTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSTEST_HOST_DEBUG": "1"
+        }
+      }
+    },
+    {
+      "label": "Run CsharpV1ExecutionTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpV1ExecutionTests/CsharpV1ExecutionTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Debug CsharpV1ExecutionTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpV1ExecutionTests/CsharpV1ExecutionTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSTEST_HOST_DEBUG": "1"
+        }
+      }
+    },
+    {
+      "label": "Run CsharpV1KnownFailureTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpV1KnownFailureTests/CsharpV1KnownFailureTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Debug CsharpV1KnownFailureTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpV1KnownFailureTests/CsharpV1KnownFailureTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSTEST_HOST_DEBUG": "1"
+        }
+      }
+    },
+    {
+      "label": "Run CsharpV1Tests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpV1Tests/CsharpV1Tests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Debug CsharpV1Tests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/CsharpV1Tests/CsharpV1Tests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSTEST_HOST_DEBUG": "1"
+        }
+      }
+    },
+    {
+      "label": "Run JavaBetaKnownFailureTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/JavaBetaKnownFailureTests/JavaBetaKnownFailureTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Debug JavaBetaKnownFailureTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/JavaBetaKnownFailureTests/JavaBetaKnownFailureTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSTEST_HOST_DEBUG": "1"
+        }
+      }
+    },
+    {
+      "label": "Run JavaBetaTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/JavaBetaTests/JavaBetaTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Debug JavaBetaTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/JavaBetaTests/JavaBetaTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSTEST_HOST_DEBUG": "1"
+        }
+      }
+    },
+    {
+      "label": "Run JavaV1KnownFailureTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/JavaV1KnownFailureTests/JavaV1KnownFailureTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Debug JavaV1KnownFailureTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/JavaV1KnownFailureTests/JavaV1KnownFailureTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSTEST_HOST_DEBUG": "1"
+        }
+      }
+    },
+    {
+      "label": "Run JavaV1Tests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/JavaV1Tests/JavaV1Tests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Debug JavaV1Tests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/JavaV1Tests/JavaV1Tests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSTEST_HOST_DEBUG": "1"
+        }
+      }
+    },
+    {
+      "label": "Run UnitTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/UnitTests/UnitTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Debug UnitTests",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/UnitTests/UnitTests.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSTEST_HOST_DEBUG": "1"
+        }
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "branchName",
+      "type": "promptString",
+      "description": "documentation repo branch name",
+      "default": "main"
+    },
+    {
+      "id": "testFilter",
+      "type": "promptString",
+      "description": "test filter (leave . if you want to run all the tests)",
+      "default": "."
+    },
+    {
+      "id": "docsRepoCheckoutConfirmation",
+      "type": "promptString",
+      "description": "If this is your first checkout type YES. If not, this script will delete local changes in the docs repo to hard reset to the remote branch. Type YES to proceed.",
+      "default": "NO"
+    }
+  ]
 }
