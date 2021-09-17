@@ -88,7 +88,7 @@ $obj.inputs = @(
     [ordered]@{
         id = "testFilter"
         type = "promptString"
-        description = "test filter"
+        description = "test filter (leave . if you want to run all the tests)"
         default = "."
     },
     [ordered]@{
