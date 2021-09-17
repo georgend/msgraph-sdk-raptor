@@ -39,12 +39,14 @@ $testProjects = Get-ChildItem $PSScriptRoot/../*Tests | Select-Object -ExpandPro
 foreach ($testProject in $testProjects)
 {
     $task = [ordered]@{
-        label = $testProject
+        label = "Run $testProject"
         type = "process"
         command = "dotnet"
         args = @(
             "test",
-            "`${workspaceFolder}/$testProject/$testProject.csproj"
+            "`${workspaceFolder}/$testProject/$testProject.csproj",
+            "--filter",
+            "`"`${input:testFilter}`""
         )
         isTestCommand = $true
         problemMatcher = "`$msCompile"
@@ -52,12 +54,17 @@ foreach ($testProject in $testProjects)
 
     $obj.tasks += $task
 
-    # deep copy
-    $taskFiltered = $task | ConvertTo-Json -Depth 3 | ConvertFrom-Json
-    $taskFiltered.label += " filtered"
-    $taskFiltered.args += "--filter `"`${input:testFilter}`""
+    # debug tasks
+    $taskDebug = $task | ConvertTo-Json -Depth 3 | ConvertFrom-Json
+    $taskDebug.label = $taskDebug.label.Replace("Run ", "Debug ")
+    Add-Member -InputObject $taskDebug -MemberType NoteProperty -Name options -Value @{
+        env = @{
+            VSTEST_HOST_DEBUG = "1"
+        }
+        cwd = "`${workspaceFolder}"
+    }
 
-    $obj.tasks += $taskFiltered
+    $obj.tasks += $taskDebug
 }
 
 $obj.inputs = @(
@@ -70,6 +77,7 @@ $obj.inputs = @(
         id = "testFilter"
         type = "promptString"
         description = "test filter"
+        default = "."
     }
 )
 
