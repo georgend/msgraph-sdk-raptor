@@ -1,3 +1,14 @@
+# Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+
+<#
+.SYNOPSIS
+  This script generates a tasks.json for the repo
+.DESCRIPTION
+  - Gets all the test projects
+  - Generate 1 Run task and 1 Debug task for each test project
+  - Add VSTEST_HOST_DEBUG=1 flag for Debug runs to be able to attach
+#>
+
 $obj = [ordered]@{
     version = "2.0.0"
     tasks = @()
@@ -38,7 +49,7 @@ $testProjects = Get-ChildItem $PSScriptRoot/../*Tests | Select-Object -ExpandPro
 
 foreach ($testProject in $testProjects)
 {
-    $task = [ordered]@{
+    $taskRun = [ordered]@{
         label = "Run $testProject"
         type = "process"
         command = "dotnet"
@@ -52,10 +63,10 @@ foreach ($testProject in $testProjects)
         problemMatcher = "`$msCompile"
     }
 
-    $obj.tasks += $task
+    $obj.tasks += $taskRun
 
-    # debug tasks
-    $taskDebug = $task | ConvertTo-Json -Depth 3 | ConvertFrom-Json
+    # deep copy run task object for debug task
+    $taskDebug = $taskRun | ConvertTo-Json -Depth 3 | ConvertFrom-Json
     $taskDebug.label = $taskDebug.label.Replace("Run ", "Debug ")
     Add-Member -InputObject $taskDebug -MemberType NoteProperty -Name options -Value @{
         env = @{
