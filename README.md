@@ -39,26 +39,47 @@ There are also 4 Java test projects, as listed below. These are all compilation 
 4. JavaV1KnownFailureTests
 
 
-## How to run locally
-1. Clone this repository
-2. Clone microsoft-graph-docs repository:
-   - `git clone https://github.com/microsoftgraph/microsoft-graph-docs`
-3. Open msgraph-sdk-raptor.sln in Visual Studio
-4. Make sure that the settings are correct for local run in `msgraph-sdk-raptor\msgraph-sdk-raptor-compiler-lib\appsettings.json`
-   1. `"IsLocalRun"=true`
-   2. `"DocsRepoCheckoutDirectory"= <parent directory for microsoft-graph-docs>`
-5. Build and run tests
-   - e.g `dotnet test CsharpV1ExecutionTests`
-   - **Test count will show as 1 for each project initially** because test cases are generated on the fly from a single meta test description.
-6. Local test runs also generate `.linq` files so that they can be analyzed using LinqPad.
-   - If you want this option to be turned on, make sure that you have this in the settings: `"GenerateLinqPadOutputInLocalRun": true`
-   - Default drop location for these files is:
-     - `~\Documents\LINQPad Queries\RaptorResults`
-   - They will automatically appear in LinqPad if the default setting for the location of queries are not changed.
-   - The prerequisite on the LinqPad side is to have NuGet references to following packages:
-     - `Microsoft.Graph`
-     - `Microsoft.Graph.Beta`
-   - Adding references to individual queries are not necessary, as the `.linq` file that Raptor generates includes correct NuGet package referenced.
+## How to debug in VSCode locally or in Github Codespaces
+
+1. Set two environment variables, either locally or in your [codespaces settings](https://github.com/settings/codespaces)
+     - `BUILD_SOURCESDIRECTORY`: Where the documentation repository will be checked out. Value should be `/workspaces` for Codespaces.
+     - `RAPTOR_CONFIGCONNECTIONSTRING`: Connection string to Azure App Configuration containing settings for execution. An empty App Config works fine for compilation tests.
+1. Create a new codespace or open cloned msgraph-sdk-raptor folder in VSCode
+1. Make sure to use PowerShell (pwsh) as your terminal (automatic in Codespaces)
+1. Make sure that the C# compilation tools are installed (automatic in Codespaces)
+1. Clone documentation repo using the predefined task:
+    - open Command Palette (`Ctrl + Shift + P` or `Cmd + Shift + P`)
+    - select `Run Task`
+    - select `checkout docs repo`
+    - select your branch from docs, leave `main` if you want to keep default branch
+    - confirm with `YES`
+      - confirmation is to prevent deleting local changes in case of subsequent runs of the task
+1. Build the solution
+    - open Command Palette
+    - select `Run Task`
+    - select `build`
+1. Run all the tests from a single project (e.g. CsharpV1Tests)
+    - open Command Palette
+    - select `Run Test Task`
+    - select `Run CsharpV1Tests`
+    - hit Enter when test filter option shows `.` (i.e. all the tests)
+1. Run individual tests
+    - open Command Palette
+    - select `Run Test Task`
+    - select `Run CsharpV1Tests`
+    - enter a test name filter, e.g. `workbook`
+1. Debug individual tests
+    - Open Command Palette
+    - select `Run Test Task`
+    - select `Debug CsharpV1Tests`
+    - enter a test name filter, e.g. `get-workbookcomment-csharp-V1-compiles`
+    - there will be a process id to attach to in terminal output e.g.:
+      ```
+      Process Id: 24536, Name: dotnet
+      ```
+    - start debugger using `.NET Attach`
+    - select process from the terminal output in the process dropdown
+    - find bugs and fix them :)
 
 
 ## Pipelines
