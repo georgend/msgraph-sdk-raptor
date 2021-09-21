@@ -21,7 +21,7 @@ namespace MsGraphSDKSnippetsCompiler
             try
             {
                 stopWatch.Start();
-                var response = await base.SendAsync(request, completionOption, cancellationToken);
+                var response = await SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
                 stopWatch.Stop();
                 Console.WriteLine($"\nRequest Uri:\t{uri}");
                 Console.WriteLine($"\nResponse Headers:\n{response.Headers}");

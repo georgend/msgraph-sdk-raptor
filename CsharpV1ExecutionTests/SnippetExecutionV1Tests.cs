@@ -15,7 +15,7 @@ namespace CsharpV1ExecutionTests
         [OneTimeSetUp]
         public async Task OneTimeSetup()
         {
-            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication();
+            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace CsharpV1ExecutionTests
         [RetryTestCaseSource(typeof(SnippetExecutionV1Tests), nameof(TestDataV1), MaxTries = 3)]
         public async Task Test(ExecutionTestData testData)
         {
-            await CSharpTestRunner.Execute(testData, _permissionManagerApplication);
+            await CSharpTestRunner.Execute(testData, _permissionManagerApplication).ConfigureAwait(false);
         }
     }
 }

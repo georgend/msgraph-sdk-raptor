@@ -237,10 +237,10 @@ application {
             await File.WriteAllTextAsync(Path.Combine(rootPath, gradleBuildFileName), buildGradleFileContent
                                                                             .Replace("--deps--", deps )
                                                                             .Replace("--coreversion--", _javaCoreVersion)
-                                                                            .Replace("--libversion--", _javaLibVersion));
+                                                                            .Replace("--libversion--", _javaLibVersion)).ConfigureAwait(false);
             var gradleSettingsFilePath = Path.Combine(rootPath, gradleSettingsFileName);
             if (!File.Exists(gradleSettingsFilePath))
-                await File.WriteAllTextAsync(gradleSettingsFilePath, gradleSettingsFileTemplate);
+                await File.WriteAllTextAsync(gradleSettingsFilePath, gradleSettingsFileTemplate).ConfigureAwait(false);
 
             CreateDirectoryStructure(rootPath, testFileSubDirectories);
         }

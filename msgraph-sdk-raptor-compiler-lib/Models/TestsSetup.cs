@@ -15,7 +15,7 @@ namespace MsGraphSDKSnippetsCompiler.Models
         public static async Task<PermissionManager> GetPermissionManagerApplication()
         {
             var permissionManagerApplication = new PermissionManager();
-            await permissionManagerApplication.CreateDelegatedAuthProviders();
+            await permissionManagerApplication.CreateDelegatedAuthProviders().ConfigureAwait(false);
             return permissionManagerApplication;
         }
     }
