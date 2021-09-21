@@ -1,13 +1,12 @@
 # Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 Param(
-    [string] $AppSettingsPath = (Join-Path $PSScriptRoot "../../../../msgraph-sdk-raptor-compiler-lib/appsettings.json"),
     [string] $IdentifiersPath = (Join-Path $PSScriptRoot "../../../../msgraph-sdk-raptor-compiler-lib/identifiers.json")
 )
 
 $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 . $raptorUtils
 
-$appSettings = Get-AppSettings -AppSettingsPath $AppSettingsPath
+$appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
 #Connect To Microsoft Graph Using ClientId, TenantId and Certificate
@@ -53,7 +52,7 @@ if ($null -eq $currentPage) {
     $raptorPresentationPage = Get-Content (Join-Path $PSScriptRoot "Page.html") -Raw -Encoding utf8
     $image = Get-Content (Join-Path $PSScriptRoot "RaptorDummyImage.jpg") -Raw -Encoding utf8
     $raptorDummyDocument = Get-Content  (Join-Path $PSScriptRoot "RaptorDummyDocument.pdf") -Raw -Encoding utf8
-    
+
     $data = @(
         @{ ContentType = "text/html"; Content = $raptorPresentationPage; Name = "Presentation" },
         @{ ContentType = "image/jpeg"; Content = $image; Name = "RaptorDummyImage" },
