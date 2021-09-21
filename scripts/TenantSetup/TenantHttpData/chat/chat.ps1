@@ -20,6 +20,7 @@ if($null -eq $chat) {
     $chat.id
 }
 $identifiers.chat._value = $chat.id
+$identifiers.user.chat._value = $chat.id
 
 if($null -eq $conversationMember) {
     $conversationMember = Request-DelegatedResource -Uri "chats/$($identifiers.chat._value)/members" | Select-Object -Last 1

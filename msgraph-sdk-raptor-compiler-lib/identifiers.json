@@ -228,6 +228,9 @@
         },
         "userScopeTeamsAppInstallation": {
             "_value": "<user_userScopeTeamsAppInstallation>"
+        },
+        "chat": {
+           "_value": "<chat>"
         }
     },
     "call": {
