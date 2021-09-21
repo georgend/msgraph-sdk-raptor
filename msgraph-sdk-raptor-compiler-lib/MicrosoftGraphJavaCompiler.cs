@@ -21,8 +21,8 @@ namespace MsGraphSDKSnippetsCompiler
         private readonly string _javaCoreVersion;
         private static readonly string[] testFileSubDirectories = new string[] { "src", "main", "java", "com", "microsoft", "graph", "raptor" };
 
-        private static readonly string gradleBuildFileName = "build.gradle";
-        private static readonly string previewGradleBuildFileTemplate = @"plugins {
+        private const string gradleBuildFileName = "build.gradle";
+        private const string previewGradleBuildFileTemplate = @"plugins {
     id 'java'
     id 'application'
 }
@@ -41,7 +41,7 @@ dependencies {
 application {
     mainClassName = 'com.microsoft.graph.raptor.App'
 }";
-        private static readonly string v1GradleBuildFileTemplate = @"plugins {
+        private const string v1GradleBuildFileTemplate = @"plugins {
     id 'java'
     id 'application'
 }
@@ -56,7 +56,7 @@ dependencies {
 application {
     mainClassName = 'com.microsoft.graph.raptor.App'
 }";
-        private static readonly string betaGradleBuildFileTemplate = @"plugins {
+        private const string betaGradleBuildFileTemplate = @"plugins {
     id 'java'
     id 'application'
 }
@@ -78,8 +78,8 @@ application {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
     implementation 'com.azure:azure-identity:1.2.5'";
-        private static readonly string gradleSettingsFileName = "settings.gradle";
-        private static readonly string gradleSettingsFileTemplate = @"rootProject.name = 'msgraph-sdk-java-raptor'";
+        private const string gradleSettingsFileName = "settings.gradle";
+        private const string gradleSettingsFileTemplate = @"rootProject.name = 'msgraph-sdk-java-raptor'";
 
         private static Versions? currentlyConfiguredVersion;
         private static readonly Lazy<int> currentExcutionFolder = new Lazy<int>(() => new Random().Next(0, int.MaxValue));

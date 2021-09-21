@@ -114,7 +114,7 @@ namespace UnitTests
             ["callRecords.callRecord"] = new IDTree("(callRecords.callRecord)")
         };
 
-        private static readonly string SerializedComplexTree = @"{
+        private const string SerializedComplexTree = @"{
     ""application"": {
     ""_value"": ""(application)""
     },
