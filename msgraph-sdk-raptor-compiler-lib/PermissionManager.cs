@@ -148,6 +148,7 @@ namespace MsGraphSDKSnippetsCompiler
                     RedirectUris = new string[] { "http://localhost" }
                 },
                 RequiredResourceAccess = new List<RequiredResourceAccess> { requiredResourceAccess },
+                SignInAudience = "AzureADMyOrg",
                 IsFallbackPublicClient = true // allowPublicClient: true in application manifest
             };
 
