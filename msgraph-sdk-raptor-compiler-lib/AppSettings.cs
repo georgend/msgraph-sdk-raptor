@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Azure.Identity;
 
 using Microsoft.Extensions.Configuration;
@@ -104,7 +105,6 @@ namespace MsGraphSDKSnippetsCompiler
             return !string.IsNullOrWhiteSpace(raptorConfigAddress) && !string.Equals(raptorConfigAddress, variablePlaceHolder, StringComparison.OrdinalIgnoreCase);
         }
 
-
         /// <summary>
         /// Extracts the configuration value, throws if empty string
         /// </summary>
@@ -113,10 +113,10 @@ namespace MsGraphSDKSnippetsCompiler
         /// <returns>non-empty configuration value if found</returns>
         public static string GetNonEmptyValue(this IConfigurationRoot config, string key)
         {
-            var value = config.GetSection(key).Value;
+            var value = config?.GetSection(key)?.Value;
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new Exception($"Value for {key} is not found in appsettings.json");
+                throw new InvalidDataException($"Value for {key} is not found in appsettings.json");
             }
 
             return value;

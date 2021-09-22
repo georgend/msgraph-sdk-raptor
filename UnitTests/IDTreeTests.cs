@@ -9,6 +9,7 @@ namespace UnitTests
     public class IDTreeTests
     {
         [TestCaseSource(typeof(IDTreeTestCases), nameof(IDTreeTestCases.EqualTestCases))]
+#pragma warning disable CA1062 // Validate arguments of public methods
         public void Equal(IDTree a, IDTree b) => Assert.IsTrue(a.Equals(b));
 
         [TestCaseSource(typeof(IDTreeTestCases), nameof(IDTreeTestCases.NotEqualTestCases))]
@@ -19,7 +20,7 @@ namespace UnitTests
         {
             a.Equals(JsonSerializer.Deserialize<IDTree>(JsonSerializer.Serialize(a)));
         }
-
+#pragma warning restore CA1062 // Validate arguments of public methods
         [TestCaseSource(typeof(IDTreeTestCases), nameof(IDTreeTestCases.SerializationTestCases))]
         public void Serialization(IDTree a, string json)
         {
@@ -42,7 +43,6 @@ namespace UnitTests
 
     public static class IDTreeTestCases
     {
-        private static readonly IDTree NullTree = null;
         private static readonly IDTree EmptyTree = new IDTree();
         private static readonly IDTree EmptyTree2 = new IDTree();
 
@@ -114,7 +114,7 @@ namespace UnitTests
             ["callRecords.callRecord"] = new IDTree("(callRecords.callRecord)")
         };
 
-        private static readonly string SerializedComplexTree = @"{
+        private const string SerializedComplexTree = @"{
     ""application"": {
     ""_value"": ""(application)""
     },
@@ -178,8 +178,8 @@ namespace UnitTests
 
         public static IEnumerable<TestCaseData> NotEqualTestCases()
         {
-            yield return new TestCaseData(EmptyTree, NullTree);
-            yield return new TestCaseData(OneItemTree, NullTree);
+            yield return new TestCaseData(EmptyTree, null);
+            yield return new TestCaseData(OneItemTree, null);
 
             // check for same-value false equivelance
             yield return new TestCaseData(OneItemTree, OneItemTreeKeyDifferent);

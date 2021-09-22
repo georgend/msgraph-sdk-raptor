@@ -15,7 +15,9 @@ namespace MsGraphSDKSnippetsCompiler.Models
 
     public static class LanguagesExtension
     {
+#pragma warning disable CA1308 // Normalize strings to uppercase
         public static string AsString(this Languages language) => language.ToString().ToLowerInvariant();
+#pragma warning restore CA1308 // Normalize strings to uppercase
     }
 
     /// <summary>
@@ -56,11 +58,13 @@ namespace MsGraphSDKSnippetsCompiler.Models
             {
                 Versions.V1 => "v1.0",
                 Versions.Beta => "beta",
-                _ => throw new ArgumentException(UnexpectedVersionMessage),
+                _ => "UNEXPECTED VERSION"
             };
         }
 
+#pragma warning disable CA1055 // URI-like return values should not be strings
         public string DocsUrlSegment()
+#pragma warning restore CA1055 // URI-like return values should not be strings
         {
             return Version switch
             {

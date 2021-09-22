@@ -88,7 +88,7 @@ namespace MsGraphSDKSnippetsCompiler.Models
                 if (localTree != null)
                 {
                     currentIdNode = localTree;
-                    input = input.Replace(id, currentIdNode.Value);
+                    input = input.Replace(id, currentIdNode.Value, StringComparison.OrdinalIgnoreCase);
                 }
                 else
                 {

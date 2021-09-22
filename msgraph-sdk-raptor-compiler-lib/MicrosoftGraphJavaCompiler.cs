@@ -4,6 +4,7 @@ using MsGraphSDKSnippetsCompiler.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -21,8 +22,8 @@ namespace MsGraphSDKSnippetsCompiler
         private readonly string _javaCoreVersion;
         private static readonly string[] testFileSubDirectories = new string[] { "src", "main", "java", "com", "microsoft", "graph", "raptor" };
 
-        private static readonly string gradleBuildFileName = "build.gradle";
-        private static readonly string previewGradleBuildFileTemplate = @"plugins {
+        private const string gradleBuildFileName = "build.gradle";
+        private const string previewGradleBuildFileTemplate = @"plugins {
     id 'java'
     id 'application'
 }
@@ -41,7 +42,7 @@ dependencies {
 application {
     mainClassName = 'com.microsoft.graph.raptor.App'
 }";
-        private static readonly string v1GradleBuildFileTemplate = @"plugins {
+        private const string v1GradleBuildFileTemplate = @"plugins {
     id 'java'
     id 'application'
 }
@@ -56,7 +57,7 @@ dependencies {
 application {
     mainClassName = 'com.microsoft.graph.raptor.App'
 }";
-        private static readonly string betaGradleBuildFileTemplate = @"plugins {
+        private const string betaGradleBuildFileTemplate = @"plugins {
     id 'java'
     id 'application'
 }
@@ -78,11 +79,13 @@ application {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
     implementation 'com.azure:azure-identity:1.2.5'";
-        private static readonly string gradleSettingsFileName = "settings.gradle";
-        private static readonly string gradleSettingsFileTemplate = @"rootProject.name = 'msgraph-sdk-java-raptor'";
+        private const string gradleSettingsFileName = "settings.gradle";
+        private const string gradleSettingsFileTemplate = @"rootProject.name = 'msgraph-sdk-java-raptor'";
 
         private static Versions? currentlyConfiguredVersion;
+#pragma warning disable CA5394 // Do not use insecure randomness: security is not a concern here
         private static readonly Lazy<int> currentExcutionFolder = new Lazy<int>(() => new Random().Next(0, int.MaxValue));
+#pragma warning restore CA5394 // Do not use insecure randomness
         private static readonly object versionLock = new { };
 
         private static void SetCurrentlyConfiguredVersion (Versions version)
@@ -156,7 +159,7 @@ application {
             var stdOutput = stdOuputSB.ToString();
             var stdErr = stdErrSB.ToString();
             return new CompilationResultsModel(
-                hasExited && stdOutput.Contains("BUILD SUCCESSFUL"),
+                hasExited && stdOutput.Contains("BUILD SUCCESSFUL", StringComparison.OrdinalIgnoreCase),
                 GetDiagnosticsFromStdErr(stdOutput, stdErr, hasExited),
                 _markdownFileName
             );
@@ -177,18 +180,18 @@ application {
         private static List<Diagnostic> GetDiagnosticsFromStdErr(string stdOutput, string stdErr, bool hasExited)
         {
             var result = new List<Diagnostic>();
-            if(stdErr.Contains(errorsSuffix))
+            if(stdErr.Contains(errorsSuffix, StringComparison.OrdinalIgnoreCase))
             {
                 var diagnosticsToParse = doubleLineReturnCleanupRegex.Replace(
                                                 errorCountCleanupRegex.Replace(
                                                     notesFilterRegex.Replace(// we don't need informational notes
-                                                        stdErr[0..stdErr.IndexOf(errorsSuffix)], // we want the traces before FAILURE
+                                                        stdErr[0..stdErr.IndexOf(errorsSuffix, StringComparison.OrdinalIgnoreCase)], // we want the traces before FAILURE
                                                         string.Empty),
                                                     string.Empty),
                                                 string.Empty);
                 result.AddRange(errorMessageCaptureRegex
                                             .Matches(diagnosticsToParse)
-                                            .Select(x => new { message = x.Groups["message"].Value, linenumber = int.Parse(x.Groups["linenumber"].Value) })
+                                            .Select(x => new { message = x.Groups["message"].Value, linenumber = int.Parse(x.Groups["linenumber"].Value, CultureInfo.CurrentCulture) })
                                             .Select(x => Diagnostic.Create(new DiagnosticDescriptor("JAVA1001",
                                                                                 "Error during Java compilation",
                                                                                 x.message,
@@ -233,14 +236,14 @@ application {
             Directory.CreateDirectory(rootPath);
             var buildGradleFileContent = version == Versions.V1 ? v1GradleBuildFileTemplate : betaGradleBuildFileTemplate;
             if (!string.IsNullOrEmpty(_previewLibraryPath))
-                buildGradleFileContent = previewGradleBuildFileTemplate.Replace("--path--", _previewLibraryPath);
+                buildGradleFileContent = previewGradleBuildFileTemplate.Replace("--path--", _previewLibraryPath, StringComparison.OrdinalIgnoreCase);
             await File.WriteAllTextAsync(Path.Combine(rootPath, gradleBuildFileName), buildGradleFileContent
-                                                                            .Replace("--deps--", deps )
-                                                                            .Replace("--coreversion--", _javaCoreVersion)
-                                                                            .Replace("--libversion--", _javaLibVersion));
+                                                                            .Replace("--deps--", deps, StringComparison.OrdinalIgnoreCase)
+                                                                            .Replace("--coreversion--", _javaCoreVersion, StringComparison.OrdinalIgnoreCase)
+                                                                            .Replace("--libversion--", _javaLibVersion, StringComparison.OrdinalIgnoreCase)).ConfigureAwait(false);
             var gradleSettingsFilePath = Path.Combine(rootPath, gradleSettingsFileName);
             if (!File.Exists(gradleSettingsFilePath))
-                await File.WriteAllTextAsync(gradleSettingsFilePath, gradleSettingsFileTemplate);
+                await File.WriteAllTextAsync(gradleSettingsFilePath, gradleSettingsFileTemplate).ConfigureAwait(false);
 
             CreateDirectoryStructure(rootPath, testFileSubDirectories);
         }

@@ -20,11 +20,11 @@ namespace DelegatedAppCreator
             var permissionManagerApplication = new PermissionManager();
 
             // get existing applications
-            var existingApplicationSet = await permissionManagerApplication.GetExistingApplicationsWithPrefix(Prefix);
+            var existingApplicationSet = await permissionManagerApplication.GetExistingApplicationsWithPrefix(Prefix).ConfigureAwait(false);
             PrintApplicationNames("Existing Applications", existingApplicationSet);
 
             // get expected applications
-            var permissionDescriptions = await PermissionManager.GetPermissionDescriptions();
+            var permissionDescriptions = await PermissionManager.GetPermissionDescriptions().ConfigureAwait(false);
             var delegatedScopes = permissionDescriptions.delegatedScopesList;
             var expectedApplications = delegatedScopes
                 .Select(x => x.DelegatedAppName(Prefix));
@@ -45,7 +45,7 @@ namespace DelegatedAppCreator
             PrintApplicationNames("Missing Applications", missingApplications);
 
             // create missing applications
-            var resourceId = await permissionManagerApplication.GetMicrosoftGraphServicePrincipalId();
+            var resourceId = await permissionManagerApplication.GetMicrosoftGraphServicePrincipalId().ConfigureAwait(false);
             var failedApplications = new List<string>();
             var succeededApplications = new List<string>();
             foreach (var scope in missingScopes)
@@ -54,9 +54,9 @@ namespace DelegatedAppCreator
                 try
                 {
                     Console.WriteLine($"Creating Application with name '{appDisplayName}'");
-                    var application = await permissionManagerApplication.CreateApplication(appDisplayName, scope.id);
-                    var servicePrincipal = await permissionManagerApplication.CreateServicePrincipal(application.AppId);
-                    _ = await permissionManagerApplication.CreateOAuthPermission(servicePrincipal.Id, resourceId, scope.value);
+                    var application = await permissionManagerApplication.CreateApplication(appDisplayName, scope.id).ConfigureAwait(false);
+                    var servicePrincipal = await permissionManagerApplication.CreateServicePrincipal(application.AppId).ConfigureAwait(false);
+                    _ = await permissionManagerApplication.CreateOAuthPermission(servicePrincipal.Id, resourceId, scope.value).ConfigureAwait(false);
 
                     Console.WriteLine($"Created Application with name '{appDisplayName}' and id '{application.Id}'");
                     succeededApplications.Add(appDisplayName);

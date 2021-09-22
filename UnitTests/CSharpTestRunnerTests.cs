@@ -58,16 +58,16 @@ var ev@ent = await graphClient.Groups[\""8730b5a6-eca3-400d-9011-1f4202418218\""
             Assert.AreEqual(match.Groups[1].Value, variableName);
         }
 
-        [TestCase("@event", VerbatimIdentifer, TestName = "@event")]
-        [TestCase("@_event", VerbatimIdentifierWithUnderScore, TestName = "@_event")]
-        [TestCase("_event", UnderScoreIdentifier, TestName = "_event")]
-        public void ShouldReturnHttpRequestMessage(string variableName, string testSnippet)
+        [TestCase(VerbatimIdentifer, TestName = "@event")]
+        [TestCase(VerbatimIdentifierWithUnderScore, TestName = "@_event")]
+        [TestCase(UnderScoreIdentifier, TestName = "_event")]
+        public void ShouldReturnHttpRequestMessage(string testSnippet)
         {
             Assert.DoesNotThrow(() => CSharpTestRunner.ReturnHttpRequestMessage(testSnippet));
         }
 
-        [TestCase("ev@ent", IncorrectVerbatimIdentifier, TestName = "ev@ent", Description = "Incorrect Verbatim Identifier")]
-        public void ShouldFailWhenReturningHttpRequestMessageWithIncorrectSnippet(string variableName, string testSnippet)
+        [TestCase(IncorrectVerbatimIdentifier, TestName = "ev@ent", Description = "Incorrect Verbatim Identifier")]
+        public void ShouldFailWhenReturningHttpRequestMessageWithIncorrectSnippet(string testSnippet)
         {
             Assert.Throws<AssertionException>(() => CSharpTestRunner.ReturnHttpRequestMessage(testSnippet));
         }

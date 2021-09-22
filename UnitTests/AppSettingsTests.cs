@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace UnitTests
 {
-    class AppSettingsTests
+    static class AppSettingsTests
     {
         private const string CustomLabel = "Development.Codespaces";
         private const string RaptorConfigLabel = "RAPTOR_CONFIGLABEL";
@@ -20,35 +20,35 @@ namespace UnitTests
                 }).Build();
 
         [Test]
-        public void CustomLabelExistsInLocalRun()
+        public static void CustomLabelExistsInLocalRun()
         {
             var label = AppSettings.GetAppConfigLabel(ConfigWithCustomLabel, isLocalRun: true);
             Assert.AreEqual(CustomLabel, label);
         }
 
         [Test]
-        public void CustomLabelExistsInCI()
+        public static void CustomLabelExistsInCI()
         {
             var label = AppSettings.GetAppConfigLabel(ConfigWithCustomLabel, isLocalRun: false);
             Assert.AreEqual(CustomLabel, label);
         }
 
         [Test]
-        public void CustomLabelDoesNotExistInLocalRun()
+        public static void CustomLabelDoesNotExistInLocalRun()
         {
             var label = AppSettings.GetAppConfigLabel(EmptyConfig, isLocalRun: true);
             Assert.AreEqual("Development", label);
         }
 
         [Test]
-        public void CustomLabelDoesNotExistInCI()
+        public static void CustomLabelDoesNotExistInCI()
         {
             var label = AppSettings.GetAppConfigLabel(EmptyConfig, isLocalRun: false);
             Assert.AreEqual("CI", label);
         }
 
         [Test]
-        public void ExpectExceptionIfConfigIsNull()
+        public static void ExpectExceptionIfConfigIsNull()
         {
             Assert.Throws<ArgumentNullException>(() => AppSettings.GetAppConfigLabel(null, false));
         }

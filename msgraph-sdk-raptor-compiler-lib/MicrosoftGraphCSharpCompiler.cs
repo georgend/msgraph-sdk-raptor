@@ -194,7 +194,8 @@ namespace MsGraphSDKSnippetsCompiler
                     var authProvider = _permissionManagerApplication.GetDelegatedAuthProvider(scope);
 
                     // Pass custom http provider to provide interception and logging
-                    await (instance.Main(authProvider, new CustomHttpProvider()) as Task);
+                    using var customHttpProvider = new CustomHttpProvider();
+                    await ((instance.Main(authProvider, customHttpProvider) as Task).ConfigureAwait(false));
                     return true;
                 }
                 catch (Exception e)
@@ -216,7 +217,8 @@ namespace MsGraphSDKSnippetsCompiler
         private async Task<bool> ExecuteWithApplicationPermissions(dynamic instance)
         {
             // Pass custom http provider to provide interception and logging
-            await (instance.Main(_permissionManagerApplication.AuthProvider, new CustomHttpProvider()) as Task);
+            using var customHttpProvider = new CustomHttpProvider();
+            await ((instance.Main(_permissionManagerApplication.AuthProvider, customHttpProvider) as Task).ConfigureAwait(false));
             return true;
         }
 
@@ -236,7 +238,7 @@ namespace MsGraphSDKSnippetsCompiler
         {
             var path = httpRequestMessage.RequestUri.LocalPath;
             var versionSegmentLength = "/v1.0".Length;
-            if (path.StartsWith("/v1.0") || path.StartsWith("/beta"))
+            if (path.StartsWith("/v1.0", StringComparison.OrdinalIgnoreCase) || path.StartsWith("/beta", StringComparison.OrdinalIgnoreCase))
             {
                 path = path[versionSegmentLength..];
             }
@@ -255,7 +257,7 @@ namespace MsGraphSDKSnippetsCompiler
 
             try
             {
-                return await getScopesForScopeType("DelegatedWork");
+                return await getScopesForScopeType("DelegatedWork").ConfigureAwait(false);
             }
             catch
             {
@@ -266,7 +268,7 @@ namespace MsGraphSDKSnippetsCompiler
             {
                 // we don't care about a specific Application permission, we only want to make sure that DevX API returns
                 // either delegated or application permissions.
-                _ = await getScopesForScopeType("Application");
+                _ = await getScopesForScopeType("Application").ConfigureAwait(false);
                 return null;
             }
             catch (Exception e)

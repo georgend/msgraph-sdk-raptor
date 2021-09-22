@@ -81,7 +81,7 @@ namespace MsGraphSDKSnippetsCompiler
                 .Request()
                 .Filter(query)
                 .Select("displayName")
-                .GetAsync();
+                .GetAsync().ConfigureAwait(false);
 
             var pageIterator = PageIterator<Application>
                 .CreatePageIterator(
@@ -92,7 +92,7 @@ namespace MsGraphSDKSnippetsCompiler
                     result.Add(application.DisplayName);
                     return true;
                 });
-            await pageIterator.IterateAsync();
+            await pageIterator.IterateAsync().ConfigureAwait(false);
             return result;
         }
 
@@ -105,7 +105,7 @@ namespace MsGraphSDKSnippetsCompiler
             var servicePrincipals = await _client.ServicePrincipals
                 .Request()
                 .Filter("servicePrincipalNames/any(n:n eq 'https://graph.microsoft.com')")
-                .GetAsync();
+                .GetAsync().ConfigureAwait(false);
 
             return servicePrincipals?.FirstOrDefault()?.Id;
         }
@@ -154,7 +154,7 @@ namespace MsGraphSDKSnippetsCompiler
 
             var createdApplication = await _client.Applications
                 .Request()
-                .AddAsync(application);
+                .AddAsync(application).ConfigureAwait(false);
 
             return createdApplication;
         }
@@ -194,7 +194,7 @@ namespace MsGraphSDKSnippetsCompiler
 
             var createdOauthPermission = await _client.Oauth2PermissionGrants
                 .Request()
-                .AddAsync(oauthPermission);
+                .AddAsync(oauthPermission).ConfigureAwait(false);
 
             return createdOauthPermission;
         }
@@ -218,7 +218,7 @@ namespace MsGraphSDKSnippetsCompiler
 
             return await _client.ServicePrincipals
                 .Request()
-                .AddAsync(servicePrincipal);
+                .AddAsync(servicePrincipal).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace MsGraphSDKSnippetsCompiler
             var collectionPage = await _client.Applications
                               .Request()
                               .Filter($"displayName eq '{ appDisplayName }'")
-                              .GetAsync();
+                              .GetAsync().ConfigureAwait(false);
             return collectionPage?.FirstOrDefault();
         }
 
@@ -261,14 +261,14 @@ namespace MsGraphSDKSnippetsCompiler
         /// <returns></returns>
         internal async Task CreateDelegatedAuthProviders()
         {
-            var permissionDescriptions = await GetPermissionDescriptions();
+            var permissionDescriptions = await GetPermissionDescriptions().ConfigureAwait(false);
 
             foreach (var delegatedPermissionScope in permissionDescriptions.delegatedScopesList)
             {
                 var scopeName = delegatedPermissionScope.value;
                 try
                 {
-                    var application = await GetApplication(delegatedPermissionScope);
+                    var application = await GetApplication(delegatedPermissionScope).ConfigureAwait(false);
                     _authProviders[delegatedPermissionScope.value] = new TokenCredentialAuthProvider(
                         new UsernamePasswordCredential(_config.Username, _config.Password, _config.TenantID, application.AppId, new UsernamePasswordCredentialOptions
                         {

@@ -17,7 +17,7 @@ namespace CsharpBetaExecutionKnownFailureTests
         [OneTimeSetUp]
         public async Task OneTimeSetup()
         {
-            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication();
+            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace CsharpBetaExecutionKnownFailureTests
         [RetryTestCaseSource(typeof(SnippetExecutionBetaKnownFailureTests), nameof(TestDataBeta), MaxTries = 3)]
         public async Task Test(ExecutionTestData testData)
         {
-            await CSharpTestRunner.Execute(testData, _permissionManagerApplication);
+            await CSharpTestRunner.Execute(testData, _permissionManagerApplication).ConfigureAwait(false);
         }
     }
 }
