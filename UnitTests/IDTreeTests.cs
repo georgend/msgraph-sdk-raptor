@@ -43,7 +43,7 @@ namespace UnitTests
 
     public static class IDTreeTestCases
     {
-        private static readonly IDTree NullTree = null;
+        private static readonly IDTree NullTree;
         private static readonly IDTree EmptyTree = new IDTree();
         private static readonly IDTree EmptyTree2 = new IDTree();
 
