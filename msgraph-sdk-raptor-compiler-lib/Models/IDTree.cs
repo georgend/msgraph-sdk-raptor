@@ -100,6 +100,16 @@ namespace MsGraphSDKSnippetsCompiler.Models
 
         public override void Write(Utf8JsonWriter writer, IDTree tree, JsonSerializerOptions options)
         {
+            if (writer == null)
+            {
+                throw new ArgumentNullException(nameof(writer));
+            }
+
+            if (tree == null)
+            {
+                throw new ArgumentNullException(nameof(tree));
+            }
+
             writer.WriteStartObject();
             if (tree.Value is not null)
             {

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Microsoft.Extensions.Configuration;
 
 namespace MsGraphSDKSnippetsCompiler.Models
@@ -87,6 +88,23 @@ namespace MsGraphSDKSnippetsCompiler.Models
         {
             get;
             init;
+        }
+
+        /// <summary>
+        /// Extracts the configuration value, throws if empty string
+        /// </summary>
+        /// <param name="config">configuration</param>
+        /// <param name="key">lookup key</param>
+        /// <returns>non-empty configuration value if found</returns>
+        private static string GetNonEmptyValue(this IConfigurationRoot config, string key)
+        {
+            var value = config.GetSection(key).Value;
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new Exception($"Value for {key} is not found in appsettings.json");
+            }
+
+            return value;
         }
     }
 }
