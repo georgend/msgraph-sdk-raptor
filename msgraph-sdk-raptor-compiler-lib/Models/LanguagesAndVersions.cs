@@ -58,7 +58,7 @@ namespace MsGraphSDKSnippetsCompiler.Models
             {
                 Versions.V1 => "v1.0",
                 Versions.Beta => "beta",
-                _ => throw new ArgumentException(UnexpectedVersionMessage),
+                _ => "UNEXPECTED VERSION"
             };
         }
 
