@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Azure.Identity;
 
 using Microsoft.Extensions.Configuration;
@@ -102,6 +103,23 @@ namespace MsGraphSDKSnippetsCompiler
         {
             const string variablePlaceHolder = "[ENTER_VALUE]";
             return !string.IsNullOrWhiteSpace(raptorConfigAddress) && !string.Equals(raptorConfigAddress, variablePlaceHolder, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Extracts the configuration value, throws if empty string
+        /// </summary>
+        /// <param name="config">configuration</param>
+        /// <param name="key">lookup key</param>
+        /// <returns>non-empty configuration value if found</returns>
+        public static string GetNonEmptyValue(this IConfigurationRoot config, string key)
+        {
+            var value = config?.GetSection(key)?.Value;
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new InvalidDataException($"Value for {key} is not found in appsettings.json");
+            }
+
+            return value;
         }
     }
 }
