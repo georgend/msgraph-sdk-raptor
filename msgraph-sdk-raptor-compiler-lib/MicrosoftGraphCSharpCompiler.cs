@@ -194,7 +194,8 @@ namespace MsGraphSDKSnippetsCompiler
                     var authProvider = _permissionManagerApplication.GetDelegatedAuthProvider(scope);
 
                     // Pass custom http provider to provide interception and logging
-                    await ((instance.Main(authProvider, new CustomHttpProvider()) as Task).ConfigureAwait(false));
+                    using var customHttpProvider = new CustomHttpProvider();
+                    await ((instance.Main(authProvider, customHttpProvider) as Task).ConfigureAwait(false));
                     return true;
                 }
                 catch (Exception e)
@@ -216,7 +217,8 @@ namespace MsGraphSDKSnippetsCompiler
         private async Task<bool> ExecuteWithApplicationPermissions(dynamic instance)
         {
             // Pass custom http provider to provide interception and logging
-            await ((instance.Main(_permissionManagerApplication.AuthProvider, new CustomHttpProvider()) as Task).ConfigureAwait(false));
+            using var customHttpProvider = new CustomHttpProvider();
+            await ((instance.Main(_permissionManagerApplication.AuthProvider, customHttpProvider) as Task).ConfigureAwait(false));
             return true;
         }
 
