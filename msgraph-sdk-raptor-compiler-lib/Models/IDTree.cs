@@ -98,7 +98,9 @@ namespace MsGraphSDKSnippetsCompiler.Models
             throw new JsonException("Unexpected JSON object. See identifiers.json file for a sample JSON in the TestCommon.Tests project.");
         }
 
+#pragma warning disable CA1725 // Parameter names should match base declaration, tree is more descriptive in this case
         public override void Write(Utf8JsonWriter writer, IDTree tree, JsonSerializerOptions options)
+#pragma warning restore CA1725 // Parameter names should match base declaration
         {
             if (writer == null)
             {
