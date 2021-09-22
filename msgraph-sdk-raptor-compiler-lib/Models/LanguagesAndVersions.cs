@@ -15,7 +15,9 @@ namespace MsGraphSDKSnippetsCompiler.Models
 
     public static class LanguagesExtension
     {
+#pragma warning disable CA1308 // Normalize strings to uppercase
         public static string AsString(this Languages language) => language.ToString().ToLowerInvariant();
+#pragma warning restore CA1308 // Normalize strings to uppercase
     }
 
     /// <summary>
