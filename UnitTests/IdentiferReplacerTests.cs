@@ -29,7 +29,9 @@ namespace UnitTests
                   "https://graph.microsoft.com/v1.0/teams/<team>/members/<team_conversationMember>")]
         [TestCase("https://graph.microsoft.com/v1.0/education/schools/{educationSchool-id}/users",
                   "https://graph.microsoft.com/v1.0/education/schools/<educationSchool>/users")]
+#pragma warning disable CA1054 // URI-like parameters should not be strings
         public void TestIds(string snippetUrl, string expectedUrl)
+#pragma warning restore CA1054 // URI-like parameters should not be strings
         {
             var newUrl = idReplacer.ReplaceIds(snippetUrl);
             Assert.AreEqual(expectedUrl, newUrl);
