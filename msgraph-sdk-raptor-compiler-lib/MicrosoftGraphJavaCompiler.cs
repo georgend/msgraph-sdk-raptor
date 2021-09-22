@@ -83,7 +83,9 @@ application {
         private const string gradleSettingsFileTemplate = @"rootProject.name = 'msgraph-sdk-java-raptor'";
 
         private static Versions? currentlyConfiguredVersion;
+#pragma warning disable CA5394 // Do not use insecure randomness: security is not a concern here
         private static readonly Lazy<int> currentExcutionFolder = new Lazy<int>(() => new Random().Next(0, int.MaxValue));
+#pragma warning restore CA5394 // Do not use insecure randomness
         private static readonly object versionLock = new { };
 
         private static void SetCurrentlyConfiguredVersion (Versions version)
