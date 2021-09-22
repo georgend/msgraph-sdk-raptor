@@ -1,12 +1,11 @@
 # Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 Param(
-    [string] $AppSettingsPath = (Join-Path $PSScriptRoot "../../../../msgraph-sdk-raptor-compiler-lib/appsettings.json" -Resolve),
     [string] $IdentifiersPath = (Join-Path $PSScriptRoot "../../../../msgraph-sdk-raptor-compiler-lib/identifiers.json" -Resolve)
 )
 $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 . $raptorUtils
 
-$appSettings = Get-AppSettings -AppSettingsPath $AppSettingsPath
+$appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 $domain = Get-CurrentDomain -AppSettings $appSettings
 
@@ -33,7 +32,7 @@ $currentIdentityProvider = Invoke-RequestHelper -Uri "identityProviders" -Method
         Where-Object { $_.type -eq $identityProvider.type} |
         Select-Object -First 1
 
-# To avoid storing Secrets in Files, Generate them on the fly. 
+# To avoid storing Secrets in Files, Generate them on the fly.
 if($null -eq $currentIdentityProvider){
     $identityProvider.clientId = New-Guid
     $identityProvider.clientSecret = Get-RandomAlphanumericString -length 10
@@ -49,7 +48,7 @@ $currentIdentityProviderBase = Invoke-RequestHelper -Uri "identity/identityProvi
         Where-Object { $_.type -eq $identityProviderBase.type} |
         Select-Object -First 1
 
-# To avoid storing Secrets in Files, Generate them on the fly. 
+# To avoid storing Secrets in Files, Generate them on the fly.
 if($null -eq $currentIdentityProviderBase){
     $identityProviderBase.clientId = New-Guid
     $identityProviderBase.clientSecret = Get-RandomAlphanumericString -length 10

@@ -6,7 +6,7 @@ Param(
 $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 . $raptorUtils
 
-$appSettings = Get-AppSettings -AppSettingsPath $AppSettingsPath
+$appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
 

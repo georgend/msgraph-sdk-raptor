@@ -1,9 +1,12 @@
 # Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-function Get-AppSettings (
-    [string] $AppSettingsPath = (Join-Path $PSScriptRoot "./../../msgraph-sdk-raptor-compiler-lib/appsettings.json")
-) {
+function Get-AppSettings () {
+    # read app settings from Azure App Config
+    $appSettingsPath = "$env:TEMP/appSettings.json"
+    az appconfig kv export --connection-string $env:RAPTOR_CONFIGCONNECTIONSTRING --label Development --destination file --path $appSettingsPath --format json --yes
     $appSettings = Get-Content $AppSettingsPath -Raw | ConvertFrom-Json
+    Remove-Item $appSettingsPath
+
     if (    !$appSettings.CertificateThumbprint `
             -or !$appSettings.ClientID `
             -or !$appSettings.Username `
@@ -221,10 +224,10 @@ function Install-Az() {
 }
 
 <#
-    Executes a HTTP Request where content-type is Form-Data 
+    Executes a HTTP Request where content-type is Form-Data
     as required by some graph endpoints such as OneNote Create Page
 #>
-Function Invoke-FormDataRequest {    
+Function Invoke-FormDataRequest {
     [CmdletBinding()]
     param (
         $FormData = @(),
@@ -235,7 +238,7 @@ Function Invoke-FormDataRequest {
         $Headers = @{ }
     )
     $bodyLines = [System.Collections.ArrayList]::new()
-    
+
     $FormData | ForEach-Object {
         $currentFormData = $_
         $data = @(
@@ -256,7 +259,7 @@ Function Invoke-FormDataRequest {
 }
 
 <#
-    Gets Html Data using Invoke-WebRequest and 
+    Gets Html Data using Invoke-WebRequest and
     the token from the current Graph Session.
 #>
 Function Get-HtmlDataRequest {
@@ -269,7 +272,7 @@ Function Get-HtmlDataRequest {
     )
 
     $encoding = [System.Text.Encoding]::GetEncoding("utf-8")
-    $MSALToken = $encoding.GetString($GraphSession::Instance.MSALToken) 
+    $MSALToken = $encoding.GetString($GraphSession::Instance.MSALToken)
     $currentAccessToken = ConvertFrom-Json $MSALToken -AsHashtable
     $token = $currentAccessToken.AccessToken.Values.secret
     $htmlData = Invoke-WebRequest -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -Authentication Bearer -Token (ConvertTo-SecureString $token -AsPlainText -Force)

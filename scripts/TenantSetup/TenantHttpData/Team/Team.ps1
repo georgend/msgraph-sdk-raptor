@@ -1,13 +1,12 @@
 # Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 Param(
-    [string] $AppSettingsPath = (Join-Path $PSScriptRoot "../../../../msgraph-sdk-raptor-compiler-lib/appsettings.json"),
     [string] $IdentifiersPath = (Join-Path $PSScriptRoot "../../../../msgraph-sdk-raptor-compiler-lib/identifiers.json")
 )
 
 $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 . $raptorUtils
 
-$appSettings = Get-AppSettings -AppSettingsPath $AppSettingsPath
+$appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 $domain = Get-CurrentDomain -AppSettings $appSettings
 
@@ -29,16 +28,16 @@ $schedule.id
 
 # Create Scheduling Group https://docs.microsoft.com/en-us/graph/api/schedule-post-schedulinggroups?view=graph-rest-1.0&tabs=http
 <#
-    Create a Scheduling Group with all the Team members as members. 
+    Create a Scheduling Group with all the Team members as members.
 #>
 $schedulingGroupData = Get-RequestData -ChildEntity "SchedulingGroup"
 # Get Other Group Members and Add them to the SchedulingGroup
-$groupMembers = Invoke-RequestHelper -Uri "teams/$($team)/members" | 
+$groupMembers = Invoke-RequestHelper -Uri "teams/$($team)/members" |
 Select-Object -First 2
 $schedulingGroupData.userIds = $groupMembers.userId
 # Check and Get Scheduling Group if it exists
 $currentSchedulingGroup = Invoke-RequestHelper -Uri "teams/$($team)/schedule/schedulingGroups" -Method GET |
-Where-Object { $_.displayName -eq $schedulingGroupData.displayName } | 
+Where-Object { $_.displayName -eq $schedulingGroupData.displayName } |
 Select-Object -First 1
 
 if ($null -eq $currentSchedulingGroup) {
@@ -89,7 +88,7 @@ $createdSwapShiftsChangeRequest = Invoke-RequestHelper -Uri "teams/$($team)/sche
 #Get Or Create TimeOffReason if does not exist https://docs.microsoft.com/en-us/graph/api/schedule-post-timeoffreasons?view=graph-rest-1.0&tabs=http
 $timeOffReasonData = Get-RequestData -ChildEntity "TimeOffReason"
 $currentTimeOffReason = Invoke-RequestHelper -Uri "teams/$($team)/schedule/timeOffReasons" -Method GET |
-Where-Object { $_.displayName -eq $timeOffReasonData.displayName } | 
+Where-Object { $_.displayName -eq $timeOffReasonData.displayName } |
 Select-Object -First 1
 if ($null -eq $timeOffReasonData) {
     $currentTimeOffReason = Invoke-RequestHelper -Uri "teams/$($team)/schedule/timeOffReasons" -Method POST -Body $timeOffReasonData
