@@ -238,7 +238,7 @@ namespace MsGraphSDKSnippetsCompiler
         {
             var path = httpRequestMessage.RequestUri.LocalPath;
             var versionSegmentLength = "/v1.0".Length;
-            if (path.StartsWith("/v1.0") || path.StartsWith("/beta"))
+            if (path.StartsWith("/v1.0", StringComparison.OrdinalIgnoreCase) || path.StartsWith("/beta", StringComparison.OrdinalIgnoreCase))
             {
                 path = path[versionSegmentLength..];
             }
