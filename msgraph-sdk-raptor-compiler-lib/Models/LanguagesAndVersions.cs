@@ -60,7 +60,9 @@ namespace MsGraphSDKSnippetsCompiler.Models
             };
         }
 
+#pragma warning disable CA1055 // URI-like return values should not be strings
         public string DocsUrlSegment()
+#pragma warning restore CA1055 // URI-like return values should not be strings
         {
             return Version switch
             {
