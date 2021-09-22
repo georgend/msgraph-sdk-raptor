@@ -4,6 +4,7 @@ using MsGraphSDKSnippetsCompiler.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -188,7 +189,7 @@ application {
                                                 string.Empty);
                 result.AddRange(errorMessageCaptureRegex
                                             .Matches(diagnosticsToParse)
-                                            .Select(x => new { message = x.Groups["message"].Value, linenumber = int.Parse(x.Groups["linenumber"].Value) })
+                                            .Select(x => new { message = x.Groups["message"].Value, linenumber = int.Parse(x.Groups["linenumber"].Value, CultureInfo.CurrentCulture) })
                                             .Select(x => Diagnostic.Create(new DiagnosticDescriptor("JAVA1001",
                                                                                 "Error during Java compilation",
                                                                                 x.message,
