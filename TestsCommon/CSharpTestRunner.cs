@@ -184,15 +184,7 @@ public class GraphSDKTest
 
         internal static string ReturnHttpRequestMessage(string codeSnippet)
         {
-            string resultVariable = null;
-            try
-            {
-                resultVariable = GetResultVariable(codeSnippet);
-            }
-            catch (Exception e)
-            {
-                Assert.Fail("result variable is not found!" + Environment.NewLine + e.Message);
-            }
+            var resultVariable = GetResultVariable(codeSnippet);
 
             codeSnippet = codeSnippet.Replace("await graphClient", "graphClient")
                 .Replace(".GetAsync();", $@".GetHttpRequestMessage();
