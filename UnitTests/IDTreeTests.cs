@@ -43,7 +43,6 @@ namespace UnitTests
 
     public static class IDTreeTestCases
     {
-        private static readonly IDTree NullTree;
         private static readonly IDTree EmptyTree = new IDTree();
         private static readonly IDTree EmptyTree2 = new IDTree();
 
@@ -179,8 +178,8 @@ namespace UnitTests
 
         public static IEnumerable<TestCaseData> NotEqualTestCases()
         {
-            yield return new TestCaseData(EmptyTree, NullTree);
-            yield return new TestCaseData(OneItemTree, NullTree);
+            yield return new TestCaseData(EmptyTree, null);
+            yield return new TestCaseData(OneItemTree, null);
 
             // check for same-value false equivelance
             yield return new TestCaseData(OneItemTree, OneItemTreeKeyDifferent);
