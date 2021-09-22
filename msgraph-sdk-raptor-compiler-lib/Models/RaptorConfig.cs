@@ -96,12 +96,12 @@ namespace MsGraphSDKSnippetsCompiler.Models
         /// <param name="config">configuration</param>
         /// <param name="key">lookup key</param>
         /// <returns>non-empty configuration value if found</returns>
-        private static string GetNonEmptyValue(this IConfigurationRoot config, string key)
+        public static string GetNonEmptyValue(this IConfigurationRoot config, string key)
         {
-            var value = config.GetSection(key).Value;
+            var value = config?.GetSection(key)?.Value;
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new Exception($"Value for {key} is not found in appsettings.json");
+                throw new InvalidDataException($"Value for {key} is not found in appsettings.json");
             }
 
             return value;
