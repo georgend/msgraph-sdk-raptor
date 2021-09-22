@@ -30,7 +30,7 @@ namespace MsGraphSDKSnippetsCompiler
             }
             catch (Exception e)
             {
-                throw new Exception($"Request URI: {uri}{Environment.NewLine}Request Headers:{Environment.NewLine}{headers}", e);
+                throw new AggregateException($"Request URI: {uri}{Environment.NewLine}Request Headers:{Environment.NewLine}{headers}", e);
             }
         }
     }
