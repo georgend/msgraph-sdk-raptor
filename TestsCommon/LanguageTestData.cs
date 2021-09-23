@@ -9,6 +9,7 @@ namespace TestsCommon
     /// <param name="IsCompilationKnownIssue">Whether the test case is failing due to a known issue in compilation</param>
     /// <param name="IsExecutionKnownIssue">Whether the test case is failing due to a known issue in execution</param>
     /// <param name="KnownIssueMessage">Message to represent known issue</param>
+    /// <param name="KnownIssueTestNamePrefix">Test name prefix for the known issue</param>
     /// <param name="DocsLink">Documentation link where snippet is shown</param>
     /// <param name="FileName">Snippet file name</param>
     /// <param name="DllPath">Optional dll path to load Microsoft.Graph from a local resource instead of published nuget</param>
@@ -20,6 +21,7 @@ namespace TestsCommon
         bool IsCompilationKnownIssue,
         bool IsExecutionKnownIssue,
         string KnownIssueMessage,
+        string KnownIssueTestNamePrefix,
         string DocsLink,
         string FileName,
         string DllPath,
