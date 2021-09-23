@@ -1,0 +1,7 @@
+{
+    "definition": [
+        "{\"TokenLifetimePolicy\":{\"Version\":1,\"AccessTokenLifetime\":\"8:00:00\"}}"
+      ],
+    "displayName": "Raptor Token Lifetime Policy",
+    "isOrganizationDefault": false
+  }

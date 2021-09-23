@@ -1,0 +1,7 @@
+{
+    "displayName": "PassthroughAuthentication rollout policy",
+    "description": "PassthroughAuthentication rollout policy",
+    "feature": "passthroughAuthentication",
+    "isEnabled": false,
+    "isAppliedToOrganization": false
+}
