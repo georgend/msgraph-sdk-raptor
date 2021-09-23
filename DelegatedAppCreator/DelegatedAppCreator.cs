@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MsGraphSDKSnippetsCompiler;
-using MsGraphSDKSnippetsCompiler.Models;
 
 namespace DelegatedAppCreator
 {
     /// <summary>
+    /// For both the regular and the education tenants:
     /// 1. Fetches all delegated scopes listed in permission descriptions in the devx-content repo.
     /// 2. Fetches all the applications with delegated permissions that were previously created in the tenant.
     /// 3. Creates missing applications with desired oauth permission grant (admin consent in the Azure Portal)
@@ -16,9 +16,21 @@ namespace DelegatedAppCreator
     {
         static async Task Main(string[] args)
         {
-            const string Prefix = "DelegatedApp ";
-            var permissionManagerApplication = new PermissionManager();
+            Console.WriteLine("*************************");
+            Console.WriteLine("Creating applications for regular tenant...");
+            Console.WriteLine("*************************");
+            await CreateDelegatedApps(new PermissionManager()).ConfigureAwait(false);
 
+            Console.WriteLine();
+            Console.WriteLine("*************************");
+            Console.WriteLine("Creating applications for regular tenant...");
+            Console.WriteLine("*************************");
+            await CreateDelegatedApps(new PermissionManager(isEducation:true)).ConfigureAwait(false);
+        }
+
+        private static async Task CreateDelegatedApps(PermissionManager permissionManagerApplication)
+        {
+            const string Prefix = "DelegatedApp ";
             // get existing applications
             var existingApplicationSet = await permissionManagerApplication.GetExistingApplicationsWithPrefix(Prefix).ConfigureAwait(false);
             PrintApplicationNames("Existing Applications", existingApplicationSet);

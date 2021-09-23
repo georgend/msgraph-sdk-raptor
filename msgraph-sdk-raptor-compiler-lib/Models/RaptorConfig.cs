@@ -13,9 +13,14 @@ namespace MsGraphSDKSnippetsCompiler.Models
                 Authority = config.GetNonEmptyValue(nameof(Authority)), //Delegated Permissions
                 Username = config.GetNonEmptyValue(nameof(Username)),
                 Password = config.GetNonEmptyValue(nameof(Password)), // Application permissions
+                EducationUsername = config.GetNonEmptyValue(nameof(EducationUsername)),
+                EducationPassword = config.GetNonEmptyValue(nameof(EducationPassword)), // Application permissions
                 TenantID = config.GetNonEmptyValue(nameof(TenantID)),
                 ClientID = config.GetNonEmptyValue(nameof(ClientID)),
                 ClientSecret = config.GetNonEmptyValue(nameof(ClientSecret)),
+                EducationTenantID = config.GetNonEmptyValue(nameof(EducationTenantID)),
+                EducationClientID = config.GetNonEmptyValue(nameof(EducationClientID)),
+                EducationClientSecret = config.GetNonEmptyValue(nameof(EducationClientSecret)),
                 DocsRepoCheckoutDirectory = config.GetNonEmptyValue("BUILD_SOURCESDIRECTORY"),
                 RaptorStorageConnectionString = config.GetNonEmptyValue(nameof(RaptorStorageConnectionString)),
                 IsLocalRun = bool.Parse(config.GetNonEmptyValue(nameof(IsLocalRun)))
@@ -31,6 +36,12 @@ namespace MsGraphSDKSnippetsCompiler.Models
         }
 
         public string ClientID
+        {
+            get;
+            init;
+        }
+
+        public string EducationClientID
         {
             get;
             init;
@@ -54,6 +65,19 @@ namespace MsGraphSDKSnippetsCompiler.Models
             init;
         }
 
+
+        public string EducationUsername
+        {
+            get;
+            init;
+        }
+
+        public string EducationPassword
+        {
+            get;
+            init;
+        }
+
         public string TenantID
         {
             get;
@@ -61,6 +85,17 @@ namespace MsGraphSDKSnippetsCompiler.Models
         }
 
         public string ClientSecret
+        {
+            get;
+            init;
+        }
+        public string EducationTenantID
+        {
+            get;
+            init;
+        }
+
+        public string EducationClientSecret
         {
             get;
             init;
