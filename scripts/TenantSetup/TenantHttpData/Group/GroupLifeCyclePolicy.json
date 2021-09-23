@@ -1,0 +1,5 @@
+{
+    "groupLifetimeInDays": 100,
+    "managedGroupTypes": "Selected",
+    "alternateNotificationEmails": "admin@contoso.com"
+}

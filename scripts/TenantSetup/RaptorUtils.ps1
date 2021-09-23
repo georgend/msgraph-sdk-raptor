@@ -3,7 +3,12 @@
 function Get-AppSettings () {
     # read app settings from Azure App Config
     $appSettingsPath = "$env:TEMP/appSettings.json"
-    az appconfig kv export --connection-string $env:RAPTOR_CONFIGCONNECTIONSTRING --label Development --destination file --path $appSettingsPath --format json --yes
+    # Support Reading Settings from a Custom Label, otherwise default to Development
+    $settingsLabel = $env:RAPTOR_CONFIGLABEL
+    if([string]::IsNullOrWhiteSpace($settingsLabel)){
+        $settingsLabel = "Development"
+    }
+    az appconfig kv export --connection-string $env:RAPTOR_CONFIGCONNECTIONSTRING --label $settingsLabel --destination file --path $appSettingsPath --format json --yes
     $appSettings = Get-Content $AppSettingsPath -Raw | ConvertFrom-Json
     Remove-Item $appSettingsPath
 
@@ -67,7 +72,7 @@ function Invoke-RequestHelper (
     [Parameter(Mandatory = $False)][ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")][string] $Method = "GET",
     $Headers = @{ },
     $Body,
-    $User
+    $User    
 ) {
     #Append Content-Type to headers collection
     #Append "MS-APP-ACTS-AS" to headers collection
