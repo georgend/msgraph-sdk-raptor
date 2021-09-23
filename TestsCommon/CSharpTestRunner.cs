@@ -113,17 +113,11 @@ public class GraphSDKTest
         /// 5. It uses the compiled binary to make a request to the demo tenant and reports error if there's a service exception i.e 4XX or 5xx response
         /// </summary>
         /// <param name="executionTestData">Test data containing information such as snippet file name</param>
-        /// <param name="permissionManagerApplication">Permission manager application to provide auth providers and tokens</param>
-        public static async Task Execute(ExecutionTestData executionTestData, PermissionManager permissionManagerApplication)
+        public static async Task Execute(ExecutionTestData executionTestData)
         {
             if (executionTestData == null)
             {
                 throw new ArgumentNullException(nameof(executionTestData));
-            }
-
-            if (permissionManagerApplication == null)
-            {
-                throw new ArgumentNullException(nameof(permissionManagerApplication));
             }
 
             var testData = executionTestData.LanguageTestData;
@@ -131,7 +125,7 @@ public class GraphSDKTest
             var (codeToCompile, codeSnippetFormatted) = GetCodeToExecute(executionTestData.FileContent);
 
             // Compile Code
-            var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData.FileName, testData.DllPath, permissionManagerApplication);
+            var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData.FileName, testData.DllPath);
             var executionResultsModel = await microsoftGraphCSharpCompiler
                 .ExecuteSnippet(codeToCompile, testData.Version)
                 .ConfigureAwait(false);

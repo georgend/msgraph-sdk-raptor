@@ -10,14 +10,6 @@ namespace CsharpV1ExecutionTests
     [TestFixture]
     public class SnippetExecutionV1Tests
     {
-        private PermissionManager _permissionManagerApplication;
-
-        [OneTimeSetUp]
-        public async Task OneTimeSetup()
-        {
-            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication().ConfigureAwait(false);
-        }
-
         /// <summary>
         /// Gets TestCaseData for V1
         /// TestCaseData contains snippet file name, version and test case name
@@ -38,7 +30,7 @@ namespace CsharpV1ExecutionTests
         [RetryTestCaseSource(typeof(SnippetExecutionV1Tests), nameof(TestDataV1), MaxTries = 3)]
         public async Task Test(ExecutionTestData testData)
         {
-            await CSharpTestRunner.Execute(testData, _permissionManagerApplication).ConfigureAwait(false);
+            await CSharpTestRunner.Execute(testData).ConfigureAwait(false);
         }
     }
 }

@@ -23,6 +23,8 @@ namespace MsGraphSDKSnippetsCompiler
 
         private readonly RaptorConfig _config;
 
+        private readonly bool IsEducation;
+
         /// <summary>
         /// Delegated auth providers
         /// key: scopeName
@@ -39,13 +41,17 @@ namespace MsGraphSDKSnippetsCompiler
             get; init;
         }
 
-        public PermissionManager()
+        public PermissionManager(bool isEducation = false)
         {
+            IsEducation = isEducation;
             _config = TestsSetup.Config.Value;
+            var clientSecretCredential = IsEducation
+                ? new ClientSecretCredential(_config.EducationTenantID, _config.EducationClientID, _config.EducationClientSecret)
+                : new ClientSecretCredential(_config.TenantID, _config.ClientID, _config.ClientSecret);
 
             const string DefaultAuthScope = "https://graph.microsoft.com/.default";
             AuthProvider = new TokenCredentialAuthProvider(
-                new ClientSecretCredential(_config.TenantID, _config.ClientID, _config.ClientSecret),
+                clientSecretCredential,
                 new List<string> { DefaultAuthScope });
             _client = new GraphServiceClient(AuthProvider);
             _authProviders = new Dictionary<string, TokenCredentialAuthProvider>();
@@ -262,6 +268,9 @@ namespace MsGraphSDKSnippetsCompiler
         internal async Task CreateDelegatedAuthProviders()
         {
             var permissionDescriptions = await GetPermissionDescriptions().ConfigureAwait(false);
+            (string username, string password, string tenantID) = IsEducation
+                ? (_config.EducationUsername, _config.EducationPassword, _config.EducationTenantID)
+                : (_config.Username, _config.Password, _config.TenantID);
 
             foreach (var delegatedPermissionScope in permissionDescriptions.delegatedScopesList)
             {
@@ -270,11 +279,11 @@ namespace MsGraphSDKSnippetsCompiler
                 {
                     var application = await GetApplication(delegatedPermissionScope).ConfigureAwait(false);
                     _authProviders[delegatedPermissionScope.value] = new TokenCredentialAuthProvider(
-                        new UsernamePasswordCredential(_config.Username, _config.Password, _config.TenantID, application.AppId, new UsernamePasswordCredentialOptions
+                        new UsernamePasswordCredential(username, password, tenantID, application.AppId, new UsernamePasswordCredentialOptions
                         {
                             TokenCachePersistenceOptions = new TokenCachePersistenceOptions
                             {
-                                Name = _config.Username + delegatedPermissionScope.value,
+                                Name = username + delegatedPermissionScope.value,
                                 // there is no default linux implementation for safe storage. This project is run in 2 environments:
                                 // 1. local development
                                 // 2. disposable Azure DevOps machines
