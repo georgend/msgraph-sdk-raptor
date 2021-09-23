@@ -65,14 +65,17 @@ namespace TestsCommon
 
         #region Needs analysis
         internal const string NeedsAnalysisText = "This is a consistently failing test, the root cause is not yet identified";
+        internal const string NeedsAnalysisTestNamePrefix = "known-issue-needs-analysis-";
         #endregion
 
         #region Missing data
         internal const string MissingDataText = "This test is missing data in identifiers.json file";
+        internal const string MissingDataTestNamePrefix = "known-issue-missing-data-";
         #endregion
 
-        #region Missing data
+        #region Missing permission scope
         internal const string MissingPermissionScopeText = "DevX API is not returning any delegated or application permissions for the URI.";
+        internal const string MissingPermissionScopeTestNamePrefix = "known-issue-missing-permission-scope-";
         #endregion
 
         #region Test Owner values (to categorize results in Azure DevOps)
@@ -97,9 +100,9 @@ namespace TestsCommon
         internal const string PATCH = nameof(PATCH);
         #endregion
 
-        internal static readonly KnownIssue NeedsAnalysisKnownIssue = new KnownIssue(NeedsAnalysis, NeedsAnalysisText);
-        internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(MissingData, MissingDataText);
-        internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(MissingPermissionScope, MissingPermissionScopeText);
+        internal static readonly KnownIssue NeedsAnalysisKnownIssue = new KnownIssue(NeedsAnalysis, NeedsAnalysisText, NeedsAnalysisTestNamePrefix);
+        internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(MissingData, MissingDataText, MissingDataTestNamePrefix);
+        internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(MissingPermissionScope, MissingPermissionScopeText, MissingPermissionScopeTestNamePrefix);
 
         /// <summary>
         /// Constructs property not found message

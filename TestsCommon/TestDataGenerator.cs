@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace TestsCommon
 {
     // Owner is used to categorize known test failures, so that we can redirect issues faster
-    public record KnownIssue (string Owner, string Message);
+    public record KnownIssue (string Owner, string Message, string TestNamePrefix = "known-issue-");
 
     
     /// <summary>
@@ -84,8 +84,7 @@ namespace TestsCommon
                    where !testData.IsCompilationKnownIssue // select compiling tests
                    && !(testData.IsExecutionKnownIssue ^ runSettings.TestType == TestType.ExecutionKnownIssues) // select known execution issues iff requested
                    && fileContent.Contains("GetAsync()") // select only the get tests
-                   //&& executionTestData.LanguageTestData.TestName.Equals("get-user-csharp-V1-executes", StringComparison.OrdinalIgnoreCase)
-                   select new TestCaseData(executionTestData).SetName(executionTestData.LanguageTestData.TestName).SetProperty("Owner", executionTestData.LanguageTestData.Owner);
+                   select new TestCaseData(executionTestData).SetName(executionTestData.LanguageTestData.KnownIssueTestNamePrefix + executionTestData.LanguageTestData.TestName).SetProperty("Owner", executionTestData.LanguageTestData.Owner);
         }
 
         private static IEnumerable<LanguageTestData> GetLanguageTestData(RunSettings runSettings)
@@ -113,12 +112,14 @@ namespace TestsCommon
                    let isExecutionKnownIssue = executionKnownIssues.ContainsKey(executionIssueLookupKey)
                    let executionKnownIssue = isExecutionKnownIssue ? executionKnownIssues[executionIssueLookupKey] : null
                    let knownIssueMessage = compilationKnownIssue?.Message ?? executionKnownIssue?.Message ?? string.Empty
+                   let knownIssueTestNamePrefix = compilationKnownIssue?.TestNamePrefix ?? executionKnownIssue?.TestNamePrefix ?? string.Empty
                    let owner = compilationKnownIssue?.Owner ?? executionKnownIssue?.Message ?? string.Empty
                    select new LanguageTestData(
                            version,
                            isCompilationKnownIssue,
                            isExecutionKnownIssue,
                            knownIssueMessage,
+                           knownIssueTestNamePrefix,
                            docsLink,
                            fileName,
                            runSettings.DllPath,
