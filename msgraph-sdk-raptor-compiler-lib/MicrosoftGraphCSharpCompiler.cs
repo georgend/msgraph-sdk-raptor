@@ -31,21 +31,20 @@ namespace MsGraphSDKSnippetsCompiler
         const string SourceCodePath = "generated.cs";
         private readonly string _markdownFileName;
         private readonly string _dllPath;
-        private readonly PermissionManager _permissionManagerApplication;
+        private bool _isEducation;
+
+        private async Task<PermissionManager> GetPermissionManager()
+        {
+            return _isEducation
+                ? await TestsSetup.EducationTenantPermissionManager.Value.ConfigureAwait(false)
+                : await TestsSetup.RegularTenantPermissionManager.Value.ConfigureAwait(false);
+        }
 
         /// for hiding bearer token
         private const string AuthHeaderPattern = "Authorization: Bearer .*";
         private const string AuthHeaderReplacement = "Authorization: Bearer <token>";
         private static readonly Regex AuthHeaderRegex = new Regex(AuthHeaderPattern, RegexOptions.Compiled);
 
-        public MicrosoftGraphCSharpCompiler(string markdownFileName,
-            string dllPath,
-            PermissionManager permissionManagerApplication)
-        {
-            _markdownFileName = markdownFileName;
-            _dllPath = dllPath;
-            _permissionManagerApplication = permissionManagerApplication;
-        }
         public MicrosoftGraphCSharpCompiler(string markdownFileName,
             string dllPath)
         {
@@ -148,8 +147,13 @@ namespace MsGraphSDKSnippetsCompiler
                 {
                     dynamic instance = assembly.CreateInstance("GraphSDKTest");
 
-                    using var httpRequestMessage = instance.GetRequestMessage(null);
-                    var delegatedScopes = await GetScopes(httpRequestMessage);
+                    using HttpRequestMessage httpRequestMessage = instance.GetRequestMessage(null);
+                    if (httpRequestMessage.RequestUri.PathAndQuery[5..].Contains("/education", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _isEducation = true;
+                    }
+
+                    var delegatedScopes = await GetScopes(httpRequestMessage).ConfigureAwait(false);
 
                     if (delegatedScopes != null)
                     {
@@ -187,11 +191,12 @@ namespace MsGraphSDKSnippetsCompiler
         /// </returns>
         private async Task<bool> ExecuteWithDelegatedPermissions(dynamic instance, Scope[] scopes)
         {
+            var permissionManager = await GetPermissionManager().ConfigureAwait(false);
             foreach (var scope in scopes)
             {
                 try
                 {
-                    var authProvider = _permissionManagerApplication.GetDelegatedAuthProvider(scope);
+                    var authProvider = permissionManager.GetDelegatedAuthProvider(scope);
 
                     // Pass custom http provider to provide interception and logging
                     using var customHttpProvider = new CustomHttpProvider();
@@ -216,9 +221,10 @@ namespace MsGraphSDKSnippetsCompiler
         /// <returns>true if the call succeeds</returns>
         private async Task<bool> ExecuteWithApplicationPermissions(dynamic instance)
         {
+            var permissionManager = await GetPermissionManager().ConfigureAwait(false);
             // Pass custom http provider to provide interception and logging
             using var customHttpProvider = new CustomHttpProvider();
-            await ((instance.Main(_permissionManagerApplication.AuthProvider, customHttpProvider) as Task).ConfigureAwait(false));
+            await ((instance.Main(permissionManager.AuthProvider, customHttpProvider) as Task).ConfigureAwait(false));
             return true;
         }
 

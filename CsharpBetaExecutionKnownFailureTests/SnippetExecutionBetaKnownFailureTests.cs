@@ -12,14 +12,6 @@ namespace CsharpBetaExecutionKnownFailureTests
     [TestFixture]
     public class SnippetExecutionBetaKnownFailureTests
     {
-        private PermissionManager _permissionManagerApplication;
-
-        [OneTimeSetUp]
-        public async Task OneTimeSetup()
-        {
-            _permissionManagerApplication = await TestsSetup.GetPermissionManagerApplication().ConfigureAwait(false);
-        }
-
         /// <summary>
         /// Gets TestCaseData for Beta
         /// TestCaseData contains snippet file name, version and test case name
@@ -42,7 +34,7 @@ namespace CsharpBetaExecutionKnownFailureTests
         [RetryTestCaseSource(typeof(SnippetExecutionBetaKnownFailureTests), nameof(TestDataBeta), MaxTries = 3)]
         public async Task Test(ExecutionTestData testData)
         {
-            await CSharpTestRunner.Execute(testData, _permissionManagerApplication).ConfigureAwait(false);
+            await CSharpTestRunner.Execute(testData).ConfigureAwait(false);
         }
     }
 }
