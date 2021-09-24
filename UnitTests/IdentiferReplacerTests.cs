@@ -18,17 +18,17 @@ namespace UnitTests
         }
 
         [TestCase("https://graph.microsoft.com/v1.0/applications/{application-id}/owners",
-                  "https://graph.microsoft.com/v1.0/applications/<application>/owners")]
+                  "https://graph.microsoft.com/v1.0/applications/application/owners")]
         [TestCase("https://graph.microsoft.com/v1.0/teams/{team-id}/channels/{channel-id}/members/{conversationMember-id}",
-                  "https://graph.microsoft.com/v1.0/teams/<team>/channels/<team_channel>/members/<team_channel_conversationMember>")]
+                  "https://graph.microsoft.com/v1.0/teams/team/channels/team_channel/members/team_channel_conversationMember")]
         [TestCase("https://graph.microsoft.com/v1.0/communications/callRecords/{callRecords.callRecord-id}?$expand=sessions($expand=segments)",
-                  "https://graph.microsoft.com/v1.0/communications/callRecords/<callRecords.callRecord>?$expand=sessions($expand=segments)")]
+                  "https://graph.microsoft.com/v1.0/communications/callRecords/callRecords.callRecord?$expand=sessions($expand=segments)")]
         [TestCase("https://graph.microsoft.com/v1.0/chats/{chat-id}/members/{conversationMember-id}",
-                  "https://graph.microsoft.com/v1.0/chats/<chat>/members/<chat_conversationMember>")]
+                  "https://graph.microsoft.com/v1.0/chats/chat/members/chat_conversationMember")]
         [TestCase("https://graph.microsoft.com/v1.0/teams/{team-id}/members/{conversationMember-id}",
-                  "https://graph.microsoft.com/v1.0/teams/<team>/members/<team_conversationMember>")]
+                  "https://graph.microsoft.com/v1.0/teams/team/members/team_conversationMember")]
         [TestCase("https://graph.microsoft.com/v1.0/education/schools/{educationSchool-id}/users",
-                  "https://graph.microsoft.com/v1.0/education/schools/<educationSchool>/users")]
+                  "https://graph.microsoft.com/v1.0/education/schools/educationSchool/users")]
 #pragma warning disable CA1054 // URI-like parameters should not be strings
         public void TestIds(string snippetUrl, string expectedUrl)
 #pragma warning restore CA1054 // URI-like parameters should not be strings

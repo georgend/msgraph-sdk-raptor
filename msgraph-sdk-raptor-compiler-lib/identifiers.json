@@ -1,452 +1,452 @@
 {
     "application": {
-        "_value": "<application>"
+        "_value": "application"
     },
     "calendarGroup": {
-        "_value": "<calendarGroup>"
+        "_value": "calendarGroup"
     },
     "team": {
-        "_value": "<team>",
+        "_value": "team",
         "channel": {
-            "_value": "<team_channel>",
+            "_value": "team_channel",
             "conversationMember": {
-                "_value": "<team_channel_conversationMember>"
+                "_value": "team_channel_conversationMember"
             }
         },
         "teamsAppInstallation": {
-            "_value": "<team_teamsAppInstallation>"
+            "_value": "team_teamsAppInstallation"
         },
         "offerShiftRequest": {
-            "_value": "<team_offerShiftRequest>"
+            "_value": "team_offerShiftRequest"
         },
         "openShift": {
-            "_value": "<team_openShift>"
+            "_value": "team_openShift"
         },
         "openShiftChangeRequest": {
-            "_value": "<team_openShiftChangeRequest>"
+            "_value": "team_openShiftChangeRequest"
         },
         "swapShiftsChangeRequest": {
-            "_value": "<team_swapShiftsChangeRequest>"
+            "_value": "team_swapShiftsChangeRequest"
         },
         "timeOffRequest": {
-            "_value": "<team_timeOffRequest>"
+            "_value": "team_timeOffRequest"
         },
         "schedulingGroup": {
-            "_value": "<team_schedulingGroup>"
+            "_value": "team_schedulingGroup"
         },
         "shift": {
-            "_value": "<team_shift>"
+            "_value": "team_shift"
         },
         "conversationMember": {
-            "_value": "<team_conversationMember>"
+            "_value": "team_conversationMember"
         },
         "timeOff": {
-            "_value": "<team_timeOff>"
+            "_value": "team_timeOff"
         },
         "timeOffReason": {
-            "_value": "<team_timeOffReason>"
+            "_value": "team_timeOffReason"
         }
     },
     "contactFolder": {
-        "_value": "<contactFolder>"
+        "_value": "contactFolder"
     },
     "orgContact": {
-        "_value": "<orgContact>"
+        "_value": "orgContact"
     },
     "driveItem": {
-        "_value": "<driveItem>",
+        "_value": "driveItem",
         "workbookNamedItem": {
-            "_value": "<driveItem_workbookNamedItem>",
+            "_value": "driveItem_workbookNamedItem",
             "workbookRangeBorder": {
-                "_value": "<driveItem_workbookNamedItem_workbookRangeBorder>"
+                "_value": "driveItem_workbookNamedItem_workbookRangeBorder"
             }
         },
         "workbookWorksheet": {
-            "_value": "<driveItem_workbookWorksheet>",
+            "_value": "driveItem_workbookWorksheet",
             "workbookChart": {
-                "_value": "<driveItem_workbookWorksheet_workbookChart>",
+                "_value": "driveItem_workbookWorksheet_workbookChart",
                 "workbookChartSeries": {
-                    "_value": "<driveItem_workbookWorksheet_workbookChart_workbookChartSeries>",
+                    "_value": "driveItem_workbookWorksheet_workbookChart_workbookChartSeries",
                     "workbookChartPoint": {
-                        "_value": "<driveItem_workbookWorksheet_workbookChart_workbookChartSeries_workbookChartPoint>"
+                        "_value": "driveItem_workbookWorksheet_workbookChart_workbookChartSeries_workbookChartPoint"
                     }
                 }
             }
         },
         "workbookTable": {
-            "_value": "<driveItem_workbookTable>",
+            "_value": "driveItem_workbookTable",
             "workbookTableColumn": {
-                "_value": "<driveItem_workbookTable_workbookTableColumn>"
+                "_value": "driveItem_workbookTable_workbookTableColumn"
             },
             "workbookTableRow": {
-                "_value": "<driveItem_workbookTable_workbookTableRow>"
+                "_value": "driveItem_workbookTable_workbookTableRow"
             }
         },
         "permission": {
-            "_value": "<driveItem_permission>"
+            "_value": "driveItem_permission"
         },
         "thumbnailSet": {
-            "_value": "<driveItem_thumbnailSet>",
+            "_value": "driveItem_thumbnailSet",
             "thumbnailSet": {
-                "_value": "<driveItem_thumbnailSet_thumbnailSet>"
+                "_value": "driveItem_thumbnailSet_thumbnailSet"
             }
         },
         "workbookComment": {
-            "_value": "<driveItem_workbookComment>",
+            "_value": "driveItem_workbookComment",
             "workbookCommentReply": {
-                "_value": "<driveItem_workbookComment_workbookCommentReply>"
+                "_value": "driveItem_workbookComment_workbookCommentReply"
             }
         },
         "driveItemVersion": {
-            "_value": "<driveItem_driveItemVersion>"
+            "_value": "driveItem_driveItemVersion"
         },
         "workbookOperation": {
-            "_value": "<driveItem_workbookOperation>"
+            "_value": "driveItem_workbookOperation"
         }
     },
     "subscription": {
-        "_value": "<subscription>"
+        "_value": "subscription"
     },
     "educationClass": {
-        "_value": "<educationClass>",
+        "_value": "educationClass",
         "educationAssignment": {
-            "_value": "<educationAssignment>",
+            "_value": "educationAssignment",
             "educationSubmission": {
-                "_value": "<educationSubmission>",
+                "_value": "educationSubmission",
                 "educationSubmissionResource": {
-                    "_value": "<educationSubmissionResource>"
+                    "_value": "educationSubmissionResource"
                 }
             }
         }
     },
     "educationSchool": {
-        "_value": "<educationSchool>"
+        "_value": "educationSchool"
     },
     "site": {
-        "_value": "<site>",
+        "_value": "site",
         "list": {
-            "_value": "<site_list>",
+            "_value": "site_list",
             "listItem": {
-                "_value": "<site_list_listItem>",
+                "_value": "site_list_listItem",
                 "listItemVersion": {
-                    "_value": "<site_list_listItem_listItemVersion>"
+                    "_value": "site_list_listItem_listItemVersion"
                 }
             }
         },
         "permission": {
-            "_value": "<site_permission>"
+            "_value": "site_permission"
         }
     },
     "event": {
-        "_value": "<event>"
+        "_value": "event"
     },
     "message": {
-        "_value": "<message>",
+        "_value": "message",
         "attachment": {
-            "_value": "<message_attachment>"
+            "_value": "message_attachment"
         },
         "extension": {
-            "_value": "<message_extension>"
+            "_value": "message_extension"
         }
     },
     "group": {
-        "_value": "<group>",
+        "_value": "group",
         "conversation": {
-            "_value": "<group_conversation>"
+            "_value": "group_conversation"
         },
         "conversationThread": {
-            "_value": "<group_conversationThread>",
+            "_value": "group_conversationThread",
             "post": {
-                "_value": "<group_conversationThread_post>",
+                "_value": "group_conversationThread_post",
                 "extension": {
-                    "_value": "<group_conversationThread_post_extension>"
+                    "_value": "group_conversationThread_post_extension"
                 }
             }
         },
         "event": {
-            "_value": "<group_event>",
+            "_value": "group_event",
             "extension": {
-                "_value": "<group_event_extension>"
+                "_value": "group_event_extension"
             }
         }
     },
     "drive": {
-        "_value": "<drive>",
+        "_value": "drive",
         "driveItem": {
-            "_value": "<drive_driveItem>"
+            "_value": "drive_driveItem"
         }
     },
     "activityBasedTimeoutPolicy": {
-        "_value": "<activityBasedTimeoutPolicy>"
+        "_value": "activityBasedTimeoutPolicy"
     },
     "administrativeUnit": {
-        "_value": "<administrativeUnit>",
+        "_value": "administrativeUnit",
         "scopedRoleMembership": {
-            "_value": "<administrativeUnit_scopedRoleMembership>"
+            "_value": "administrativeUnit_scopedRoleMembership"
         }
     },
     "agreement": {
-        "_value": "<agreement>"
+        "_value": "agreement"
     },
     "alert": {
-        "_value": "<alert>"
+        "_value": "alert"
     },
     "appConsentRequest": {
-        "_value": "<appConsentRequest>",
+        "_value": "appConsentRequest",
         "userConsentRequest": {
-            "_value": "<appConsentRequest_userConsentRequest>"
+            "_value": "appConsentRequest_userConsentRequest"
         }
     },
     "applicationTemplate": {
-        "_value": "<applicationTemplate>"
+        "_value": "applicationTemplate"
     },
     "claimsMappingPolicy": {
-        "_value": "<claimsMappingPolicy>"
+        "_value": "claimsMappingPolicy"
     },
     "homeRealmDiscoveryPolicy": {
-        "_value": "<homeRealmDiscoveryPolicy>"
+        "_value": "homeRealmDiscoveryPolicy"
     },
     "tokenIssuancePolicy": {
-        "_value": "<tokenIssuancePolicy>"
+        "_value": "tokenIssuancePolicy"
     },
     "tokenLifetimePolicy": {
-        "_value": "<tokenLifetimePolicy>"
+        "_value": "tokenLifetimePolicy"
     },
     "plannerPlan": {
-        "_value": "<plannerPlan>"
+        "_value": "plannerPlan"
     },
     "user": {
-        "_value": "<user>",
+        "_value": "user",
         "calendarPermission": {
-            "_value": "<user_calendarPermission>"
+            "_value": "user_calendarPermission"
         },
         "microsoftAuthenticatorAuthenticationMethod": {
-            "_value": "<user_microsoftAuthenticatorAuthenticationMethod>"
+            "_value": "user_microsoftAuthenticatorAuthenticationMethod"
         },
         "windowsHelloForBusinessAuthenticationMethod": {
-            "_value": "<user_windowsHelloForBusinessAuthenticationMethod>"
+            "_value": "user_windowsHelloForBusinessAuthenticationMethod"
         },
         "userScopeTeamsAppInstallation": {
-            "_value": "<user_userScopeTeamsAppInstallation>"
+            "_value": "user_userScopeTeamsAppInstallation"
         },
         "chat": {
-           "_value": "<chat>"
+           "_value": "chat"
         }
     },
     "call": {
-        "_value": "<call>",
+        "_value": "call",
         "participant": {
-            "_value": "<call_participant>"
+            "_value": "call_participant"
         }
     },
     "callRecords.callRecord": {
-        "_value": "<callRecords.callRecord>"
+        "_value": "callRecords.callRecord"
     },
     "organization": {
-        "_value": "<organization>",
+        "_value": "organization",
         "certificateBasedAuthConfiguration": {
-            "_value": "<organization_certificateBasedAuthConfiguration>"
+            "_value": "organization_certificateBasedAuthConfiguration"
         },
         "organizationalBrandingLocalization": {
-            "_value": "<organization_organizationalBrandingLocalization>"
+            "_value": "organization_organizationalBrandingLocalization"
         }
     },
     "conditionalAccessPolicy": {
-        "_value": "<conditionalAccessPolicy>"
+        "_value": "conditionalAccessPolicy"
     },
     "contact": {
-        "_value": "<contact>"
+        "_value": "contact"
     },
     "contract": {
-        "_value": "<contract>"
+        "_value": "contract"
     },
     "chat": {
-        "_value": "<chat>",
+        "_value": "chat",
         "conversationMember": {
-            "_value": "<chat_conversationMember>"
+            "_value": "chat_conversationMember"
         },
         "teamsAppInstallation": {
-            "_value": "<chat_teamsAppInstallation>"
+            "_value": "chat_teamsAppInstallation"
         },
         "teamsTab": {
-            "_value": "<chat_teamsTab>"
+            "_value": "chat_teamsTab"
         }
     },
     "namedLocation": {
-        "_value": "<namedLocation>"
+        "_value": "namedLocation"
     },
     "dataPolicyOperation": {
-        "_value": "<dataPolicyOperation>"
+        "_value": "dataPolicyOperation"
     },
     "device": {
-        "_value": "<device>"
+        "_value": "device"
     },
     "directoryObject": {
-        "_value": "<directoryObject>"
+        "_value": "directoryObject"
     },
     "directoryAudit": {
-        "_value": "<directoryAudit>"
+        "_value": "directoryAudit"
     },
     "directoryRole": {
-        "_value": "<directoryRole>"
+        "_value": "directoryRole"
     },
     "directoryRoleTemplate": {
-        "_value": "<directoryRoleTemplate>"
+        "_value": "directoryRoleTemplate"
     },
     "printer": {
-        "_value": "<printer>",
+        "_value": "printer",
         "printJob": {
-            "_value": "<printer_printJob>",
+            "_value": "printer_printJob",
             "printDocument": {
-                "_value": "<printer_printJob_printDocument>"
+                "_value": "printer_printJob_printDocument"
             }
         },
         "printTaskTrigger": {
-            "_value": "<printer_printTaskTrigger>"
+            "_value": "printer_printTaskTrigger"
         }
     },
     "domain": {
-        "_value": "<domain>"
+        "_value": "domain"
     },
     "educationUser": {
-        "_value": "<educationUser>"
+        "_value": "educationUser"
     },
     "threatAssessmentRequest": {
-        "_value": "<threatAssessmentRequest>"
+        "_value": "threatAssessmentRequest"
     },
     "featureRolloutPolicy": {
-        "_value": "<featureRolloutPolicy>"
+        "_value": "featureRolloutPolicy"
     },
     "authenticationMethodConfiguration": {
-        "_value": "<authenticationMethodConfiguration>"
+        "_value": "authenticationMethodConfiguration"
     },
     "groupLifecyclePolicy": {
-        "_value": "<groupLifecyclePolicy>"
+        "_value": "groupLifecyclePolicy"
     },
     "groupSetting": {
-        "_value": "<groupSetting>"
+        "_value": "groupSetting"
     },
     "groupSettingTemplate": {
-        "_value": "<groupSettingTemplate>"
+        "_value": "groupSettingTemplate"
     },
     "identityProvider": {
-        "_value": "<identityProvider>"
+        "_value": "identityProvider"
     },
     "identityProviderBase": {
-        "_value": "<identityProviderBase>"
+        "_value": "identityProviderBase"
     },
     "todoTaskList": {
-        "_value": "<todoTaskList>",
+        "_value": "todoTaskList",
         "todoTask": {
-            "_value": "<todoTaskList_todoTask>",
+            "_value": "todoTaskList_todoTask",
             "linkedResource": {
-                "_value": "<todoTaskList_todoTask_linkedResource>"
+                "_value": "todoTaskList_todoTask_linkedResource"
             }
         }
     },
     "mailFolder": {
-        "_value": "<mailFolder>",
+        "_value": "mailFolder",
         "messageRule": {
-            "_value": "<mailFolder_messageRule>"
+            "_value": "mailFolder_messageRule"
         }
     },
     "notebook": {
-        "_value": "<notebook>"
+        "_value": "notebook"
     },
     "onenoteOperation": {
-        "_value": "<onenoteOperation>"
+        "_value": "onenoteOperation"
     },
     "outlookCategory": {
-        "_value": "<outlookCategory>"
+        "_value": "outlookCategory"
     },
     "servicePrincipal": {
-        "_value": "<servicePrincipal>"
+        "_value": "servicePrincipal"
     },
     "permissionGrantPolicy": {
-        "_value": "<permissionGrantPolicy>"
+        "_value": "permissionGrantPolicy"
     },
     "workbookWorksheet": {
-        "_value": "<workbookWorksheet>",
+        "_value": "workbookWorksheet",
         "workbookPivotTable": {
-            "_value": "<workbookWorksheet_workbookPivotTable>"
+            "_value": "workbookWorksheet_workbookPivotTable"
         }
     },
     "plannerTask": {
-        "_value": "<plannerTask>"
+        "_value": "plannerTask"
     },
     "plannerBucket": {
-        "_value": "<plannerBucket>"
+        "_value": "plannerBucket"
     },
     "printConnector": {
-        "_value": "<printConnector>"
+        "_value": "printConnector"
     },
     "printerShare": {
-        "_value": "<printerShare>"
+        "_value": "printerShare"
     },
     "printOperation": {
-        "_value": "<printOperation>"
+        "_value": "printOperation"
     },
     "printService": {
-        "_value": "<printService>",
+        "_value": "printService",
         "printServiceEndpoint": {
-            "_value": "<printService_printServiceEndpoint>"
+            "_value": "printService_printServiceEndpoint"
         }
     },
     "printTaskDefinition": {
-        "_value": "<printTaskDefinition>",
+        "_value": "printTaskDefinition",
         "printTask": {
-            "_value": "<printTaskDefinition_printTask>"
+            "_value": "printTaskDefinition_printTask"
         }
     },
     "printUsageByPrinter": {
-        "_value": "<printUsageByPrinter>"
+        "_value": "printUsageByPrinter"
     },
     "printUsageByUser": {
-        "_value": "<printUsageByUser>"
+        "_value": "printUsageByUser"
     },
     "onenoteResource": {
-        "_value": "<onenoteResource>"
+        "_value": "onenoteResource"
     },
     "place": {
-        "_value": "<place>"
+        "_value": "place"
     },
     "schemaExtension": {
-        "_value": "<schemaExtension>"
+        "_value": "schemaExtension"
     },
     "onenoteSection": {
-        "_value": "<onenoteSection>"
+        "_value": "onenoteSection"
     },
     "sectionGroup": {
-        "_value": "<sectionGroup>"
+        "_value": "sectionGroup"
     },
     "secureScore": {
-        "_value": "<secureScore>"
+        "_value": "secureScore"
     },
     "secureScoreControlProfile": {
-        "_value": "<secureScoreControlProfile>"
+        "_value": "secureScoreControlProfile"
     },
     "sharedDriveItem": {
-        "_value": "<sharedDriveItem>"
+        "_value": "sharedDriveItem"
     },
     "signIn": {
-        "_value": "<signIn>"
+        "_value": "signIn"
     },
     "subscribedSku": {
-        "_value": "<subscribedSku>"
+        "_value": "subscribedSku"
     },
     "teamsApp": {
-        "_value": "<teamsApp>",
+        "_value": "teamsApp",
         "teamsAppDefinition": {
-            "_value": "<teamsApp_teamsAppDefinition>"
+            "_value": "teamsApp_teamsAppDefinition"
         }
     },
     "presence": {
-        "_value": "<presence>"
+        "_value": "presence"
     },
     "workforceIntegration": {
-        "_value": "<workforceIntegration>"
+        "_value": "workforceIntegration"
     },
     "oAuth2PermissionGrant": {
-        "_value": "<oAuth2PermissionGrant>"
+        "_value": "oAuth2PermissionGrant"
     }
 }

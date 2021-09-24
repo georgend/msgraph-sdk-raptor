@@ -85,14 +85,15 @@ namespace MsGraphSDKSnippetsCompiler.Models
                 var idType = match.Groups[1].Value; // e.g. extract site from {site-id}
 
                 currentIdNode.TryGetValue(idType, out IDTree localTree);
-                if (localTree != null)
+                if (localTree == null
+                    || localTree.Value.EndsWith($"{idType}>", StringComparison.Ordinal)) // placeholder value, e.g. <teamsApp_teamsAppDefinition> for teamsApp->teamsAppDefinition
                 {
-                    currentIdNode = localTree;
-                    input = input.Replace(id, currentIdNode.Value, StringComparison.OrdinalIgnoreCase);
+                    throw new InvalidDataException($"no data found for id: {id} in identifiers.json file");
                 }
                 else
                 {
-                    throw new InvalidDataException($"no data found for id: {id} in identifiers.json file");
+                    currentIdNode = localTree;
+                    input = input.Replace(id, currentIdNode.Value, StringComparison.OrdinalIgnoreCase);
                 }
             }
 
