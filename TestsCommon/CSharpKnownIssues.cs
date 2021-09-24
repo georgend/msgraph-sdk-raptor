@@ -618,6 +618,10 @@ namespace TestsCommon
                 { "workbookrange-rowsbelow-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "workbookrange-visibleview-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "workbookrangeview-range-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
+                { "get-directoryaudit-csharp-Beta-executes", NeedsAnalysisKnownIssue },
+                { "get-educationuser-2-csharp-Beta-executes", NeedsAnalysisKnownIssue },
+                { "get-tab-in-chat-csharp-Beta-executes", NeedsAnalysisKnownIssue },
+                { "get-signin-1-csharp-Beta-executes", NeedsAnalysisKnownIssue },
 
                 { "accessreviewinstance-filterbycurrentuser-csharp-V1-executes", MissingDataKnownIssue },
                 { "accessreviewinstancedecisionitem-filterbycurrentuser-csharp-V1-executes", MissingDataKnownIssue },
