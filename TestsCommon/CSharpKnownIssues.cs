@@ -898,6 +898,11 @@ namespace TestsCommon
                 { "user-get-calendarview-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "user-reminderview-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "user-reminderview-csharp-V1-executes", MissingPermissionScopeKnownIssue },
+                { "get-directoryaudit-1-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-educationuser-2-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-signin-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-tab-in-chat-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "list-educationclass-csharp-V1-executes", NeedsAnalysisKnownIssue },
             };
         }
     }
