@@ -218,7 +218,6 @@ namespace TestsCommon
                 { "get-callrecord-sessions-expanded-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-case-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-chartlineformat-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-chat-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-chat-operation-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-chatmessagechannel-1-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-chatmessagechannel-2-csharp-Beta-executes", MissingDataKnownIssue },
