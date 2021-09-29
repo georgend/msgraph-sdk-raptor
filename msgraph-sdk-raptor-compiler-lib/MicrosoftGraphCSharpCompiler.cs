@@ -237,7 +237,7 @@ namespace MsGraphSDKSnippetsCompiler
         /// If DevX API fails to return scopes for both application and delegation permissions,
         /// throws an AggregateException containing the last exception from the service
         /// </exception>
-        private static async Task<Scope[]> GetScopes(HttpRequestMessage httpRequestMessage)
+        private async Task<Scope[]> GetScopes(HttpRequestMessage httpRequestMessage)
         {
             var path = httpRequestMessage.RequestUri.LocalPath;
             var versionSegmentLength = "/v1.0".Length;
@@ -276,7 +276,9 @@ namespace MsGraphSDKSnippetsCompiler
             }
             catch (Exception e)
             {
-                TestContext.Out.WriteLine($"Can't get scopes for both delegated and application scopes, url={httpRequestMessage.RequestUri}");
+                TestContext.Out.WriteLine($"Can't get scopes for both delegated and application scopes");
+                TestContext.Out.WriteLine($"url={httpRequestMessage.RequestUri}");
+                TestContext.Out.WriteLine($"docslink={TestData.DocsLink}");
                 throw new AggregateException("Can't get scopes for both delegated and application scopes", e);
             }
         }
