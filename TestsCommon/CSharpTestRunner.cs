@@ -89,14 +89,10 @@ public class GraphSDKTest
                 throw new ArgumentNullException(nameof(testData));
             }
 
-            var fullPath = Path.Join(GraphDocsDirectory.GetSnippetsDirectory(testData.Version, Languages.CSharp), testData.FileName);
-            Assert.IsTrue(File.Exists(fullPath), "Snippet file referenced in documentation is not found!");
-
-            var fileContent = File.ReadAllText(fullPath);
-            var (codeToCompile, codeSnippetFormatted) = GetCodeToCompile(fileContent);
+            var (codeToCompile, codeSnippetFormatted) = GetCodeToCompile(testData.FileContent);
 
             // Compile Code
-            var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData.FileName, testData.DllPath);
+            var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData);
             var compilationResultsModel = microsoftGraphCSharpCompiler.CompileSnippet(codeToCompile, testData.Version);
 
             var compilationOutputMessage = new CompilationOutputMessage(compilationResultsModel, codeToCompile, testData.DocsLink, testData.KnownIssueMessage, testData.IsCompilationKnownIssue);
@@ -112,20 +108,14 @@ public class GraphSDKTest
         /// 4. Attempts to compile and reports errors if there is any
         /// 5. It uses the compiled binary to make a request to the demo tenant and reports error if there's a service exception i.e 4XX or 5xx response
         /// </summary>
-        /// <param name="executionTestData">Test data containing information such as snippet file name</param>
-        public static async Task Execute(ExecutionTestData executionTestData)
+        /// <param name="testData">Test data containing information such as snippet file name</param>
+        public static async Task Execute(LanguageTestData testData)
         {
-            if (executionTestData == null)
-            {
-                throw new ArgumentNullException(nameof(executionTestData));
-            }
 
-            var testData = executionTestData.LanguageTestData;
-
-            var (codeToCompile, codeSnippetFormatted) = GetCodeToExecute(executionTestData.FileContent);
+            var (codeToCompile, codeSnippetFormatted) = GetCodeToExecute(testData.FileContent);
 
             // Compile Code
-            var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData.FileName, testData.DllPath);
+            var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData);
             var executionResultsModel = await microsoftGraphCSharpCompiler
                 .ExecuteSnippet(codeToCompile, testData.Version)
                 .ConfigureAwait(false);

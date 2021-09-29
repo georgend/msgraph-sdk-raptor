@@ -29,8 +29,7 @@ namespace MsGraphSDKSnippetsCompiler
     public class MicrosoftGraphCSharpCompiler : IMicrosoftGraphSnippetsCompiler
     {
         const string SourceCodePath = "generated.cs";
-        private readonly string _markdownFileName;
-        private readonly string _dllPath;
+        private readonly LanguageTestData TestData;
         private bool _isEducation;
 
         private async Task<PermissionManager> GetPermissionManager()
@@ -45,11 +44,9 @@ namespace MsGraphSDKSnippetsCompiler
         private const string AuthHeaderReplacement = "Authorization: Bearer <token>";
         private static readonly Regex AuthHeaderRegex = new Regex(AuthHeaderPattern, RegexOptions.Compiled);
 
-        public MicrosoftGraphCSharpCompiler(string markdownFileName,
-            string dllPath)
+        public MicrosoftGraphCSharpCompiler(LanguageTestData testData)
         {
-            _markdownFileName = markdownFileName;
-            _dllPath = dllPath;
+            TestData = testData;
         }
 
         /// <summary>
@@ -91,14 +88,14 @@ namespace MsGraphSDKSnippetsCompiler
             };
 
             //Use the right Microsoft Graph Version
-            if (!string.IsNullOrEmpty(_dllPath))
+            if (!string.IsNullOrEmpty(TestData.DllPath))
             {
-                if (!System.IO.File.Exists(_dllPath))
+                if (!System.IO.File.Exists(TestData.DllPath))
                 {
-                    throw new ArgumentException($"Provided dll path {_dllPath} doesn't exist!");
+                    throw new ArgumentException($"Provided dll path {TestData.DllPath} doesn't exist!");
                 }
 
-                metadataReferences.Add(MetadataReference.CreateFromFile(_dllPath));
+                metadataReferences.Add(MetadataReference.CreateFromFile(TestData.DllPath));
             }
             else if (version == Versions.V1)
             {
@@ -317,7 +314,7 @@ namespace MsGraphSDKSnippetsCompiler
                 ? null
                 : emitResult.Diagnostics.Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);
 
-            return new CompilationResultsModel(emitResult.Success, failures, _markdownFileName);
+            return new CompilationResultsModel(emitResult.Success, failures, TestData.FileName);
         }
     }
 }
