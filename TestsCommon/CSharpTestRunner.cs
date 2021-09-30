@@ -111,6 +111,10 @@ public class GraphSDKTest
         /// <param name="testData">Test data containing information such as snippet file name</param>
         public static async Task Execute(LanguageTestData testData)
         {
+            if (testData == null)
+            {
+                throw new ArgumentNullException(nameof(testData));
+            }
 
             var (codeToCompile, codeSnippetFormatted) = GetCodeToExecute(testData.FileContent);
 
