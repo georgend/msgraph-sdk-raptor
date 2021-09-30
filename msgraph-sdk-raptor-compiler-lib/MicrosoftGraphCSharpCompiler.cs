@@ -46,6 +46,11 @@ namespace MsGraphSDKSnippetsCompiler
 
         public MicrosoftGraphCSharpCompiler(LanguageTestData testData)
         {
+            if (testData is null)
+            {
+                throw new ArgumentNullException(nameof(testData));
+            }
+
             TestData = testData;
         }
 
