@@ -1,6 +1,4 @@
-﻿using MsGraphSDKSnippetsCompiler.Models;
-
-namespace TestsCommon
+﻿namespace MsGraphSDKSnippetsCompiler.Models
 {
     /// <summary>
     /// Test Data
@@ -16,6 +14,9 @@ namespace TestsCommon
     /// <param name="JavaCoreVersion">Optional. Version to use for the java core library. Ignored when using JavaPreviewLibPath</param>
     /// <param name="JavaLibVersion">Optional. Version to use for the java service library. Ignored when using JavaPreviewLibPath</param>
     /// <param name="JavaPreviewLibPath">Optional. Folder container the java core and java service library repositories so the unit testing uses that local version instead.</param>
+    /// <param name="TestName">name of the test case</param>
+    /// <param name="Owner">test case owner</param>
+    /// <param name="FileContent">contents of the snippet file</param>
     public record LanguageTestData(
         Versions Version,
         bool IsCompilationKnownIssue,
@@ -29,9 +30,6 @@ namespace TestsCommon
         string JavaLibVersion,
         string JavaPreviewLibPath,
         string TestName,
-        string Owner);
-
-    public record ExecutionTestData(
-        LanguageTestData LanguageTestData,
+        string Owner,
         string FileContent);
 }

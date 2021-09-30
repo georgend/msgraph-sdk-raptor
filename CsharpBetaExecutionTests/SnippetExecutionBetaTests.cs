@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using MsGraphSDKSnippetsCompiler;
 using MsGraphSDKSnippetsCompiler.Models;
 
 using NUnit.Framework;
@@ -32,7 +31,7 @@ namespace CsharpBetaExecutionTests
         /// <param name="version">Docs version (e.g. V1, Beta)</param>
         [Test]
         [RetryTestCaseSource(typeof(SnippetExecutionBetaTests), nameof(TestDataBeta), MaxTries = 3)]
-        public async Task Test(ExecutionTestData testData)
+        public async Task Test(LanguageTestData testData)
         {
             await CSharpTestRunner.Execute(testData).ConfigureAwait(false);
         }

@@ -75,16 +75,14 @@ namespace TestsCommon
         public static IEnumerable<TestCaseData> GetExecutionTestData(RunSettings runSettings)
         {
             return from testData in GetLanguageTestData(runSettings)
-                   let fullPath = Path.Join(GraphDocsDirectory.GetSnippetsDirectory(testData.Version, runSettings.Language), testData.FileName)
-                   let fileContent = File.ReadAllText(fullPath)
-                   let executionTestData = new ExecutionTestData(testData with
+                   let LanguageTestData = testData with
                    {
-                       TestName = testData.TestName.Replace("-compiles", "-executes")
-                   }, fileContent)
+                       TestName = testData.TestName.Replace("-compiles", "-executes"),
+                   }
                    where !testData.IsCompilationKnownIssue // select compiling tests
                    && !(testData.IsExecutionKnownIssue ^ runSettings.TestType == TestType.ExecutionKnownIssues) // select known execution issues iff requested
-                   && fileContent.Contains("GetAsync()") // select only the get tests
-                   select new TestCaseData(executionTestData).SetName(executionTestData.LanguageTestData.KnownIssueTestNamePrefix + executionTestData.LanguageTestData.TestName).SetProperty("Owner", executionTestData.LanguageTestData.Owner);
+                   && testData.FileContent.Contains("GetAsync()") // select only the get tests
+                   select new TestCaseData(LanguageTestData).SetName(testData.KnownIssueTestNamePrefix + testData.TestName).SetProperty("Owner", LanguageTestData.Owner);
         }
 
         private static IEnumerable<LanguageTestData> GetLanguageTestData(RunSettings runSettings)
@@ -114,6 +112,8 @@ namespace TestsCommon
                    let knownIssueMessage = compilationKnownIssue?.Message ?? executionKnownIssue?.Message ?? string.Empty
                    let knownIssueTestNamePrefix = compilationKnownIssue?.TestNamePrefix ?? executionKnownIssue?.TestNamePrefix ?? string.Empty
                    let owner = compilationKnownIssue?.Owner ?? executionKnownIssue?.Message ?? string.Empty
+                   let fullPath = Path.Join(GraphDocsDirectory.GetSnippetsDirectory(version, runSettings.Language), fileName)
+                   let fileContent = File.ReadAllText(fullPath)
                    select new LanguageTestData(
                            version,
                            isCompilationKnownIssue,
@@ -127,7 +127,8 @@ namespace TestsCommon
                            runSettings.JavaLibVersion,
                            runSettings.JavaPreviewLibPath,
                            testName,
-                           owner);
+                           owner,
+                           fileContent);
         }
     }
 }

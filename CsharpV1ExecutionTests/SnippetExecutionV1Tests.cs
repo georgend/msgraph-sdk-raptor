@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using MsGraphSDKSnippetsCompiler;
 using MsGraphSDKSnippetsCompiler.Models;
 using NUnit.Framework;
 using TestsCommon;
@@ -28,7 +27,7 @@ namespace CsharpV1ExecutionTests
         /// <param name="testData"></param>
         [Test]
         [RetryTestCaseSource(typeof(SnippetExecutionV1Tests), nameof(TestDataV1), MaxTries = 3)]
-        public async Task Test(ExecutionTestData testData)
+        public async Task Test(LanguageTestData testData)
         {
             await CSharpTestRunner.Execute(testData).ConfigureAwait(false);
         }
