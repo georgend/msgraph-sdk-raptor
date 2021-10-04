@@ -95,7 +95,7 @@ public class GraphSDKTest
             var microsoftGraphCSharpCompiler = new MicrosoftGraphCSharpCompiler(testData);
             var compilationResultsModel = microsoftGraphCSharpCompiler.CompileSnippet(codeToCompile, testData.Version);
 
-            var compilationOutputMessage = new CompilationOutputMessage(compilationResultsModel, codeToCompile, testData.DocsLink, testData.KnownIssueMessage, testData.IsCompilationKnownIssue);
+            var compilationOutputMessage = new CompilationOutputMessage(compilationResultsModel, codeToCompile, testData.DocsLink.HttpLink, testData.KnownIssueMessage, testData.IsCompilationKnownIssue);
             EvaluateCompilationResult(compilationResultsModel, testData, codeSnippetFormatted, compilationOutputMessage);
 
             Assert.Pass();
@@ -126,7 +126,7 @@ public class GraphSDKTest
             var compilationOutputMessage = new CompilationOutputMessage(
                 executionResultsModel.CompilationResult,
                 codeToCompile,
-                testData.DocsLink,
+                testData.DocsLink.HttpLink,
                 testData.KnownIssueMessage,
                 testData.IsCompilationKnownIssue);
 

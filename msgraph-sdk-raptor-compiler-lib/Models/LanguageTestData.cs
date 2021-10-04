@@ -23,7 +23,7 @@
         bool IsExecutionKnownIssue,
         string KnownIssueMessage,
         string KnownIssueTestNamePrefix,
-        string DocsLink,
+        DocumentationLink DocsLink,
         string FileName,
         string DllPath,
         string JavaCoreVersion,

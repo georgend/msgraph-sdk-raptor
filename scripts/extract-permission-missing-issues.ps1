@@ -21,8 +21,10 @@ return $results.TestRun.Results.UnitTestResult |
         # docslink=<docslink>
         $lines = $_.Split([System.Environment]::NewLine)
         return @{
-            url = $lines[-2].Split("url=")[-1];
-            docslink = $lines[-1].Split("docslink=")[-1]
+            url = $lines[-4].Split("url=")[-1];
+            docslink = $lines[-3].Split("docslink=")[-1];
+            originalUrl = $lines[-2].Split("originalurl=")[-1];
+            oririnalUrlTransformed = $lines[-1].Split("originalUrlTransformed=")[-1];
         }
     } |
     # convert array of objects into a flattened table with url and docs link columns

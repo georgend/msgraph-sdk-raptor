@@ -24,9 +24,9 @@ namespace TestsCommon
         /// </summary>
         /// <param name="version">Docs version (e.g. V1, Beta)</param>
         /// <returns>Dictionary holding the mapping from snippet file name to documentation page listing the snippet.</returns>
-        private static Dictionary<string, string> GetDocumentationLinks(Versions version, Languages language)
+        private static Dictionary<string, DocumentationLink> GetDocumentationLinks(Versions version, Languages language)
         {
-            var documentationLinks = new Dictionary<string, string>();
+            var documentationLinks = new Dictionary<string, DocumentationLink>();
             var documentationDirectory = GraphDocsDirectory.GetDocumentationDirectory(version);
             var files = Directory.GetFiles(documentationDirectory);
             var languageName = language.AsString();
@@ -36,12 +36,12 @@ namespace TestsCommon
             {
                 var content = File.ReadAllText(file);
                 var fileName = Path.GetFileNameWithoutExtension(file);
-                var docsLink = $"https://docs.microsoft.com/en-us/graph/api/{fileName}?view=graph-rest-{new VersionString(version).DocsUrlSegment()}&tabs={languageName}";
+                var httpLink = $"https://docs.microsoft.com/en-us/graph/api/{fileName}?view=graph-rest-{new VersionString(version).DocsUrlSegment()}&tabs={languageName}";
 
                 var match = SnippetLinkRegex.Match(content);
                 while (match.Success)
                 {
-                    documentationLinks[$"{match.Groups[1].Value}-{languageName}-snippets.md"] = docsLink;
+                    documentationLinks[$"{match.Groups[1].Value}-{languageName}-snippets.md"] = new DocumentationLink(httpLink, file);
                     match = match.NextMatch();
                 }
             }

@@ -281,11 +281,48 @@ namespace MsGraphSDKSnippetsCompiler
             }
             catch (Exception e)
             {
+                var originalUrl = GetOriginalUrl();
+                string originalUrlTransformed = originalUrl;
+                try
+                {
+                    originalUrlTransformed = IdentifierReplacer.Instance.ReplaceIds(originalUrl);
+                } catch { /* ignore */ }
                 TestContext.Out.WriteLine($"Can't get scopes for both delegated and application scopes");
                 TestContext.Out.WriteLine($"url={httpRequestMessage.RequestUri}");
-                TestContext.Out.WriteLine($"docslink={TestData.DocsLink}");
+                TestContext.Out.WriteLine($"docslink={TestData.DocsLink.HttpLink}");
+                TestContext.Out.WriteLine($"originalurl={originalUrl}");
+                TestContext.Out.WriteLine($"originalUrlTransformed={originalUrlTransformed}");
                 throw new AggregateException("Can't get scopes for both delegated and application scopes", e);
             }
+        }
+
+        private string GetOriginalUrl()
+        {
+            var lines = System.IO.File.ReadAllLines(TestData.DocsLink.MarkdownFile);
+            var searchLineEnding = $"csharp/{TestData.FileName})]";
+            var lineReference = 0;
+            for (; lineReference < lines.Length; lineReference++)
+            {
+                if (lines[lineReference].Trim().EndsWith(searchLineEnding, StringComparison.OrdinalIgnoreCase))
+                {
+                    break;
+                }
+            }
+
+            var capture = false;
+            for (; lineReference >= 0; lineReference--)
+            {
+                if (capture)
+                {
+                    return lines[lineReference].Replace("GET ", "");
+                }
+                else if (lines[lineReference].Trim() == "```") // line marking the end of http block
+                {
+                    capture = true;
+                }
+            }
+
+            throw new AggregateException("Unrecognized page structure to extract original request");
         }
 
         /// <summary>
