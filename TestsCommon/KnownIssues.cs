@@ -11,8 +11,6 @@ namespace TestsCommon
     {
         #region SDK issues
 
-        internal const string FeatureNotSupported = "Range composable functions are not supported by SDK\r\n"
-            + "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/490";
         internal const string SearchHeaderIsNotSupported = "Search header is not supported by the SDK";
         internal const string CountIsNotSupported = "OData $count is not supported by the SDK at the moment.\r\n"
             + "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/402";
@@ -49,8 +47,6 @@ namespace TestsCommon
         #region Snipppet Generation Issues
         internal const string SnippetGenerationCreateAsyncSupport = "Snippet generation doesn't use CreateAsync" +
             " See https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/301";
-        internal const string SnippetGenerationRequestObjectDisambiguation = "Snippet generation should rename objects that end with Request to end with RequestObject" +
-            " See https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/298";
         internal const string StructuralPropertiesAreNotHandled = "We don't generate request builders for URL navigation to structural properties." +
             " We should build a custom request with URL as this is not supported in SDK." +
             " See https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/485";
