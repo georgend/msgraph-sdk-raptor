@@ -12,32 +12,24 @@ $appSettings = Get-AppSettings
 Connect-MgGraph -CertificateThumbprint $appSettings.CertificateThumbprint -ClientId $appSettings.EducationClientId -TenantId $appSettings.EducationTenantId
 
 
-if($null -eq $educationClass){
-    $educationClass = Invoke-RequestHelper -Uri "education/classes" -Method GET |
-        Where-Object { $_.displayName -eq "Physical Science" } |
-        Select-Object -First 1
-}
+$educationClass = Invoke-RequestHelper -Uri "education/classes" -Method GET |
+    Where-Object { $_.displayName -eq "Physical Science" } |
+    Select-Object -First 1
 $educationClass.id
 $identifiers.educationClass._value = $educationClass.id
 
-if($null -eq $educationAssignment){
-    $educationAssignment = Invoke-RequestHelper -Uri "education/classes/$($educationClass.id)/assignments?`$filter=displayName eq 'Midterm'" -Method GET |
-        Select-Object -First 1
-}
+$educationAssignment = Invoke-RequestHelper -Uri "education/classes/$($educationClass.id)/assignments?`$filter=displayName eq 'Midterm'" -Method GET |
+    Select-Object -First 1
 $educationAssignment.id
 $identifiers.educationClass.educationAssignment._value = $educationAssignment.id
 
-if($null -eq $educationSubmission){
-    $educationSubmission = Invoke-RequestHelper -Uri "education/classes/$($educationClass.id)/assignments/$($educationAssignment.id)/submissions?`$filter=status eq 'submitted'" -Method GET |
-        Select-Object -First 1
-}
+$educationSubmission = Invoke-RequestHelper -Uri "education/classes/$($educationClass.id)/assignments/$($educationAssignment.id)/submissions?`$filter=status eq 'submitted'" -Method GET |
+    Select-Object -First 1
 $educationSubmission.id
 $identifiers.educationClass.educationAssignment.educationSubmission._value = $educationSubmission.id
 
-if($null -eq $educationSubmissionResource){
-    $educationSubmissionResource = Invoke-RequestHelper -Uri "education/classes/$($educationClass.id)/assignments/$($educationAssignment.id)/submissions/$($educationSubmission.id)/resources?`$top=1" -Method GET |
-        Select-Object -First 1
-}
+$educationSubmissionResource = Invoke-RequestHelper -Uri "education/classes/$($educationClass.id)/assignments/$($educationAssignment.id)/submissions/$($educationSubmission.id)/resources?`$top=1" -Method GET |
+    Select-Object -First 1
 $educationSubmissionResource.id
 $identifiers.educationClass.educationAssignment.educationSubmission.educationSubmissionResource._value = $educationSubmissionResource.id
 

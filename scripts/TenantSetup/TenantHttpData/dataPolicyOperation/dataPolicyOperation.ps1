@@ -6,20 +6,19 @@ Param(
 $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 . $raptorUtils
 
+Install-Az
+
 $appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
 
 $userId = $identifiers.user._value
 $userId
-
-if($null -eq $dataPolicyOperation) {
-    $dataPolicyOperationContent = Get-RequestData -ChildEntity "dataPolicyOperation"
-    $dataPolicyOperationContent.storageLocation = Get-AzKeyVaultSecret -VaultName $appSettings.AzureKeyVaultName -Name "SASUrl" -AsPlainText  # Retrieve SASUrl from azure key-Vault
-    $dataPolicyOperation = Request-DelegatedResource -Uri "users/$($userId)/exportPersonalData" -Method "Post" -Body $dataPolicyOperationContent
-    $dataPolicyOperation.Location
-    $dataPolicyOperation_id = $dataPolicyOperation.Location -split "/" | Select-Object -last 1
-}
+$dataPolicyOperationContent = Get-RequestData -ChildEntity "dataPolicyOperation"
+$dataPolicyOperationContent.storageLocation = Get-AzKeyVaultSecret -VaultName $appSettings.AzureKeyVaultName -Name "SASUrl" -AsPlainText  # Retrieve SASUrl from azure key-Vault
+$dataPolicyOperation = Request-DelegatedResource -Uri "users/$($userId)/exportPersonalData" -Method "Post" -Body $dataPolicyOperationContent
+$dataPolicyOperation.Location
+$dataPolicyOperation_id = $dataPolicyOperation.Location -split "/" | Select-Object -last 1
 $identifiers.dataPolicyOperation._value = $dataPolicyOperation_id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

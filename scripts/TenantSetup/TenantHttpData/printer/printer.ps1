@@ -3,9 +3,10 @@ Param(
     [string] $IdentifiersPath = (Join-Path $PSScriptRoot "../../../../msgraph-sdk-raptor-compiler-lib/identifiers.json" -Resolve)
 )
 
-Install-Az
 $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 . $raptorUtils
+
+Install-Az
 
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 $appSettings = Get-AppSettings
