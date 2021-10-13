@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Azure.Identity;
 using Microsoft.Graph;
 using MsGraphSDKSnippetsCompiler.Models;
-using NUnit.Framework;
+using static NUnit.Framework.TestContext;
 
 namespace MsGraphSDKSnippetsCompiler
 {
@@ -295,7 +295,7 @@ namespace MsGraphSDKSnippetsCompiler
                 }
                 catch
                 {
-                    TestContext.Out.WriteLine($"Couldn't create an auth provider for scope: {scopeName}");
+                    await Out.WriteLineAsync($"Couldn't create an auth provider for scope: {scopeName}").ConfigureAwait(false);
                 }
             }
         }

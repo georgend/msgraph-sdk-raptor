@@ -69,9 +69,10 @@ if($null -eq $currentTokenLifetimePolicy){
 }
 
 #Create featureRolloutPolicy https://docs.microsoft.com/en-us/graph/api/featurerolloutpolicies-post?view=graph-rest-1.0&tabs=http
+#Required Delegated Permission "Directory.ReadWrite.All"
 $featureRolloutPolicyData = Get-RequestData -ChildEntity "FeatureRolloutPolicy"
 $featureRolloutPolicyUrl = "policies/featureRolloutPolicies"
-$currentFeatureRolloutPolicy = Invoke-RequestHelper -Uri $featureRolloutPolicyUrl -Method GET |
+$currentFeatureRolloutPolicy = Request-DelegatedResource -Uri $featureRolloutPolicyUrl -Method GET |
         Where-Object { $_.displayName -eq $featureRolloutPolicyData.displayName } |
         Select-Object -First 1
 

@@ -8,7 +8,7 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
-$todoTaskList = Request-DelegatedResource -Uri "me/todo/lists" -scopeOverride "Tasks.Read" |
+$todoTaskList = Request-DelegatedResource -Uri "me/todo/lists" -ScopeOverride "Tasks.Read" |
     Select-Object -First 1
 $todoTaskList.id
 $identifiers.todoTaskList._value = $todoTaskList.id

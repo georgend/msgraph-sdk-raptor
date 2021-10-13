@@ -18,12 +18,10 @@ $team = $identifiers.team._value
 $team
 $user = $identifiers.user._value
 $user
-#Set User as a default parameter to avoid setting it with every call
-$PSDefaultParameterValues = @{"Invoke-RequestHelper:User" = $user }
 
 #Create or Replace Schedule https://docs.microsoft.com/en-us/graph/api/team-put-schedule?view=graph-rest-1.0
 $scheduleData = Get-RequestData -ChildEntity "Schedule"
-$schedule = Invoke-RequestHelper -Uri "teams/$($team)/schedule" -Body $scheduleData -Method PUT
+$schedule = Request-DelegatedResource -Uri "teams/$($team)/schedule" -Body $scheduleData -Method PUT
 $schedule.id
 
 # Create Scheduling Group https://docs.microsoft.com/en-us/graph/api/schedule-post-schedulinggroups?view=graph-rest-1.0&tabs=http
@@ -32,16 +30,23 @@ $schedule.id
 #>
 $schedulingGroupData = Get-RequestData -ChildEntity "SchedulingGroup"
 # Get Other Group Members and Add them to the SchedulingGroup
-$groupMembers = Invoke-RequestHelper -Uri "teams/$($team)/members" |
+$groupMembers = Request-DelegatedResource -Uri "teams/$($team)/members" |
+Sort-Object -Property { $_.displayName }
 Select-Object -First 2
+
+#Pick an Existing User
+$swapGroupMember = Request-DelegatedResource -Uri "teams/$($team)/members" |
+Where-Object { $_.displayName -eq "Isaiah Langer" } |
+Select-Object -First 1
+
 $schedulingGroupData.userIds = $groupMembers.userId
 # Check and Get Scheduling Group if it exists
-$currentSchedulingGroup = Invoke-RequestHelper -Uri "teams/$($team)/schedule/schedulingGroups" -Method GET |
+$currentSchedulingGroup = Request-DelegatedResource -Uri "teams/$($team)/schedule/schedulingGroups" -Method GET |
 Where-Object { $_.displayName -eq $schedulingGroupData.displayName } |
 Select-Object -First 1
 
 if ($null -eq $currentSchedulingGroup) {
-    $currentSchedulingGroup = Invoke-RequestHelper -Uri "teams/$($team)/schedule/schedulingGroups" -Method POST -Body $schedulingGroupData
+    $currentSchedulingGroup = Request-DelegatedResource -Uri "teams/$($team)/schedule/schedulingGroups" -Method POST -Body $schedulingGroupData
     $currentSchedulingGroup.id
 }
 
@@ -49,23 +54,23 @@ if ($null -eq $currentSchedulingGroup) {
 $shiftData = Get-RequestData -ChildEntity "Shift"
 $shiftData.userId = $user
 $shiftData.schedulingGroupId = $currentSchedulingGroup.id
-$createdShift = Invoke-RequestHelper -Uri "teams/$($team)/schedule/shifts" -Body $shiftData -Method POST
+$createdShift = Request-DelegatedResource -Uri "teams/$($team)/schedule/shifts" -Body $shiftData -Method POST
 
 #Create OpenShift https://docs.microsoft.com/en-us/graph/api/openshift-post?view=graph-rest-1.0
 $openShiftData = Get-RequestData -ChildEntity "OpenShift"
 $openShiftData.schedulingGroupId = $currentSchedulingGroup.id
-$createdOpenShift = Invoke-RequestHelper -Uri "teams/$($team)/schedule/openshifts" -Body $openShiftData -Method POST
+$createdOpenShift = Request-DelegatedResource -Uri "teams/$($team)/schedule/openshifts" -Body $openShiftData -Method POST
 
 #Create OfferShiftRequests https://docs.microsoft.com/en-us/graph/api/offershiftrequest-post?view=graph-rest-1.0&tabs=http
 $offerShiftData = Get-RequestData -ChildEntity "OfferShiftRequest"
 $offerShiftData.senderShiftId = $createdShift.id
 $offerShiftData.recipientUserId = $groupMembers[0].userId
-$createdOfferShift = Invoke-RequestHelper -Uri "teams/$($team)/schedule/offershiftrequests" -Body $offerShiftData -Method POST
+$createdOfferShift = Request-DelegatedResource -Uri "teams/$($team)/schedule/offershiftrequests" -Body $offerShiftData -Method POST
 
 #Create OpenShiftChangeRequest https://docs.microsoft.com/en-us/graph/api/openshiftchangerequest-post?view=graph-rest-1.0
 $openShiftChangeRequestData = Get-RequestData -ChildEntity "OpenShiftChangeRequest"
 $openShiftChangeRequestData.openShiftId = $createdOpenShift.id
-$createOpenShiftChangeRequest = Invoke-RequestHelper -Uri "teams/$($team)/schedule/openShiftChangeRequests" -Body $openShiftChangeRequestData -Method POST
+$createOpenShiftChangeRequest = Request-DelegatedResource -Uri "teams/$($team)/schedule/openShiftChangeRequests" -Body $openShiftChangeRequestData -Method POST
 
 #Create SwapShiftsChangeRequest https://docs.microsoft.com/en-us/graph/api/swapshiftschangerequest-post?view=graph-rest-1.0
 <#
@@ -76,30 +81,30 @@ $createOpenShiftChangeRequest = Invoke-RequestHelper -Uri "teams/$($team)/schedu
 $recipientShiftData = Get-RequestData -ChildEntity "Shift"
 $recipientShiftData.userId = $groupMembers[1].userId
 $recipientShiftData.schedulingGroupId = $currentSchedulingGroup.id
-$createdRecipientShift = Invoke-RequestHelper -Uri "teams/$($team)/schedule/shifts" -Body $recipientShiftData -Method POST
+$createdRecipientShift = Request-DelegatedResource -Uri "teams/$($team)/schedule/shifts" -Body $recipientShiftData -Method POST
 
 $swapShiftsChangeRequestData = Get-RequestData -ChildEntity "SwapShiftsChangeRequest"
 $swapShiftsChangeRequestData.senderShiftId = $createdOpenShift.id
-$swapShiftsChangeRequestData.recipientUserId = $groupMembers[1].userId
+$swapShiftsChangeRequestData.recipientUserId = $swapGroupMember.UserId
 $swapShiftsChangeRequestData.senderShiftId = $createdShift.id
 $swapShiftsChangeRequestData.recipientShiftId = $createdRecipientShift.id
-$createdSwapShiftsChangeRequest = Invoke-RequestHelper -Uri "teams/$($team)/schedule/swapShiftsChangeRequests" -Body $swapShiftsChangeRequestData -Method POST
+$createdSwapShiftsChangeRequest = Request-DelegatedResource -Uri "teams/$($team)/schedule/swapShiftsChangeRequests" -Body $swapShiftsChangeRequestData -Method POST
 
 #Get Or Create TimeOffReason if does not exist https://docs.microsoft.com/en-us/graph/api/schedule-post-timeoffreasons?view=graph-rest-1.0&tabs=http
 $timeOffReasonData = Get-RequestData -ChildEntity "TimeOffReason"
-$currentTimeOffReason = Invoke-RequestHelper -Uri "teams/$($team)/schedule/timeOffReasons" -Method GET |
+$currentTimeOffReason = Request-DelegatedResource -Uri "teams/$($team)/schedule/timeOffReasons" -Method GET |
 Where-Object { $_.displayName -eq $timeOffReasonData.displayName } |
 Select-Object -First 1
 if ($null -eq $timeOffReasonData) {
-    $currentTimeOffReason = Invoke-RequestHelper -Uri "teams/$($team)/schedule/timeOffReasons" -Method POST -Body $timeOffReasonData
+    $currentTimeOffReason = Request-DelegatedResource -Uri "teams/$($team)/schedule/timeOffReasons" -Method POST -Body $timeOffReasonData
 }
 
 $timeoffData = Get-RequestData -ChildEntity "TimesOff"
 $timeoffData.userId = $user
 $timeoffData.draftTimeOff.timeOffReasonId = $currentTimeOffReason.id
-$createdTimesOffData = Invoke-RequestHelper -Uri "teams/$($team)/schedule/timesOff" -Body $timeoffData -Method POST
+$createdTimesOffData = Request-DelegatedResource -Uri "teams/$($team)/schedule/timesOff" -Body $timeoffData -Method POST
 
-$timeOffRequest = Invoke-RequestHelper -Uri "teams/$($team)/schedule/timeOffRequests/$($createOpenShiftChangeRequest.id)" -Method GET |
+$timeOffRequest = Request-DelegatedResource -Uri "teams/$($team)/schedule/timeOffRequests/$($createOpenShiftChangeRequest.id)" -Method GET |
 Select-Object -First 1
 
 $identifiers.team.shift._value = $createdShift.id

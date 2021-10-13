@@ -109,7 +109,7 @@ namespace DelegatedAppCreator
             Console.WriteLine("=========================");
             Console.WriteLine(title);
             Console.WriteLine("-------------------------");
-            namesList.ForEach(x => { Console.WriteLine(x); });
+            namesList.ForEach(Console.WriteLine);
             Console.WriteLine("=========================");
         }
     }

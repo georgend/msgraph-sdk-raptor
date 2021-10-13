@@ -5,7 +5,7 @@ function Get-AppSettings () {
     $appSettingsPath = "$env:TEMP/appSettings.json"
     # Support Reading Settings from a Custom Label, otherwise default to Development
     $settingsLabel = $env:RAPTOR_CONFIGLABEL
-    if([string]::IsNullOrWhiteSpace($settingsLabel)){
+    if ([string]::IsNullOrWhiteSpace($settingsLabel)) {
         $settingsLabel = "Development"
     }
     az appconfig kv export --connection-string $env:RAPTOR_CONFIGCONNECTIONSTRING --label $settingsLabel --destination file --path $appSettingsPath --format json --yes
@@ -32,7 +32,7 @@ function Get-CurrentIdentifiers (
 function Get-CurrentDomain (
     [PSObject]$AppSettings
 ) {
-    $domain = $appSettings.Username.Split("@")[1]
+    $domain = $AppSettings.Username.Split("@")[1]
     return $domain
 }
 
@@ -89,58 +89,104 @@ function Invoke-RequestHelper (
 }
 
 <#
-    Handles:
-        Getting of scopes and token to be used in authenticating a delegated request
-        - Handled manually since ps sdk does not support delegated access to an application
-        - This application need access to delegated resources without user interaction
-    Returns: an access token
+    Get a token for the configured user from Azure AD with the specified Scope
 #>
-function Get-Token {
+function Get-UserToken {
     param(
-        [string]$Path,
-        [string]$ScopeOverride,
-        [Parameter(Mandatory = $False)]
-        [ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")]
-        [string] $Method = "GET"
+        $AppSettings,
+        $Application,
+        $ScopeString,
+        $GrantType = "password"
     )
+    
+    $domain = Get-CurrentDomain -AppSettings $AppSettings
+    $tokenEndpoint = "https://login.microsoftonline.com/$domain/oauth2/v2.0/token"
+    try {
+        $body = "grant_type=$GrantType&username=$($AppSettings.Username)&password=$($AppSettings.Password)&client_id=$($Application.ApplicationIdentifier)&scope=$($ScopeString)"
+        $token = Invoke-RestMethod -Method Post -Uri $tokenEndpoint -Body $body -ContentType 'application/x-www-form-urlencoded'
 
-    $appSettings = Get-AppSettings
-    $domain = Get-CurrentDomain -AppSettings $appSettings
-    $tokenEndpoint = "https://login.microsoftonline.com/$($domain)/oauth2/v2.0/token"
-    if ($ScopeOverride) {
-        $joinedScopeString = $ScopeOverride
+        Write-Debug "Received Token with the following Scopes"
+        foreach ($scope in $token.scope.Split()) {
+            Write-Debug "\t\t$scope"
+        }
+        return $token
+    }
+    catch {
+        Write-Error $_
+        throw
+    }
+}
+
+<#
+    Get a Registered Delegated Appplication from Tenant. 
+    Apps are registered as 'DelegatedApp {Scope Name}` such as `DelegatedApp ChannelMember.ReadWrite.All`.
+    If Application cannot be found or scope was determined to be .default, use our Raptor Default Client
+#>
+function Get-Application {
+    param(
+        $AppSettings,
+        [string]$joinedScopeString,
+        [string]$Scope
+    )
+    #Connect using the current Application stored in settings
+    Connect-MgGraph -CertificateThumbprint $AppSettings.CertificateThumbprint -ClientId $AppSettings.ClientID -TenantId $AppSettings.TenantID | Out-Null
+    $application = @{}
+    if ($joinedScopeString -eq ".default") {
+        $application.ApplicationIdentifier = $appSettings.ClientID
+        $application.DisplayName = "Raptor Default Client"
     }
     else {
-        try {
-            $scopes = Invoke-RestMethod -Method Get -Uri "https://graphexplorerapi.azurewebsites.net/permissions?requesturl=$Path&method=$Method"
-            if ($scopes.Count -eq 1 -and $scopes[0].value -eq "Not supported.") {
-                $joinedScopeString = ".default"
-            }
-            elseif ($Method -eq "GET") {
-                $joinedScopeString = $scopes.value |
-                Where-Object { $_.Contains("Read") -and !$_.Contains("Write") } | # same selection as the read-only permissions for the app
-                Join-String -Separator " "
-            }
-            if (!$joinedScopeString) {
-                $joinedScopeString = $scopes.value |
-                Join-String -Separator " "
-            }
-        }
-        catch {
-            # try with empty scopes if we can't get permissions from the DevX API
-            $joinedScopeString = ".default"
-        }
+        #Assume for now that its not default scope (.default)
+        $scopeFilter = $Scope
+        $filterParam = "DelegatedApp $($scopeFilter)"
+        $filterQuery = "displayName eq '$($filterParam)' "
+        $requiredApplication = Get-MgApplication -Filter $filterQuery
+        $application.ApplicationIdentifier = $requiredApplication.AppId
+        $application.DisplayName = $requiredApplication.DisplayName
     }
+    return $application
+}
 
-    $body = "grant_type=password&username=$($appSettings.Username)&password=$($appSettings.Password)&client_id=$($appSettings.ClientID)&scope=$($joinedScopeString)"
-    $token = Invoke-RestMethod -Method Post -Uri $tokenEndpoint -Body $Body -ContentType 'application/x-www-form-urlencoded'
-
-    Write-Debug "== got token with the following scopes"
-    foreach ($scope in $token.scope.Split()) {
-        Write-Debug "    $scope"
+<#
+    Get Scopes from DevX API
+#>
+function Get-Scopes {
+    param (
+        [Parameter(Mandatory = $False)][ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")][string] $Method = "GET",
+        [Parameter(Mandatory = $True)][string] $Path
+    )
+    $scopes = @()
+    try {
+        $graphExplorerApi = "https://graphexplorerapi.azurewebsites.net/permissions?requesturl=$Path&method=$Method"
+        $scopes = Invoke-RestMethod -Method "GET" -Uri $graphExplorerApi
     }
+    catch {
+        Write-Error $_
+        Write-Warning "No Scopes returned for $Path with Method $Method"
+    }
+    return $scopes
+}
 
-    return $token.access_token
+<#
+    Produces a Scope String from provided scope array
+    Give ("Files.Read", "Files.ReadWrite") => "Files.Read Files.ReadWrite"
+    If no scopes are provides, returns ".default"
+#>
+function Get-ScopeString {
+    param (
+        [Parameter(Mandatory = $False)][ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")][string] $Method = "GET",
+        [Parameter(Mandatory = $False)][string] $Path,
+        [Parameter(Mandatory = $False)] $Scopes = @()
+    )
+    $joinedScopeString = ""
+    if ($null -eq $Scopes -or ($Scopes.Count -eq 1 -and $Scopes[0].value -eq "Not supported.")) {
+        $joinedScopeString = ".default"
+    }
+    else {
+        $joinedScopeString = $Scopes.value |
+        Join-String -Separator " "
+    }
+    return $joinedScopeString
 }
 
 <#
@@ -157,38 +203,68 @@ function Get-Token {
 #>
 function Request-DelegatedResource {
     param(
-        [Parameter(Mandatory = $true)]
-        [string]$Uri,
-        [Parameter(Mandatory = $False)]
-        $Body,
-        [ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")]
-        [string] $Method = "GET",
+        [Parameter(Mandatory = $True)][string] $Uri,
+        [Parameter(Mandatory = $False)] $Body,
+        [ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")][string] $Method = "GET",
+        [parameter(Mandatory = $False)][string] $ScopeOverride,
+        [parameter(Mandatory = $False)][ValidateSet("v1.0", "beta")][string] $GraphVersion = "v1.0",
         $Headers = @{ },
         $FilePath,
-        [string]$ScopeOverride,
-        [string]$Version = "v1.0"
+        $AppSettings
     )
-
+    if ($null -eq $AppSettings) {
+        $AppSettings = Get-AppSettings
+    }
     # If content-type not specified assume application/json
     if (!$headers.ContainsKey("Content-Type")) {
         $Headers += @{ "Content-Type" = "application/json" }
     }
-    Write-Debug "== getting token for $($Uri) for method $($Method)"
-
-    $token = Get-Token -Path "/$Uri" -ScopeOverride $ScopeOverride -Method $Method
-    Connect-MgGraph -AccessToken $token | Out-Null
-
-    $jsonBody = $Body | ConvertTo-Json -Depth 3
-    if ($FilePath -and (Test-Path -Path $FilePath)) {
-        # provide -InputFilePath param instead of -Body param
-        $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$Version/$Uri" -InputFilePath $FilePath -OutputType PSObject -ResponseHeadersVariable "responseHeaderValue"
+    $joinedScopeString = ""
+    $devxScopes = @()
+    $flattenedScopes = @()
+    # When Override is set, skip fetching scopes from DeVX API
+    if (-not [string]::IsNullOrWhiteSpace($ScopeOverride)) {
+        $joinedScopeString = $ScopeOverride
+        $flattenedScopes += $ScopeOverride
     }
     else {
-        $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$Version/$Uri" -Body $jsonBody -OutputType PSObject -ResponseHeadersVariable "responseHeaderValue"
+        $devxScopes = Get-Scopes -Path "/$Uri" -Method $Method
+        $flattenedScopes = $devxScopes.value
+        $joinedScopeString = Get-ScopeString -Scopes $devxScopes -Path $Uri -Method $Method
+        # If the JoinedScopeString is .default, currentScopes will be empty, insert that as the first and only scope. 
+        if ($joinedScopeString -eq ".default") {
+            $flattenedScopes += $joinedScopeString
+        }
     }
-
-    $responseBody = $response.value -is [System.Array] ? $response.value : $response
-    return $responseBody ?? $responseHeaderValue
+    
+    foreach ($currentScope in $flattenedScopes) {
+        # If JoinedScopeString is .default, we use the Default Raptor Client ID configured in AppSettings. 
+        # It implies we couldn't get a corresponding app for the specified permission. 
+        $application = Get-Application -AppSettings $AppSettings -joinedScopeString $joinedScopeString -Scope $currentScope
+        try {
+            $userToken = Get-UserToken -AppSettings $AppSettings -Application $application -ScopeString $currentScope
+            if ($null -ne $userToken) {
+                Connect-MgGraph -AccessToken $userToken.access_token | Out-Null
+                $jsonBody = $Body | ConvertTo-Json -Depth 3
+                if ($FilePath -and (Test-Path -Path $FilePath)) {
+                    # provide -InputFilePath param instead of -Body param
+                    $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -InputFilePath $FilePath -OutputType PSObject -ResponseHeadersVariable "responseHeaderValue"
+                }
+                else {
+                    $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -Body $jsonBody -OutputType PSObject -ResponseHeadersVariable "responseHeaderValue"
+                }
+                $responseBody = $response.value -is [System.Array] ? $response.value : $response
+                return $responseBody ?? $responseHeaderValue
+            }
+        }
+        catch {
+            $currentApplicationName = $application.DisplayName
+            $currentApplicationIdentifier = $application.DisplayName
+            Write-Warning "Request Failed for $Uri with Scope: $mergedScope Current RegisteredApp:$currentApplicationIdentifier=>:$currentApplicationName"
+            Write-Warning $_
+            continue
+        }
+    }
 }
 
 Function Get-RandomAlphanumericString {

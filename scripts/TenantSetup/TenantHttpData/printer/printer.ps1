@@ -6,19 +6,17 @@ Param(
 $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 . $raptorUtils
 
-Install-Az
-
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 $appSettings = Get-AppSettings
 
 
 #Create printer
-$storedSecretContent = Get-AzKeyVaultSecret -VaultName $appSettings.AzureKeyVaultName -Name "csrData" -AsPlainText  # Retrieve printer CSR content from azure key-Vault
-$storedSecretTransportKey = Get-AzKeyVaultSecret -VaultName $appSettings.AzureKeyVaultName -Name "transportKey" -AsPlainText  # Retrieve printer CSR transportKey from azure key-Vault
+$storedSecretContent = $appSettings.csrData
+$storedSecretTransportKey = $appSettings.transportKey
 $printerData = Get-RequestData -ChildEntity "printer"
 $printerData.certificateSigningRequest.content = $storedSecretContent
 $printerData.certificateSigningRequest.transportKey = $storedSecretTransportKey
-$printerHeaderResp = Request-DelegatedResource -Uri "print/printers/create" -Method "POST" -Body $printerData
+$printerHeaderResp = Request-DelegatedResource -Uri "print/printers/create" -Method "POST" -Body $printerData -ScopeOverride "Printer.Create"
 $printerOperationUrl = $printerHeaderResp."Operation-Location" | Select-Object -First 1
 $printerOperationRequestUri = $printerOperationUrl.Split("v1.0/")[1]
 $createPrinterOps = Request-DelegatedResource -Uri $printerOperationRequestUri
