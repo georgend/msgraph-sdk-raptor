@@ -13,7 +13,7 @@ namespace TestsCommon
     // Owner is used to categorize known test failures, so that we can redirect issues faster
     public record KnownIssue (string Owner, string Message, string TestNamePrefix = "known-issue-");
 
-    
+
     /// <summary>
     /// Generates TestCaseData for NUnit
     /// </summary>
@@ -75,14 +75,14 @@ namespace TestsCommon
         public static IEnumerable<TestCaseData> GetExecutionTestData(RunSettings runSettings)
         {
             return from testData in GetLanguageTestData(runSettings)
-                   let LanguageTestData = testData with
+                   let executionTestData = testData with
                    {
                        TestName = testData.TestName.Replace("-compiles", "-executes"),
                    }
-                   where !testData.IsCompilationKnownIssue // select compiling tests
-                   && !(testData.IsExecutionKnownIssue ^ runSettings.TestType == TestType.ExecutionKnownIssues) // select known execution issues iff requested
-                   && testData.FileContent.Contains("GetAsync()") // select only the get tests
-                   select new TestCaseData(LanguageTestData).SetName(testData.KnownIssueTestNamePrefix + testData.TestName).SetProperty("Owner", LanguageTestData.Owner);
+                   where !executionTestData.IsCompilationKnownIssue // select compiling tests
+                   && !(executionTestData.IsExecutionKnownIssue ^ runSettings.TestType == TestType.ExecutionKnownIssues) // select known execution issues iff requested
+                   && executionTestData.FileContent.Contains("GetAsync()") // select only the get tests
+                   select new TestCaseData(executionTestData).SetName(executionTestData.KnownIssueTestNamePrefix + executionTestData.TestName).SetProperty("Owner", executionTestData.Owner);
         }
 
         private static IEnumerable<LanguageTestData> GetLanguageTestData(RunSettings runSettings)
@@ -111,7 +111,7 @@ namespace TestsCommon
                    let executionKnownIssue = isExecutionKnownIssue ? executionKnownIssues[executionIssueLookupKey] : null
                    let knownIssueMessage = compilationKnownIssue?.Message ?? executionKnownIssue?.Message ?? string.Empty
                    let knownIssueTestNamePrefix = compilationKnownIssue?.TestNamePrefix ?? executionKnownIssue?.TestNamePrefix ?? string.Empty
-                   let owner = compilationKnownIssue?.Owner ?? executionKnownIssue?.Message ?? string.Empty
+                   let owner = compilationKnownIssue?.Owner ?? executionKnownIssue?.Owner ?? string.Empty
                    let fullPath = Path.Join(GraphDocsDirectory.GetSnippetsDirectory(version, runSettings.Language), fileName)
                    let fileContent = File.ReadAllText(fullPath)
                    select new LanguageTestData(
