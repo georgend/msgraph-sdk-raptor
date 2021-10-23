@@ -80,6 +80,7 @@ namespace TestsCommon
         #endregion
 
         #region Test Owner values (to categorize results in Azure DevOps)
+        internal const string Permissions = "DevX API Permissions";
         internal const string Raptor = nameof(Raptor);
         internal const string SDK = nameof(SDK);
         internal const string HTTP = nameof(HTTP);
@@ -102,7 +103,7 @@ namespace TestsCommon
         internal const string PATCH = nameof(PATCH);
         #endregion
 
-        internal static readonly KnownIssue TableRowKnownIssue = new KnownIssue(MissingData, "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/522", "known-issue-missing-data-table-row-");
+        internal static readonly KnownIssue PermissionsExcelIdKnownIssue = new KnownIssue(Permissions, "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/745", "known-issue-permissions-excel-id-");
         internal static readonly KnownIssue SnippetGenerationKnownIssue = new KnownIssue(SnippetGeneration, "Snippet generation should be fixed", "known-issue-snippet-generation-");
         internal static readonly KnownIssue MetadataMissingNavigationPropertyKnownIssue = new KnownIssue(Metadata, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14703", "known-issue-metadata-missing-navigation-property-");
         internal static readonly KnownIssue RaptorInfrastructureKnownIssue = new KnownIssue(Raptor, "Raptor infrastructure work is needed", "known-issue-raptor-infrastructure-");
