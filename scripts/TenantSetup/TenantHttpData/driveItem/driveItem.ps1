@@ -11,15 +11,17 @@ $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
 
 $uploadFileName = "raptorWorkbookDriveItemTest.xlsx"
-$driveItem = Request-DelegatedResource -Uri "me/drive/root/children?`$filter=name eq '$($uploadFileName)'" |
-    Select-Object -First 1
-# if get returns empty response, then go ahead and create it
-if (!$driveItem){
-    $driveItem = Request-DelegatedResource -Uri "me/drive/root:/$($uploadFileName):/content" -Method "PUT" -FilePath $workbookFilePath
-}
-$driveItem.id
-$identifiers.driveItem._value = $driveItem.id
 
+# no need to check the existence of driveItem, as it will be created if it does not exist
+# if it exists, it will just generate a new version
+$driveItem = Request-DelegatedResource -Uri "me/drive/root:/$($uploadFileName):/content" -Method "PUT" -FilePath $workbookFilePath -scopeOverride "Files.ReadWrite.All"
+# create a second version of the file
+$driveItemVersion2 =  Request-DelegatedResource -Uri "me/drive/root:/$($uploadFileName):/content" -Method "PUT" -FilePath $workbookFilePath -scopeOverride "Files.ReadWrite.All"
+
+$driveItem.id
+$driveItemVersion2.id
+$identifiers.driveItem._value = $driveItem.id
+$identifiers.driveItem.driveItemVersion._value = "1.0" # standard first version number
 
 $driveItemPermission = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/permissions" |
     Select-Object -First 1
@@ -32,12 +34,6 @@ $driveItemThumbnail = Request-DelegatedResource -Uri "me/drive/items/$($driveIte
 $driveItemThumbnail.id
 $identifiers.driveItem.thumbnailSet._value = $driveItemThumbnail.id
 $identifiers.driveItem.thumbnailSet.thumbnailSet._value = "small"
-
-
-$driveItemVersion = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/versions" |
-    Select-Object -First 1
-$driveItemVersion.id
-$identifiers.driveItem.driveItemVersion._value = $driveItemVersion.id
 
 
 $driveItemWorkbookTable = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/tables" |
