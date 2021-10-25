@@ -878,7 +878,6 @@ namespace TestsCommon
                 { "get-profilecardproperties-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-regionalandlanguagesettings-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-services-2-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
-                { $"get-store-csharp-{version}-executes", MissingPermissionScopeKnownIssue },
                 { "get-subscriptions-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-subscriptions-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-swapshiftschangerequest-1-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
