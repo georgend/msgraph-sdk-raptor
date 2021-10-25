@@ -56,7 +56,7 @@ $identifiers.driveItem.workbookTable.workbookTableColumn._value = $tableColumn.i
 $tableRow = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/tables/$($driveItemWorkbookTable.id)/rows" |
     Select-Object -First 1
 $tableRow.index
-$identifiers.driveItem.workbookTable.workbookTableRow._value = $tableRow.index
+$identifiers.driveItem.workbookTable.workbookTableRow._value = "itemAt(index=$($tableRow.index))"
 
 
 $worksheet = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/worksheets" |
