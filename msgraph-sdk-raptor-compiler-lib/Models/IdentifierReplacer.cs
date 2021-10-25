@@ -64,10 +64,15 @@ namespace MsGraphSDKSnippetsCompiler.Models
 
         public string ReplaceIds(string input)
         {
+            if (input == null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
+
             return ReplaceIdsFromIdentifiersFile(ReplaceEdgeCases(input));
         }
 
-        private string ReplaceEdgeCases(string input)
+        private static string ReplaceEdgeCases(string input)
         {
             var edgeCases = new Dictionary<string, string>
             {
@@ -77,7 +82,7 @@ namespace MsGraphSDKSnippetsCompiler.Models
 
             foreach (var (key, value) in edgeCases)
             {
-                input = input.Replace(key, value);
+                input = input.Replace(key, value, StringComparison.Ordinal);
             }
 
             return input;
