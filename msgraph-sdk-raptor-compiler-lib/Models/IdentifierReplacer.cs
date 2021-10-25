@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System;
 using System.IO;
 using System.Text;
 using System.Text.Json;
@@ -61,6 +62,27 @@ namespace MsGraphSDKSnippetsCompiler.Models
             tree = JsonSerializer.Deserialize<IDTree>(json);
         }
 
+        public string ReplaceIds(string input)
+        {
+            return ReplaceIdsFromIdentifiersFile(ReplaceEdgeCases(input));
+        }
+
+        private string ReplaceEdgeCases(string input)
+        {
+            var edgeCases = new Dictionary<string, string>
+            {
+                // https://docs.microsoft.com/en-us/graph/api/drive-get-specialfolder?view=graph-rest-1.0&amp%3Btabs=csharp&tabs=csharp#http-request-1
+                { "Special[\"{driveItem-id}\"]", "Special[\"music\"]" },
+            };
+
+            foreach (var (key, value) in edgeCases)
+            {
+                input = input.Replace(key, value);
+            }
+
+            return input;
+        }
+
         /// <summary>
         /// Replaces ID placeholders of the form {name-id} by looking up name in the IDTree.
         /// If there is more than one placeholder, it traverses through the tree, e.g.
@@ -70,7 +92,7 @@ namespace MsGraphSDKSnippetsCompiler.Models
         /// </summary>
         /// <param name="input">String containing ID placeholders</param>
         /// <returns>input string, but its placeholders replaced from IDTree</returns>
-        public string ReplaceIds(string input)
+        private string ReplaceIdsFromIdentifiersFile(string input)
         {
             if (input == null)
             {
