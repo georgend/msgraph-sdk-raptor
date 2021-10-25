@@ -49,6 +49,8 @@ namespace TestsCommon
                 { "delete-acceptedsenders-from-group-csharp-V1-compiles", new KnownIssue(SDK, DeleteAsyncIsNotSupportedForReferences) },
                 { "put-b2xuserflows-apiconnectorconfiguration-postattributecollection-csharp-V1-compiles", new KnownIssue(SDK, ComplexTypeNavigationProperties) },
                 { "put-b2xuserflows-apiconnectorconfiguration-postfederationsignup-csharp-V1-compiles", new KnownIssue(SDK, ComplexTypeNavigationProperties) },
+                { "update-b2xuserflows-userflowidentityprovider-csharp-Beta-compiles", new KnownIssue(SDK, "IB2xIdentityUserFlowUserFlowIdentityProvidersCollectionReferencesRequest' does not contain a definition for 'UpdateAsync'")},
+                { "update-b2cuserflows-userflowidentityproviders-csharp-Beta-compiles", new KnownIssue(SDK, "IB2cIdentityUserFlowUserFlowIdentityProvidersCollectionReferencesRequest' does not contain a definition for 'UpdateAsync'")},
 
                 { "deploymentaudience-updateaudience-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/12811")},
                 { "get-devicecompliancepolicysettingstatesummary-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/13596")},
@@ -56,6 +58,8 @@ namespace TestsCommon
                 { "list-administrativeunit-csharp-V1-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/12770")},
                 { "list-devicecompliancepolicysettingstatesummary-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/13597")},
                 { "update-tenantcustomizedinformation-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/13556")},
+                { "update-accessreviewscheduledefinition-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14712")},
+                { "update-appleidentityprovider-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14713")},
 
                 { "put-b2cuserflows-apiconnectorconfiguration-postfederationsignup-csharp-Beta-compiles", new KnownIssue(SnippetGeneration, StructuralPropertiesAreNotHandled) },
                 { "put-b2xuserflows-apiconnectorconfiguration-postfederationsignup-csharp-Beta-compiles", new KnownIssue(SnippetGeneration, StructuralPropertiesAreNotHandled) },
