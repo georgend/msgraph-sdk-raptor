@@ -771,8 +771,6 @@ namespace TestsCommon
                 { "get-shared-driveitem-expand-children-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-shared-root-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-single-version-listitem-csharp-V1-executes", MissingDataKnownIssue with { Message = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/508" } },
-                { "get-special-children-csharp-V1-executes", MissingDataKnownIssue with { Message = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/521" } },
-                { "get-special-folder-csharp-V1-executes", HTTPKnownIssue with { Message = "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14705" } },
                 { "get-subscription-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-tablerow-csharp-V1-executes", PermissionsExcelIdKnownIssue },
                 { "get-teamworkbot-csharp-V1-executes", MissingDataKnownIssue },
