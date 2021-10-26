@@ -623,7 +623,6 @@ namespace TestsCommon
                 { "callrecord-getpstncalls-csharp-Beta-executes", MissingDataKnownIssue},
                 { "drive-root-subscriptions-socketio-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "educationschool-get-users-csharp-V1-executes", MissingDataKnownIssue },
-                { "event-delta-csharp-V1-executes", RaptorInfrastructureKnownIssue with { Message = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/516" } },
                 { "event-get-attachments-v1-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-a-count-csharp-V1-executes", SDKMissingCountSupportKnownIssue },
                 { "get-a-count-endswith-csharp-V1-executes", SDKMissingCountSupportKnownIssue },
