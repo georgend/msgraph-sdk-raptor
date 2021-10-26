@@ -74,12 +74,19 @@ namespace MsGraphSDKSnippetsCompiler.Models
 
         private static string ReplaceEdgeCases(string input)
         {
+            // calculate now as string
+            var now = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
+            // calculate yesterday as string
+            var yesterday = DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-ddTHH:mm:ssZ");
             var edgeCases = new Dictionary<string, string>
             {
                 // https://docs.microsoft.com/en-us/graph/api/drive-get-specialfolder?view=graph-rest-1.0&amp%3Btabs=csharp&tabs=csharp#http-request-1
                 { "Special[\"{driveItem-id}\"]", "Special[\"music\"]" },
                 // https://docs.microsoft.com/en-us/graph/api/driveitem-get-content-format?view=graph-rest-1.0&tabs=csharp
                 { "QueryOption(\"format\", \"{format}\")", "QueryOption(\"format\", \"pdf\")"},
+                // https://docs.microsoft.com/en-us/graph/api/event-delta?view=graph-rest-1.0&tabs=csharp
+                { "new QueryOption(\"startdatetime\", \"{start_datetime}\"", $"new QueryOption(\"startdatetime\", \"{yesterday}\"" },
+                { "new QueryOption(\"enddatetime\", \"{end_datetime}\"", $"new QueryOption(\"enddatetime\", \"{now}\"" },
             };
 
             foreach (var (key, value) in edgeCases)
