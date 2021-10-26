@@ -78,6 +78,8 @@ namespace MsGraphSDKSnippetsCompiler.Models
             {
                 // https://docs.microsoft.com/en-us/graph/api/drive-get-specialfolder?view=graph-rest-1.0&amp%3Btabs=csharp&tabs=csharp#http-request-1
                 { "Special[\"{driveItem-id}\"]", "Special[\"music\"]" },
+                // https://docs.microsoft.com/en-us/graph/api/driveitem-get-content-format?view=graph-rest-1.0&tabs=csharp
+                { "QueryOption(\"format\", \"{format}\")", "QueryOption(\"format\", \"pdf\")"},
             };
 
             foreach (var (key, value) in edgeCases)
