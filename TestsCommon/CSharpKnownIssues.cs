@@ -621,7 +621,6 @@ namespace TestsCommon
                 { "appconsentrequest-filterbycurrentuser-csharp-V1-executes", SDKFunctionParameterKnownIssue },
                 { "callrecord-getdirectroutingcalls-csharp-Beta-executes", MissingDataKnownIssue},
                 { "callrecord-getpstncalls-csharp-Beta-executes", MissingDataKnownIssue},
-                { "convert-item-content-csharp-V1-executes", RaptorInfrastructureKnownIssue with { Message = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/515" } },
                 { "drive-root-subscriptions-socketio-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "educationschool-get-users-csharp-V1-executes", MissingDataKnownIssue },
                 { "event-delta-csharp-V1-executes", RaptorInfrastructureKnownIssue with { Message = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/516" } },
