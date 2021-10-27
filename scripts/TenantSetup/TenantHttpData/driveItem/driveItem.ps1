@@ -111,5 +111,25 @@ $driveItemWorkbookOperation = Request-DelegatedResource -Uri "me/drive/items/$($
 $driveItemWorkbookOperation.id
 $identifiers.driveItem.workbookOperation._value = $driveItemWorkbookOperation.id
 
+#SharedDriveItem
+$sharingUrl = $null
+$sharingDriveItem = Request-DelegatedResource -Uri "me/drive/root/children?`$filter=name eq 'Proposed_agenda_topics.docx'"
+$createLinkData = Get-RequestData -ChildEntity "sharedDriveItem"
+if ($sharingDriveItem.shared.scope -eq "users"){
+    $sharingPem = Request-DelegatedResource -Uri "me/drive/items/$($sharingDriveItem.id)/permissions?`$filter=(link/type eq '$($createLinkData.type)') and (link/scope eq '$($createLinkData.scope)')" |
+        Select-Object -First 1
+    $sharingUrl = $sharingPem.link.webUrl
+}
+else{  # create link if it doesn't exist
+    $DriveItemLink = Request-DelegatedResource -Uri "me/drive/items/$($sharingDriveItem.id)/createLink" -Method "POST" -Body $createLinkData
+    $sharingUrl = $DriveItemLink.link.webUrl;
+}
+if ( ![string]::IsNullOrWhitespace($sharingUrl)){
+    # Encoding sharing URLs as detailed in docs:https://docs.microsoft.com/en-us/graph/api/shares-get?view=graph-rest-1.0&tabs=http#encoding-sharing-urls
+    $base64Value = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($sharingUrl));
+    $encodedUrl = "u!" + $base64Value.TrimEnd('=').Replace('/', '_').Replace('+', '-');
+    $encodedUrl
+    $identifiers.sharedDriveItem._value = $encodedUrl
+}
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

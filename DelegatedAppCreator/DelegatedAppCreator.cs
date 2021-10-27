@@ -23,7 +23,7 @@ namespace DelegatedAppCreator
 
             Console.WriteLine();
             Console.WriteLine("*************************");
-            Console.WriteLine("Creating applications for regular tenant...");
+            Console.WriteLine("Creating applications for education tenant...");
             Console.WriteLine("*************************");
             await CreateDelegatedApps(new PermissionManager(isEducation:true)).ConfigureAwait(false);
         }
