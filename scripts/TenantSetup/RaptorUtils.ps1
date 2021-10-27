@@ -408,20 +408,23 @@ function Connect-AzureTenant {
 <#
     Get Certificate from Azure KeyVault
 #>
+$global:DefaultCertificate = $null
 function Get-Certificate {
     [CmdletBinding()]
     param(
         [PSObject] $AppSettings
     )
-    
-    Connect-AzureTenant -AppSettings $AppSettings
-    # Certificate must be downloaded as a Secret instead of a Certificate to bring down the PrivateKey as well. 
-    $keyVaultCertSecret = Get-AzKeyVaultSecret -VaultName $AppSettings.AzureKeyVaultName -Name $AppSettings.CertificateName
-    # Convert the Secret Value in the response      to plainText
-    $secureCertData = ConvertFrom-SecureString -SecureString $keyVaultCertSecret.SecretValue -AsPlainText
-    # KeyVault Secrets are Base64 Encoded, thus decode.
-    $base64CertData = [Convert]::FromBase64String($secureCertData)
-    # Create an In-Memory cert from Cert Data
-    $pfxCertificate = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2 -ArgumentList @($base64CertData, "", [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
-    return $pfxCertificate
+    if ($null -eq $global:DefaultCertificate) {
+        Connect-AzureTenant -AppSettings $AppSettings
+        # Certificate must be downloaded as a Secret instead of a Certificate to bring down the PrivateKey as well. 
+        $keyVaultCertSecret = Get-AzKeyVaultSecret -VaultName $AppSettings.AzureKeyVaultName -Name $AppSettings.CertificateName
+        # Convert the Secret Value in the response      to plainText
+        $secureCertData = ConvertFrom-SecureString -SecureString $keyVaultCertSecret.SecretValue -AsPlainText
+        # KeyVault Secrets are Base64 Encoded, thus decode.
+        $base64CertData = [Convert]::FromBase64String($secureCertData)
+        # Create an In-Memory cert from Cert Data
+        $pfxCertificate = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2 -ArgumentList @($base64CertData, "", [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
+        $global:DefaultCertificate = $pfxCertificate
+    }
+    return $global:DefaultCertificate
 }
