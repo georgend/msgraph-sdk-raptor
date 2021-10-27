@@ -1,5 +1,5 @@
 ﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
-
+using System;
 using MsGraphSDKSnippetsCompiler.Models;
 using System.Globalization;
 using System.Text;
@@ -14,7 +14,8 @@ namespace TestsCommon
     /// <param name="DocsLink">documentation page where the snippet is shown</param>
     /// <param name="KnownIssueMessage">message for known issue</param>
     /// <param name="IsKnownIssue">whether issue is known</param>
-    public record CompilationOutputMessage (CompilationResultsModel Model, string Code, string DocsLink, string KnownIssueMessage, bool IsKnownIssue)
+    /// <param name="Language">compilation language</param>
+    public record CompilationOutputMessage (CompilationResultsModel Model, string Code, string DocsLink, string KnownIssueMessage, bool IsKnownIssue, Languages Language = Languages.CSharp)
     {
         /// <summary>
         /// String representation of compilation result
@@ -82,17 +83,41 @@ namespace TestsCommon
             var widestLineNumberWidth = lines.Length.ToString(CultureInfo.InvariantCulture).Length;
 
             var builder = new StringBuilder("\r\n```\r\n");
+
+            var isPrinting = false;
+            var relevantStart = GetRelevantLinesStart();
             for (int lineNumber = 1; lineNumber < lines.Length + 1; lineNumber++)
             {
-                builder.Append(lineNumber.ToString(CultureInfo.InvariantCulture).PadLeft(widestLineNumberWidth)) // align line numbers to the right
-                       .Append(' ')
-                       .Append(lines[lineNumber - 1])
-                       .Append("\r\n");
+                var line = lines[lineNumber - 1];
+                var trimmedLine = line.Trim();
+
+                if (!isPrinting && trimmedLine.Equals(relevantStart, StringComparison.Ordinal))
+                {
+                    isPrinting = true;
+                }
+
+                if (isPrinting)
+                {
+                    builder.Append(lineNumber.ToString(CultureInfo.InvariantCulture).PadLeft(widestLineNumberWidth)) // align line numbers to the right
+                        .Append(' ')
+                        .Append(line)
+                        .Append("\r\n");
+                }
             }
 
             builder.Append("```\r\n");
 
             return builder.ToString();
+        }
+
+        private string GetRelevantLinesStart()
+        {
+            return Language switch
+            {
+                Languages.CSharp => "GraphServiceClient graphClient = new GraphServiceClient( authProvider );",
+                Languages.Java => "GraphServiceClient graphClient = GraphServiceClient.builder().authenticationProvider( authProvider ).buildClient();",
+                _ => throw new NotImplementedException($"Language {Language} is not supported"),
+            };
         }
     }
 }

@@ -113,7 +113,7 @@ public class App
                     continue;
                 }
 
-                var compilationOutputMessage = new CompilationOutputMessage(compilationResultsModel, codeToCompile, testData.DocsLink, testData.KnownIssueMessage, testData.IsCompilationKnownIssue);
+                var compilationOutputMessage = new CompilationOutputMessage(compilationResultsModel, codeToCompile, testData.DocsLink, testData.KnownIssueMessage, testData.IsCompilationKnownIssue, Languages.Java);
 
                 Assert.Fail($"{compilationOutputMessage}");
                 break;

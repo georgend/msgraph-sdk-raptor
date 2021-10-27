@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Text.Json;
@@ -74,10 +75,8 @@ namespace MsGraphSDKSnippetsCompiler.Models
 
         private static string ReplaceEdgeCases(string input)
         {
-            // calculate now as string
-            var now = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
-            // calculate yesterday as string
-            var yesterday = DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-ddTHH:mm:ssZ");
+            var now = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+            var yesterday = DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
             var edgeCases = new Dictionary<string, string>
             {
                 // https://docs.microsoft.com/en-us/graph/api/drive-get-specialfolder?view=graph-rest-1.0&amp%3Btabs=csharp&tabs=csharp#http-request-1
