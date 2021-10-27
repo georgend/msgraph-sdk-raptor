@@ -16,8 +16,8 @@ $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 $admin = "MOD Administrator"
 $domain = Get-CurrentDomain -AppSettings $appSettings
 
-#Connect To Microsoft Graph Using ClientId, TenantId and Certificate
-Connect-MgGraph -CertificateThumbprint $appSettings.CertificateThumbprint -ClientId $appSettings.ClientID -TenantId $appSettings.TenantID
+#Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
+Connect-DefaultTenant -AppSettings $appSettings
 
 $identifiers.domain._value = $domain
 

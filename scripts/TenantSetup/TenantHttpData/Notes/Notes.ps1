@@ -9,8 +9,8 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 $appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
-#Connect To Microsoft Graph Using ClientId, TenantId and Certificate
-Connect-MgGraph -CertificateThumbprint $appSettings.CertificateThumbprint -ClientId $appSettings.ClientID -TenantId $appSettings.TenantID
+#Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
+Connect-DefaultTenant -AppSettings $appSettings
 
 #Use User already in identifiers.json
 $user = $identifiers.user._value

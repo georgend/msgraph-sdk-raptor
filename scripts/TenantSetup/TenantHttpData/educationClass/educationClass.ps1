@@ -8,8 +8,8 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 $appSettings = Get-AppSettings
 
-#Connect To Microsoft Graph Using ClientId, TenantId and Certificate
-Connect-MgGraph -CertificateThumbprint $appSettings.CertificateThumbprint -ClientId $appSettings.EducationClientId -TenantId $appSettings.EducationTenantId
+#Connect To Microsoft Graph Using Education ClientId, TenantId and Certificate in AppSettings
+Connect-EduTenant -AppSettings $appSettings
 
 
 $educationClass = Invoke-RequestHelper -Uri "education/classes" -Method GET |

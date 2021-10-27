@@ -21,6 +21,12 @@ if (!(Get-Module -Name Microsoft.Graph.Applications -ListAvailable)) {
     Install-Module Microsoft.Graph.Applications -Repository PSGallery -Scope CurrentUser -Force
 }
 
+# 3. Install Az PowerShell : For KeyVaultOperations
+if (!(Get-Module -Name Az -ListAvailable)) {
+    Install-Module -Name Az -Repository PSGallery -Scope CurrentUser -Force
+}
+
+
 # Optional: Build App Creator and Execute AppCreator
 if($CreateDelegatedApps) {
     $delegatedApp = Join-Path $PSScriptRoot "..\..\DelegatedAppCreator"

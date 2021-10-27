@@ -9,8 +9,8 @@ $appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 $domain = Get-CurrentDomain -AppSettings $appSettings
 
-#Connect To Microsoft Graph Using ClientId, TenantId and Certificate
-Connect-MgGraph -CertificateThumbprint $appSettings.CertificateThumbprint -ClientId $appSettings.ClientID -TenantId $appSettings.TenantID
+#Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
+Connect-DefaultTenant -AppSettings $appSettings
 
 #Get Agreements https://docs.microsoft.com/en-us/graph/api/agreement-list?view=graph-rest-1.0&tabs=http
 $agreement = Get-RequestData -ChildEntity "Agreement"

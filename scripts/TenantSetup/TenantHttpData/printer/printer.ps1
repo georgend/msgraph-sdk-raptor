@@ -45,7 +45,9 @@ $identifiers.printer.printJob.printDocument._value = $printJob.documents[0].id
 
 # create printTaskDefinition
 $printTaskDefinitionData = Get-RequestData -ChildEntity "printTaskDefinition"
-Connect-MgGraph -CertificateThumbprint $appSettings.CertificateThumbprint -ClientId $appSettings.ClientID -TenantId $appSettings.TenantID
+# Connect to Default Tenant
+Connect-DefaultTenant -AppSettings $appSettings
+
 $printTaskDefinition = Invoke-RequestHelper -Uri "print/taskDefinitions" -Method "POST" -Body $printTaskDefinitionData
 $printTaskDefinition.id
 
@@ -55,6 +57,15 @@ $printTaskTriggerData."definition@odata.bind" += $printTaskDefinition.id
 $printTaskTrigger = Request-DelegatedResource -Uri "print/printers/$($printer_id)/taskTriggers" -Method "POST" -Body $printTaskTriggerData
 $printTaskTrigger.id
 $identifiers.printer.printTaskTrigger._value = $printTaskTrigger.id
+
+<#
+    Get Devices https://docs.microsoft.com/en-us/graph/api/device-list?view=graph-rest-1.0&tabs=http
+    Once a Printer is Created by ealier cmds in this script, its treated as a device. 
+#> 
+$printerDevices = Request-DelegatedResource -Uri "devices" -Method "GET" |
+        Select-Object -First 1
+
+$identifiers.device._value = $printerDevices.id
 
 # save identifiers
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

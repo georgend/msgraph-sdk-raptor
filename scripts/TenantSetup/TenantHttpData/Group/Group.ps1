@@ -10,8 +10,8 @@ $appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 $domain = Get-CurrentDomain -AppSettings $appSettings
 
-#Connect To Microsoft Graph Using ClientId, TenantId and Certificate
-Connect-MgGraph -CertificateThumbprint $appSettings.CertificateThumbprint -ClientId $appSettings.ClientID -TenantId $appSettings.TenantID
+#Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
+Connect-DefaultTenant -AppSettings $appSettings
 
 #Create groupSetting  https://docs.microsoft.com/en-us/graph/api/groupsetting-post-groupsettings?view=graph-rest-1.0&tabs=http
 $groupSettings = Get-RequestData -ChildEntity "GroupSetting"

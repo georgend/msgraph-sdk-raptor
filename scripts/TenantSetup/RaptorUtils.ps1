@@ -129,7 +129,7 @@ function Get-Application {
         [string]$Scope
     )
     #Connect using the current Application stored in settings
-    Connect-MgGraph -CertificateThumbprint $AppSettings.CertificateThumbprint -ClientId $AppSettings.ClientID -TenantId $AppSettings.TenantID | Out-Null
+    Connect-DefaultTenant -AppSettings $AppSettings
     $application = @{}
     if ($joinedScopeString -eq ".default") {
         $application.ApplicationIdentifier = $appSettings.ClientID
@@ -358,4 +358,70 @@ Function Get-HtmlDataRequest {
     $token = $currentAccessToken.AccessToken.Values.secret
     $htmlData = Invoke-WebRequest -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -Authentication Bearer -Token (ConvertTo-SecureString $token -AsPlainText -Force)
     return $htmlData
+}
+
+<#
+    Connect to the Default Raptor Tenant
+#>
+function Connect-DefaultTenant {
+    [CmdletBinding()]
+    param(
+        [PSObject] $AppSettings
+    )
+    $defaultCertificate = Get-Certificate -AppSettings $AppSettings
+    #Connect To Microsoft Graph Raptor Default Tenant Using ClientId, TenantId and Certificate
+    Connect-MgGraph -Certificate $defaultCertificate -ClientId $AppSettings.ClientID -TenantId $AppSettings.TenantID | Out-Null
+}
+
+<#
+    Connect to the Configured Raptor Education Tenant
+#>
+function Connect-EduTenant {
+    [CmdletBinding()]
+    param(
+        [PSObject] $AppSettings
+    )
+    $defaultCertificate = Get-Certificate -AppSettings $AppSettings
+    #Connect To Microsoft Graph Raptor Default Tenant Using ClientId, TenantId and Certificate
+    Connect-MgGraph -Certificate $defaultCertificate -ClientId $AppSettings.EducationClientId -TenantId $AppSettings.EducationTenantId | Out-Null
+}
+
+<#
+    Connect to Azure Tenant to Access KeyVault and other resources.
+#>
+function Connect-AzureTenant {
+    [CmdletBinding()]
+    param(
+        [PSObject] $AppSettings
+    )
+
+    $AzureTenantID = $AppSettings.AzureTenantID
+    $AzureApplicationID = $AppSettings.AzureApplicationID
+    $AzureClientSecret = $AppSettings.AzureClientSecret
+    
+    $securePassword = ConvertTo-SecureString -String $AzureClientSecret -AsPlainText -Force
+
+    $Credential = New-Object -TypeName PSCredential -ArgumentList $AzureApplicationID, $securePassword
+    Connect-AzAccount -Credential $Credential -Tenant $AzureTenantID -ServicePrincipal | Out-Null
+}
+
+<#
+    Get Certificate from Azure KeyVault
+#>
+function Get-Certificate {
+    [CmdletBinding()]
+    param(
+        [PSObject] $AppSettings
+    )
+    
+    Connect-AzureTenant -AppSettings $AppSettings
+    # Certificate must be downloaded as a Secret instead of a Certificate to bring down the PrivateKey as well. 
+    $keyVaultCertSecret = Get-AzKeyVaultSecret -VaultName $AppSettings.AzureKeyVaultName -Name $AppSettings.CertificateName
+    # Convert the Secret Value in the response      to plainText
+    $secureCertData = ConvertFrom-SecureString -SecureString $keyVaultCertSecret.SecretValue -AsPlainText
+    # KeyVault Secrets are Base64 Encoded, thus decode.
+    $base64CertData = [Convert]::FromBase64String($secureCertData)
+    # Create an In-Memory cert from Cert Data
+    $pfxCertificate = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2 -ArgumentList @($base64CertData, "", [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
+    return $pfxCertificate
 }
