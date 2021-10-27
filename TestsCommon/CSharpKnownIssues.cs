@@ -444,8 +444,6 @@ namespace TestsCommon
                 { "get-skillproficiency-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-smsauthenticationmethodconfiguration-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-sourcecollection-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-special-children-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-special-folder-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-staffmembers-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-subscription-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-synchronizationjob-csharp-Beta-executes", MissingDataKnownIssue },
