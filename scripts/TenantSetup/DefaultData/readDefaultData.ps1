@@ -205,7 +205,7 @@ $identifiers.site.list.listItem._value=$siteListItem.id
 $siteListItemVersion = Invoke-RequestHelper -Uri "sites/$($site.id)/lists/$($siteList.id)/items/$($siteListItem.id)/versions" |
     Select-Object -First 1
 $siteListItemVersion.id
-$identifiers.site.list.listItem.listItemVersion._value=$siteListItem.id
+$identifiers.site.list.listItem.listItemVersion._value=$siteListItemVersion.id
 
 #Missing Permission. Need to Create Permission on Root Site
 #Azure AD Permission Issue.
@@ -271,7 +271,7 @@ $place = Invoke-RequestHelper -Uri "places/microsoft.graph.room" |
     Where-Object {$_.displayName -eq "Conf Room Rainier"}
     Select-Object -First 1
 $place.id
-#Places can also be obtained 
+#Places can also be obtained
 #$place = Invoke-RequestHelper -Uri "places/$($place.id)"
 $identifiers.place._value = $place.id
 
