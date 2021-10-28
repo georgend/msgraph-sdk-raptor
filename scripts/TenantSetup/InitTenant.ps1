@@ -47,7 +47,7 @@ $readDefaultDataDelegated = Get-ChildItem (Join-Path $PSScriptRoot .\DefaultData
 $readDefaultEducationData = Get-ChildItem (Join-Path $PSScriptRoot .\DefaultData\readDefaultEducationData.ps1 -Resolve)
 & $readDefaultEducationData
 
-#5. Get and Execute all nested data Scripts
+#6. Get and Execute all nested data Scripts
 $nestedScripts = Get-ChildItem (Join-Path $PSScriptRoot .\TenantHttpData -Resolve) -Recurse -Include *.ps1
 $nestedScripts | ForEach-Object {
     $scriptName = $_.Name
