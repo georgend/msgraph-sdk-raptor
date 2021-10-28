@@ -72,7 +72,7 @@ function Invoke-RequestHelper (
     [Parameter(Mandatory = $False)][ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")][string] $Method = "GET",
     $Headers = @{ },
     $Body,
-    $User    
+    $User
 ) {
     #Append Content-Type to headers collection
     #Append "MS-APP-ACTS-AS" to headers collection
@@ -98,7 +98,7 @@ function Get-UserToken {
         $ScopeString,
         $GrantType = "password"
     )
-    
+
     $domain = Get-CurrentDomain -AppSettings $AppSettings
     $tokenEndpoint = "https://login.microsoftonline.com/$domain/oauth2/v2.0/token"
     try {
@@ -118,7 +118,7 @@ function Get-UserToken {
 }
 
 <#
-    Get a Registered Delegated Appplication from Tenant. 
+    Get a Registered Delegated Appplication from Tenant.
     Apps are registered as 'DelegatedApp {Scope Name}` such as `DelegatedApp ChannelMember.ReadWrite.All`.
     If Application cannot be found or scope was determined to be .default, use our Raptor Default Client
 #>
@@ -228,18 +228,18 @@ function Request-DelegatedResource {
         $flattenedScopes += $ScopeOverride
     }
     else {
-        $devxScopes = Get-Scopes -Path "/$Uri" -Method $Method
+        $devxScopes = Get-Scopes -Path "$Uri" -Method $Method
         $flattenedScopes = $devxScopes.value
         $joinedScopeString = Get-ScopeString -Scopes $devxScopes -Path $Uri -Method $Method
-        # If the JoinedScopeString is .default, currentScopes will be empty, insert that as the first and only scope. 
+        # If the JoinedScopeString is .default, currentScopes will be empty, insert that as the first and only scope.
         if ($joinedScopeString -eq ".default") {
             $flattenedScopes += $joinedScopeString
         }
     }
-    
+
     foreach ($currentScope in $flattenedScopes) {
-        # If JoinedScopeString is .default, we use the Default Raptor Client ID configured in AppSettings. 
-        # It implies we couldn't get a corresponding app for the specified permission. 
+        # If JoinedScopeString is .default, we use the Default Raptor Client ID configured in AppSettings.
+        # It implies we couldn't get a corresponding app for the specified permission.
         $application = Get-Application -AppSettings $AppSettings -joinedScopeString $joinedScopeString -Scope $currentScope
         try {
             $userToken = Get-UserToken -AppSettings $AppSettings -Application $application -ScopeString $currentScope
@@ -398,7 +398,7 @@ function Connect-AzureTenant {
     $AzureTenantID = $AppSettings.AzureTenantID
     $AzureApplicationID = $AppSettings.AzureApplicationID
     $AzureClientSecret = $AppSettings.AzureClientSecret
-    
+
     $securePassword = ConvertTo-SecureString -String $AzureClientSecret -AsPlainText -Force
 
     $Credential = New-Object -TypeName PSCredential -ArgumentList $AzureApplicationID, $securePassword
@@ -416,7 +416,7 @@ function Get-Certificate {
     )
     if ($null -eq $global:DefaultCertificate) {
         Connect-AzureTenant -AppSettings $AppSettings
-        # Certificate must be downloaded as a Secret instead of a Certificate to bring down the PrivateKey as well. 
+        # Certificate must be downloaded as a Secret instead of a Certificate to bring down the PrivateKey as well.
         $keyVaultCertSecret = Get-AzKeyVaultSecret -VaultName $AppSettings.AzureKeyVaultName -Name $AppSettings.CertificateName
         # Convert the Secret Value in the response      to plainText
         $secureCertData = ConvertFrom-SecureString -SecureString $keyVaultCertSecret.SecretValue -AsPlainText
