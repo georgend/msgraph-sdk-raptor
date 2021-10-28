@@ -884,7 +884,15 @@ namespace TestsCommon
                 { "get-educationuser-2-csharp-V1-executes", MissingDataKnownIssue with { Message = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/514" } },
                 { "list-educationclass-csharp-V1-executes",  MissingDataKnownIssue with { Message = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/514" } },
 
-
+                { "chat-getallmessages-1-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-educationmediaresource-from-educationassignment-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-educationpowerpointresource-from-educationassignment-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-attendee-report-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-educationlinkresource-from-educationassignment-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-educationfileresource-from-educationassignment-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "channel-getallchannelmessages-1-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-educationexcelresource-from-educationassignment-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-datapolicyoperation-csharp-V1-executes", NeedsAnalysisKnownIssue },
             };
         }
     }
