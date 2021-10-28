@@ -881,8 +881,6 @@ namespace TestsCommon
                 { "user-reminderview-csharp-V1-executes", MissingPermissionScopeKnownIssue },
 
                 { "get-enabled-dynamic-groups-csharp-V1-executes", SDKMissingCountSupportKnownIssue },
-                { "get-educationuser-2-csharp-V1-executes", MissingDataKnownIssue with { Message = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/514" } },
-                { "list-educationclass-csharp-V1-executes",  MissingDataKnownIssue with { Message = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/514" } },
 
                 { "chat-getallmessages-1-csharp-V1-executes", NeedsAnalysisKnownIssue },
                 { "get-educationmediaresource-from-educationassignment-csharp-V1-executes", NeedsAnalysisKnownIssue },
