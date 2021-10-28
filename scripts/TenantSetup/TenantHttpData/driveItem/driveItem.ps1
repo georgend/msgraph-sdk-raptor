@@ -14,9 +14,9 @@ $uploadFileName = "raptorWorkbookDriveItemTest.xlsx"
 
 # no need to check the existence of driveItem, as it will be created if it does not exist
 # if it exists, it will just generate a new version
-$driveItem = Request-DelegatedResource -Uri "me/drive/root:/$($uploadFileName):/content" -Method "PUT" -FilePath $workbookFilePath -scopeOverride "Files.ReadWrite.All"
+$driveItem = Request-DelegatedResource -Uri "me/drive/root:/$($uploadFileName):/content" -Method "PUT" -FilePath $workbookFilePath -ScopeOverride "Files.ReadWrite.All"
 # create a second version of the file
-$driveItemVersion2 =  Request-DelegatedResource -Uri "me/drive/root:/$($uploadFileName):/content" -Method "PUT" -FilePath $workbookFilePath -scopeOverride "Files.ReadWrite.All"
+$driveItemVersion2 =  Request-DelegatedResource -Uri "me/drive/root:/$($uploadFileName):/content" -Method "PUT" -FilePath $workbookFilePath -ScopeOverride "Files.ReadWrite.All"
 
 $driveItem.id
 $driveItemVersion2.id
@@ -86,7 +86,7 @@ $series_id = $workbookChartSeries."@odata.id".Split("series/")[1]
 $identifiers.driveItem.workbookWorksheet.workbookChart.workbookChartSeries._value = $series_id
 
 
-$workbookChartPoint = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/worksheets/$($worksheet.id)/charts/$($workbookChart.name)/series/$($series_id)/points"|
+$workbookChartPoint = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/worksheets/$($worksheet.id)/charts/$($workbookChart.name)/series/$($series_id)/points" -ScopeOverride "Files.ReadWrite.All" |
     Select-Object -First 1
 $workbookChartPoint."@odata.id"
 $chartPoint_id = $workbookChartPoint."@odata.id".split("points/")[1]

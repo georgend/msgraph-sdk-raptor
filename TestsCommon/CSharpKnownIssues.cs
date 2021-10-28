@@ -722,8 +722,6 @@ namespace TestsCommon
                 { "get-printusagebyuser-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-recent-activities-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-reference-attachment-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "get-registeredowners-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-registeredusers-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-replies-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-resources-2-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-rows-csharp-V1-executes", MissingPermissionScopeKnownIssue },
@@ -754,9 +752,6 @@ namespace TestsCommon
                 { "list-accessreviewinstancedecisionitem-csharp-V1-executes", MissingDataKnownIssue },
                 { "site-getapplicablecontenttypesforlist-csharp-V1-executes", MissingDataKnownIssue},
 
-                { "get-shared-driveitem-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-shared-driveitem-expand-children-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-shared-root-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-subscription-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-tablerow-csharp-V1-executes", PermissionsExcelIdKnownIssue },
                 { "get-teamworkbot-csharp-V1-executes", MissingDataKnownIssue },
