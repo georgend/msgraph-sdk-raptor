@@ -125,11 +125,6 @@ $directoryRoleTemplate = Invoke-RequestHelper -Uri "directoryRoleTemplates" |
 $directoryRoleTemplate.id
 $identifiers.directoryRoleTemplate._value = $directoryRoleTemplate.id
 
-$educationUser = Invoke-RequestHelper -Uri "education/users" |
-    Where-Object { $_.displayName -eq $admin }
-$educationUser.id
-$identifiers.educationUser._value = $educationUser.id
-
 $conversation = Invoke-RequestHelper -Uri "groups/$($team.id)/conversations" |
     Where-Object { $_.topic -eq "The new U.S. Sales group is ready" }
     Select-Object -First 1
