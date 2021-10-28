@@ -893,6 +893,12 @@ namespace TestsCommon
                 { "channel-getallchannelmessages-1-csharp-V1-executes", NeedsAnalysisKnownIssue },
                 { "get-educationexcelresource-from-educationassignment-csharp-V1-executes", NeedsAnalysisKnownIssue },
                 { "get-datapolicyoperation-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "list-authorednote-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-devices-by-extensionattribute-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "list-subjectrightsrequest-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "subjectrightsrequest-getfinalattachment-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-subjectrightsrequest-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "subjectrightsrequest-getfinalreport-csharp-V1-executes", NeedsAnalysisKnownIssue },
             };
         }
     }
