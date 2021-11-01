@@ -86,6 +86,8 @@ namespace MsGraphSDKSnippetsCompiler.Models
                 // https://docs.microsoft.com/en-us/graph/api/event-delta?view=graph-rest-1.0&tabs=csharp
                 { "new QueryOption(\"startdatetime\", \"{start_datetime}\"", $"new QueryOption(\"startdatetime\", \"{yesterday}\"" },
                 { "new QueryOption(\"enddatetime\", \"{end_datetime}\"", $"new QueryOption(\"enddatetime\", \"{now}\"" },
+                // https://docs.microsoft.com/en-us/graph/api/site-getapplicablecontenttypesforlist?view=graph-rest-1.0&tabs=csharp#example
+                { "GetApplicableContentTypesForList(\"listId\")", $"GetApplicableContentTypesForList(\"{Instance.tree["site"]["list"].Value}\")" }
             };
 
             foreach (var (key, value) in edgeCases)
