@@ -8,11 +8,12 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
 
-if($null -eq $threatAssessmentRequest) {
+$threatAssessmentRequest = Request-DelegatedResource -Uri "informationProtection/threatAssessmentRequests" -ScopeOverride "ThreatAssessment.ReadWrite.All" | Select-Object -First 1
+if(!$threatAssessmentRequest) {
     $threatAssessmentRequestContent = Get-RequestData -ChildEntity "threatAssessmentRequest"
-    $threatAssessmentRequest = Request-DelegatedResource -Uri "informationProtection/threatAssessmentRequests" -Method "POST" -Body $threatAssessmentRequestContent
-    $threatAssessmentRequest.id
+    $threatAssessmentRequest = Request-DelegatedResource -Uri "informationProtection/threatAssessmentRequests" -Method "POST" -Body $threatAssessmentRequestContent -ScopeOverride "ThreatAssessment.ReadWrite.All"
 }
+$threatAssessmentRequest.id
 $identifiers.threatAssessmentRequest._value = $threatAssessmentRequest.id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

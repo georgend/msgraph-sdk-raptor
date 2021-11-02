@@ -276,6 +276,21 @@ Function Get-RandomAlphanumericString {
     return $randString
 }
 
+
+Function Get-DefaultAdminUser {
+    Connect-DefaultTenant
+    $admin = "MOD Administrator"
+    $adminUser = Invoke-RequestHelper -Uri "users?`$filter=displayName eq '$($admin)'"
+    return $adminUser
+}
+
+
+Function Get-DefaultAdminUserId {
+    $user = Get-DefaultAdminUser
+    return $user.id
+}
+
+
 Function New-Certificate {
     $selfSignedCert = New-SelfSignedCertificate -Type Custom -NotAfter (Get-Date).AddYears(2) -Subject "CN=Microsoft,O=Microsoft Corp,L=Redmond,ST=Washington,C=US"
     $exportedCert = [System.Convert]::ToBase64String($selfSignedCert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert), [System.Base64FormattingOptions]::InsertLineBreaks)
@@ -368,6 +383,9 @@ function Connect-DefaultTenant {
     param(
         [PSObject] $AppSettings
     )
+    if ($null -eq $AppSettings) {
+        $AppSettings = Get-AppSettings
+    }
     $defaultCertificate = Get-Certificate -AppSettings $AppSettings
     #Connect To Microsoft Graph Raptor Default Tenant Using ClientId, TenantId and Certificate
     Connect-MgGraph -Certificate $defaultCertificate -ClientId $AppSettings.ClientID -TenantId $AppSettings.TenantID | Out-Null

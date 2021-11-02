@@ -8,31 +8,37 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
 
-$userId = $identifiers.user._value
-$userId
+$userId = Get-DefaultAdminUserId
 $content = Get-RequestData -ChildEntity "chat"
 $content.members[0].'user@odata.bind' += $userId
-$user2 = Request-DelegatedResource -Uri "users"  |Select-Object -First 2
+$user2 = Invoke-RequestHelper -Uri "users"  |Select-Object -First 2
 $content.members[1].'user@odata.bind' += $user2[0].id
 $content.members[2].'user@odata.bind' += $user2[1].id
-$chat = Request-DelegatedResource -Uri "chats" -Method "POST" -Body $content
+$chat = Request-DelegatedResource -Uri "chats?`$filter=chatType eq 'group'" -ScopeOverride "Chat.Read" | Select-Object -First 1
+if (!$chat){
+    $chat = Request-DelegatedResource -Uri "chats" -Method "POST" -Body $content -ScopeOverride "Chat.ReadWrite"
+}
 $chat.id
 $identifiers.chat._value = $chat.id
 $identifiers.user.chat._value = $chat.id
 
-$conversationMember = Request-DelegatedResource -Uri "chats/$($identifiers.chat._value)/members" | Select-Object -Last 1
+$conversationMember = Request-DelegatedResource -Uri "chats/$($identifiers.chat._value)/members" -ScopeOverride "ChatMember.Read" | Select-Object -Last 1
 $conversationMember.id
 $identifiers.chat.conversationMember._value = $conversationMember.id
 
-$teamsAppInstallation = Request-DelegatedResource -Uri "chats/$($identifiers.chat._value)/installedApps?`$expand=teamsApp&`$filter=teamsApp/displayName eq 'Word'" | Select-Object -First 1
+$teamsAppInstallation = Request-DelegatedResource -Uri "chats/$($identifiers.chat._value)/installedApps?`$expand=teamsApp&`$filter=teamsApp/displayName eq 'Word'" -ScopeOverride "TeamsAppInstallation.ReadForChat" | Select-Object -First 1
 $teamsAppInstallation.id
 $identifiers.chat.teamsAppInstallation._value = $teamsAppInstallation.id
 
-$wordTeamsApp = Request-DelegatedResource -Uri "appCatalogs/teamsApps?`$filter=displayName eq 'Word'"
+$wordTeamsApp = Request-DelegatedResource -Uri "appCatalogs/teamsApps?`$filter=displayName eq 'Word'" -ScopeOverride "AppCatalog.Read.All"
 $wordTeamsApp.id
 $teamsTabContent = Get-RequestData -ChildEntity "teamsTab"
 $teamsTabContent.'teamsApp@odata.bind' += $wordTeamsApp.id
-$teamsTab = Request-DelegatedResource -Uri "chats/$($identifiers.chat._value)/tabs" -Method "POST" -Body $teamsTabContent
+$tabsUri = "chats/$($identifiers.chat._value)/tabs"
+$teamsTab = Request-DelegatedResource -Uri $tabsUri -ScopeOverride "TeamsTab.Read.All"| Select-Object -First 1
+if(!$teamsTab){
+    $teamsTab = Request-DelegatedResource -Uri $tabsUri -Method "POST" -Body $teamsTabContent -ScopeOverride "TeamsTab.ReadWriteForChat"
+}
 $teamsTab.id
 $identifiers.chat.teamsTab._value = $teamsTab.id
 
