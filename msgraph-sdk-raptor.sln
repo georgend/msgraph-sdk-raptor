@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29111.141
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31825.309
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "msgraph-sdk-raptor-compiler-lib", "msgraph-sdk-raptor-compiler-lib\msgraph-sdk-raptor-compiler-lib.csproj", "{744E3FE7-F945-4230-A4AC-D6157BFD5788}"
 EndProject
@@ -31,6 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		RaptorShared.targets = RaptorShared.targets
+		Test.runsettings = Test.runsettings
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsharpBetaExecutionTests", "CsharpBetaExecutionTests\CsharpBetaExecutionTests.csproj", "{295FB66C-5A96-4FDE-BB01-38E3DC91AD87}"
@@ -41,7 +42,34 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsharpBetaExecutionKnownFai
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsharpV1ExecutionKnownFailureTests", "CsharpV1ExecutionKnownFailureTests\CsharpV1ExecutionKnownFailureTests.csproj", "{E20BE04F-3DB7-457F-9172-7E874055969C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DelegatedAppCreator", "DelegatedAppCreator\DelegatedAppCreator.csproj", "{6E786AF0-52D3-48A8-AF8C-C85E98614572}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DelegatedAppCreator", "DelegatedAppCreator\DelegatedAppCreator.csproj", "{6E786AF0-52D3-48A8-AF8C-C85E98614572}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestResults", "TestResults", "{33125DE2-9431-46CD-8331-062D3B167A89}"
+	ProjectSection(SolutionItems) = preProject
+		TestResults\RaptorTestResults.html = TestResults\RaptorTestResults.html
+		TestResults\RaptorTestResults.trx = TestResults\RaptorTestResults.trx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{18C77891-80EF-41BE-A5D2-B8641CAB713B}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\applyReadPermissionsToManifest.ps1 = scripts\applyReadPermissionsToManifest.ps1
+		scripts\extract-permission-missing-issues.ps1 = scripts\extract-permission-missing-issues.ps1
+		scripts\filterTests.ps1 = scripts\filterTests.ps1
+		scripts\generateCSharpModels.ps1 = scripts\generateCSharpModels.ps1
+		scripts\PrereleasePackageUpdater.ps1 = scripts\PrereleasePackageUpdater.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tasks", "tasks", "{FC60FBE5-C477-4BD5-BFE8-AF512C168BD7}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\tasks\checkout-docs-repo.ps1 = scripts\tasks\checkout-docs-repo.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DefaultData", "DefaultData", "{43D999BB-4730-4FCC-8676-1F85D3A15E06}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\TenantSetup\DefaultData\readDefaultData.ps1 = scripts\TenantSetup\DefaultData\readDefaultData.ps1
+		scripts\TenantSetup\DefaultData\readDefaultDataDelegated.ps1 = scripts\TenantSetup\DefaultData\readDefaultDataDelegated.ps1
+		scripts\TenantSetup\DefaultData\readDefaultEducationData.ps1 = scripts\TenantSetup\DefaultData\readDefaultEducationData.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -120,6 +148,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{33125DE2-9431-46CD-8331-062D3B167A89} = {C5324E4B-456A-46FE-99B4-63FEA5A026B9}
+		{18C77891-80EF-41BE-A5D2-B8641CAB713B} = {C5324E4B-456A-46FE-99B4-63FEA5A026B9}
+		{FC60FBE5-C477-4BD5-BFE8-AF512C168BD7} = {18C77891-80EF-41BE-A5D2-B8641CAB713B}
+		{43D999BB-4730-4FCC-8676-1F85D3A15E06} = {18C77891-80EF-41BE-A5D2-B8641CAB713B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D272E02-FD54-4685-89B9-A8E9B3144C4B}

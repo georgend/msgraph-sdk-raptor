@@ -586,7 +586,6 @@ namespace TestsCommon
                 { "search-sites-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "sectiongroup-get-sections-csharp-Beta-executes", MissingDataKnownIssue },
                 { "servicehealthissue-incidentreport-csharp-Beta-executes", MissingDataKnownIssue },
-                { "site-getapplicablecontenttypesforlist-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "synchronizationschema-filteroperators-csharp-Beta-executes", MissingDataKnownIssue },
                 { "synchronizationschema-functions-csharp-Beta-executes", MissingDataKnownIssue },
                 { "table-totalrowrange-csharp-Beta-executes", NeedsAnalysisKnownIssue },
@@ -748,7 +747,6 @@ namespace TestsCommon
                 { "get-userflowlanguagepage-3-csharp-V1-executes", MissingDataKnownIssue },
                 { "list-accessreviewinstance-csharp-V1-executes", MissingDataKnownIssue },
                 { "list-accessreviewinstancedecisionitem-csharp-V1-executes", MissingDataKnownIssue },
-                { "site-getapplicablecontenttypesforlist-csharp-V1-executes", MissingDataKnownIssue},
 
                 { "get-subscription-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-tablerow-csharp-V1-executes", PermissionsExcelIdKnownIssue },
