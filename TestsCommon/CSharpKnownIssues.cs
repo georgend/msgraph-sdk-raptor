@@ -895,6 +895,10 @@ namespace TestsCommon
                 { "subjectrightsrequest-getfinalattachment-csharp-V1-executes", NeedsAnalysisKnownIssue },
                 { "get-subjectrightsrequest-csharp-V1-executes", NeedsAnalysisKnownIssue },
                 { "subjectrightsrequest-getfinalreport-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "list-bitlockerrecoverykey-csharp-V1-executes",MissingDataKnownIssue },
+                { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-bitlockerrecoverykey-key-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-bitlockerrecoverykey-csharp-V1-executes", MissingDataKnownIssue }
             };
         }
     }
