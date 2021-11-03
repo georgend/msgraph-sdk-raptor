@@ -311,7 +311,7 @@ namespace TestsCommon
                 { "get-instances-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-ipnamedlocation-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-item-attachment-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
-                { "get-item-delta-last-csharp-Beta-executes", NeedsAnalysisKnownIssue },
+                
                 { "get-itemaddress-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-itememail-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-itempatent-csharp-Beta-executes", MissingDataKnownIssue },
@@ -688,7 +688,7 @@ namespace TestsCommon
 
                 { "get-identityuserflowattributeassignment-2-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-identityuserflowattributeassignment-expand-2-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-item-delta-last-csharp-V1-executes", MissingDataKnownIssue with { Message = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/519" } },
+                
                 { "get-manager-1-csharp-V1-executes", MissingDataKnownIssue with { Message = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/511" } },
                 { "get-messagerule-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-microsoftauthenticatorauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue },

@@ -137,4 +137,14 @@ if ( ![string]::IsNullOrWhitespace($sharingUrl)){
     $identifiers.sharedDriveItem._value = $encodedUrl
 }
 
+# Get Delta https://docs.microsoft.com/en-us/graph/api/driveitem-delta?view=graph-rest-1.0&amp%3Btabs=csharp&tabs=http#request-1
+
+$delta = Request-DelegatedResource -Uri "/me/drive/root/delta" -Method "GET" -OutputType "Json" | ConvertFrom-Json -AsHashtable
+$delta.'@odata.deltaLink'
+$deltaUri = [uri] $delta.'@odata.deltaLink'
+$deltaParts = $deltaUri.Query.Split("=")
+$deltaToken = $deltaParts[1]
+
+$identifiers.drive.delta._value = $deltaToken
+
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
