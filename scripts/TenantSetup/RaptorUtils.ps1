@@ -208,6 +208,7 @@ function Request-DelegatedResource {
         [ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")][string] $Method = "GET",
         [parameter(Mandatory = $False)][string] $ScopeOverride,
         [parameter(Mandatory = $False)][ValidateSet("v1.0", "beta")][string] $GraphVersion = "v1.0",
+        [parameter(Mandatory = $False)][ValidateSet("Json", "PSObject", "HttpRequestMessage", "HashTable")][string] $OutputType = "PSObject",
         $Headers = @{ },
         $FilePath,
         $AppSettings
@@ -248,10 +249,10 @@ function Request-DelegatedResource {
                 $jsonBody = $Body | ConvertTo-Json -Depth 3
                 if ($FilePath -and (Test-Path -Path $FilePath)) {
                     # provide -InputFilePath param instead of -Body param
-                    $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -InputFilePath $FilePath -OutputType PSObject -ResponseHeadersVariable "responseHeaderValue"
+                    $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -InputFilePath $FilePath -ResponseHeadersVariable "responseHeaderValue" -OutputType $OutputType
                 }
                 else {
-                    $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -Body $jsonBody -OutputType PSObject -ResponseHeadersVariable "responseHeaderValue"
+                    $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -Body $jsonBody -ResponseHeadersVariable "responseHeaderValue" -OutputType $OutputType
                 }
                 $responseBody = $response.value -is [System.Array] ? $response.value : $response
                 return $responseBody ?? $responseHeaderValue

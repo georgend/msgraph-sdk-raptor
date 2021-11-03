@@ -73,10 +73,11 @@ namespace MsGraphSDKSnippetsCompiler.Models
             return ReplaceIdsFromIdentifiersFile(ReplaceEdgeCases(input));
         }
 
-        private static string ReplaceEdgeCases(string input)
+        private string ReplaceEdgeCases(string input)
         {
             var now = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
             var yesterday = DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+
             var edgeCases = new Dictionary<string, string>
             {
                 // https://docs.microsoft.com/en-us/graph/api/drive-get-specialfolder?view=graph-rest-1.0&amp%3Btabs=csharp&tabs=csharp#http-request-1
@@ -86,6 +87,8 @@ namespace MsGraphSDKSnippetsCompiler.Models
                 // https://docs.microsoft.com/en-us/graph/api/event-delta?view=graph-rest-1.0&tabs=csharp
                 { "new QueryOption(\"startdatetime\", \"{start_datetime}\"", $"new QueryOption(\"startdatetime\", \"{yesterday}\"" },
                 { "new QueryOption(\"enddatetime\", \"{end_datetime}\"", $"new QueryOption(\"enddatetime\", \"{now}\"" },
+                //https://docs.microsoft.com/en-us/graph/api/driveitem-delta?view=graph-rest-1.0&amp%3Btabs=csharp&tabs=http#request-1
+                { ".Delta(\"1230919asd190410jlka\")", $".Delta(\"{tree["drive"]["delta"].Value}\")"}
             };
 
             foreach (var (key, value) in edgeCases)
