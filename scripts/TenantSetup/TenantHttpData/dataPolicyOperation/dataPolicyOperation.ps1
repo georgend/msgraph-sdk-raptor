@@ -9,16 +9,18 @@ $appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
 
-$userId = $identifiers.user._value
-$userId
-
-if($null -eq $dataPolicyOperation) {
-    $dataPolicyOperationContent = Get-RequestData -ChildEntity "dataPolicyOperation"
-    $dataPolicyOperationContent.storageLocation = $appSettings.SASUrl  # Retrieve SASUrl from azure key-Vault
-    $dataPolicyOperation = Request-DelegatedResource -Uri "users/$($userId)/exportPersonalData" -Method "Post" -Body $dataPolicyOperationContent
-    $dataPolicyOperation.Location
-    $dataPolicyOperation_id = $dataPolicyOperation.Location -split "/" | Select-Object -last 1
+$userId = Get-DefaultAdminUserId
+$exportDataRequest = az storage blob exists --container-name exportpersonaldatastorage --name RequestInfo.json --connection-string $appSettings.RaptorStorageConnectionString
+$exportDataExists = $exportDataRequest[1].split(":")[1]
+if ($exportDataExists.trim() -eq "true"){
+    az storage blob delete --container-name exportpersonaldatastorage --name RequestInfo.json --connection-string $appSettings.RaptorStorageConnectionString
 }
+$dataPolicyOperationContent = Get-RequestData -ChildEntity "dataPolicyOperation"
+$dataPolicyOperationContent.storageLocation = $appSettings.SASUrl  # Retrieve SASUrl from azure key-Vault
+$dataPolicyOperation = Request-DelegatedResource -Uri "users/$($userId)/exportPersonalData" -Method "Post" -Body $dataPolicyOperationContent -ScopeOverride "User.Export.All"
+$dataPolicyOperation.Location
+$dataPolicyOperation_id = $dataPolicyOperation.Location -split "/" | Select-Object -last 1
+
 $identifiers.dataPolicyOperation._value = $dataPolicyOperation_id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

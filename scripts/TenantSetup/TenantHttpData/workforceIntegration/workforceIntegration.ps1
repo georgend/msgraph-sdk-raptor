@@ -8,9 +8,12 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
 
-$intgData = Get-RequestData -ChildEntity "workforceIntegration"
-$intgData.encryption.secret = Get-RandomAlphanumericString -length 64
-$intg = Request-DelegatedResource -Uri teamwork/workforceintegrations -Method "POST" -Body $intgData
+$intg = Request-DelegatedResource -Uri "teamwork/workforceintegrations" -ScopeOverride "WorkforceIntegration.Read.All"| Select-Object -First 1
+if (!$intg){
+    $intgData = Get-RequestData -ChildEntity "workforceIntegration"
+    $intgData.encryption.secret = Get-RandomAlphanumericString -length 64
+    $intg = Request-DelegatedResource -Uri "teamwork/workforceintegrations" -Method "POST" -Body $intgData -ScopeOverride "WorkforceIntegration.ReadWrite.Al"
+}
 $intg.id
 $identifiers.workforceIntegration._value = $intg.id
 

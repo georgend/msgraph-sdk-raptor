@@ -208,6 +208,7 @@ function Request-DelegatedResource {
         [ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")][string] $Method = "GET",
         [parameter(Mandatory = $False)][string] $ScopeOverride,
         [parameter(Mandatory = $False)][ValidateSet("v1.0", "beta")][string] $GraphVersion = "v1.0",
+        [parameter(Mandatory = $False)][ValidateSet("Json", "PSObject", "HttpRequestMessage", "HashTable")][string] $OutputType = "PSObject",
         $Headers = @{ },
         $FilePath,
         $AppSettings
@@ -248,10 +249,10 @@ function Request-DelegatedResource {
                 $jsonBody = $Body | ConvertTo-Json -Depth 3
                 if ($FilePath -and (Test-Path -Path $FilePath)) {
                     # provide -InputFilePath param instead of -Body param
-                    $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -InputFilePath $FilePath -OutputType PSObject -ResponseHeadersVariable "responseHeaderValue"
+                    $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -InputFilePath $FilePath -ResponseHeadersVariable "responseHeaderValue" -OutputType $OutputType
                 }
                 else {
-                    $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -Body $jsonBody -OutputType PSObject -ResponseHeadersVariable "responseHeaderValue"
+                    $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -Body $jsonBody -ResponseHeadersVariable "responseHeaderValue" -OutputType $OutputType
                 }
                 $responseBody = $response.value -is [System.Array] ? $response.value : $response
                 return $responseBody ?? $responseHeaderValue
@@ -275,6 +276,21 @@ Function Get-RandomAlphanumericString {
     $randString = ""; do { $randString = $randString + ((0x30..0x39) + (0x41..0x5A) + (0x61..0x7A) | Get-Random | % { [char]$_ }) } until ($randString.length -eq $length)
     return $randString
 }
+
+
+Function Get-DefaultAdminUser {
+    Connect-DefaultTenant
+    $admin = "MOD Administrator"
+    $adminUser = Invoke-RequestHelper -Uri "users?`$filter=displayName eq '$($admin)'"
+    return $adminUser
+}
+
+
+Function Get-DefaultAdminUserId {
+    $user = Get-DefaultAdminUser
+    return $user.id
+}
+
 
 Function New-Certificate {
     $selfSignedCert = New-SelfSignedCertificate -Type Custom -NotAfter (Get-Date).AddYears(2) -Subject "CN=Microsoft,O=Microsoft Corp,L=Redmond,ST=Washington,C=US"
@@ -368,6 +384,9 @@ function Connect-DefaultTenant {
     param(
         [PSObject] $AppSettings
     )
+    if ($null -eq $AppSettings) {
+        $AppSettings = Get-AppSettings
+    }
     $defaultCertificate = Get-Certificate -AppSettings $AppSettings
     #Connect To Microsoft Graph Raptor Default Tenant Using ClientId, TenantId and Certificate
     Connect-MgGraph -Certificate $defaultCertificate -ClientId $AppSettings.ClientID -TenantId $AppSettings.TenantID | Out-Null

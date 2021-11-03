@@ -23,39 +23,39 @@ $driveItemVersion2.id
 $identifiers.driveItem._value = $driveItem.id
 $identifiers.driveItem.driveItemVersion._value = "1.0" # standard first version number
 
-$driveItemPermission = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/permissions" |
+$driveItemPermission = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/permissions" -ScopeOverride "Files.Read" |
     Select-Object -First 1
 $driveItemPermission.id
 $identifiers.driveItem.permission._value = $driveItemPermission.id
 
 
-$driveItemThumbnail = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/thumbnails?`$top=1" |
+$driveItemThumbnail = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/thumbnails?`$top=1" -ScopeOverride "Files.Read" |
     Select-Object -First 1
 $driveItemThumbnail.id
 $identifiers.driveItem.thumbnailSet._value = $driveItemThumbnail.id
 $identifiers.driveItem.thumbnailSet.thumbnailSet._value = "small"
 
 
-$driveItemWorkbookTable = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/tables" |
+$driveItemWorkbookTable = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/tables" -ScopeOverride "Files.Read" |
     Where-Object { $_.name -eq "Table1" } |
     Select-Object -First 1
 $driveItemWorkbookTable.id
 $identifiers.driveItem.workbookTable._value = $driveItemWorkbookTable.id
 
 
-$tableColumn = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/tables/$($driveItemWorkbookTable.id)/columns" |
+$tableColumn = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/tables/$($driveItemWorkbookTable.id)/columns" -ScopeOverride "Files.Read" |
     Select-Object -First 1
 $tableColumn.id
 $identifiers.driveItem.workbookTable.workbookTableColumn._value = $tableColumn.id
 
 
-$tableRow = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/tables/$($driveItemWorkbookTable.id)/rows" |
+$tableRow = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/tables/$($driveItemWorkbookTable.id)/rows" -ScopeOverride "Files.Read" |
     Select-Object -First 1
 $tableRow.index
 $identifiers.driveItem.workbookTable.workbookTableRow._value = "itemAt(index=$($tableRow.index))"
 
 
-$worksheet = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/worksheets" |
+$worksheet = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/worksheets" -ScopeOverride "Files.Read" |
     Where-Object { $_.name -eq "Sheet1" } |
     Select-Object -First 1
 $worksheet.id
@@ -63,23 +63,23 @@ $identifiers.driveItem.workbookWorksheet._value = $worksheet.id
 $identifiers.workbookWorksheet._value = $worksheet.id
 
 
-$workbookNamedItem = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/names/test2"
+$workbookNamedItem = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/names/test2" -ScopeOverride "Files.Read"
 $workbookNamedItem.name
 $identifiers.driveItem.workbookNamedItem._value = $workbookNamedItem.name
 
-$namedItemFormatBorder = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/names/$($workbookNamedItem.name)/range/format/borders?`$top=1" |
+$namedItemFormatBorder = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/names/$($workbookNamedItem.name)/range/format/borders?`$top=1" -ScopeOverride "Files.Read" |
     Select-Object -First 1
 $namedItemFormatBorder.id
 $identifiers.driveItem.workbookNamedItem.workbookRangeBorder._value = $namedItemFormatBorder.id
 
 
-$workbookChart = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/worksheets/$($worksheet.id)/charts" |
+$workbookChart = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/worksheets/$($worksheet.id)/charts" -ScopeOverride "Files.Read" |
     Select-Object -First 1
 $workbookChart.name
 $identifiers.driveItem.workbookWorksheet.workbookChart._value = $workbookChart.name
 
 
-$workbookChartSeries = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/worksheets/$($worksheet.id)/charts/$($workbookChart.name)/series"|
+$workbookChartSeries = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/worksheets/$($worksheet.id)/charts/$($workbookChart.name)/series" -ScopeOverride "Files.Read" |
     Select-Object -First 1
 $workbookChartSeries."@odata.id"
 $series_id = $workbookChartSeries."@odata.id".Split("series/")[1]
@@ -93,35 +93,40 @@ $chartPoint_id = $workbookChartPoint."@odata.id".split("points/")[1]
 $identifiers.driveItem.workbookWorksheet.workbookChart.workbookChartSeries.workbookChartPoint._value = $chartPoint_id
 
 
-$workbookComment = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/comments" |
+$workbookComment = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/comments" -ScopeOverride "Files.Read" |
     Select-Object -First 1
 $workbookComment.id
 $identifiers.driveItem.workbookComment._value = $workbookComment.id
 
 
-$workbookCommentReply = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/comments/$($workbookComment.id)/replies" |
+$workbookCommentReply = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/comments/$($workbookComment.id)/replies" -ScopeOverride "Files.Read" |
     Select-Object -First 1
 $workbookCommentReply.id
 $identifiers.driveItem.workbookComment.workbookCommentReply._value = $workbookCommentReply.id
 
-
-$operationData = Get-RequestData -ChildEntity "driveItemWorkbookOperation"
-$operationHeaders = @{"Prefer"="respond-async"}
-$driveItemWorkbookOperation = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/createSession" -Method "POST" -Headers $operationHeaders -Body $operationData
+$currentOperationId = $identifiers.driveItem.workbookOperation._value
+if ($currentOperationId){
+    $driveItemWorkbookOperation = Request-DelegatedResource -Uri "/me/drive/items/$($driveItem.id)/workbook/operations/$($currentOperationId)" -ScopeOverride "Files.Read"
+}
+if (!$driveItemWorkbookOperation){
+    $operationData = Get-RequestData -ChildEntity "driveItemWorkbookOperation"
+    $operationHeaders = @{"Prefer"="respond-async"}
+    $driveItemWorkbookOperation = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/createSession" -Method "POST" -Headers $operationHeaders -Body $operationData -ScopeOverride "Files.ReadWrite"
+    $identifiers.driveItem.workbookOperation._value = $driveItemWorkbookOperation.id
+}
 $driveItemWorkbookOperation.id
-$identifiers.driveItem.workbookOperation._value = $driveItemWorkbookOperation.id
 
 #SharedDriveItem
 $sharingUrl = $null
-$sharingDriveItem = Request-DelegatedResource -Uri "me/drive/root/children?`$filter=name eq 'Proposed_agenda_topics.docx'"
+$sharingDriveItem = Request-DelegatedResource -Uri "me/drive/root/children?`$filter=name eq 'Proposed_agenda_topics.docx'" -ScopeOverride "Files.Read"
 $createLinkData = Get-RequestData -ChildEntity "sharedDriveItem"
 if ($sharingDriveItem.shared.scope -eq "users"){
-    $sharingPem = Request-DelegatedResource -Uri "me/drive/items/$($sharingDriveItem.id)/permissions?`$filter=(link/type eq '$($createLinkData.type)') and (link/scope eq '$($createLinkData.scope)')" |
+    $sharingPem = Request-DelegatedResource -Uri "me/drive/items/$($sharingDriveItem.id)/permissions?`$filter=(link/type eq '$($createLinkData.type)') and (link/scope eq '$($createLinkData.scope)')" -ScopeOverride "Files.Read" |
         Select-Object -First 1
     $sharingUrl = $sharingPem.link.webUrl
 }
 else{  # create link if it doesn't exist
-    $DriveItemLink = Request-DelegatedResource -Uri "me/drive/items/$($sharingDriveItem.id)/createLink" -Method "POST" -Body $createLinkData
+    $DriveItemLink = Request-DelegatedResource -Uri "me/drive/items/$($sharingDriveItem.id)/createLink" -Method "POST" -Body $createLinkData -ScopeOverride "Files.ReadWrite"
     $sharingUrl = $DriveItemLink.link.webUrl;
 }
 if ( ![string]::IsNullOrWhitespace($sharingUrl)){
@@ -131,5 +136,15 @@ if ( ![string]::IsNullOrWhitespace($sharingUrl)){
     $encodedUrl
     $identifiers.sharedDriveItem._value = $encodedUrl
 }
+
+# Get Delta https://docs.microsoft.com/en-us/graph/api/driveitem-delta?view=graph-rest-1.0&amp%3Btabs=csharp&tabs=http#request-1
+
+$delta = Request-DelegatedResource -Uri "/me/drive/root/delta" -Method "GET" -OutputType "Json" | ConvertFrom-Json -AsHashtable
+$delta.'@odata.deltaLink'
+$deltaUri = [uri] $delta.'@odata.deltaLink'
+$deltaParts = $deltaUri.Query.Split("=")
+$deltaToken = $deltaParts[1]
+
+$identifiers.drive.delta._value = $deltaToken
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

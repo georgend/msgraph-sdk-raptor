@@ -13,7 +13,6 @@ $raptorUtils = Join-Path $PSScriptRoot "../RaptorUtils.ps1" -Resolve
 $appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
-$admin = "MOD Administrator"
 $domain = Get-CurrentDomain -AppSettings $appSettings
 
 #Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
@@ -21,10 +20,7 @@ Connect-DefaultTenant -AppSettings $appSettings
 
 $identifiers.domain._value = $domain
 
-$user = Invoke-RequestHelper -Uri "users"  |
-    Where-Object { $_.displayName -eq $admin}
-    Select-Object -First 1
-$user.id
+$user = Get-DefaultAdminUser
 $identifiers.user._value = $user.id
 $identifiers.directoryObject._value = $user.id
 

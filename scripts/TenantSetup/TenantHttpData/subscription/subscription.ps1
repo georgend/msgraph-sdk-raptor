@@ -9,9 +9,12 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
 
-$subData = Get-RequestData -ChildEntity "subscription"
-$subData.expirationDateTime = (Get-Date).AddDays(1).ToString("yyyy-MM-ddThh:mm:ss.0000000Z")
-$subscription = Request-DelegatedResource -Uri subscriptions -Method "POST" -Body $subData -ScopeOverride "Mail.Read"
+$subscription = Request-DelegatedResource -Uri "subscriptions" -ScopeOverride "Mail.Read"| Select-Object -First 1
+if(!$subscription){
+    $subData = Get-RequestData -ChildEntity "subscription"
+    $subData.expirationDateTime = (Get-Date).AddDays(1).ToString("yyyy-MM-ddThh:mm:ss.0000000Z")
+    $subscription = Request-DelegatedResource -Uri "subscriptions" -Method "POST" -Body $subData -ScopeOverride "Mail.Read"
+}
 $subscription.id
 $identifiers.subscription._value = $subscription.id
 

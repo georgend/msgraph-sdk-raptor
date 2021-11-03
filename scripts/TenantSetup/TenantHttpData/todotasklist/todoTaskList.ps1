@@ -14,16 +14,20 @@ $todoTaskList.id
 $identifiers.todoTaskList._value = $todoTaskList.id
 
 #TodoTask
-$todoTaskData = Get-RequestData -ChildEntity "todoTask"
-$todoTask = Request-DelegatedResource -Uri "me/todo/lists/$($todoTaskList.id)/tasks" -Method "POST" -Body $todoTaskData
+$todoTaskUrl = "me/todo/lists/$($todoTaskList.id)/tasks"
+$todoTask = Request-DelegatedResource -Uri ($todoTaskUrl + "?`$top=1") -ScopeOverride "Tasks.Read"
+if (!$todoTask) {
+    $todoTaskData = Get-RequestData -ChildEntity "todoTask"
+    $todoTask = Request-DelegatedResource -Uri $todoTaskUrl -Method "POST" -Body $todoTaskData -ScopeOverride "Tasks.ReadWrite"
+}
 $todoTask.id
 $identifiers.todoTaskList.todoTask._value = $todoTask.id
 
 # LinkedResource
-$linkedResource = Request-DelegatedResource -Uri "me/todo/lists/$($todoTaskList.id)/tasks/$($todoTask.id)/linkedResources" | Select-Object -First 1
+$linkedResource = Request-DelegatedResource -Uri "me/todo/lists/$($todoTaskList.id)/tasks/$($todoTask.id)/linkedResources?`$top=1" -ScopeOverride "Tasks.Read"
 if(!$linkedResource){
     $linkedResourceData = Get-RequestData -ChildEntity "linkedResource"
-    $linkedResource = Request-DelegatedResource -Uri "me/todo/lists/$($todoTaskList.id)/tasks/$($todoTask.id)/linkedResources" -Method "POST" -Body $linkedResourceData
+    $linkedResource = Request-DelegatedResource -Uri "me/todo/lists/$($todoTaskList.id)/tasks/$($todoTask.id)/linkedResources" -Method "POST" -Body $linkedResourceData -ScopeOverride "Tasks.ReadWrite"
 }
 $linkedResource.id
 $identifiers.todoTaskList.todoTask.linkedResource._value = $linkedResource.id
