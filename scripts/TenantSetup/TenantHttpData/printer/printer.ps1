@@ -43,11 +43,11 @@ $printer_id
 $identifiers.printer._value = $printer_id
 
 #create PrintJob
-$printJob = Request-DelegatedResource -Uri "print/printers/$($printer_id)/jobs?`$expand=documents&`$top=1" -ScopeOverride ".default"
+$printJob = Request-DelegatedResource -Uri "print/printers/$($printer_id)/jobs?`$expand=documents&`$top=1" -ScopeOverride "PrintJob.ReadWrite.All"
 if(!$printJob)
 {
     $printJobData = Get-RequestData -ChildEntity "printJob"
-    $printJob = Request-DelegatedResource -Uri "print/printers/$($printer_id)/jobs" -Method "POST" -Body $printJobData -ScopeOverride ".default"
+    $printJob = Request-DelegatedResource -Uri "print/printers/$($printer_id)/jobs" -Method "POST" -Body $printJobData -ScopeOverride "PrintJob.ReadWrite.All"
 }
 $printJob.id
 $identifiers.printer.printJob._value = $printJob.id
@@ -66,12 +66,12 @@ if (!$printTaskDefinition){
 $printTaskDefinition.id
 
 
-$printTaskTrigger = Request-DelegatedResource -Uri "print/printers/$($printer_id)/taskTriggers" -ScopeOverride ".default" | Select-Object -First 1
+$printTaskTrigger = Request-DelegatedResource -Uri "print/printers/$($printer_id)/taskTriggers" -ScopeOverride "Printer.ReadWrite.All," | Select-Object -First 1
 if(!$printTaskTrigger -and $printTaskDefinition.id){
     #Create PrintTaskTrigger
     $printTaskTriggerData = Get-RequestData -ChildEntity "printTaskTrigger"
     $printTaskTriggerData."definition@odata.bind" += $printTaskDefinition.id
-    $printTaskTrigger = Request-DelegatedResource -Uri "print/printers/$($printer_id)/taskTriggers" -Method "POST" -Body $printTaskTriggerData -ScopeOverride ".default"
+    $printTaskTrigger = Request-DelegatedResource -Uri "print/printers/$($printer_id)/taskTriggers" -Method "POST" -Body $printTaskTriggerData -ScopeOverride "Printer.ReadWrite.All,"
 }
 $printTaskTrigger.id
 $identifiers.printer.printTaskTrigger._value = $printTaskTrigger.id

@@ -106,7 +106,7 @@ $identifiers.driveItem.workbookComment.workbookCommentReply._value = $workbookCo
 
 $currentOperationId = $identifiers.driveItem.workbookOperation._value
 if ($currentOperationId){
-    $driveItemWorkbookOperation = Request-DelegatedResource -Uri "/me/drive/items/$($driveItem.id)/workbook/operations/$($currentOperationId)" -ScopeOverride "Files.Read"
+    $driveItemWorkbookOperation = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/operations/$($currentOperationId)" -ScopeOverride "Files.Read"
 }
 if (!$driveItemWorkbookOperation){
     $operationData = Get-RequestData -ChildEntity "driveItemWorkbookOperation"
