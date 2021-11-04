@@ -72,12 +72,12 @@ if($null -eq $currentTokenLifetimePolicy){
 #Required Delegated Permission "Directory.ReadWrite.All"
 $featureRolloutPolicyData = Get-RequestData -ChildEntity "FeatureRolloutPolicy"
 $featureRolloutPolicyUrl = "policies/featureRolloutPolicies"
-$currentFeatureRolloutPolicy = Request-DelegatedResource -Uri $featureRolloutPolicyUrl -Method GET |
+$currentFeatureRolloutPolicy = Request-DelegatedResource -Uri $featureRolloutPolicyUrl -Method GET -ScopeOverride "Directory.ReadWrite.All" |
         Where-Object { $_.displayName -eq $featureRolloutPolicyData.displayName } |
         Select-Object -First 1
 
 if($null -eq $currentFeatureRolloutPolicy){
-    $currentFeatureRolloutPolicy = Invoke-RequestHelper -Uri $featureRolloutPolicyUrl -Method POST -Body $featureRolloutPolicyData
+    $currentFeatureRolloutPolicy = Request-DelegatedResource -Uri $featureRolloutPolicyUrl -Method POST -Body $featureRolloutPolicyData -ScopeOverride "Directory.ReadWrite.All"
     $currentFeatureRolloutPolicy.id
 }
 
