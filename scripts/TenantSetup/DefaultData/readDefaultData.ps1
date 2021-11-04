@@ -103,12 +103,6 @@ $signIn = Invoke-RequestHelper -Uri "auditLogs/signIns?`$top=1" |
 $signIn.id
 $identifiers.signIn._value = $signIn.id
 
-$contact = Invoke-RequestHelper -Uri "contacts" |
-    Where-Object { $_.displayName -eq "Bob Kelly (TAILSPIN)" } |
-    Select-Object -First 1
-$contact.id
-$identifiers.contact._value = $contact.id
-
 $directoryRole = Invoke-RequestHelper -Uri "directoryRoles" |
     Where-Object { $_.displayName -eq "Global Administrator" }
     Select-Object -First 1

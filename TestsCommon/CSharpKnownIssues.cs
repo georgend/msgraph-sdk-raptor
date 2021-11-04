@@ -251,7 +251,7 @@ namespace TestsCommon
                 { "get-connectorgroup-members-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-connectorgroups-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-connectors-1-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-contact-csharp-Beta-executes", NeedsAnalysisKnownIssue },
+                
                 { "get-contenttype-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-contract-1-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-continuousaccessevaluationpolicy-csharp-Beta-executes", NeedsAnalysisKnownIssue },
@@ -643,7 +643,7 @@ namespace TestsCommon
                 { "get-classes-2-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-comments-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-connectionoperation-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-contact-csharp-V1-executes", MissingDataKnownIssue with { Message = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/517" } },
+                
                 { "get-contract-1-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-countrynamedlocation-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-document-value-csharp-V1-executes", MissingDataKnownIssue with { Message = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },
