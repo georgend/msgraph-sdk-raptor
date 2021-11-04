@@ -33,15 +33,10 @@ $identifiers.todoTaskList._value = $todoTaskList.id
 # no data
 # $contactFolder = Request-DelegatedResource -Uri "me/contactFolders" # already in readDefaultData under user/contactFolders. Remove this??
 
-# no data
-# $contact = Request-DelegatedResource -Uri "me/contacts?`$top=1"
 
 $mailFolder = Request-DelegatedResource -Uri "me/mailFolders/inbox"
 $mailFolder.id
 $identifiers.mailFolder._value = $mailFolder.id
-
-# no data
-# $messageRule = Request-DelegatedResource -Uri "me/mailFolders/inbox/messageRules"
 
 #Get Group with plans
 $groupWithPlan = Request-DelegatedResource -Uri "groups" |

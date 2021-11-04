@@ -1,0 +1,14 @@
+{      
+    "displayName": "From partner",      
+    "sequence": 2,      
+    "isEnabled": false,          
+    "conditions": {
+        "senderContains": [
+          "adele"       
+        ]
+     },
+     "actions": {
+        "markAsRead" : true,
+        "stopProcessingRules": false
+     }    
+}
