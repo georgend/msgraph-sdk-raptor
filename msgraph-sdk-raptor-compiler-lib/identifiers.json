@@ -170,14 +170,14 @@
       }
     }
   },
+  "driveDelta": {
+    "_value": "driveDelta"
+  },
   "drive": {
-      "_value": "drive",
-      "driveItem": {
-          "_value": "drive_driveItem"
-      },
-      "delta": {
-          "_value": "delta"
-      }
+    "_value": "drive",
+    "driveItem": {
+      "_value": "drive_driveItem"
+    }
   },
   "activityBasedTimeoutPolicy": {
     "_value": "activityBasedTimeoutPolicy"
@@ -286,6 +286,9 @@
   },
   "directoryObject": {
     "_value": "directoryObject"
+  },
+  "deletedDirectoryObject": {
+    "_value": "deletedDirectoryObject"
   },
   "directoryAudit": {
     "_value": "directoryAudit"

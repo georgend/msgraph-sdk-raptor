@@ -73,7 +73,7 @@ namespace MsGraphSDKSnippetsCompiler.Models
             return ReplaceIdsFromIdentifiersFile(ReplaceEdgeCases(input));
         }
 
-        private string ReplaceEdgeCases(string input)
+        private static string ReplaceEdgeCases(string input)
         {
             var now = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
             var yesterday = DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
@@ -87,8 +87,13 @@ namespace MsGraphSDKSnippetsCompiler.Models
                 // https://docs.microsoft.com/en-us/graph/api/event-delta?view=graph-rest-1.0&tabs=csharp
                 { "new QueryOption(\"startdatetime\", \"{start_datetime}\"", $"new QueryOption(\"startdatetime\", \"{yesterday}\"" },
                 { "new QueryOption(\"enddatetime\", \"{end_datetime}\"", $"new QueryOption(\"enddatetime\", \"{now}\"" },
-                //https://docs.microsoft.com/en-us/graph/api/driveitem-delta?view=graph-rest-1.0&amp%3Btabs=csharp&tabs=http#request-1
-                { ".Delta(\"1230919asd190410jlka\")", $".Delta(\"{tree["drive"]["delta"].Value}\")"}
+                // https://docs.microsoft.com/en-us/graph/api/driveitem-delta?view=graph-rest-1.0&amp%3Btabs=csharp&tabs=http#request-1
+                // Replace 1230919asd190410jlka with driveDelta-id which will allow Replacement downstream
+                { ".Delta(\"1230919asd190410jlka\")", ".Delta(\"{driveDelta-id}\")"},
+                // https://docs.microsoft.com/en-us/graph/api/directory-deleteditems-get?view=graph-rest-1.0&tabs=csharp
+                // Replace directoryObject-id with deletedDirectoryObject-id which will allow Replacement downstream
+                { ".Directory.DeletedItems[\"{directoryObject-id}\"]", ".Directory.DeletedItems[\"{deletedDirectoryObject-id}\"]"}
+
             };
 
             foreach (var (key, value) in edgeCases)

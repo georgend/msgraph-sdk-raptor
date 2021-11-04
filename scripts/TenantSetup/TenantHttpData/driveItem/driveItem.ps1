@@ -145,6 +145,6 @@ $deltaUri = [uri] $delta.'@odata.deltaLink'
 $deltaParts = $deltaUri.Query.Split("=")
 $deltaToken = $deltaParts[1]
 
-$identifiers.drive.delta._value = $deltaToken
+$identifiers.driveDelta._value = $deltaToken
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
