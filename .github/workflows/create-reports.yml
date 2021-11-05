@@ -3,6 +3,7 @@ name: "create reports"
 on:
   push:
     paths:
+      - '.github/workflows/create-reports.yml'
       - 'TestsCommon/**/*.*'
       - 'ReportGenerator/**/*.*'
 
@@ -23,6 +24,7 @@ jobs:
     - name: Create reports
       run: |
         dotnet run -p ./ReportGenerator/ReportGenerator.csproj -- $Env:GITHUB_WORKSPACE/msgraph-sdk-raptor
+      shell: pwsh
     - name: push
       uses: github-actions-x/commit@v2.7
       with:
