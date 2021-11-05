@@ -2,6 +2,9 @@ name: "create reports"
 
 on:
   push:
+    branches-ignore:
+      - 'dev'
+      - 'main'
     paths:
       - '.github/workflows/create-reports.yml'
       - 'TestsCommon/**/*.*'
