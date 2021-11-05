@@ -54,7 +54,7 @@ namespace ReportGenerator
                 Console.WriteLine($"{kv.Key}: {kv.Value}");
             }
 
-            var fileName = Path.Combine(rootDirectory, "report", "v1-execution-known-issues-report.html");
+            var fileName = Path.Combine(rootDirectory, "report", $"{version}-execution-known-issues-report.html");
             VisualizeData(ordered, fileName);
         }
 
