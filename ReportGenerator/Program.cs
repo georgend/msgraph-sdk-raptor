@@ -54,7 +54,7 @@ namespace ReportGenerator
                 Console.WriteLine($"{kv.Key}: {kv.Value}");
             }
 
-            var fileName = Path.Combine(rootDirectory, "report", $"{version}-execution-known-issues-report.html",);
+            var fileName = Path.Combine(rootDirectory, "report", $"{version}-execution-known-issues-report.html");
             VisualizeData(ordered, fileName, version);
         }
 
@@ -74,7 +74,7 @@ namespace ReportGenerator
             var html = @"<!DOCTYPE html>
 <html>
 <head>
-    <title>{0}</title>
+    <title>" + $"{version} execution known issues" + @"</title>
     <script src=""https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js""></script>
 </head>
 <body>
@@ -88,10 +88,10 @@ namespace ReportGenerator
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: [{1}],
+                labels: [" + string.Join(",", labels.Select(x => $"'{x}'")) + @"],
                 datasets: [{
                     label: '# of issues',
-                    data: [{2}],
+                    data: [" + string.Join(",", values) + @"],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -124,12 +124,6 @@ namespace ReportGenerator
     </script>
 </body>
 </html>";
-
-            // replace the placeholders
-            html = string.Format(html, $"{version} execution known issues",
-                string.Join(",", labels.Select(x => $"'{x}'")),
-                string.Join(",", values));
-
             // write the HTML to a file
             Console.WriteLine($"Writing report to {fileName}");
             File.WriteAllText(fileName, html);
