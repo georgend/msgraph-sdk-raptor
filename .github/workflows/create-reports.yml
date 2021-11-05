@@ -1,0 +1,35 @@
+name: "create reports"
+
+on:
+  push:
+    paths:
+      - 'TestsCommon/**/*.*'
+      - 'ReportGenerator/**/*.*'
+
+jobs:
+  create-reports:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1.8.2
+      with:
+        dotnet-version: 5.0.x
+    - name: Get branch name
+      run: |
+        $branchName = $Env:GITHUB_REF.replace("refs/heads/", "")
+        echo "CURRENT_BRANCH=${branchName}" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+      shell: pwsh
+    - name: Create reports
+      run: |
+        dotnet run -p .\ReportGenerator\ReportGenerator.csproj -- $Env:GITHUB_WORKSPACE/msgraph-sdk-raptor
+    - name: push
+      uses: github-actions-x/commit@v2.7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        push-branch: ${{ env.CURRENT_BRANCH }}
+        commit-message: '- creates reports'
+        force-add: 'true'
+        files: reports/**/*.html
+        name: Microsoft Graph DevX Tooling
+        email: GraphTooling@service.microsoft.com
