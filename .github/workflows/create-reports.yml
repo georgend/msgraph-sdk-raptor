@@ -32,6 +32,6 @@ jobs:
         push-branch: ${{ env.CURRENT_BRANCH }}
         commit-message: '- creates reports'
         force-add: 'true'
-        files: report/**/*.html
+        files: report/*.html
         name: Microsoft Graph DevX Tooling
         email: GraphTooling@service.microsoft.com
