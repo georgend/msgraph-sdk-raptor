@@ -62,13 +62,8 @@ namespace ReportGenerator
         // https://www.chartjs.org/docs/latest/charts/bar.html
         public static void VisualizeData(IOrderedEnumerable<KeyValuePair<string, int>> data, string fileName, Versions version = Versions.V1)
         {
-            var labels = new List<string>();
-            var values = new List<int>();
-            foreach (KeyValuePair<string, int> kv in data)
-            {
-                labels.Add(kv.Key);
-                values.Add(kv.Value);
-            }
+            var labels = data.Select(x => x.Key).ToList();
+            var values = data.Select(x => x.Value).ToList();
 
             // create the HTML
             var html = @"<!DOCTYPE html>
