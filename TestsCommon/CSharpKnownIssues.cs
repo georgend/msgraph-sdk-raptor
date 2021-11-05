@@ -4,7 +4,7 @@ using static TestsCommon.KnownIssues;
 
 namespace TestsCommon
 {
-    internal class CSharpKnownIssues
+    public class CSharpKnownIssues
     {
         /// <summary>
         /// Gets known issues
