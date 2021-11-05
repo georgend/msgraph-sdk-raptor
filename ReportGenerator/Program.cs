@@ -54,13 +54,13 @@ namespace ReportGenerator
                 Console.WriteLine($"{kv.Key}: {kv.Value}");
             }
 
-            var fileName = Path.Combine(rootDirectory, "report", $"{version}-execution-known-issues-report.html");
-            VisualizeData(ordered, fileName);
+            var fileName = Path.Combine(rootDirectory, "report", $"{version}-execution-known-issues-report.html",);
+            VisualizeData(ordered, fileName, version);
         }
 
         // visualize data using chart.js
         // https://www.chartjs.org/docs/latest/charts/bar.html
-        public static void VisualizeData(IOrderedEnumerable<KeyValuePair<string, int>> data, string fileName)
+        public static void VisualizeData(IOrderedEnumerable<KeyValuePair<string, int>> data, string fileName, Versions version = Versions.V1)
         {
             var labels = new List<string>();
             var values = new List<int>();
@@ -74,7 +74,7 @@ namespace ReportGenerator
             var html = @"<!DOCTYPE html>
 <html>
 <head>
-    <title>Issues</title>
+    <title>{0}</title>
     <script src=""https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js""></script>
 </head>
 <body>
@@ -88,10 +88,10 @@ namespace ReportGenerator
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: [{0}],
+                labels: [{1}],
                 datasets: [{
                     label: '# of issues',
-                    data: [{1}],
+                    data: [{2}],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -126,8 +126,9 @@ namespace ReportGenerator
 </html>";
 
             // replace the placeholders
-            html = html.Replace("{0}", string.Join(",", labels.Select(x => $"'{x}'")));
-            html = html.Replace("{1}", string.Join(",", values));
+            html = string.Format(html, $"{version} execution known issues",
+                string.Join(",", labels.Select(x => $"'{x}'")),
+                string.Join(",", values));
 
             // write the HTML to a file
             Console.WriteLine($"Writing report to {fileName}");
