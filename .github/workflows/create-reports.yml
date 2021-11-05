@@ -22,7 +22,7 @@ jobs:
       shell: pwsh
     - name: Create reports
       run: |
-        dotnet run -p .\ReportGenerator\ReportGenerator.csproj -- $Env:GITHUB_WORKSPACE/msgraph-sdk-raptor
+        dotnet run -p ./ReportGenerator/ReportGenerator.csproj -- $Env:GITHUB_WORKSPACE/msgraph-sdk-raptor
     - name: push
       uses: github-actions-x/commit@v2.7
       with:
