@@ -53,10 +53,12 @@ namespace TestsCommon
                 { "update-b2cuserflows-userflowidentityproviders-csharp-Beta-compiles", new KnownIssue(SDK, "IB2cIdentityUserFlowUserFlowIdentityProvidersCollectionReferencesRequest' does not contain a definition for 'UpdateAsync'")},
 
                 { "deploymentaudience-updateaudience-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/12811")},
+                { "get-riskyuser-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14876")},
                 { "get-devicecompliancepolicysettingstatesummary-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/13596")},
                 { "get-mailboxsettings-4-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14238")},
                 { "list-administrativeunit-csharp-V1-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/12770")},
                 { "list-devicecompliancepolicysettingstatesummary-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/13597")},
+                { "list-riskyuser-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14875") },
                 { "update-tenantcustomizedinformation-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/13556")},
                 { "update-accessreviewscheduledefinition-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14712")},
                 { "update-appleidentityprovider-csharp-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14713")},
@@ -110,6 +112,7 @@ namespace TestsCommon
                 { "create-connectorgroup-from-connector-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
                 { "set-presence-csharp-V1-compiles", NeedsAnalysisKnownIssue },
                 { "clear--presence-csharp-V1-compiles", NeedsAnalysisKnownIssue },
+                { "managementactiontenantdeploymentstatus-changedeploymentstatus-csharp-Beta-compiles", NeedsAnalysisKnownIssue}
             };
         }
 
