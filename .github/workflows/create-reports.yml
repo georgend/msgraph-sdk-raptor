@@ -24,7 +24,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1.8.2
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
     - name: set environment variables
       run: |
         $branchName = $Env:GITHUB_REF.replace("refs/heads/", "")

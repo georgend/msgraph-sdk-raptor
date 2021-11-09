@@ -58,7 +58,7 @@ namespace TestsCommon
                 var line = lineSpan.StartLinePosition.Line + 1; // 0 indexed
                 var column = lineSpan.StartLinePosition.Character;
 
-                result.Append($"\r\n{diagnostic.Id}: (Line:{line}, Column:{column}) {diagnostic.GetMessage(CultureInfo.InvariantCulture)}");
+                result.Append(CultureInfo.InvariantCulture, $"\r\n{diagnostic.Id}: (Line:{line}, Column:{column}) {diagnostic.GetMessage(CultureInfo.InvariantCulture)}");
             }
 
             return result.ToString();
