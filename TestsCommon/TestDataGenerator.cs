@@ -11,7 +11,14 @@ using NUnit.Framework;
 namespace TestsCommon
 {
     // Owner is used to categorize known test failures, so that we can redirect issues faster
-    public record KnownIssue (string Owner, string Message, string TestNamePrefix = "known-issue-");
+    public record KnownIssue (
+        string Owner,
+        string CustomMessage = null,
+        string GitHubIssue = null,
+        string TestNamePrefix = "known-issue-")
+        {
+            public string Message => string.Join(Environment.NewLine, new[] { CustomMessage, GitHubIssue }.Where(s => !string.IsNullOrEmpty(s)));
+        };
 
 
     /// <summary>
@@ -24,7 +31,7 @@ namespace TestsCommon
         /// </summary>
         /// <param name="version">Docs version (e.g. V1, Beta)</param>
         /// <returns>Dictionary holding the mapping from snippet file name to documentation page listing the snippet.</returns>
-        private static Dictionary<string, string> GetDocumentationLinks(Versions version, Languages language)
+        public static Dictionary<string, string> GetDocumentationLinks(Versions version, Languages language)
         {
             var documentationLinks = new Dictionary<string, string>();
             var documentationDirectory = GraphDocsDirectory.GetDocumentationDirectory(version);

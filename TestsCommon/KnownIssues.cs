@@ -59,11 +59,6 @@ namespace TestsCommon
         internal const string IdentitySetAndIdentityShouldNestAdditionalData = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/613";
         #endregion
 
-        #region Missing support for count
-        internal const string SDKMissingCountSupportText = "SDK doesn't have support for $count, see: https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/875";
-        internal const string SDKMissingCountSupportTestNamePrefix = "known-issue-sdk-missing-count-support-";
-        #endregion
-
         #region Needs analysis
         internal const string NeedsAnalysisText = "This is a consistently failing test, the root cause is not yet identified";
         internal const string NeedsAnalysisTestNamePrefix = "known-issue-needs-analysis-";
@@ -103,16 +98,16 @@ namespace TestsCommon
         internal const string PATCH = nameof(PATCH);
         #endregion
 
-        internal static readonly KnownIssue PermissionsExcelIdKnownIssue = new KnownIssue(Permissions, "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/745", "known-issue-permissions-excel-id-");
-        internal static readonly KnownIssue SnippetGenerationKnownIssue = new KnownIssue(SnippetGeneration, "Snippet generation should be fixed", "known-issue-snippet-generation-");
-        internal static readonly KnownIssue MetadataMissingNavigationPropertyKnownIssue = new KnownIssue(Metadata, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14703", "known-issue-metadata-missing-navigation-property-");
-        internal static readonly KnownIssue RaptorInfrastructureKnownIssue = new KnownIssue(Raptor, "Raptor infrastructure work is needed", "known-issue-raptor-infrastructure-");
-        internal static readonly KnownIssue SDKFunctionParameterKnownIssue = new KnownIssue(SDK, "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1156", "known-issue-sdk-function-parameter-");
-        internal static readonly KnownIssue HTTPKnownIssue = new KnownIssue(HTTP, HttpSnippetWrong, "known-issue-http-snippet-wrong-");
-        internal static readonly KnownIssue SDKMissingCountSupportKnownIssue = new KnownIssue(SDK, SDKMissingCountSupportText, SDKMissingCountSupportTestNamePrefix);
-        internal static readonly KnownIssue NeedsAnalysisKnownIssue = new KnownIssue(NeedsAnalysis, NeedsAnalysisText, NeedsAnalysisTestNamePrefix);
-        internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(MissingData, MissingDataText, MissingDataTestNamePrefix);
-        internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(MissingPermissionScope, MissingPermissionScopeText, MissingPermissionScopeTestNamePrefix);
+        internal static readonly KnownIssue PermissionsExcelIdKnownIssue = new KnownIssue(Permissions, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/745", TestNamePrefix: "known-issue-permissions-excel-id-");
+        internal static readonly KnownIssue SnippetGenerationKnownIssue = new KnownIssue(SnippetGeneration, CustomMessage: "Snippet generation should be fixed", TestNamePrefix:"known-issue-snippet-generation-");
+        internal static readonly KnownIssue MetadataMissingNavigationPropertyKnownIssue = new KnownIssue(Metadata, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14703", TestNamePrefix: "known-issue-metadata-missing-navigation-property-");
+        internal static readonly KnownIssue RaptorInfrastructureKnownIssue = new KnownIssue(Raptor, CustomMessage: "Raptor infrastructure work is needed", TestNamePrefix: "known-issue-raptor-infrastructure-");
+        internal static readonly KnownIssue SDKFunctionParameterKnownIssue = new KnownIssue(SDK, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1156", TestNamePrefix: "known-issue-sdk-function-parameter-");
+        internal static readonly KnownIssue HTTPKnownIssue = new KnownIssue(HTTP, CustomMessage: HttpSnippetWrong, TestNamePrefix: "known-issue-http-snippet-wrong-");
+        internal static readonly KnownIssue SDKMissingCountSupportKnownIssue = new KnownIssue(SDK, "SDK doesn't have support for $count", "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/875", "known-issue-sdk-missing-count-support-");
+        internal static readonly KnownIssue NeedsAnalysisKnownIssue = new KnownIssue(NeedsAnalysis, CustomMessage: NeedsAnalysisText, TestNamePrefix: NeedsAnalysisTestNamePrefix);
+        internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(MissingData, CustomMessage: MissingDataText, TestNamePrefix: MissingDataTestNamePrefix);
+        internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(MissingPermissionScope, CustomMessage: MissingPermissionScopeText, TestNamePrefix: MissingPermissionScopeTestNamePrefix);
 
         /// <summary>
         /// Constructs property not found message
