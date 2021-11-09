@@ -207,12 +207,12 @@ namespace MsGraphSDKSnippetsCompiler
                 }
                 catch (Exception e)
                 {
-                    TestContext.Out.WriteLine($"Failed for delegated scope: {scope}");
-                    TestContext.Out.WriteLine(e.Message);
+                    await TestContext.Out.WriteLineAsync($"Failed for delegated scope: {scope}").ConfigureAwait(false);
+                    await TestContext.Out.WriteLineAsync(e.Message).ConfigureAwait(false);
                 }
             }
 
-            TestContext.Out.WriteLine($"None of the delegated permissions work!");
+            await TestContext.Out.WriteLineAsync($"None of the delegated permissions work!").ConfigureAwait(false);
             return false;
         }
 
@@ -269,7 +269,7 @@ namespace MsGraphSDKSnippetsCompiler
             }
             catch
             {
-                TestContext.Out.WriteLine($"Can't get scopes for scopeType=DelegatedWork, url={httpRequestMessage.RequestUri}");
+                await TestContext.Out.WriteLineAsync($"Can't get scopes for scopeType=DelegatedWork, url={httpRequestMessage.RequestUri}").ConfigureAwait(false);
             }
 
             try
@@ -281,9 +281,9 @@ namespace MsGraphSDKSnippetsCompiler
             }
             catch (Exception e)
             {
-                TestContext.Out.WriteLine($"Can't get scopes for both delegated and application scopes");
-                TestContext.Out.WriteLine($"url={httpRequestMessage.RequestUri}");
-                TestContext.Out.WriteLine($"docslink={TestData.DocsLink}");
+                await TestContext.Out.WriteLineAsync($"Can't get scopes for both delegated and application scopes").ConfigureAwait(false);
+                await TestContext.Out.WriteLineAsync($"url={httpRequestMessage.RequestUri}").ConfigureAwait(false);
+                await TestContext.Out.WriteLineAsync($"docslink={TestData.DocsLink}").ConfigureAwait(false);
                 throw new AggregateException("Can't get scopes for both delegated and application scopes", e);
             }
         }
