@@ -889,7 +889,7 @@ public static class CSharpKnownIssues
                 { "get-datapolicyoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/488", CustomMessage = "dataPolicyOperation value is empty string in blob storage."} },
                 { "list-authorednote-csharp-V1-executes", MissingDataSubjectRightsRequestKnownIssue },
                 { "get-devices-by-extensionattribute-csharp-V1-executes", SDKMissingCountSupportKnownIssue },
-                { "list-subjectrightsrequest-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "list-subjectrightsrequest-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "subjectrightsrequest-getfinalattachment-csharp-V1-executes", MissingDataSubjectRightsRequestKnownIssue },
                 { "get-subjectrightsrequest-csharp-V1-executes", MissingDataSubjectRightsRequestKnownIssue },
                 { "subjectrightsrequest-getfinalreport-csharp-V1-executes", MissingDataSubjectRightsRequestKnownIssue },
