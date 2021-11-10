@@ -111,6 +111,8 @@ public static class KnownIssues
 
     internal static readonly KnownIssue ProtectedAPIKnownIssue = new KnownIssue("ProtectedAPI", "Need resource specific consent", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/506", "known-issue-protected-api-");
 
+    internal static readonly KnownIssue ServiceTaskPrinterKnownIssue = new KnownIssue("Service", "taskTrigger returns 404 even though it exists", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14774", "known-issue-service-task-trigger-");
+    internal static readonly KnownIssue MissingDataTotalRowRangeKnownIssue = new KnownIssue("MissingData", "Totals row needs to be defined in default drive item", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/601", "known-issue-missing-data-total-row-range-");
     /// <summary>
     /// Constructs property not found message
     /// </summary>
