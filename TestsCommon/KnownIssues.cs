@@ -105,6 +105,8 @@ public static class KnownIssues
     internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(MissingData, CustomMessage: MissingDataText, TestNamePrefix: MissingDataTestNamePrefix);
     internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(MissingPermissionScope, CustomMessage: MissingPermissionScopeText, TestNamePrefix: MissingPermissionScopeTestNamePrefix);
 
+    internal static readonly KnownIssue MissingDataEducationResourceKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/572" };
+
     /// <summary>
     /// Constructs property not found message
     /// </summary>
