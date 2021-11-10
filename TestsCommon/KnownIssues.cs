@@ -106,6 +106,7 @@ public static class KnownIssues
     internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(MissingPermissionScope, CustomMessage: MissingPermissionScopeText, TestNamePrefix: MissingPermissionScopeTestNamePrefix);
 
     internal static readonly KnownIssue MissingDataEducationResourceKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/572" };
+    internal static readonly KnownIssue MissingDataSubjectRightsRequestKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/574" };
 
     /// <summary>
     /// Constructs property not found message
