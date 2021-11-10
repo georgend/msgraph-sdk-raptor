@@ -878,7 +878,7 @@ public static class CSharpKnownIssues
 
                 { "get-enabled-dynamic-groups-csharp-V1-executes", SDKMissingCountSupportKnownIssue },
 
-                { "chat-getallmessages-1-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "chat-getallmessages-1-csharp-V1-executes", ProtectedAPIKnownIssue },
                 { "get-educationmediaresource-from-educationassignment-csharp-V1-executes", MissingDataEducationResourceKnownIssue },
                 { "get-educationpowerpointresource-from-educationassignment-csharp-V1-executes", MissingDataEducationResourceKnownIssue },
                 { "get-attendee-report-csharp-V1-executes", MissingDataOnlineMeetingKnownIssue },
