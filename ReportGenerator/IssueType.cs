@@ -1,10 +1,7 @@
-namespace ReportGenerator
+namespace ReportGenerator;
+
+internal enum IssueType
 {
-    internal enum IssueType
-    {
-        Compilation,
-        Execution
-    }
+    Compilation,
+    Execution
 }
-
-

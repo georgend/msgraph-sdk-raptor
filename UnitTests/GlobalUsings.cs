@@ -1,0 +1,9 @@
+﻿global using System;
+global using System.Collections.Generic;
+global using MsGraphSDKSnippetsCompiler;
+global using MsGraphSDKSnippetsCompiler.Models;
+global using NUnit.Framework;
+global using Microsoft.Extensions.Configuration;
+global using System.Text.Json;
+global using System.Text.RegularExpressions;
+global using TestsCommon;

@@ -6,34 +6,33 @@ using NUnit.Framework;
 
 using TestsCommon;
 
-namespace CsharpBetaExecutionTests
-{
-    [TestFixture]
-    public class SnippetExecutionBetaTests
-    {
-        /// <summary>
-        /// Gets TestCaseData for Beta
-        /// TestCaseData contains snippet file name, version and test case name
-        /// </summary>
-        public static IEnumerable<TestCaseData> TestDataBeta => TestDataGenerator.GetExecutionTestData(
-            new RunSettings
-            {
-                Version = Versions.Beta,
-                Language = Languages.CSharp,
-                TestType = TestType.ExecutionStable
-            });
+namespace CsharpBetaExecutionTests;
 
-        /// <summary>
-        /// Represents test runs generated from test case data
-        /// </summary>
-        /// <param name="fileName">snippet file name in docs repo</param>
-        /// <param name="docsLink">documentation page where the snippet is shown</param>
-        /// <param name="version">Docs version (e.g. V1, Beta)</param>
-        [Test]
-        [RetryTestCaseSource(typeof(SnippetExecutionBetaTests), nameof(TestDataBeta), MaxTries = 3)]
-        public async Task Test(LanguageTestData testData)
+[TestFixture]
+public class SnippetExecutionBetaTests
+{
+    /// <summary>
+    /// Gets TestCaseData for Beta
+    /// TestCaseData contains snippet file name, version and test case name
+    /// </summary>
+    public static IEnumerable<TestCaseData> TestDataBeta => TestDataGenerator.GetExecutionTestData(
+        new RunSettings
         {
-            await CSharpTestRunner.Execute(testData).ConfigureAwait(false);
-        }
+            Version = Versions.Beta,
+            Language = Languages.CSharp,
+            TestType = TestType.ExecutionStable
+        });
+
+    /// <summary>
+    /// Represents test runs generated from test case data
+    /// </summary>
+    /// <param name="fileName">snippet file name in docs repo</param>
+    /// <param name="docsLink">documentation page where the snippet is shown</param>
+    /// <param name="version">Docs version (e.g. V1, Beta)</param>
+    [Test]
+    [RetryTestCaseSource(typeof(SnippetExecutionBetaTests), nameof(TestDataBeta), MaxTries = 3)]
+    public async Task Test(LanguageTestData testData)
+    {
+        await CSharpTestRunner.Execute(testData).ConfigureAwait(false);
     }
 }
