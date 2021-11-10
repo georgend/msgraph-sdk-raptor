@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Linq;
-
-namespace MsGraphSDKSnippetsCompiler.Models;
+﻿namespace MsGraphSDKSnippetsCompiler.Models;
 
 /// <summary>
 /// Tree data structure to represent ID placeholders in graph URLs.

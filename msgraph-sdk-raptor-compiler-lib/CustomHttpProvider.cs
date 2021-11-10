@@ -1,11 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Graph;
-
-namespace MsGraphSDKSnippetsCompiler;
+﻿namespace MsGraphSDKSnippetsCompiler;
 
 /// <summary>
 ///     Provides interception to catch errors thrown during execution.

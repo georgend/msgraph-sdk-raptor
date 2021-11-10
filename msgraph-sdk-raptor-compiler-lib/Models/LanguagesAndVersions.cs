@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MsGraphSDKSnippetsCompiler.Models;
+﻿namespace MsGraphSDKSnippetsCompiler.Models;
 
 /// <summary>
 /// Programming languages that we generate snippets for

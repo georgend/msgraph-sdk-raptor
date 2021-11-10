@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using MsGraphSDKSnippetsCompiler.Models;
-
-namespace MsGraphSDKSnippetsCompiler;
+﻿namespace MsGraphSDKSnippetsCompiler;
 
 public interface IMicrosoftGraphSnippetsCompiler
 {

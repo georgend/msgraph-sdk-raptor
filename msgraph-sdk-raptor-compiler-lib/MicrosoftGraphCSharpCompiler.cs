@@ -1,25 +1,11 @@
 ﻿extern alias beta;
 
 using Azure.Core;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
-using Microsoft.Graph;
-using MsGraphSDKSnippetsCompiler.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Net.Http;
 using System.Runtime.Loader;
-using System.Threading.Tasks;
 using System.Reflection;
-using System.Text.RegularExpressions;
-using System.Text.Json;
-using System.Text;
-using Microsoft.CodeAnalysis.Text;
-using NUnit.Framework;
 
 namespace MsGraphSDKSnippetsCompiler;
 

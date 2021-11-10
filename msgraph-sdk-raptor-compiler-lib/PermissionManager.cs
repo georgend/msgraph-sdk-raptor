@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Azure.Identity;
-using Microsoft.Graph;
-using MsGraphSDKSnippetsCompiler.Models;
-using static NUnit.Framework.TestContext;
+﻿using static NUnit.Framework.TestContext;
 
 namespace MsGraphSDKSnippetsCompiler;
 

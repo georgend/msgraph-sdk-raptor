@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace MsGraphSDKSnippetsCompiler.Models;
+﻿namespace MsGraphSDKSnippetsCompiler.Models;
 
 public static class TestsSetup
 {

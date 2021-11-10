@@ -1,7 +1,4 @@
-﻿using System.IO;
-using Microsoft.Extensions.Configuration;
-
-namespace MsGraphSDKSnippetsCompiler.Models;
+﻿namespace MsGraphSDKSnippetsCompiler.Models;
 
 public class RaptorConfig
 {
