@@ -884,7 +884,7 @@ public static class CSharpKnownIssues
                 { "get-attendee-report-csharp-V1-executes", MissingDataOnlineMeetingKnownIssue },
                 { "get-educationlinkresource-from-educationassignment-csharp-V1-executes", MissingDataEducationResourceKnownIssue },
                 { "get-educationfileresource-from-educationassignment-csharp-V1-executes", MissingDataEducationResourceKnownIssue },
-                { "channel-getallchannelmessages-1-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "channel-getallchannelmessages-1-csharp-V1-executes", ProtectedAPIKnownIssue },
                 { "get-educationexcelresource-from-educationassignment-csharp-V1-executes", MissingDataEducationResourceKnownIssue },
                 { "get-datapolicyoperation-csharp-V1-executes", NeedsAnalysisKnownIssue },
                 { "list-authorednote-csharp-V1-executes", MissingDataSubjectRightsRequestKnownIssue },
