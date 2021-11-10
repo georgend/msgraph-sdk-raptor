@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using MsGraphSDKSnippetsCompiler.Models;
-using static TestsCommon.KnownIssues;
-
-namespace TestsCommon;
+﻿namespace TestsCommon;
 
 public static class CSharpKnownIssues
 {

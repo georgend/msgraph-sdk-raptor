@@ -1,15 +1,5 @@
 ﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-using MsGraphSDKSnippetsCompiler;
-using MsGraphSDKSnippetsCompiler.Models;
-
-using NUnit.Framework;
-
-using System;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
 namespace TestsCommon;
 
 /// <summary>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using MsGraphSDKSnippetsCompiler.Models;
-using static TestsCommon.JavaKnownIssues;
+﻿using static TestsCommon.JavaKnownIssues;
 using static TestsCommon.CSharpKnownIssues;
 
 namespace TestsCommon;

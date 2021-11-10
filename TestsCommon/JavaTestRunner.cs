@@ -1,13 +1,4 @@
-﻿using MsGraphSDKSnippetsCompiler;
-using MsGraphSDKSnippetsCompiler.Models;
-using NUnit.Framework;
-using System;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
-
-namespace TestsCommon;
+﻿namespace TestsCommon;
 
 public static class JavaTestRunner
 {
