@@ -1,11 +1,4 @@
-﻿using System.Collections.Generic;
-using System;
-using System.Linq;
-using System.IO;
-using MsGraphSDKSnippetsCompiler.Models;
-using TestsCommon;
-
-namespace ReportGenerator;
+﻿namespace ReportGenerator;
 
 class ReportGenerator
 {
