@@ -1,8 +1,4 @@
-﻿using NUnit.Framework;
-
-using TestsCommon;
-
-namespace UnitTests;
+﻿namespace UnitTests;
 
 /// <summary>
 ///     Checks that the CSharpTestRunner Regex is able to

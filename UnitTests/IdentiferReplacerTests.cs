@@ -1,7 +1,4 @@
-﻿using NUnit.Framework;
-using MsGraphSDKSnippetsCompiler.Models;
-
-namespace UnitTests;
+﻿namespace UnitTests;
 
 public class Tests
 {

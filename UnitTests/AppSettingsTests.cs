@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
-using MsGraphSDKSnippetsCompiler;
-using NUnit.Framework;
-
-namespace UnitTests;
+﻿namespace UnitTests;
 
 static class AppSettingsTests
 {
