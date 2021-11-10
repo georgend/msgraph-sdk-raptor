@@ -2,19 +2,19 @@
 using MsGraphSDKSnippetsCompiler.Models;
 using static TestsCommon.KnownIssues;
 
-namespace TestsCommon
+namespace TestsCommon;
+
+internal static class JavaKnownIssues
 {
-    internal static class JavaKnownIssues
+    /// <summary>
+    /// Gets known issues
+    /// </summary>
+    /// <param name="versionEnum">version to get the known issues for</param>
+    /// <returns>A mapping of test names into known Java issues</returns>
+    internal static Dictionary<string, KnownIssue> GetJavaCompilationKnownIssues(Versions versionEnum)
     {
-        /// <summary>
-        /// Gets known issues
-        /// </summary>
-        /// <param name="versionEnum">version to get the known issues for</param>
-        /// <returns>A mapping of test names into known Java issues</returns>
-        internal static Dictionary<string, KnownIssue> GetJavaCompilationKnownIssues(Versions versionEnum)
-        {
-            var version = versionEnum == Versions.V1 ? "V1" : "Beta";
-            return new Dictionary<string, KnownIssue>()
+        var version = versionEnum == Versions.V1 ? "V1" : "Beta";
+        return new Dictionary<string, KnownIssue>()
             {
                 {$"unfollow-site-java-{version}-compiles", new KnownIssue(SDK, "SDK doesn't convert actions defined on collections to methods. https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/250") },
                 {$"follow-site-java-{version}-compiles", new KnownIssue(SDK, "SDK doesn't convert actions defined on collections to methods. https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/250") },
@@ -446,6 +446,5 @@ namespace TestsCommon
                 { "update-samlorwsfedexternaldomainfederation-java-Beta-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText)},
                 { "update-settings-java-Beta-compiles", new KnownIssue(NeedsAnalysis, NeedsAnalysisText)}
             };
-        }
     }
 }

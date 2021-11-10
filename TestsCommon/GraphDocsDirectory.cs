@@ -2,51 +2,50 @@
 using MsGraphSDKSnippetsCompiler.Models;
 using System.IO;
 
-namespace TestsCommon
+namespace TestsCommon;
+
+/// <summary>
+/// Init-once access to snippets directory
+/// </summary>
+public static class GraphDocsDirectory
 {
     /// <summary>
-    /// Init-once access to snippets directory
+    /// Represents where the snippets are stored. Expected to refer to a single directory for each assembly.
     /// </summary>
-    public static class GraphDocsDirectory
+    private static string SnippetsDirectory;
+
+    /// <summary>
+    /// Sets snippets directory only once and refers to the string if it is already set
+    /// Assumes that default "git clone <remote-reference>" command is used, in other words,
+    /// the repo is always in microsoft-graph-docs folder under RootDirectory defined above
+    /// </summary>
+    /// <param name="version">Docs version (e.g. V1 or Beta)</param>
+    /// <returns>
+    /// C# snippets directory
+    /// </returns>
+    public static string GetSnippetsDirectory(Versions version, Languages language)
     {
-        /// <summary>
-        /// Represents where the snippets are stored. Expected to refer to a single directory for each assembly.
-        /// </summary>
-        private static string SnippetsDirectory;
-
-        /// <summary>
-        /// Sets snippets directory only once and refers to the string if it is already set
-        /// Assumes that default "git clone <remote-reference>" command is used, in other words,
-        /// the repo is always in microsoft-graph-docs folder under RootDirectory defined above
-        /// </summary>
-        /// <param name="version">Docs version (e.g. V1 or Beta)</param>
-        /// <returns>
-        /// C# snippets directory
-        /// </returns>
-        public static string GetSnippetsDirectory(Versions version, Languages language)
+        if (SnippetsDirectory is object)
         {
-            if (SnippetsDirectory is object)
-            {
-                return SnippetsDirectory;
-            }
-
-            var msGraphDocsRepoLocation = TestsSetup.Config.Value.DocsRepoCheckoutDirectory;
-            SnippetsDirectory = Path.Join(msGraphDocsRepoLocation, $@"microsoft-graph-docs{Path.DirectorySeparatorChar}api-reference{Path.DirectorySeparatorChar}{new VersionString(version)}{Path.DirectorySeparatorChar}includes{Path.DirectorySeparatorChar}snippets{Path.DirectorySeparatorChar}{language.AsString()}");
-
             return SnippetsDirectory;
         }
 
-        /// <summary>
-        /// Gets directory holding Microsoft Graph documentation in markdown format
-        /// </summary>
-        /// <param name="version">Docs version (e.g. V1 or Beta)</param>
-        /// <returns>
-        /// Directory holding Microsoft Graph documentation in markdown format
-        /// </returns>
-        public static string GetDocumentationDirectory(Versions version)
-        {
-            var msGraphDocsRepoLocation = TestsSetup.Config.Value.DocsRepoCheckoutDirectory;
-            return Path.Join(msGraphDocsRepoLocation, $@"microsoft-graph-docs{Path.DirectorySeparatorChar}api-reference{Path.DirectorySeparatorChar}{new VersionString(version)}{Path.DirectorySeparatorChar}api");
-        }
+        var msGraphDocsRepoLocation = TestsSetup.Config.Value.DocsRepoCheckoutDirectory;
+        SnippetsDirectory = Path.Join(msGraphDocsRepoLocation, $@"microsoft-graph-docs{Path.DirectorySeparatorChar}api-reference{Path.DirectorySeparatorChar}{new VersionString(version)}{Path.DirectorySeparatorChar}includes{Path.DirectorySeparatorChar}snippets{Path.DirectorySeparatorChar}{language.AsString()}");
+
+        return SnippetsDirectory;
+    }
+
+    /// <summary>
+    /// Gets directory holding Microsoft Graph documentation in markdown format
+    /// </summary>
+    /// <param name="version">Docs version (e.g. V1 or Beta)</param>
+    /// <returns>
+    /// Directory holding Microsoft Graph documentation in markdown format
+    /// </returns>
+    public static string GetDocumentationDirectory(Versions version)
+    {
+        var msGraphDocsRepoLocation = TestsSetup.Config.Value.DocsRepoCheckoutDirectory;
+        return Path.Join(msGraphDocsRepoLocation, $@"microsoft-graph-docs{Path.DirectorySeparatorChar}api-reference{Path.DirectorySeparatorChar}{new VersionString(version)}{Path.DirectorySeparatorChar}api");
     }
 }

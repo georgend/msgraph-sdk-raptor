@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 using MsGraphSDKSnippetsCompiler.Models;
 
-namespace MsGraphSDKSnippetsCompiler
+namespace MsGraphSDKSnippetsCompiler;
+
+public interface IMicrosoftGraphSnippetsCompiler
 {
-    public interface IMicrosoftGraphSnippetsCompiler
-    {
-        CompilationResultsModel CompileSnippet(string codeSnippet, Versions version);
-        Task<ExecutionResultsModel> ExecuteSnippet(string codeSnippet, Versions version);
-    }
+    CompilationResultsModel CompileSnippet(string codeSnippet, Versions version);
+    Task<ExecutionResultsModel> ExecuteSnippet(string codeSnippet, Versions version);
 }

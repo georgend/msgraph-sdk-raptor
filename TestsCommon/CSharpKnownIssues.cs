@@ -2,19 +2,19 @@
 using MsGraphSDKSnippetsCompiler.Models;
 using static TestsCommon.KnownIssues;
 
-namespace TestsCommon
+namespace TestsCommon;
+
+public static class CSharpKnownIssues
 {
-    public static class CSharpKnownIssues
+    /// <summary>
+    /// Gets known issues
+    /// </summary>
+    /// <param name="versionEnum">version to get the known issues for</param>
+    /// <returns>A mapping of test names into known CSharp issues</returns>
+    public static Dictionary<string, KnownIssue> GetCSharpCompilationKnownIssues(Versions versionEnum)
     {
-        /// <summary>
-        /// Gets known issues
-        /// </summary>
-        /// <param name="versionEnum">version to get the known issues for</param>
-        /// <returns>A mapping of test names into known CSharp issues</returns>
-        public static Dictionary<string, KnownIssue> GetCSharpCompilationKnownIssues(Versions versionEnum)
-        {
-            var version = versionEnum.ToString();
-            return new Dictionary<string, KnownIssue>()
+        var version = versionEnum.ToString();
+        return new Dictionary<string, KnownIssue>()
             {
                 {$"delete-userflowlanguagepage-csharp-{version}-compiles", new KnownIssue(SDK, StreamRequestDoesNotSupportDelete) },
                 {$"unfollow-site-csharp-{version}-compiles", new KnownIssue(SDK, "SDK doesn't convert actions defined on collections to methods. https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/250") },
@@ -114,17 +114,17 @@ namespace TestsCommon
                 { "clear--presence-csharp-V1-compiles", NeedsAnalysisKnownIssue },
                 { "managementactiontenantdeploymentstatus-changedeploymentstatus-csharp-Beta-compiles", NeedsAnalysisKnownIssue}
             };
-        }
+    }
 
-        /// <summary>
-        /// Gets execution known issues
-        /// </summary>
-        /// <param name="versionEnum">version to get the execution known issues for</param>
-        /// <returns>A mapping of test names into known CSharp issues</returns>
-        public static Dictionary<string, KnownIssue> GetCSharpExecutionKnownIssues(Versions versionEnum)
-        {
-            var version = versionEnum.ToString();
-            return new Dictionary<string, KnownIssue>()
+    /// <summary>
+    /// Gets execution known issues
+    /// </summary>
+    /// <param name="versionEnum">version to get the execution known issues for</param>
+    /// <returns>A mapping of test names into known CSharp issues</returns>
+    public static Dictionary<string, KnownIssue> GetCSharpExecutionKnownIssues(Versions versionEnum)
+    {
+        var version = versionEnum.ToString();
+        return new Dictionary<string, KnownIssue>()
             {
                 { "accesspackageassignment-filterbycurrentuser-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "accesspackageassignmentrequest-filterbycurrentuser-csharp-Beta-executes", NeedsAnalysisKnownIssue },
@@ -902,6 +902,5 @@ namespace TestsCommon
                 { "get-bitlockerrecoverykey-key-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-bitlockerrecoverykey-csharp-V1-executes", MissingDataKnownIssue }
             };
-        }
     }
 }

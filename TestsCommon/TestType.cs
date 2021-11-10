@@ -1,10 +1,9 @@
-﻿namespace TestsCommon
+﻿namespace TestsCommon;
+
+public enum TestType
 {
-    public enum TestType
-    {
-        CompilationStable,
-        CompilationKnownIssues,
-        ExecutionStable,
-        ExecutionKnownIssues
-    }
+    CompilationStable,
+    CompilationKnownIssues,
+    ExecutionStable,
+    ExecutionKnownIssues
 }
