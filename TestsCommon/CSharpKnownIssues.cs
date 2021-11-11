@@ -726,10 +726,13 @@ public static class CSharpKnownIssues
                 { "get-identityuserflowattributeassignment-expand-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/613" } },
                 { "identityuserflowattributeassignment-getorder-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/613" } },
 
-                { "get-callrecord-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-callrecord-expanded-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-callrecord-sessions-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-callrecord-sessions-expanded-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-callrecord-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
+                { "callrecord-getpstncalls-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
+                { "get-callrecord-expanded-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
+                { "get-callrecord-sessions-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
+                { "get-callrecord-sessions-expanded-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
+                { "callrecord-getdirectroutingcalls-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
+
                 { "get-chartlineformat-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-chatmessagechannel-1-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-chatmessagechannel-2-csharp-V1-executes", MissingDataKnownIssue },
@@ -794,8 +797,7 @@ public static class CSharpKnownIssues
                 { "get-event-based-on-eventmessage-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/518" } },
                 { "get-onenoteoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/520" } },
                 { "get-workbookoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/524" } },
-                { "callrecord-getdirectroutingcalls-csharp-V1-executes", MissingDataKnownIssue},
-                { "callrecord-getpstncalls-csharp-V1-executes", MissingDataKnownIssue},
+
                 { "contenttype-ispublished-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-built-in-role-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-column-from-contenttype-csharp-V1-executes", MissingDataKnownIssue},
