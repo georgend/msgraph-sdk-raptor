@@ -774,7 +774,8 @@ public static class CSharpKnownIssues
 
                 { "get-permission-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/623" } },
 
-                { "get-printconnector-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-printconnector-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/624" } },
+
                 { "get-printershare-capabilities-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-printershare-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-printoperation-csharp-V1-executes", MissingDataKnownIssue },
