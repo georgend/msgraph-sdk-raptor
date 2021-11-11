@@ -684,13 +684,17 @@ public static class CSharpKnownIssues
 
                 { "get-plans-1-csharp-V1-executes", HTTPKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14686" }},
                 { "planner-get-tasks-csharp-V1-executes", HTTPKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14687" } },
+
                 { "get-mailboxsettings-2-csharp-V1-executes", MetadataMissingNavigationPropertyKnownIssue },
                 { "get-mailboxsettings-3-csharp-V1-executes", MetadataMissingNavigationPropertyKnownIssue },
+
                 { "get-educationexcelresource-from-educationassignment-csharp-V1-executes", MissingDataEducationResourceKnownIssue },
                 { "get-educationfileresource-from-educationassignment-csharp-V1-executes", MissingDataEducationResourceKnownIssue },
                 { "get-educationlinkresource-from-educationassignment-csharp-V1-executes", MissingDataEducationResourceKnownIssue },
                 { "get-educationmediaresource-from-educationassignment-csharp-V1-executes", MissingDataEducationResourceKnownIssue },
                 { "get-educationpowerpointresource-from-educationassignment-csharp-V1-executes", MissingDataEducationResourceKnownIssue },
+                { "get-educationassignmentresource-csharp-V1-executes", MissingDataEducationResourceKnownIssue },
+
                 { "get-bitlockerrecoverykey-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/607" } },
                 { "get-bitlockerrecoverykey-key-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/607" } },
 
@@ -754,7 +758,6 @@ public static class CSharpKnownIssues
 
                 { "get-contract-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/322", CustomMessage = "blocked" } },
 
-                { "get-educationassignmentresource-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-educationrubric-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-identityapiconnector-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-identityuserflowattributeassignment-3-csharp-V1-executes", MissingDataKnownIssue },
