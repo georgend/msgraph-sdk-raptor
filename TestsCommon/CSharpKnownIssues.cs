@@ -810,9 +810,10 @@ public static class CSharpKnownIssues
 
                 { "get-userflowattributes-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/636" } },
 
-                { "get-userflowlanguageconfiguration-3-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-userflowlanguagepage-2-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-userflowlanguagepage-3-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-userflowlanguageconfiguration-3-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
+                { "get-userflowlanguagepage-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
+                { "get-userflowlanguagepage-3-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
+
                 { "get-windowshelloforbusinessauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue },
                 { "list-bitlockerrecoverykey-csharp-V1-executes", MissingDataKnownIssue },
                 { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", MissingDataKnownIssue },
