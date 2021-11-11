@@ -745,7 +745,8 @@ public static class CSharpKnownIssues
                 { "get-hostedcontentschatmessage-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/615" } },
                 { "get-listmessagereplies-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/615" } },
 
-                { "get-class-category-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-class-category-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/616" } },
+
                 { "get-connectionoperation-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-contract-1-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-educationassignmentresource-csharp-V1-executes", MissingDataKnownIssue },
