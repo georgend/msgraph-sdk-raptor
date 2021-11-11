@@ -828,6 +828,9 @@ public static class CSharpKnownIssues
                 { "get-custom-role-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/642" } },
                 { "get-inheritsfrom-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/642" } },
 
+                { "get-group-3-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/643" } },
+                { "get-term-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/643" } },
+
                 { "get-datapolicyoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/488", CustomMessage = "dataPolicyOperation value is empty string in blob storage."} },
                 { "get-document-value-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },
                 { "get-printjob-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },
@@ -840,11 +843,9 @@ public static class CSharpKnownIssues
                 { "get-onenoteoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/520" } },
                 { "get-workbookoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/524" } },
 
-                { "get-group-3-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-relation-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-roleassignments-2-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-set-2-csharp-V1-executes", MissingDataKnownIssue},
-                { "get-term-1-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-term-2-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-unifiedroleassignment-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-subjectrightsrequest-csharp-V1-executes", MissingDataSubjectRightsRequestKnownIssue },
