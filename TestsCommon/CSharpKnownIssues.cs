@@ -758,7 +758,8 @@ public static class CSharpKnownIssues
 
                 { "get-contract-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/322", CustomMessage = "blocked" } },
 
-                { "get-educationrubric-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-educationrubric-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/618" } },
+
                 { "get-identityapiconnector-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-identityuserflowattributeassignment-3-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-identityuserflowattributeassignment-expand-3-csharp-V1-executes", MissingDataKnownIssue },
