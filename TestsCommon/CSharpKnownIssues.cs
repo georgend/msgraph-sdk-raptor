@@ -733,7 +733,8 @@ public static class CSharpKnownIssues
                 { "get-callrecord-sessions-expanded-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
                 { "callrecord-getdirectroutingcalls-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
 
-                { "get-chartlineformat-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-chartlineformat-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/614" } },
+
                 { "get-chatmessagechannel-1-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-chatmessagechannel-2-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-chatmessagechannel-3-csharp-V1-executes", MissingDataKnownIssue },
