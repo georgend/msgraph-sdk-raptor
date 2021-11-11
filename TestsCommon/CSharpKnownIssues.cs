@@ -819,6 +819,11 @@ public static class CSharpKnownIssues
                 { "list-bitlockerrecoverykey-csharp-V1-executes", new KnownIssue("Raptor", "DelegatedAppCreator is failing recently", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/639", "known-issue-delegated-app-creator-") },
                 { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", new KnownIssue("Raptor", "DelegatedAppCreator is failing recently", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/639", "known-issue-delegated-app-creator-") },
 
+                { "contenttype-ispublished-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
+                { "get-column-from-contenttype-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
+                { "get-columns-from-contenttype-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
+                { "get-contenttype-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
+
                 { "get-datapolicyoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/488", CustomMessage = "dataPolicyOperation value is empty string in blob storage."} },
                 { "get-document-value-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },
                 { "get-printjob-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },
@@ -831,11 +836,7 @@ public static class CSharpKnownIssues
                 { "get-onenoteoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/520" } },
                 { "get-workbookoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/524" } },
 
-                { "contenttype-ispublished-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-built-in-role-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue},
-                { "get-column-from-contenttype-csharp-V1-executes", MissingDataKnownIssue},
-                { "get-columns-from-contenttype-csharp-V1-executes", MissingDataKnownIssue},
-                { "get-contenttype-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-custom-role-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-group-3-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-inheritsfrom-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue},
