@@ -790,8 +790,10 @@ public static class CSharpKnownIssues
 
                 { "get-printusagebyprinter-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/628" } },
 
-                { "get-printusagebyuser-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-scopedrolemember-1-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-printusagebyuser-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/629" } },
+
+                { "get-scopedrolemember-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/630" } },
+
                 { "get-sectiongroup-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-sectiongroups-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-servicehealth-csharp-V1-executes", MissingDataKnownIssue },
