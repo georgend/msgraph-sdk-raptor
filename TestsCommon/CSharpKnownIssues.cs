@@ -769,7 +769,9 @@ public static class CSharpKnownIssues
 
                 { "get-oauth2permissiongrant-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/622" } },
 
-                { "get-onlinemeeting-user-token-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-onlinemeeting-user-token-csharp-V1-executes", MissingDataOnlineMeetingKnownIssue },
+                { "get-attendee-report-csharp-V1-executes", MissingDataOnlineMeetingKnownIssue },
+
                 { "get-permission-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-printconnector-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-printershare-capabilities-csharp-V1-executes", MissingDataKnownIssue },
@@ -826,7 +828,6 @@ public static class CSharpKnownIssues
                 { "get-term-1-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-term-2-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-unifiedroleassignment-csharp-V1-executes", MissingDataKnownIssue},
-                { "get-attendee-report-csharp-V1-executes", MissingDataOnlineMeetingKnownIssue },
                 { "get-subjectrightsrequest-csharp-V1-executes", MissingDataSubjectRightsRequestKnownIssue },
                 { "list-authorednote-csharp-V1-executes", MissingDataSubjectRightsRequestKnownIssue },
                 { "subjectrightsrequest-getfinalattachment-csharp-V1-executes", MissingDataSubjectRightsRequestKnownIssue },
