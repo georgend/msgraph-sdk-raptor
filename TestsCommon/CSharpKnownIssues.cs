@@ -713,7 +713,11 @@ public static class CSharpKnownIssues
 
                 { "get-alert-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/611" } },
 
-                { "get-appconsentrequest-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-appconsentrequest-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
+                { "get-userconsentrequest-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
+                { "list-userconsentrequest-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
+                { "userconsentrequest-filterbycurrentuser-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
+
                 { "get-b2xuserflow-list-identityproviders-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-b2xuserflows-apiconnectorconfiguration-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-b2xuserflows-csharp-V1-executes", MissingDataKnownIssue },
@@ -763,7 +767,6 @@ public static class CSharpKnownIssues
                 { "get-servicehealthissue-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-serviceupdatemessage-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-teamworkbot-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-userconsentrequest-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-userflowattributes-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-userflowlanguageconfiguration-2-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-userflowlanguageconfiguration-3-csharp-V1-executes", MissingDataKnownIssue },
@@ -777,10 +780,8 @@ public static class CSharpKnownIssues
                 { "list-printjob-2-csharp-V1-executes", MissingDataKnownIssue },
                 { "list-printtask-csharp-V1-executes", MissingDataKnownIssue },
                 { "list-user-csharp-V1-executes", MissingDataKnownIssue },
-                { "list-userconsentrequest-csharp-V1-executes", MissingDataKnownIssue },
                 { "sectionsgroup-get-sections-csharp-V1-executes", MissingDataKnownIssue },
                 { "servicehealthissue-incidentreport-csharp-V1-executes", MissingDataKnownIssue },
-                { "userconsentrequest-filterbycurrentuser-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-datapolicyoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/488", CustomMessage = "dataPolicyOperation value is empty string in blob storage."} },
                 { "get-document-value-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },
                 { "get-printjob-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },
