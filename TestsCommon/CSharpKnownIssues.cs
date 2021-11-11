@@ -814,7 +814,7 @@ public static class CSharpKnownIssues
                 { "get-userflowlanguagepage-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
                 { "get-userflowlanguagepage-3-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
 
-                { "get-windowshelloforbusinessauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-windowshelloforbusinessauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/638" } },
                 { "list-bitlockerrecoverykey-csharp-V1-executes", MissingDataKnownIssue },
                 { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-datapolicyoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/488", CustomMessage = "dataPolicyOperation value is empty string in blob storage."} },
