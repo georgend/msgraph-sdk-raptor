@@ -776,8 +776,12 @@ public static class CSharpKnownIssues
 
                 { "get-printconnector-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/624" } },
 
-                { "get-printershare-capabilities-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-printershare-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-printershare-capabilities-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/625" } },
+                { "get-printershare-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/625" } },
+                { "list-printjob-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/625" } },
+                { "list-group-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/625" } },
+                { "list-user-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/625" } },
+
                 { "get-printoperation-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-printtask-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-printtaskdefinition-csharp-V1-executes", MissingDataKnownIssue },
@@ -798,10 +802,7 @@ public static class CSharpKnownIssues
                 { "get-windowshelloforbusinessauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue },
                 { "list-bitlockerrecoverykey-csharp-V1-executes", MissingDataKnownIssue },
                 { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", MissingDataKnownIssue },
-                { "list-group-csharp-V1-executes", MissingDataKnownIssue },
-                { "list-printjob-2-csharp-V1-executes", MissingDataKnownIssue },
                 { "list-printtask-csharp-V1-executes", MissingDataKnownIssue },
-                { "list-user-csharp-V1-executes", MissingDataKnownIssue },
                 { "sectionsgroup-get-sections-csharp-V1-executes", MissingDataKnownIssue },
                 { "servicehealthissue-incidentreport-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-datapolicyoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/488", CustomMessage = "dataPolicyOperation value is empty string in blob storage."} },
