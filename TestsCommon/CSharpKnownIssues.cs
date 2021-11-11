@@ -762,8 +762,9 @@ public static class CSharpKnownIssues
 
                 { "get-identityapiconnector-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/619" } },
 
-                { "get-identityuserflowattributeassignment-3-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-identityuserflowattributeassignment-expand-3-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-identityuserflowattributeassignment-3-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/620" } },
+                { "get-identityuserflowattributeassignment-expand-3-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/620" } },
+
                 { "get-microsoftauthenticatorauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-oauth2permissiongrant-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-onlinemeeting-user-token-csharp-V1-executes", MissingDataKnownIssue },
