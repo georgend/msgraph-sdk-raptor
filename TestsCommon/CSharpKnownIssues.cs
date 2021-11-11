@@ -798,8 +798,9 @@ public static class CSharpKnownIssues
                 { "get-sectiongroups-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/631" } },
                 { "sectionsgroup-get-sections-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/631" } },
 
-                { "get-servicehealth-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-servicehealth-with-issues-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-servicehealth-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/632" } },
+                { "get-servicehealth-with-issues-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/632" } },
+
                 { "get-servicehealthissue-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-serviceupdatemessage-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-teamworkbot-csharp-V1-executes", MissingDataKnownIssue },
