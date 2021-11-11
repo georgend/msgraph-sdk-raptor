@@ -801,7 +801,9 @@ public static class CSharpKnownIssues
                 { "get-servicehealth-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/632" } },
                 { "get-servicehealth-with-issues-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/632" } },
 
-                { "get-servicehealthissue-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-servicehealthissue-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/633" } },
+                { "servicehealthissue-incidentreport-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/633" } },
+
                 { "get-serviceupdatemessage-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-teamworkbot-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-userflowattributes-csharp-V1-executes", MissingDataKnownIssue },
@@ -811,7 +813,6 @@ public static class CSharpKnownIssues
                 { "get-windowshelloforbusinessauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue },
                 { "list-bitlockerrecoverykey-csharp-V1-executes", MissingDataKnownIssue },
                 { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", MissingDataKnownIssue },
-                { "servicehealthissue-incidentreport-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-datapolicyoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/488", CustomMessage = "dataPolicyOperation value is empty string in blob storage."} },
                 { "get-document-value-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },
                 { "get-printjob-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },
