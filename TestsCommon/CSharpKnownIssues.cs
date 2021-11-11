@@ -799,7 +799,7 @@ public static class CSharpKnownIssues
                 { "appconsentrequest-filterbycurrentuser-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-connectors-3-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-educationuser-1-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-educationuser-1-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-educationuser-1-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
                 { "get-educationuser-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-mailboxsettings-1-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-mailboxsettings-2-csharp-Beta-executes", NeedsAnalysisKnownIssue },

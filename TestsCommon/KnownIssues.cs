@@ -115,6 +115,7 @@ public static class KnownIssues
     internal static readonly KnownIssue MissingDataTotalRowRangeKnownIssue = new KnownIssue("MissingData", "Totals row needs to be defined in default drive item", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/601", "known-issue-missing-data-total-row-range-");
     internal static readonly KnownIssue MissingDataUsedRangeForNamedItemKnownIssue = new KnownIssue("MissingData", "need to fill cells in namedItem's range", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/602", "known-issue-missing-data-used-range-for-named-item-");
     internal static readonly KnownIssue ServicePrinterMultiplePermissionsKnownIssue = new KnownIssue("Service", "some printer GET calls require `Printer.Create` permission", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/603", "known-issue-service-printer-multiple-permissions-");
+    internal static readonly KnownIssue PermissionsMoreThanOnePermissionKnownIssue = new KnownIssue(Permissions, "More than one permission is required", "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/778", "known-issue-permissions-more-than-one-permission-");
 
     /// <summary>
     /// Constructs property not found message
