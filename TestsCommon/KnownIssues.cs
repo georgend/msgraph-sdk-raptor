@@ -105,6 +105,18 @@ public static class KnownIssues
     internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(MissingData, CustomMessage: MissingDataText, TestNamePrefix: MissingDataTestNamePrefix);
     internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(MissingPermissionScope, CustomMessage: MissingPermissionScopeText, TestNamePrefix: MissingPermissionScopeTestNamePrefix);
 
+    internal static readonly KnownIssue MissingDataEducationResourceKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/572" };
+    internal static readonly KnownIssue MissingDataSubjectRightsRequestKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/574" };
+    internal static readonly KnownIssue MissingDataOnlineMeetingKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/573" };
+
+    internal static readonly KnownIssue ProtectedAPIKnownIssue = new KnownIssue("ProtectedAPI", "Need resource specific consent", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/506", "known-issue-protected-api-");
+
+    internal static readonly KnownIssue ServiceTaskPrinterKnownIssue = new KnownIssue("Service", "taskTrigger returns 404 even though it exists", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14774", "known-issue-service-task-trigger-");
+    internal static readonly KnownIssue MissingDataTotalRowRangeKnownIssue = new KnownIssue("MissingData", "Totals row needs to be defined in default drive item", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/601", "known-issue-missing-data-total-row-range-");
+    internal static readonly KnownIssue MissingDataUsedRangeForNamedItemKnownIssue = new KnownIssue("MissingData", "need to fill cells in namedItem's range", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/602", "known-issue-missing-data-used-range-for-named-item-");
+    internal static readonly KnownIssue ServicePrinterMultiplePermissionsKnownIssue = new KnownIssue("Service", "some printer GET calls require `Printer.Create` permission", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/603", "known-issue-service-printer-multiple-permissions-");
+    internal static readonly KnownIssue PermissionsMoreThanOnePermissionKnownIssue = new KnownIssue(Permissions, "More than one permission is required", "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/778", "known-issue-permissions-more-than-one-permission-");
+
     /// <summary>
     /// Constructs property not found message
     /// </summary>
