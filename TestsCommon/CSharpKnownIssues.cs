@@ -772,7 +772,8 @@ public static class CSharpKnownIssues
                 { "get-onlinemeeting-user-token-csharp-V1-executes", MissingDataOnlineMeetingKnownIssue },
                 { "get-attendee-report-csharp-V1-executes", MissingDataOnlineMeetingKnownIssue },
 
-                { "get-permission-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-permission-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/623" } },
+
                 { "get-printconnector-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-printershare-capabilities-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-printershare-csharp-V1-executes", MissingDataKnownIssue },
