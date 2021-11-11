@@ -747,11 +747,14 @@ public static class CSharpKnownIssues
 
                 { "get-class-category-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/616" } },
 
-                { "get-connectionoperation-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-connectionoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
+                { "get-schema-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
+                { "get-externalgroup-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
+                { "get-externalconnection-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
+
                 { "get-contract-1-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-educationassignmentresource-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-educationrubric-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-externalconnection-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-identityapiconnector-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-identityuserflowattributeassignment-3-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-identityuserflowattributeassignment-expand-3-csharp-V1-executes", MissingDataKnownIssue },
@@ -767,7 +770,6 @@ public static class CSharpKnownIssues
                 { "get-printtaskdefinition-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-printusagebyprinter-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-printusagebyuser-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-schema-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-scopedrolemember-1-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-sectiongroup-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-sectiongroups-csharp-V1-executes", MissingDataKnownIssue },
@@ -807,7 +809,6 @@ public static class CSharpKnownIssues
                 { "get-columns-from-contenttype-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-contenttype-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-custom-role-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue},
-                { "get-externalgroup-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-group-3-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-inheritsfrom-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue},
                 { "get-relation-csharp-V1-executes", MissingDataKnownIssue},
