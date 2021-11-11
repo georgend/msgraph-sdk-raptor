@@ -804,7 +804,8 @@ public static class CSharpKnownIssues
                 { "get-servicehealthissue-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/633" } },
                 { "servicehealthissue-incidentreport-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/633" } },
 
-                { "get-serviceupdatemessage-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-serviceupdatemessage-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/634" } },
+
                 { "get-teamworkbot-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-userflowattributes-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-userflowlanguageconfiguration-3-csharp-V1-executes", MissingDataKnownIssue },
