@@ -752,7 +752,8 @@ public static class CSharpKnownIssues
                 { "get-externalgroup-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
                 { "get-externalconnection-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
 
-                { "get-contract-1-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-contract-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/322", CustomMessage = "blocked" } },
+
                 { "get-educationassignmentresource-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-educationrubric-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-identityapiconnector-csharp-V1-executes", MissingDataKnownIssue },
