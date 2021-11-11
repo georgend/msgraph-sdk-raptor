@@ -784,8 +784,10 @@ public static class CSharpKnownIssues
 
                 { "get-printoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/626" } },
 
-                { "get-printtask-csharp-V1-executes", MissingDataKnownIssue },
-                { "get-printtaskdefinition-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-printtask-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/627" } },
+                { "get-printtaskdefinition-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/627" } },
+                { "list-printtask-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/627" } },
+
                 { "get-printusagebyprinter-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-printusagebyuser-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-scopedrolemember-1-csharp-V1-executes", MissingDataKnownIssue },
@@ -803,7 +805,6 @@ public static class CSharpKnownIssues
                 { "get-windowshelloforbusinessauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue },
                 { "list-bitlockerrecoverykey-csharp-V1-executes", MissingDataKnownIssue },
                 { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", MissingDataKnownIssue },
-                { "list-printtask-csharp-V1-executes", MissingDataKnownIssue },
                 { "sectionsgroup-get-sections-csharp-V1-executes", MissingDataKnownIssue },
                 { "servicehealthissue-incidentreport-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-datapolicyoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/488", CustomMessage = "dataPolicyOperation value is empty string in blob storage."} },
