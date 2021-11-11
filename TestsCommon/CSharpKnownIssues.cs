@@ -711,7 +711,8 @@ public static class CSharpKnownIssues
                 { "get-event-multiple-locations-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/610" } },
                 { "get-instances-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/610" } },
 
-                { "get-alert-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-alert-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/611" } },
+
                 { "get-appconsentrequest-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-b2xuserflow-list-identityproviders-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-b2xuserflows-apiconnectorconfiguration-csharp-V1-executes", MissingDataKnownIssue },
