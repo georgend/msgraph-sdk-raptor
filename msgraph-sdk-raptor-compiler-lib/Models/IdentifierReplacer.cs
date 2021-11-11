@@ -84,7 +84,10 @@ public class IdentifierReplacer
                 { ".Delta(\"1230919asd190410jlka\")", ".Delta(\"{driveDelta-id}\")"},
                 // https://docs.microsoft.com/en-us/graph/api/directory-deleteditems-get?view=graph-rest-1.0&tabs=csharp
                 // Replace directoryObject-id with deletedDirectoryObject-id which will allow Replacement downstream
-                { ".Directory.DeletedItems[\"{directoryObject-id}\"]", ".Directory.DeletedItems[\"{deletedDirectoryObject-id}\"]"}
+                { ".Directory.DeletedItems[\"{directoryObject-id}\"]", ".Directory.DeletedItems[\"{deletedDirectoryObject-id}\"]"},
+                // https://docs.microsoft.com/en-us/graph/api/rbacapplication-list-roleassignments?view=graph-rest-1.0&tabs=http#example-2-request-using-a-filter-on-principalid
+                // PrincipalId is tenant specific data, replace hardcoded id with tenant specific id
+                { ".Filter(\" principalId eq 'f1847572-48aa-47aa-96a3-2ec61904f41f'\")", ".Filter(\" principalId eq '{roleAssignmentPrincipal-id}'\")"},
 
             };
 
