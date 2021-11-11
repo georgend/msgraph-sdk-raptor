@@ -808,7 +808,8 @@ public static class CSharpKnownIssues
 
                 { "get-teamworkbot-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/635" } },
 
-                { "get-userflowattributes-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-userflowattributes-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/636" } },
+
                 { "get-userflowlanguageconfiguration-3-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-userflowlanguagepage-2-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-userflowlanguagepage-3-csharp-V1-executes", MissingDataKnownIssue },
