@@ -760,7 +760,8 @@ public static class CSharpKnownIssues
 
                 { "get-educationrubric-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/618" } },
 
-                { "get-identityapiconnector-csharp-V1-executes", MissingDataKnownIssue },
+                { "get-identityapiconnector-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/619" } },
+
                 { "get-identityuserflowattributeassignment-3-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-identityuserflowattributeassignment-expand-3-csharp-V1-executes", MissingDataKnownIssue },
                 { "get-microsoftauthenticatorauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue },
