@@ -150,6 +150,12 @@
           "_value": "termStore.group_termStore.set_termStore.term"
         }
       }
+    },
+    "contentType": {
+      "_value": "site_contentType",
+      "columnDefinition": {
+        "_value": "site_contentType_columnDefinition"
+      }
     }
   },
   "event": {
