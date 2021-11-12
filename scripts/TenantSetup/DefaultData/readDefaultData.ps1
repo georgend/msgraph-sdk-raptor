@@ -267,6 +267,11 @@ $outlookCategory = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/
 $outlookCategory.id
 $identifiers.outlookCategory._value = $outlookCategory.id
 
+$roleAssignment = Invoke-RequestHelper -Uri "/roleManagement/directory/roleAssignments?`$filter=roleDefinitionId eq '62e90394-69f5-4237-9190-012177145e10'" |
+    Select-Object -First 1
+$roleAssignment.principalId
+$identifiers.roleAssignmentPrincipal._value = $roleAssignment.principalId
+
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
 
 # data missing

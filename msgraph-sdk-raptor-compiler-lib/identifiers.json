@@ -454,5 +454,8 @@
   },
   "oAuth2PermissionGrant": {
     "_value": "oAuth2PermissionGrant"
+  },
+  "roleAssignmentPrincipal": {
+    "_value": "roleAssignmentPrincipal"
   }
 }
