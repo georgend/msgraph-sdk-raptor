@@ -135,6 +135,21 @@
     },
     "permission": {
       "_value": "site_permission"
+    },
+    "termStore.set": {
+      "_value": "termStore.set",
+      "termStore.term": {
+        "_value": "termStore.set_termStore.term"
+      }
+    },
+    "termStore.group": {
+      "_value": "termStore.group",
+      "termStore.set": {
+        "_value": "termStore.group_termStore.set",
+        "termStore.term": {
+          "_value": "termStore.group_termStore.set_termStore.term"
+        }
+      }
     }
   },
   "event": {
