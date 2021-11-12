@@ -192,6 +192,25 @@ $siteListItemVersion = Invoke-RequestHelper -Uri "sites/$($site.id)/lists/$($sit
 $siteListItemVersion.id
 $identifiers.site.list.listItem.listItemVersion._value=$siteListItemVersion.id
 
+$termStoreGroup =  Invoke-RequestHelper -Uri "sites/$($site.id)/termStore/groups" |
+    Select-Object -First 1
+$termStoreGroup.id
+$identifiers.site."termStore.group"._value = $termStoreGroup.id
+
+$termStoreSet =  Invoke-RequestHelper -Uri "sites/$($site.id)/termStore/groups/$($termStoreGroup.id)/sets" |
+    Select-Object -First 1
+$termStoreSet.id
+# set appears in two paths
+$identifiers.site."termStore.set"._value = $termStoreSet.id
+$identifiers.site."termStore.group"."termStore.set"._value = $termStoreSet.id
+
+$termStoreTerm = Invoke-RequestHelper -Uri "sites/$($site.id)/termStore/sets/$($termStoreSet.id)/terms" |
+    Select-Object -First 1
+$termStoreTerm.id
+# set appears in two paths
+$identifiers.site."termStore.set"."termStore.term"._value = $termStoreTerm.id
+$identifiers.site."termStore.group"."termStore.set"."termStore.term"._value = $termStoreTerm.id
+
 #Missing Permission. Need to Create Permission on Root Site
 #Azure AD Permission Issue.
 #https://docs.microsoft.com/en-us/graph/api/site-post-permissions?view=graph-rest-1.0&tabs=http
