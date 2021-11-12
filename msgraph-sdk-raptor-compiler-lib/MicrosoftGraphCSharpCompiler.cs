@@ -14,9 +14,37 @@ namespace MsGraphSDKSnippetsCompiler;
 /// </summary>
 public class MicrosoftGraphCSharpCompiler : IMicrosoftGraphSnippetsCompiler
 {
+    const string GlobalUsings = @"global using System;
+global using System.Collections.Generic;
+global using System.Net.Http;
+global using System.Text;
+global using System.Text.Json;
+global using System.Threading.Tasks;
+
+global using Microsoft.Graph;
+global using MsGraphSDKSnippetsCompiler;
+
+// Disambiguate colliding namespaces
+global using DayOfWeek = Microsoft.Graph.DayOfWeek;
+global using TimeOfDay = Microsoft.Graph.TimeOfDay;
+global using KeyValuePair = Microsoft.Graph.KeyValuePair;
+";
     const string SourceCodePath = "generated.cs";
+    const string GlobalUsingsSourceCodePath = "GlobalUsings.generated.cs";
     private readonly LanguageTestData TestData;
     private bool _isEducation;
+    private static readonly Lazy<SourceText> GlobalUsingsSourceText = new Lazy<SourceText>(() =>
+    {
+        var buffer = Encoding.UTF8.GetBytes(GlobalUsings);
+        return SourceText.From(buffer, buffer.Length, Encoding.UTF8, canBeEmbedded: true);
+    });
+
+    private static readonly Lazy<SyntaxTree> GlobalUsingsSyntaxTree = new Lazy<SyntaxTree>(() =>
+    {
+        SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(GlobalUsings, new CSharpParseOptions(), GlobalUsingsSourceCodePath);
+        var syntaxRootNode = syntaxTree.GetRoot() as CSharpSyntaxNode;
+        return CSharpSyntaxTree.Create(syntaxRootNode, null, SourceCodePath, Encoding.UTF8);
+    });
 
     private async Task<PermissionManager> GetPermissionManager()
     {
@@ -99,7 +127,7 @@ public class MicrosoftGraphCSharpCompiler : IMicrosoftGraphSnippetsCompiler
 
         var compilation = CSharpCompilation.Create(
             assemblyName,
-            syntaxTrees: new[] { encoded },
+            syntaxTrees: new[] { encoded, GlobalUsingsSyntaxTree.Value },
             references: metadataReferences,
             options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, deterministic: true, platform: Platform.AnyCpu)
                 .WithConcurrentBuild(true)
@@ -285,7 +313,11 @@ public class MicrosoftGraphCSharpCompiler : IMicrosoftGraphSnippetsCompiler
 
         using MemoryStream assemblyStream = new MemoryStream();
         var emitOptions = new EmitOptions(false, DebugInformationFormat.Embedded);
-        var embeddedTexts = new List<EmbeddedText> { EmbeddedText.FromSource(SourceCodePath, sourceText) };
+        var embeddedTexts = new List<EmbeddedText> {
+            EmbeddedText.FromSource(GlobalUsingsSourceCodePath, GlobalUsingsSourceText.Value),
+            EmbeddedText.FromSource(SourceCodePath, sourceText)
+        };
+
         EmitResult emitResult = compilation.Emit(assemblyStream, embeddedTexts: embeddedTexts, options: emitOptions);
 
         if (emitResult.Success)

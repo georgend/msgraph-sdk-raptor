@@ -10,32 +10,11 @@ public static class CSharpTestRunner
     /// <summary>
     /// template to compile snippets in
     /// </summary>
-    private const string SDKShellTemplate = @"using System;
-using Microsoft.Graph;
-using MsGraphSDKSnippetsCompiler;
-using System.Text.Json;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Http;
-
-// Disambiguate colliding namespaces
-using DayOfWeek = Microsoft.Graph.DayOfWeek;
-using TimeOfDay = Microsoft.Graph.TimeOfDay;
-using KeyValuePair = Microsoft.Graph.KeyValuePair;
-
-public class GraphSDKTest
+    private const string SDKShellTemplate = @"public class GraphSDKTest
 {
     public async Task Main(IAuthenticationProvider authProvider, IHttpProvider httpProvider)
     {
-        try
-        {
-            //insert-code-here
-        }
-        catch(Exception e)
-        {
-            throw;
-        }
+        //insert-code-here
     }
 
     public HttpRequestMessage GetRequestMessage(IAuthenticationProvider authProvider)
