@@ -211,6 +211,16 @@ $termStoreTerm.id
 $identifiers.site."termStore.set"."termStore.term"._value = $termStoreTerm.id
 $identifiers.site."termStore.group"."termStore.set"."termStore.term"._value = $termStoreTerm.id
 
+$contentType = Invoke-RequestHelper -Uri "sites/$($site.id)/contentTypes?`$filter=name eq 'Phone Call Memo'" |
+    Select-Object -First 1
+$contentType.id
+$identifiers.site.contentType._value = $contentType.id
+
+$columnDefinition = Invoke-RequestHelper -Uri "sites/$($site.id)/contentTypes/$($contentType.id)/columns?`$filter=displayName eq 'Title'" |
+    Select-Object -First 1
+$columnDefinition.id
+$identifiers.site.contentType.columnDefinition._value = $columnDefinition.id
+
 #Missing Permission. Need to Create Permission on Root Site
 #Azure AD Permission Issue.
 #https://docs.microsoft.com/en-us/graph/api/site-post-permissions?view=graph-rest-1.0&tabs=http
