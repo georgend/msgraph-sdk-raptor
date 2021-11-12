@@ -6,6 +6,8 @@ class ReportGenerator
     {
         KnownIssuesTextReport(Versions.V1, Languages.CSharp, IssueType.Execution);
         KnownIssuesVisualReport(Versions.V1, Languages.CSharp, IssueType.Execution);
+
+        KnownIssuesTextReport(Versions.V1, Languages.CSharp, IssueType.Compilation);
     }
 
     // create text report for v1 execution known issues
@@ -16,14 +18,15 @@ class ReportGenerator
             throw new NotImplementedException();
         }
 
-        if (issueType != IssueType.Execution)
+        var issues = issueType switch
         {
-            throw new NotImplementedException();
-        }
+            IssueType.Execution => CSharpKnownIssues.GetCSharpExecutionKnownIssues(version),
+            IssueType.Compilation => KnownIssues.GetCompilationKnownIssues(language, version)
+        };
 
-        var issues = CSharpKnownIssues.GetCSharpExecutionKnownIssues(version);
+        var lang = language.AsString();
         var documentationLinks = TestDataGenerator.GetDocumentationLinks(version, language);
-        var testNameSuffix = $"{version}-{issueType.Suffix()}";
+        var testNameSuffix = $"{lang}-{version}-{issueType.Suffix()}";
 
         var unreferencedIssues = new HashSet<string>();
 
@@ -33,7 +36,7 @@ class ReportGenerator
         {
             var testName = kv.Key;
             var knownIssue = kv.Value;
-            var documentationLinkLookupKey = testName.Replace(testNameSuffix, "snippets.md");
+            var documentationLinkLookupKey = testName.Replace(testNameSuffix, $"{lang}-snippets.md");
             if (!documentationLinks.ContainsKey(documentationLinkLookupKey))
             {
                 unreferencedIssues.Add(testName);
