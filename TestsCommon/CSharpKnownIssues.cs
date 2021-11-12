@@ -828,13 +828,6 @@ public static class CSharpKnownIssues
                 { "get-custom-role-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/642" } },
                 { "get-inheritsfrom-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/642" } },
 
-                { "get-group-3-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/643" } },
-                { "get-term-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/643" } },
-
-                { "get-relation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/644" } },
-                { "get-set-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/644" } },
-                { "get-term-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/644" } },
-
                 { "get-unifiedroleassignment-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/646" } },
 
                 { "get-datapolicyoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/488", CustomMessage = "dataPolicyOperation value is empty string in blob storage."} },
