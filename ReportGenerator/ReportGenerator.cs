@@ -12,6 +12,7 @@ class ReportGenerator
         KnownIssuesVisualReport(Versions.V1, Languages.CSharp, IssueType.Compilation);
 
         KnownIssuesTextReport(Versions.Beta, Languages.CSharp, IssueType.Compilation);
+        KnownIssuesVisualReport(Versions.Beta, Languages.CSharp, IssueType.Compilation);
     }
 
     // create text report for v1 execution known issues
