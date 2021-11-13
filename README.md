@@ -7,7 +7,7 @@ This repository consists of test projects which are broadly categorized into 2.
 1. compilation tests
 2. execution tests
 
-The compilation tests, test the successful compilation of the language-specific snippets from Microsoft Graph documentation. For each snippet, there is an NUnit test case that outputs compilation result i.e whether a test compiled successfully or not. 
+The compilation tests, test the successful compilation of the language-specific snippets from Microsoft Graph documentation. For each snippet, there is an NUnit test case that outputs compilation result i.e whether a test compiled successfully or not.
 
 The execution tests, other than testing compilation of the snippets, use the compiled binary to make a request to the demo tenant and reports error if there's a service exception i.e 4XX or 5xx response. Otherwise reports success.
 
@@ -85,11 +85,11 @@ There are also 4 Java test projects, as listed below. These are all compilation 
 ## Pipelines
 The repository also contains a couple of CI pipelines. The CI pipelines run the tests outlined above and the output of these tests are then used to report success or failure rates in a graphical and analytical approach.
 The pipelines are running in a private Azure DevOps instance [here](https://microsoftgraph.visualstudio.com/Graph%20Developer%20Experiences/_build?view=folders&treeState=XFJhcHRvcg%3D%3D)
-There exist pipelines that run when a PR is created on `msgraph-sdk-raptor` repo and others that run on a schedule. Pipelines that are triggered by PR creation are broadly categorized into 
-- those that run **excluding** known issues 
+There exist pipelines that run when a PR is created on `msgraph-sdk-raptor` repo and others that run on a schedule. Pipelines that are triggered by PR creation are broadly categorized into
+- those that run **excluding** known issues
 - those that run on known issues (these tests are appended the suffix "Known Issues")
 
-The pipelines with tests that run excluding known issues, can be used to report whether any new issues were introduced. Pipelines containing tests that run on known issues, can report whether any known issues have been fixed. There exists a list of known issues, within the `TestsCommon/TestDataGenerator.cs` file, which is useful in identifying known issues. 
+The pipelines with tests that run excluding known issues, can be used to report whether any new issues were introduced. Pipelines containing tests that run on known issues, can report whether any known issues have been fixed. There exists a list of known issues, within the `TestsCommon/TestDataGenerator.cs` file, which is useful in identifying known issues.
 
 The pipelines are:
 - Beta C# Snippets  (runs c# compilation tests)
@@ -109,3 +109,13 @@ And the equivalent pipelines for running java tests are
 - V1 Java Snippet Compilation Tests - Known Issues
 
 The scheduled pipelines are categorized into daily and weekly schedules. A single scheduled pipeline can contain both categories of tests in a single run to report all failures including known issues. Azure DevOps tooling allows us to have these categories reflected in the test results page.
+
+### Known Issue Distribution and Detailed Description Tables
+[V1 Execution Tests - Known Issues Distribution](./report/V1-csharp-execution-known-issues-report.html)
+[V1 Execution Tests - Known Issues Table](./report/V1-csharp-execution-known-issues)
+
+[V1 Compilation Tests - Known Issues Distribution](./report/V1-csharp-compilation-known-issues-report.html)
+[V1 Compilation Tests - Known Issues Table](./report/V1-csharp-compilation-known-issues)
+
+[Beta Compilation Tests - Known Issues Distribution](./report/Beta-csharp-compilation-known-issues-report.html)
+[Beta Compilation Tests - Known Issues Table](./report/Beta-csharp-compilation-known-issues)
