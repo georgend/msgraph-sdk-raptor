@@ -44,14 +44,12 @@ public static class KnownIssues
     internal const string SnippetGenerationCreateAsyncSupport = "Snippet generation doesn't use CreateAsync";
     internal const string SnippetGenerationCreateAsyncSupportGithubIssue = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/301";
     internal const string StructuralPropertiesAreNotHandled = "We don't generate request builders for URL navigation to structural properties." +
-        " We should build a custom request with URL as this is not supported in SDK." +
-        " See https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/485";
-    internal const string SameBlockNames = "Same block names indeterministic snippet generation" +
-        " See https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/463";
-    internal const string NamespaceOdataTypeAnnotationsWithoutHashSymbol = "We do not support namespacing when odata.type annotations are not prepended with hash symbol." +
-        " See https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/580";
-    internal const string DateTimeOffsetHandlingInUrls = "Dates supplied via GET request urls are not parsed to dates\r\n"
-        + "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/612";
+        " We should build a custom request with URL as this is not supported in SDK.";
+    internal const string StructuralPropertiesAreNotHandledGithubIssue = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/485";
+    internal const string NamespaceOdataTypeAnnotationsWithoutHashSymbol = "We do not support namespacing when odata.type annotations are not prepended with hash symbol.";
+    internal const string NamespaceOdataTypeAnnotationsWithoutHashSymbolGithubIssue = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/580";
+    internal const string DateTimeOffsetHandlingInUrls = "Dates supplied via GET request urls are not parsed to dates";
+    internal const string DateTimeOffsetHandlingInUrlsGithubIssue = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/612";
     internal const string IdentitySetAndIdentityShouldNestAdditionalDataGithubIssue = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/613";
     #endregion
 
@@ -94,6 +92,9 @@ public static class KnownIssues
     internal const string PATCH = nameof(PATCH);
     #endregion
 
+    internal static readonly KnownIssue StructuralPropertiesAreNotHandledKnownIssue = new KnownIssue(SnippetGeneration, StructuralPropertiesAreNotHandled, StructuralPropertiesAreNotHandledGithubIssue);
+    internal static readonly KnownIssue NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue = new KnownIssue(SnippetGeneration, NamespaceOdataTypeAnnotationsWithoutHashSymbol, NamespaceOdataTypeAnnotationsWithoutHashSymbolGithubIssue);
+    internal static readonly KnownIssue DateTimeOffsetHandlingInUrlsKnownIssue = new KnownIssue(SnippetGeneration, DateTimeOffsetHandlingInUrls, DateTimeOffsetHandlingInUrlsGithubIssue);
     internal static readonly KnownIssue EducationAssignmentRubricContainsTargetPreprocessorKnownIssue = new KnownIssue(Metadata, EducationAssignmentRubricContainsTargetPreprocessor, EducationAssignmentRubricContainsTargetPreprocessorGithubIssue);
     internal static readonly KnownIssue IdentitySetAndIdentityShouldNestAdditionalDataKnownIssue = new KnownIssue(SnippetGeneration, GitHubIssue: IdentitySetAndIdentityShouldNestAdditionalDataGithubIssue);
     internal static readonly KnownIssue CountIsNotSupportedKnownIssue = new KnownIssue(SDK, CountIsNotSupported, CountIsNotSupportedGithubIssue);
@@ -162,29 +163,31 @@ public static class KnownIssues
         var lng = language.AsString();
         return new Dictionary<string, KnownIssue>()
             {
-                { $"call-updatemetadata-{lng}-Beta-compiles", new KnownIssue(Metadata, "updateMetadata doesn't exist in metadata") },
-                { $"create-directoryobject-from-featurerolloutpolicy-{lng}-{version}-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
+                { $"call-updatemetadata-java-Beta-compiles", new KnownIssue(Metadata, "updateMetadata doesn't exist in metadata") },
+                { $"create-directoryobject-from-featurerolloutpolicy-java-{version}-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
+                { $"create-directoryobject-from-featurerolloutpolicy-csharp-V1-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
                 { $"create-directoryobject-from-featurerolloutpolicy-policies-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
                 { $"create-educationrubric-from-educationassignment-{lng}-Beta-compiles", EducationAssignmentRubricContainsTargetPreprocessorKnownIssue},
                 { $"create-externalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "externalSponsor")) },
                 { $"create-internalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "internalSponsor")) },
-                { $"delete-directoryobject-from-featurerolloutpolicy-{lng}-{version}-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
+                { $"delete-directoryobject-from-featurerolloutpolicy-java-{version}-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
+                { $"delete-directoryobject-from-featurerolloutpolicy-csharp-V1-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
                 { $"delete-directoryobject-from-featurerolloutpolicy-policies-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
                 { $"delete-educationrubric-from-educationassignment-{lng}-Beta-compiles", EducationAssignmentRubricContainsTargetPreprocessorKnownIssue},
                 { $"delete-externalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "externalSponsor")) },
                 { $"delete-internalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "internalSponsor")) },
-                { $"directoryobject-delta-{lng}-Beta-compiles", new KnownIssue(Metadata, "Delta is not defined on directoryObject, but on user and group") },
+                { $"directoryobject-delta-java-Beta-compiles", new KnownIssue(Metadata, "Delta is not defined on directoryObject, but on user and group") },
                 { $"remove-incompatiblegroup-from-accesspackage-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("accessPackage", "incompatibleGroups"))},
 
                 { $"create-educationschool-from-educationroot-{lng}-Beta-compiles", new KnownIssue(HTTP, GetPropertyNotFoundMessage("EducationSchool", "Status")) },
                 { $"create-onpremisesagentgroup-from-publishedresource-{lng}-Beta-compiles", new KnownIssue(HTTP, RefShouldBeRemoved) },
                 { $"create-reference-attachment-with-post-java-V1-compiles", new KnownIssue(HTTP, GetPropertyNotFoundMessage("ReferenceAttachment", "SourceUrl, ProviderType, Permission and IsFolder")) },
-                { $"create-directoryobject-from-orgcontact-{lng}-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
+                { $"create-directoryobject-from-orgcontact-java-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
                 { $"delete-publishedresource-{lng}-Beta-compiles", new KnownIssue(HTTP, RefShouldBeRemoved) },
                 { $"get-endpoint-java-V1-compiles", new KnownIssue(HTTP, "This is only available in Beta") },
                 { $"get-endpoints-java-V1-compiles", new KnownIssue(HTTP, "This is only available in Beta") },
-                { $"get-identityriskevent-{lng}-Beta-compiles", new KnownIssue(HTTP, IdentityRiskEvents) },
-                { $"get-identityriskevents-{lng}-Beta-compiles", new KnownIssue(HTTP, IdentityRiskEvents) },
+                { $"get-identityriskevent-java-Beta-compiles", new KnownIssue(HTTP, IdentityRiskEvents) },
+                { $"get-identityriskevents-java-Beta-compiles", new KnownIssue(HTTP, IdentityRiskEvents) },
 
                 { $"participant-configuremixer-{lng}-Beta-compiles", new KnownIssue(Metadata, "ConfigureMixer doesn't exist in metadata") },
                 { $"remove-group-from-rejectedsenderslist-of-group-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("group", "rejectedSender")) },
