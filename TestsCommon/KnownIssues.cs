@@ -92,6 +92,7 @@ public static class KnownIssues
     internal const string PATCH = nameof(PATCH);
     #endregion
 
+    internal static readonly KnownIssue EventActionsShouldNotBeReorderedKnownIssue = new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered, EventActionsShouldNotBeReorderedGithubIssue);
     internal static readonly KnownIssue StructuralPropertiesAreNotHandledKnownIssue = new KnownIssue(SnippetGeneration, StructuralPropertiesAreNotHandled, StructuralPropertiesAreNotHandledGithubIssue);
     internal static readonly KnownIssue NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue = new KnownIssue(SnippetGeneration, NamespaceOdataTypeAnnotationsWithoutHashSymbol, NamespaceOdataTypeAnnotationsWithoutHashSymbolGithubIssue);
     internal static readonly KnownIssue DateTimeOffsetHandlingInUrlsKnownIssue = new KnownIssue(SnippetGeneration, DateTimeOffsetHandlingInUrls, DateTimeOffsetHandlingInUrlsGithubIssue);

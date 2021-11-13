@@ -82,9 +82,9 @@ public static class CSharpKnownIssues
                 { "delete-educationrubric-from-educationassignment-csharp-V1-compiles", EducationAssignmentRubricContainsTargetPreprocessorKnownIssue},
                 { "add-educationcategory-to-educationassignment-csharp-V1-compiles", EducationAssignmentRubricContainsTargetPreprocessorKnownIssue},
 
-                { $"event-accept-csharp-{version}-compiles", new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered, EventActionsShouldNotBeReorderedGithubIssue) },
-                { $"event-decline-csharp-{version}-compiles", new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered, EventActionsShouldNotBeReorderedGithubIssue) },
-                { $"event-tentativelyaccept-csharp-{version}-compiles", new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered, EventActionsShouldNotBeReorderedGithubIssue) },
+                { $"event-accept-csharp-{version}-compiles", EventActionsShouldNotBeReorderedKnownIssue },
+                { $"event-decline-csharp-{version}-compiles", EventActionsShouldNotBeReorderedKnownIssue },
+                { $"event-tentativelyaccept-csharp-{version}-compiles", EventActionsShouldNotBeReorderedKnownIssue },
                 { $"create-homerealmdiscoverypolicy-from-serviceprincipal-csharp-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
                 { $"create-certificatebasedauthconfiguration-from-certificatebasedauthconfiguration-csharp-{version}-compiles", new KnownIssue(HTTP, RefNeeded, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14004") },
                 { $"create-tokenlifetimepolicy-from-application-csharp-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
