@@ -8,17 +8,17 @@ public static class KnownIssues
     #region SDK issues
 
     internal const string SearchHeaderIsNotSupported = "Search header is not supported by the SDK";
-    internal const string CountIsNotSupported = "OData $count is not supported by the SDK at the moment.\r\n"
-        + "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/402";
+    internal const string CountIsNotSupported = "OData $count is not supported by the SDK at the moment.";
+    internal const string CountIsNotSupportedGithubIssue = "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/402";
     internal const string MissingContentProperty = "IReportRootGetM365AppPlatformUserCountsRequestBuilder is missing Content property";
     internal const string StreamRequestDoesNotSupportDelete = "Stream requests only support PUT and GET.";
-    internal const string DeleteAsyncIsNotSupportedForReferences = "DeleteAsync is not supported for reference collections\r\n"
-        + "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/471";
+    internal const string DeleteAsyncIsNotSupportedForReferences = "DeleteAsync is not supported for reference collections";
+    internal const string DeleteAsyncIsNotSupportedForReferencesGithubIssue = "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/471";
     internal const string TypeCastIsNotSupported = "Type cast operation is not supported in SDK.\n"
         + "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/304";
 
-    internal const string ComplexTypeNavigationProperties = "Complex Type navigation properties are not generated\r\n"
-        + "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1003";
+    internal const string ComplexTypeNavigationProperties = "Complex Type navigation properties are not generated";
+    internal const string ComplexTypeNavigationPropertiesGithubIssue = "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1003";
 
     #endregion
 
@@ -34,25 +34,23 @@ public static class KnownIssues
     #endregion
 
     #region Metadata Preprocessing Issues
-    internal const string EventActionsShouldNotBeReordered = "There is a reorder rule in XSLT. It should be removed" +
-        " See https://github.com/microsoftgraph/msgraph-metadata/pull/64";
-    internal const string EducationAssignmentRubricContainsTargetPreprocessor = "EducationRubric containsTarget should be False to use $ref." +
-        " See https://github.com/microsoftgraph/msgraph-metadata/issues/81";
+    internal const string EventActionsShouldNotBeReordered = "There is a reorder rule in XSLT. It should be removed";
+    internal const string EventActionsShouldNotBeReorderedGithubIssue = "https://github.com/microsoftgraph/msgraph-metadata/pull/64";
+    internal const string EducationAssignmentRubricContainsTargetPreprocessor = "EducationRubric containsTarget should be False to use $ref.";
+    internal const string EducationAssignmentRubricContainsTargetPreprocessorGithubIssue = "https://github.com/microsoftgraph/msgraph-metadata/issues/81";
     #endregion
 
     #region Snipppet Generation Issues
-    internal const string SnippetGenerationCreateAsyncSupport = "Snippet generation doesn't use CreateAsync" +
-        " See https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/301";
+    internal const string SnippetGenerationCreateAsyncSupport = "Snippet generation doesn't use CreateAsync";
+    internal const string SnippetGenerationCreateAsyncSupportGithubIssue = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/301";
     internal const string StructuralPropertiesAreNotHandled = "We don't generate request builders for URL navigation to structural properties." +
-        " We should build a custom request with URL as this is not supported in SDK." +
-        " See https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/485";
-    internal const string SameBlockNames = "Same block names indeterministic snippet generation" +
-        " See https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/463";
-    internal const string NamespaceOdataTypeAnnotationsWithoutHashSymbol = "We do not support namespacing when odata.type annotations are not prepended with hash symbol." +
-        " See https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/580";
-    internal const string DateTimeOffsetHandlingInUrls = "Dates supplied via GET request urls are not parsed to dates\r\n"
-        + "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/612";
-    internal const string IdentitySetAndIdentityShouldNestAdditionalData = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/613";
+        " We should build a custom request with URL as this is not supported in SDK.";
+    internal const string StructuralPropertiesAreNotHandledGithubIssue = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/485";
+    internal const string NamespaceOdataTypeAnnotationsWithoutHashSymbol = "We do not support namespacing when odata.type annotations are not prepended with hash symbol.";
+    internal const string NamespaceOdataTypeAnnotationsWithoutHashSymbolGithubIssue = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/580";
+    internal const string DateTimeOffsetHandlingInUrls = "Dates supplied via GET request urls are not parsed to dates";
+    internal const string DateTimeOffsetHandlingInUrlsGithubIssue = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/612";
+    internal const string IdentitySetAndIdentityShouldNestAdditionalDataGithubIssue = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/613";
     #endregion
 
     #region Needs analysis
@@ -94,6 +92,13 @@ public static class KnownIssues
     internal const string PATCH = nameof(PATCH);
     #endregion
 
+    internal static readonly KnownIssue EventActionsShouldNotBeReorderedKnownIssue = new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered, EventActionsShouldNotBeReorderedGithubIssue);
+    internal static readonly KnownIssue StructuralPropertiesAreNotHandledKnownIssue = new KnownIssue(SnippetGeneration, StructuralPropertiesAreNotHandled, StructuralPropertiesAreNotHandledGithubIssue);
+    internal static readonly KnownIssue NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue = new KnownIssue(SnippetGeneration, NamespaceOdataTypeAnnotationsWithoutHashSymbol, NamespaceOdataTypeAnnotationsWithoutHashSymbolGithubIssue);
+    internal static readonly KnownIssue DateTimeOffsetHandlingInUrlsKnownIssue = new KnownIssue(SnippetGeneration, DateTimeOffsetHandlingInUrls, DateTimeOffsetHandlingInUrlsGithubIssue);
+    internal static readonly KnownIssue EducationAssignmentRubricContainsTargetPreprocessorKnownIssue = new KnownIssue(Metadata, EducationAssignmentRubricContainsTargetPreprocessor, EducationAssignmentRubricContainsTargetPreprocessorGithubIssue);
+    internal static readonly KnownIssue IdentitySetAndIdentityShouldNestAdditionalDataKnownIssue = new KnownIssue(SnippetGeneration, GitHubIssue: IdentitySetAndIdentityShouldNestAdditionalDataGithubIssue);
+    internal static readonly KnownIssue CountIsNotSupportedKnownIssue = new KnownIssue(SDK, CountIsNotSupported, CountIsNotSupportedGithubIssue);
     internal static readonly KnownIssue PermissionsExcelIdKnownIssue = new KnownIssue(Permissions, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/745", TestNamePrefix: "known-issue-permissions-excel-id-");
     internal static readonly KnownIssue SnippetGenerationKnownIssue = new KnownIssue(SnippetGeneration, CustomMessage: "Snippet generation should be fixed", TestNamePrefix: "known-issue-snippet-generation-");
     internal static readonly KnownIssue MetadataMissingNavigationPropertyKnownIssue = new KnownIssue(Metadata, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14703", TestNamePrefix: "known-issue-metadata-missing-navigation-property-");
@@ -159,29 +164,31 @@ public static class KnownIssues
         var lng = language.AsString();
         return new Dictionary<string, KnownIssue>()
             {
-                { $"call-updatemetadata-{lng}-Beta-compiles", new KnownIssue(Metadata, "updateMetadata doesn't exist in metadata") },
-                { $"create-directoryobject-from-featurerolloutpolicy-{lng}-{version}-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
+                { $"call-updatemetadata-java-Beta-compiles", new KnownIssue(Metadata, "updateMetadata doesn't exist in metadata") },
+                { $"create-directoryobject-from-featurerolloutpolicy-java-{version}-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
+                { $"create-directoryobject-from-featurerolloutpolicy-csharp-V1-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
                 { $"create-directoryobject-from-featurerolloutpolicy-policies-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
-                { $"create-educationrubric-from-educationassignment-{lng}-Beta-compiles", new KnownIssue(Metadata, EducationAssignmentRubricContainsTargetPreprocessor)},
+                { $"create-educationrubric-from-educationassignment-{lng}-Beta-compiles", EducationAssignmentRubricContainsTargetPreprocessorKnownIssue},
                 { $"create-externalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "externalSponsor")) },
                 { $"create-internalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "internalSponsor")) },
-                { $"delete-directoryobject-from-featurerolloutpolicy-{lng}-{version}-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
+                { $"delete-directoryobject-from-featurerolloutpolicy-java-{version}-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
+                { $"delete-directoryobject-from-featurerolloutpolicy-csharp-V1-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
                 { $"delete-directoryobject-from-featurerolloutpolicy-policies-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
-                { $"delete-educationrubric-from-educationassignment-{lng}-Beta-compiles", new KnownIssue(Metadata, EducationAssignmentRubricContainsTargetPreprocessor)},
+                { $"delete-educationrubric-from-educationassignment-{lng}-Beta-compiles", EducationAssignmentRubricContainsTargetPreprocessorKnownIssue},
                 { $"delete-externalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "externalSponsor")) },
                 { $"delete-internalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "internalSponsor")) },
-                { $"directoryobject-delta-{lng}-Beta-compiles", new KnownIssue(Metadata, "Delta is not defined on directoryObject, but on user and group") },
+                { $"directoryobject-delta-java-Beta-compiles", new KnownIssue(Metadata, "Delta is not defined on directoryObject, but on user and group") },
                 { $"remove-incompatiblegroup-from-accesspackage-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("accessPackage", "incompatibleGroups"))},
 
                 { $"create-educationschool-from-educationroot-{lng}-Beta-compiles", new KnownIssue(HTTP, GetPropertyNotFoundMessage("EducationSchool", "Status")) },
                 { $"create-onpremisesagentgroup-from-publishedresource-{lng}-Beta-compiles", new KnownIssue(HTTP, RefShouldBeRemoved) },
-                { $"create-reference-attachment-with-post-{lng}-V1-compiles", new KnownIssue(HTTP, GetPropertyNotFoundMessage("ReferenceAttachment", "SourceUrl, ProviderType, Permission and IsFolder")) },
-                { $"create-directoryobject-from-orgcontact-{lng}-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
+                { $"create-reference-attachment-with-post-java-V1-compiles", new KnownIssue(HTTP, GetPropertyNotFoundMessage("ReferenceAttachment", "SourceUrl, ProviderType, Permission and IsFolder")) },
+                { $"create-directoryobject-from-orgcontact-java-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
                 { $"delete-publishedresource-{lng}-Beta-compiles", new KnownIssue(HTTP, RefShouldBeRemoved) },
-                { $"get-endpoint-{lng}-V1-compiles", new KnownIssue(HTTP, "This is only available in Beta") },
-                { $"get-endpoints-{lng}-V1-compiles", new KnownIssue(HTTP, "This is only available in Beta") },
-                { $"get-identityriskevent-{lng}-Beta-compiles", new KnownIssue(HTTP, IdentityRiskEvents) },
-                { $"get-identityriskevents-{lng}-Beta-compiles", new KnownIssue(HTTP, IdentityRiskEvents) },
+                { $"get-endpoint-java-V1-compiles", new KnownIssue(HTTP, "This is only available in Beta") },
+                { $"get-endpoints-java-V1-compiles", new KnownIssue(HTTP, "This is only available in Beta") },
+                { $"get-identityriskevent-java-Beta-compiles", new KnownIssue(HTTP, IdentityRiskEvents) },
+                { $"get-identityriskevents-java-Beta-compiles", new KnownIssue(HTTP, IdentityRiskEvents) },
 
                 { $"participant-configuremixer-{lng}-Beta-compiles", new KnownIssue(Metadata, "ConfigureMixer doesn't exist in metadata") },
                 { $"remove-group-from-rejectedsenderslist-of-group-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("group", "rejectedSender")) },
@@ -191,10 +198,8 @@ public static class KnownIssues
                 { $"shift-put-{lng}-Beta-compiles", new KnownIssue(HTTPMethodWrong, GetMethodWrongMessage(PUT, PATCH)) },
                 { $"unfollow-item-{lng}-Beta-compiles", new KnownIssue(HTTPMethodWrong, GetMethodWrongMessage(DELETE, POST)) },
                 { $"update-openidconnectprovider-{lng}-Beta-compiles", new KnownIssue(HTTP, "OpenIdConnectProvider should be specified") },
-                { $"update-teamsapp-{lng}-V1-compiles", new KnownIssue(Metadata, $"teamsApp needs hasStream=true. In addition to that, we need these fixed: {Environment.NewLine}https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/160 {Environment.NewLine}https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/336") },
-                {$"create-connector-from-connectorgroup-{lng}-Beta-compiles", new KnownIssue(SDK, "Missing method") },
-                {$"shift-get-{lng}-Beta-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/11521") },
-                {$"shift-get-{lng}-V1-compiles", new KnownIssue(HTTP, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/11521") },
+                { $"update-teamsapp-java-V1-compiles", new KnownIssue(Metadata, $"teamsApp needs hasStream=true. In addition to that, we need these fixed: {Environment.NewLine}https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/160 {Environment.NewLine}https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/336") },
+                { $"create-connector-from-connectorgroup-{lng}-Beta-compiles", new KnownIssue(SDK, "Missing method") },
             };
     }
 

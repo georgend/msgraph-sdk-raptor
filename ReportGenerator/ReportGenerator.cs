@@ -1,4 +1,5 @@
-﻿namespace ReportGenerator;
+﻿using System.Collections.Generic;
+namespace ReportGenerator;
 
 class ReportGenerator
 {
@@ -6,6 +7,12 @@ class ReportGenerator
     {
         KnownIssuesTextReport(Versions.V1, Languages.CSharp, IssueType.Execution);
         KnownIssuesVisualReport(Versions.V1, Languages.CSharp, IssueType.Execution);
+
+        KnownIssuesTextReport(Versions.V1, Languages.CSharp, IssueType.Compilation);
+        KnownIssuesVisualReport(Versions.V1, Languages.CSharp, IssueType.Compilation);
+
+        KnownIssuesTextReport(Versions.Beta, Languages.CSharp, IssueType.Compilation);
+        KnownIssuesVisualReport(Versions.Beta, Languages.CSharp, IssueType.Compilation);
     }
 
     // create text report for v1 execution known issues
@@ -16,24 +23,21 @@ class ReportGenerator
             throw new NotImplementedException();
         }
 
-        if (issueType != IssueType.Execution)
-        {
-            throw new NotImplementedException();
-        }
+        var issues = GetKnownIssues(version, language, issueType);
 
-        var issues = CSharpKnownIssues.GetCSharpExecutionKnownIssues(version);
+        var lang = language.AsString();
         var documentationLinks = TestDataGenerator.GetDocumentationLinks(version, language);
-        var testNameSuffix = $"{version}-{issueType.Suffix()}";
+        var testNameSuffix = $"{lang}-{version}-{issueType.Suffix()}";
 
         var unreferencedIssues = new HashSet<string>();
 
         var reportEntries = new List<ReportEntry>();
 
-        foreach (KeyValuePair<string, KnownIssue> kv in issues.Where(kv => kv.Key.EndsWith(testNameSuffix)))
+        foreach (KeyValuePair<string, KnownIssue> kv in issues)
         {
             var testName = kv.Key;
             var knownIssue = kv.Value;
-            var documentationLinkLookupKey = testName.Replace(testNameSuffix, "snippets.md");
+            var documentationLinkLookupKey = testName.Replace(testNameSuffix, $"{lang}-snippets.md");
             if (!documentationLinks.ContainsKey(documentationLinkLookupKey))
             {
                 unreferencedIssues.Add(testName);
@@ -78,6 +82,17 @@ class ReportGenerator
         return Path.Combine(Environment.GetEnvironmentVariable("BUILD_SOURCESDIRECTORY"), "msgraph-sdk-raptor", "report");
     }
 
+    private static Dictionary<string, KnownIssue> GetKnownIssues(Versions version, Languages language, IssueType issueType)
+    {
+        var lang = language.AsString();
+        var testNameSuffix = $"{lang}-{version}-{issueType.Suffix()}";
+        return (issueType switch
+        {
+            IssueType.Execution => CSharpKnownIssues.GetCSharpExecutionKnownIssues(version),
+            IssueType.Compilation => KnownIssues.GetCompilationKnownIssues(language, version)
+        }).Where(kv => kv.Key.EndsWith(testNameSuffix)).ToDictionary(kv => kv.Key, kv => kv.Value);
+    }
+
     // create known issue visual report
     private static void KnownIssuesVisualReport(Versions version, Languages language, IssueType issueType)
     {
@@ -86,20 +101,10 @@ class ReportGenerator
             throw new NotImplementedException();
         }
 
-        if (issueType != IssueType.Execution)
-        {
-            throw new NotImplementedException();
-        }
-
-        var issues = CSharpKnownIssues.GetCSharpExecutionKnownIssues(version);
+        var issues = GetKnownIssues(version, language, issueType);
         var counter = new Dictionary<string, int>();
         foreach (KeyValuePair<string, KnownIssue> kv in issues)
         {
-            if (!kv.Key.EndsWith($"{version}-{issueType.Suffix()}"))
-            {
-                continue;
-            }
-
             if (counter.ContainsKey(kv.Value.Owner))
             {
                 counter[kv.Value.Owner]++;
