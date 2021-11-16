@@ -1,0 +1,22 @@
+{
+    "@odata.type": "#microsoft.graph.educationSchool",
+    "displayName": "Raptor created demo school",
+    "description": "String",
+    "externalSourceDetail": "system",
+    "principalEmail": "raptor@contoso.com",
+    "principalName": "Mr. Principal",
+    "externalPrincipalId": "SDJFFJK3345",
+    "lowestGrade": "A",
+    "highestGrade": "A",
+    "schoolNumber": "56SDJFFJK3345",
+    "externalId": "56",
+    "phone": "+254000000000",
+    "address": {
+        "@odata.type": "microsoft.graph.physicalAddress",
+        "city": "Nairobi",
+        "countryOrRegion": "Kenya",
+        "postalCode": "456",
+        "state": "some state",
+        "street": "some street"
+    }
+  }

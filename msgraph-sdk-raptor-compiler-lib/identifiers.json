@@ -107,10 +107,22 @@
   "subscription": {
     "_value": "subscription"
   },
+  "educationUser": {
+    "_value": "educationUser",
+    "educationRubric": {
+      "_value": "educationUser_educationRubric"
+    }
+  },
   "educationClass": {
     "_value": "educationClass",
+    "educationCategory": {
+      "_value": "educationClass_educationCategory"
+    },
     "educationAssignment": {
       "_value": "educationAssignment",
+      "educationAssignmentResource": {
+        "_value": "educationAssignment_educationAssignmentResource"
+      },
       "educationSubmission": {
         "_value": "educationSubmission",
         "educationSubmissionResource": {
@@ -121,6 +133,9 @@
   },
   "educationSchool": {
     "_value": "educationSchool"
+  },
+  "educationRubric": {
+    "_value": "educationRubric"
   },
   "site": {
     "_value": "site",
@@ -334,9 +349,6 @@
   },
   "domain": {
     "_value": "domain"
-  },
-  "educationUser": {
-    "_value": "educationUser"
   },
   "threatAssessmentRequest": {
     "_value": "threatAssessmentRequest"

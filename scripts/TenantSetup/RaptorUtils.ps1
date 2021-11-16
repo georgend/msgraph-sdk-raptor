@@ -30,9 +30,11 @@ function Get-CurrentIdentifiers (
 }
 
 function Get-CurrentDomain (
-    [PSObject]$AppSettings
+    [PSObject]$AppSettings,
+    [Bool]$IsEducation=$false
 ) {
-    $domain = $AppSettings.Username.Split("@")[1]
+    $username = $IsEducation ? $AppSettings.EducationUsername : $AppSettings.Username
+    $domain = $username.Split("@")[1]
     return $domain
 }
 
@@ -96,13 +98,15 @@ function Get-UserToken {
         $AppSettings,
         $Application,
         $ScopeString,
-        $GrantType = "password"
+        $GrantType = "password",
+        $IsEducation = $false
     )
 
-    $domain = Get-CurrentDomain -AppSettings $AppSettings
+    $domain = Get-CurrentDomain -AppSettings $AppSettings -IsEducation $IsEducation
     $tokenEndpoint = "https://login.microsoftonline.com/$domain/oauth2/v2.0/token"
     try {
-        $body = "grant_type=$GrantType&username=$($AppSettings.Username)&password=$($AppSettings.Password)&client_id=$($Application.ApplicationIdentifier)&scope=$($ScopeString)"
+        ($username, $password) = $IsEducation ? ($AppSettings.EducationUsername, $AppSettings.EducationPassword) : ($AppSettings.Username, $AppSettings.Password)
+        $body = "grant_type=$GrantType&username=$($username)&password=$($password)&client_id=$($Application.ApplicationIdentifier)&scope=$($ScopeString)"
         $token = Invoke-RestMethod -Method Post -Uri $tokenEndpoint -Body $body -ContentType 'application/x-www-form-urlencoded'
 
         Write-Debug "Received Token with the following Scopes"
@@ -126,13 +130,14 @@ function Get-Application {
     param(
         $AppSettings,
         [string]$joinedScopeString,
-        [string]$Scope
+        [string]$Scope,
+        [Bool] $IsEducation = $false
     )
     #Connect using the current Application stored in settings
-    Connect-DefaultTenant -AppSettings $AppSettings
+    Connect-Tenant -IsEducation $IsEducation
     $application = @{}
     if ($joinedScopeString -eq ".default") {
-        $application.ApplicationIdentifier = $appSettings.ClientID
+        $application.ApplicationIdentifier = $IsEducation ? $AppSettings.EducationClientID : $AppSettings.ClientID
         $application.DisplayName = "Raptor Default Client"
     }
     else {
@@ -209,6 +214,7 @@ function Request-DelegatedResource {
         [parameter(Mandatory = $False)][string] $ScopeOverride,
         [parameter(Mandatory = $False)][ValidateSet("v1.0", "beta")][string] $GraphVersion = "v1.0",
         [parameter(Mandatory = $False)][ValidateSet("Json", "PSObject", "HttpRequestMessage", "HashTable")][string] $OutputType = "PSObject",
+        [Parameter(Mandatory=$False)][Bool] $IsEducation=$False,
         $Headers = @{ },
         $FilePath,
         $AppSettings
@@ -241,9 +247,9 @@ function Request-DelegatedResource {
     foreach ($currentScope in $flattenedScopes) {
         # If JoinedScopeString is .default, we use the Default Raptor Client ID configured in AppSettings.
         # It implies we couldn't get a corresponding app for the specified permission.
-        $application = Get-Application -AppSettings $AppSettings -joinedScopeString $joinedScopeString -Scope $currentScope
+        $application = Get-Application -AppSettings $AppSettings -joinedScopeString $joinedScopeString -Scope $currentScope -IsEducation $IsEducation
         try {
-            $userToken = Get-UserToken -AppSettings $AppSettings -Application $application -ScopeString $currentScope
+            $userToken = Get-UserToken -AppSettings $AppSettings -IsEducation $IsEducation -Application $application -ScopeString $currentScope
             if ($null -ne $userToken) {
                 Connect-MgGraph -AccessToken $userToken.access_token | Out-Null
                 $jsonBody = $Body | ConvertTo-Json -Depth 3
@@ -278,8 +284,14 @@ Function Get-RandomAlphanumericString {
 }
 
 
+Function Get-EduAdmin {
+    $eduAdmin = "admin"
+    $adminUser = Invoke-RequestHelper -Uri "users?`$filter=mailNickname eq  '$($eduAdmin)'"
+    return $adminUser
+}
+
 Function Get-DefaultAdminUser {
-    Connect-DefaultTenant
+    Connect-Tenant
     $admin = "MOD Administrator"
     $adminUser = Invoke-RequestHelper -Uri "users?`$filter=displayName eq '$($admin)'"
     return $adminUser
@@ -376,34 +388,50 @@ Function Get-HtmlDataRequest {
     return $htmlData
 }
 
+
 <#
-    Connect to the Default Raptor Tenant
+    Connect to the Raptor Tenant
 #>
-function Connect-DefaultTenant {
+function Connect-Tenant {
     [CmdletBinding()]
     param(
-        [PSObject] $AppSettings
+        [PSObject] $AppSettings,
+        [Bool]$IsEducation = $false
     )
     if ($null -eq $AppSettings) {
         $AppSettings = Get-AppSettings
     }
+    ($tenantID, $clientId) = $IsEducation ? ($AppSettings.EducationTenantID, $AppSettings.EducationClientID)
+            : ($AppSettings.TenantID, $AppSettings.ClientID);
     $defaultCertificate = Get-Certificate -AppSettings $AppSettings
     #Connect To Microsoft Graph Raptor Default Tenant Using ClientId, TenantId and Certificate
-    Connect-MgGraph -Certificate $defaultCertificate -ClientId $AppSettings.ClientID -TenantId $AppSettings.TenantID | Out-Null
+    Connect-MgGraph -Certificate $defaultCertificate -ClientId $clientId -TenantId $tenantID | Out-Null
 }
 
+
 <#
-    Connect to the Configured Raptor Education Tenant
+    Helper function to Connect to the Education Raptor Tenant
 #>
 function Connect-EduTenant {
     [CmdletBinding()]
     param(
         [PSObject] $AppSettings
     )
-    $defaultCertificate = Get-Certificate -AppSettings $AppSettings
-    #Connect To Microsoft Graph Raptor Default Tenant Using ClientId, TenantId and Certificate
-    Connect-MgGraph -Certificate $defaultCertificate -ClientId $AppSettings.EducationClientId -TenantId $AppSettings.EducationTenantId | Out-Null
+    Connect-Tenant -IsEducation $true -AppSettings $AppSettings
 }
+
+
+<#
+    Helper function to Connect to the Regular Raptor Tenant
+#>
+function Connect-DefaultTenant {
+    [CmdletBinding()]
+    param(
+        [PSObject] $AppSettings
+    )
+    Connect-Tenant -AppSettings $AppSettings
+}
+
 
 <#
     Connect to Azure Tenant to Access KeyVault and other resources.

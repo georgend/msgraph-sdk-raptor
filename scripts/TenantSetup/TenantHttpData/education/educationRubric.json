@@ -1,0 +1,39 @@
+{
+    "displayName":"Example Credit Rubric",
+    "description":{
+        "content":"This is an example of a credit rubric (no points)",
+        "contentType":"text"
+    },
+    "levels":[
+        {
+            "displayName":"Good",
+            "description":{
+                "content":"",
+                "contentType":"text"
+            }
+        },
+        {
+            "displayName":"Poor",
+            "description":{
+                "content":"",
+                "contentType":"text"
+            }
+        }
+    ],
+    "qualities":[
+        {
+            "description":{
+                "content":"Argument",
+                "contentType":"text"
+            },
+            "criteria":[]
+        },
+        {
+            "description":{
+                "content":"Spelling and Grammar",
+                "contentType":"text"
+            },
+            "criteria":[]
+        }
+    ]
+}
