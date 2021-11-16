@@ -478,5 +478,8 @@
   },
   "roleAssignmentPrincipal": {
     "_value": "roleAssignmentPrincipal"
+  },
+  "unifiedRoleDefinition": {
+    "_value": "unifiedRoleDefinition"
   }
 }
