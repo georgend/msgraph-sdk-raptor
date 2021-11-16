@@ -24,6 +24,11 @@ $user = Get-DefaultAdminUser
 $identifiers.user._value = $user.id
 $identifiers.directoryObject._value = $user.id
 
+$unifiedRoleDefinition = Invoke-RequestHelper -Uri "roleManagement/directory/roleDefinitions?`$filter=displayName eq 'Groups Administrator'" |
+    Select-Object -First 1
+$unifiedRoleDefinition.id
+$identifiers.unifiedRoleDefinition._value = $unifiedRoleDefinition.id
+
 $calendarPermission = Invoke-RequestHelper -Uri "users/$($user.id)/calendar/calendarPermissions" |
     Select-Object -First 1
 $calendarPermission.id
