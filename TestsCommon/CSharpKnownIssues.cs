@@ -813,10 +813,6 @@ public static class CSharpKnownIssues
 
                 { "contenttype-ispublished-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/651" } },
 
-                { "get-built-in-role-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/642" } },
-                { "get-custom-role-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/642" } },
-                { "get-inheritsfrom-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/642" } },
-
                 { "get-unifiedroleassignment-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/646" } },
 
                 { "get-datapolicyoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/488", CustomMessage = "dataPolicyOperation value is empty string in blob storage."} },
