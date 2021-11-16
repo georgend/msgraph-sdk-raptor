@@ -811,10 +811,7 @@ public static class CSharpKnownIssues
                 { "list-bitlockerrecoverykey-csharp-V1-executes", new KnownIssue("Raptor", "DelegatedAppCreator is failing recently", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/639", "known-issue-delegated-app-creator-") },
                 { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", new KnownIssue("Raptor", "DelegatedAppCreator is failing recently", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/639", "known-issue-delegated-app-creator-") },
 
-                { "contenttype-ispublished-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
-                { "get-column-from-contenttype-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
-                { "get-columns-from-contenttype-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
-                { "get-contenttype-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
+                { "contenttype-ispublished-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/651" } },
 
                 { "get-built-in-role-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/642" } },
                 { "get-custom-role-unifiedroledefinition-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/642" } },
