@@ -4,12 +4,13 @@ namespace TestsCommon;
 
 // Owner is used to categorize known test failures, so that we can redirect issues faster
 public record KnownIssue(
-    string Owner,
+    Category Category,
     string CustomMessage = null,
     string GitHubIssue = null,
     string TestNamePrefix = "known-issue-")
 {
     public string Message => string.Join(Environment.NewLine, new[] { CustomMessage, GitHubIssue }.Where(s => !string.IsNullOrEmpty(s)));
+    public string Owner => Category.ToString();
 };
 
 
