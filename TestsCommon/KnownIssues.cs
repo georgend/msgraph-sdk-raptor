@@ -3,6 +3,27 @@ using static TestsCommon.CSharpKnownIssues;
 
 namespace TestsCommon;
 
+public enum Category
+{
+    Permissions,
+    Raptor,
+    SDK,
+    HTTP,
+    HTTPCamelCase,
+    HTTPMethodWrong,
+    Metadata,
+    MetadataPreprocessing,
+    SnippetGeneration,
+    TestGeneration,
+    NeedsAnalysis,
+    MissingData,
+    MissingPermissionScope,
+    SDKkiota,
+    SDKkiotaTriage,
+    ProtectedAPI,
+    Service
+}
+
 public static class KnownIssues
 {
     #region SDK issues
@@ -14,8 +35,8 @@ public static class KnownIssues
     internal const string StreamRequestDoesNotSupportDelete = "Stream requests only support PUT and GET.";
     internal const string DeleteAsyncIsNotSupportedForReferences = "DeleteAsync is not supported for reference collections";
     internal const string DeleteAsyncIsNotSupportedForReferencesGithubIssue = "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/471";
-    internal const string TypeCastIsNotSupported = "Type cast operation is not supported in SDK.\n"
-        + "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/304";
+    internal const string TypeCastIsNotSupported = "Type cast operation is not supported in SDK";
+    internal const string TypeCastIsNotSupportedGithubIssue = "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/304";
 
     internal const string ComplexTypeNavigationProperties = "Complex Type navigation properties are not generated";
     internal const string ComplexTypeNavigationPropertiesGithubIssue = "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1003";
@@ -69,19 +90,7 @@ public static class KnownIssues
     #endregion
 
     #region Test Owner values (to categorize results in Azure DevOps)
-    internal const string Permissions = "DevX API Permissions";
-    internal const string Raptor = nameof(Raptor);
-    internal const string SDK = nameof(SDK);
-    internal const string HTTP = nameof(HTTP);
-    internal const string HTTPCamelCase = nameof(HTTPCamelCase);
-    internal const string HTTPMethodWrong = nameof(HTTPMethodWrong);
-    internal const string Metadata = nameof(Metadata);
-    internal const string MetadataPreprocessing = nameof(MetadataPreprocessing);
-    internal const string SnippetGeneration = nameof(SnippetGeneration);
-    internal const string TestGeneration = nameof(TestGeneration);
-    internal const string NeedsAnalysis = nameof(NeedsAnalysis);
-    internal const string MissingData = nameof(MissingData);
-    internal const string MissingPermissionScope = nameof(MissingPermissionScope);
+
     #endregion
 
     #region HTTP methods
@@ -92,33 +101,34 @@ public static class KnownIssues
     internal const string PATCH = nameof(PATCH);
     #endregion
 
-    internal static readonly KnownIssue EventActionsShouldNotBeReorderedKnownIssue = new KnownIssue(MetadataPreprocessing, EventActionsShouldNotBeReordered, EventActionsShouldNotBeReorderedGithubIssue);
-    internal static readonly KnownIssue StructuralPropertiesAreNotHandledKnownIssue = new KnownIssue(SnippetGeneration, StructuralPropertiesAreNotHandled, StructuralPropertiesAreNotHandledGithubIssue);
-    internal static readonly KnownIssue NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue = new KnownIssue(SnippetGeneration, NamespaceOdataTypeAnnotationsWithoutHashSymbol, NamespaceOdataTypeAnnotationsWithoutHashSymbolGithubIssue);
-    internal static readonly KnownIssue DateTimeOffsetHandlingInUrlsKnownIssue = new KnownIssue(SnippetGeneration, DateTimeOffsetHandlingInUrls, DateTimeOffsetHandlingInUrlsGithubIssue);
-    internal static readonly KnownIssue EducationAssignmentRubricContainsTargetPreprocessorKnownIssue = new KnownIssue(Metadata, EducationAssignmentRubricContainsTargetPreprocessor, EducationAssignmentRubricContainsTargetPreprocessorGithubIssue);
-    internal static readonly KnownIssue IdentitySetAndIdentityShouldNestAdditionalDataKnownIssue = new KnownIssue(SnippetGeneration, GitHubIssue: IdentitySetAndIdentityShouldNestAdditionalDataGithubIssue);
-    internal static readonly KnownIssue CountIsNotSupportedKnownIssue = new KnownIssue(SDK, CountIsNotSupported, CountIsNotSupportedGithubIssue);
-    internal static readonly KnownIssue PermissionsExcelIdKnownIssue = new KnownIssue(Permissions, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/745", TestNamePrefix: "known-issue-permissions-excel-id-");
-    internal static readonly KnownIssue SnippetGenerationKnownIssue = new KnownIssue(SnippetGeneration, CustomMessage: "Snippet generation should be fixed", TestNamePrefix: "known-issue-snippet-generation-");
-    internal static readonly KnownIssue MetadataMissingNavigationPropertyKnownIssue = new KnownIssue(Metadata, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14703", TestNamePrefix: "known-issue-metadata-missing-navigation-property-");
-    internal static readonly KnownIssue RaptorInfrastructureKnownIssue = new KnownIssue(Raptor, CustomMessage: "Raptor infrastructure work is needed", TestNamePrefix: "known-issue-raptor-infrastructure-");
-    internal static readonly KnownIssue SDKFunctionParameterKnownIssue = new KnownIssue(SDK, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1156", TestNamePrefix: "known-issue-sdk-function-parameter-");
-    internal static readonly KnownIssue HTTPKnownIssue = new KnownIssue(HTTP, CustomMessage: HttpSnippetWrong, TestNamePrefix: "known-issue-http-snippet-wrong-");
-    internal static readonly KnownIssue SDKMissingCountSupportKnownIssue = new KnownIssue(SDK, "SDK doesn't have support for $count", "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/875", "known-issue-sdk-missing-count-support-");
-    internal static readonly KnownIssue NeedsAnalysisKnownIssue = new KnownIssue(NeedsAnalysis, CustomMessage: NeedsAnalysisText, TestNamePrefix: NeedsAnalysisTestNamePrefix);
-    internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(MissingData, CustomMessage: MissingDataText, TestNamePrefix: MissingDataTestNamePrefix);
-    internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(MissingPermissionScope, CustomMessage: MissingPermissionScopeText, TestNamePrefix: MissingPermissionScopeTestNamePrefix);
+    internal static readonly KnownIssue DeleteAsyncIsNotSupportedForReferencesKnownIssue = new KnownIssue(Category.SDKkiotaTriage, DeleteAsyncIsNotSupportedForReferences, DeleteAsyncIsNotSupportedForReferencesGithubIssue);
+    internal static readonly KnownIssue EventActionsShouldNotBeReorderedKnownIssue = new KnownIssue(Category.MetadataPreprocessing, EventActionsShouldNotBeReordered, EventActionsShouldNotBeReorderedGithubIssue);
+    internal static readonly KnownIssue StructuralPropertiesAreNotHandledKnownIssue = new KnownIssue(Category.SnippetGeneration, StructuralPropertiesAreNotHandled, StructuralPropertiesAreNotHandledGithubIssue);
+    internal static readonly KnownIssue NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue = new KnownIssue(Category.SnippetGeneration, NamespaceOdataTypeAnnotationsWithoutHashSymbol, NamespaceOdataTypeAnnotationsWithoutHashSymbolGithubIssue);
+    internal static readonly KnownIssue DateTimeOffsetHandlingInUrlsKnownIssue = new KnownIssue(Category.SnippetGeneration, DateTimeOffsetHandlingInUrls, DateTimeOffsetHandlingInUrlsGithubIssue);
+    internal static readonly KnownIssue EducationAssignmentRubricContainsTargetPreprocessorKnownIssue = new KnownIssue(Category.Metadata, EducationAssignmentRubricContainsTargetPreprocessor, EducationAssignmentRubricContainsTargetPreprocessorGithubIssue);
+    internal static readonly KnownIssue IdentitySetAndIdentityShouldNestAdditionalDataKnownIssue = new KnownIssue(Category.SnippetGeneration, GitHubIssue: IdentitySetAndIdentityShouldNestAdditionalDataGithubIssue);
+    internal static readonly KnownIssue CountIsNotSupportedKnownIssue = new KnownIssue(Category.SDKkiotaTriage, CountIsNotSupported, CountIsNotSupportedGithubIssue);
+    internal static readonly KnownIssue PermissionsExcelIdKnownIssue = new KnownIssue(Category.Permissions, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/745", TestNamePrefix: "known-issue-permissions-excel-id-");
+    internal static readonly KnownIssue SnippetGenerationKnownIssue = new KnownIssue(Category.SnippetGeneration, CustomMessage: "Snippet generation should be fixed", TestNamePrefix: "known-issue-snippet-generation-");
+    internal static readonly KnownIssue MetadataMissingNavigationPropertyKnownIssue = new KnownIssue(Category.Metadata, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14703", TestNamePrefix: "known-issue-metadata-missing-navigation-property-");
+    internal static readonly KnownIssue RaptorInfrastructureKnownIssue = new KnownIssue(Category.Raptor, CustomMessage: "Raptor infrastructure work is needed", TestNamePrefix: "known-issue-raptor-infrastructure-");
+    internal static readonly KnownIssue SDKFunctionParameterKnownIssue = new KnownIssue(Category.SDK, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1156", TestNamePrefix: "known-issue-sdk-function-parameter-");
+    internal static readonly KnownIssue HTTPKnownIssue = new KnownIssue(Category.HTTP, CustomMessage: HttpSnippetWrong, TestNamePrefix: "known-issue-http-snippet-wrong-");
+    internal static readonly KnownIssue SDKMissingCountSupportKnownIssue = new KnownIssue(Category.SDK, "SDK doesn't have support for $count", "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/875", "known-issue-sdk-missing-count-support-");
+    internal static readonly KnownIssue NeedsAnalysisKnownIssue = new KnownIssue(Category.NeedsAnalysis, CustomMessage: NeedsAnalysisText, TestNamePrefix: NeedsAnalysisTestNamePrefix);
+    internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(Category.MissingData, CustomMessage: MissingDataText, TestNamePrefix: MissingDataTestNamePrefix);
+    internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(Category.MissingPermissionScope, CustomMessage: MissingPermissionScopeText, TestNamePrefix: MissingPermissionScopeTestNamePrefix);
 
     internal static readonly KnownIssue MissingDataEducationResourceKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/572" };
     internal static readonly KnownIssue MissingDataSubjectRightsRequestKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/574" };
     internal static readonly KnownIssue MissingDataOnlineMeetingKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/573" };
 
-    internal static readonly KnownIssue ProtectedAPIKnownIssue = new KnownIssue("ProtectedAPI", "Need resource specific consent", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/506", "known-issue-protected-api-");
+    internal static readonly KnownIssue ProtectedAPIKnownIssue = new KnownIssue(Category.ProtectedAPI, "Need resource specific consent", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/506", "known-issue-protected-api-");
 
-    internal static readonly KnownIssue ServiceTaskPrinterKnownIssue = new KnownIssue("Service", "taskTrigger returns 404 even though it exists", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14774", "known-issue-service-task-trigger-");
-    internal static readonly KnownIssue ServicePrinterMultiplePermissionsKnownIssue = new KnownIssue("Service", "some printer GET calls require `Printer.Create` permission", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/603", "known-issue-service-printer-multiple-permissions-");
-    internal static readonly KnownIssue PermissionsMoreThanOnePermissionKnownIssue = new KnownIssue(Permissions, "More than one permission is required", "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/778", "known-issue-permissions-more-than-one-permission-");
+    internal static readonly KnownIssue ServiceTaskPrinterKnownIssue = new KnownIssue(Category.Service, "taskTrigger returns 404 even though it exists", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14774", "known-issue-service-task-trigger-");
+    internal static readonly KnownIssue ServicePrinterMultiplePermissionsKnownIssue = new KnownIssue(Category.Service, "some printer GET calls require `Printer.Create` permission", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/603", "known-issue-service-printer-multiple-permissions-");
+    internal static readonly KnownIssue PermissionsMoreThanOnePermissionKnownIssue = new KnownIssue(Category.Permissions, "More than one permission is required", "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/778", "known-issue-permissions-more-than-one-permission-");
 
     /// <summary>
     /// Constructs property not found message
@@ -164,42 +174,42 @@ public static class KnownIssues
         var lng = language.AsString();
         return new Dictionary<string, KnownIssue>()
             {
-                { $"call-updatemetadata-java-Beta-compiles", new KnownIssue(Metadata, "updateMetadata doesn't exist in metadata") },
-                { $"create-directoryobject-from-featurerolloutpolicy-java-{version}-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
-                { $"create-directoryobject-from-featurerolloutpolicy-csharp-V1-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
-                { $"create-directoryobject-from-featurerolloutpolicy-policies-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
+                { $"call-updatemetadata-java-Beta-compiles", new KnownIssue(Category.Metadata, "updateMetadata doesn't exist in metadata") },
+                { $"create-directoryobject-from-featurerolloutpolicy-java-{version}-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
+                { $"create-directoryobject-from-featurerolloutpolicy-csharp-V1-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
+                { $"create-directoryobject-from-featurerolloutpolicy-policies-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
                 { $"create-educationrubric-from-educationassignment-{lng}-Beta-compiles", EducationAssignmentRubricContainsTargetPreprocessorKnownIssue},
-                { $"create-externalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "externalSponsor")) },
-                { $"create-internalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "internalSponsor")) },
-                { $"delete-directoryobject-from-featurerolloutpolicy-java-{version}-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
-                { $"delete-directoryobject-from-featurerolloutpolicy-csharp-V1-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
-                { $"delete-directoryobject-from-featurerolloutpolicy-policies-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
+                { $"create-externalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "externalSponsor")) },
+                { $"create-internalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "internalSponsor")) },
+                { $"delete-directoryobject-from-featurerolloutpolicy-java-{version}-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
+                { $"delete-directoryobject-from-featurerolloutpolicy-csharp-V1-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
+                { $"delete-directoryobject-from-featurerolloutpolicy-policies-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
                 { $"delete-educationrubric-from-educationassignment-{lng}-Beta-compiles", EducationAssignmentRubricContainsTargetPreprocessorKnownIssue},
-                { $"delete-externalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "externalSponsor")) },
-                { $"delete-internalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "internalSponsor")) },
-                { $"directoryobject-delta-java-Beta-compiles", new KnownIssue(Metadata, "Delta is not defined on directoryObject, but on user and group") },
-                { $"remove-incompatiblegroup-from-accesspackage-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("accessPackage", "incompatibleGroups"))},
+                { $"delete-externalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "externalSponsor")) },
+                { $"delete-internalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "internalSponsor")) },
+                { $"directoryobject-delta-java-Beta-compiles", new KnownIssue(Category.Metadata, "Delta is not defined on directoryObject, but on user and group") },
+                { $"remove-incompatiblegroup-from-accesspackage-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("accessPackage", "incompatibleGroups"))},
 
-                { $"create-educationschool-from-educationroot-{lng}-Beta-compiles", new KnownIssue(HTTP, GetPropertyNotFoundMessage("EducationSchool", "Status")) },
-                { $"create-onpremisesagentgroup-from-publishedresource-{lng}-Beta-compiles", new KnownIssue(HTTP, RefShouldBeRemoved) },
-                { $"create-reference-attachment-with-post-java-V1-compiles", new KnownIssue(HTTP, GetPropertyNotFoundMessage("ReferenceAttachment", "SourceUrl, ProviderType, Permission and IsFolder")) },
-                { $"create-directoryobject-from-orgcontact-java-Beta-compiles", new KnownIssue(HTTP, RefNeeded) },
-                { $"delete-publishedresource-{lng}-Beta-compiles", new KnownIssue(HTTP, RefShouldBeRemoved) },
-                { $"get-endpoint-java-V1-compiles", new KnownIssue(HTTP, "This is only available in Beta") },
-                { $"get-endpoints-java-V1-compiles", new KnownIssue(HTTP, "This is only available in Beta") },
-                { $"get-identityriskevent-java-Beta-compiles", new KnownIssue(HTTP, IdentityRiskEvents) },
-                { $"get-identityriskevents-java-Beta-compiles", new KnownIssue(HTTP, IdentityRiskEvents) },
+                { $"create-educationschool-from-educationroot-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, GetPropertyNotFoundMessage("EducationSchool", "Status")) },
+                { $"create-onpremisesagentgroup-from-publishedresource-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, RefShouldBeRemoved) },
+                { $"create-reference-attachment-with-post-java-V1-compiles", new KnownIssue(Category.HTTP, GetPropertyNotFoundMessage("ReferenceAttachment", "SourceUrl, ProviderType, Permission and IsFolder")) },
+                { $"create-directoryobject-from-orgcontact-java-Beta-compiles", new KnownIssue(Category.HTTP, RefNeeded) },
+                { $"delete-publishedresource-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, RefShouldBeRemoved) },
+                { $"get-endpoint-java-V1-compiles", new KnownIssue(Category.HTTP, "This is only available in Beta") },
+                { $"get-endpoints-java-V1-compiles", new KnownIssue(Category.HTTP, "This is only available in Beta") },
+                { $"get-identityriskevent-java-Beta-compiles", new KnownIssue(Category.HTTP, IdentityRiskEvents) },
+                { $"get-identityriskevents-java-Beta-compiles", new KnownIssue(Category.HTTP, IdentityRiskEvents) },
 
-                { $"participant-configuremixer-{lng}-Beta-compiles", new KnownIssue(Metadata, "ConfigureMixer doesn't exist in metadata") },
-                { $"remove-group-from-rejectedsenderslist-of-group-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("group", "rejectedSender")) },
-                { $"remove-user-from-rejectedsenderslist-of-group-{lng}-Beta-compiles", new KnownIssue(Metadata, GetContainsTargetRemoveMessage("group", "rejectedSender")) },
-                { $"removeonpremisesagentfromanonpremisesagentgroup-{lng}-Beta-compiles", new KnownIssue(HTTP, RefShouldBeRemoved) },
-                { $"securescorecontrolprofiles-update-{lng}-Beta-compiles", new KnownIssue(HTTP, HttpSnippetWrong + ": A list of SecureScoreControlStateUpdate objects should be provided instead of placeholder string.") },
-                { $"shift-put-{lng}-Beta-compiles", new KnownIssue(HTTPMethodWrong, GetMethodWrongMessage(PUT, PATCH)) },
-                { $"unfollow-item-{lng}-Beta-compiles", new KnownIssue(HTTPMethodWrong, GetMethodWrongMessage(DELETE, POST)) },
-                { $"update-openidconnectprovider-{lng}-Beta-compiles", new KnownIssue(HTTP, "OpenIdConnectProvider should be specified") },
-                { $"update-teamsapp-java-V1-compiles", new KnownIssue(Metadata, $"teamsApp needs hasStream=true. In addition to that, we need these fixed: {Environment.NewLine}https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/160 {Environment.NewLine}https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/336") },
-                { $"create-connector-from-connectorgroup-{lng}-Beta-compiles", new KnownIssue(SDK, "Missing method") },
+                { $"participant-configuremixer-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, "ConfigureMixer doesn't exist in metadata") },
+                { $"remove-group-from-rejectedsenderslist-of-group-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("group", "rejectedSender")) },
+                { $"remove-user-from-rejectedsenderslist-of-group-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("group", "rejectedSender")) },
+                { $"removeonpremisesagentfromanonpremisesagentgroup-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, RefShouldBeRemoved) },
+                { $"securescorecontrolprofiles-update-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, HttpSnippetWrong + ": A list of SecureScoreControlStateUpdate objects should be provided instead of placeholder string.") },
+                { $"shift-put-{lng}-Beta-compiles", new KnownIssue(Category.HTTPMethodWrong, GetMethodWrongMessage(PUT, PATCH)) },
+                { $"unfollow-item-{lng}-Beta-compiles", new KnownIssue(Category.HTTPMethodWrong, GetMethodWrongMessage(DELETE, POST)) },
+                { $"update-openidconnectprovider-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, "OpenIdConnectProvider should be specified") },
+                { $"update-teamsapp-java-V1-compiles", new KnownIssue(Category.Metadata, $"teamsApp needs hasStream=true. In addition to that, we need these fixed: {Environment.NewLine}https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/160 {Environment.NewLine}https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/336") },
+                { $"create-connector-from-connectorgroup-{lng}-Beta-compiles", new KnownIssue(Category.SDK, "Missing method") },
             };
     }
 
