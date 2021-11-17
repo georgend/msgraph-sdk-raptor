@@ -9,7 +9,6 @@ public enum Category
     Raptor,
     SDK,
     HTTP,
-    HTTPCamelCase,
     HTTPMethodWrong,
     Metadata,
     MetadataPreprocessing,
@@ -29,9 +28,11 @@ public static class KnownIssues
     #region SDK issues
 
     internal const string SearchHeaderIsNotSupported = "Search header is not supported by the SDK";
+    internal const string SearchHeaderIsNotSupportedGithubIssue = "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/178";
     internal const string CountIsNotSupported = "OData $count is not supported by the SDK at the moment.";
     internal const string CountIsNotSupportedGithubIssue = "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/402";
     internal const string MissingContentProperty = "IReportRootGetM365AppPlatformUserCountsRequestBuilder is missing Content property";
+    internal const string MissingContentPropertyGithubIssue = "https://github.com/microsoftgraph/msgraph-beta-sdk-dotnet/pull/261";
     internal const string StreamRequestDoesNotSupportDelete = "Stream requests only support PUT and GET.";
     internal const string DeleteAsyncIsNotSupportedForReferences = "DeleteAsync is not supported for reference collections";
     internal const string DeleteAsyncIsNotSupportedForReferencesGithubIssue = "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/471";
@@ -101,6 +102,9 @@ public static class KnownIssues
     internal const string PATCH = nameof(PATCH);
     #endregion
 
+    internal static readonly KnownIssue TypeCastIsNotSupportedKnownIssue = new KnownIssue(Category.SDKkiotaTriage, TypeCastIsNotSupported, TypeCastIsNotSupportedGithubIssue);
+    internal static readonly KnownIssue SearchHeaderIsNotSupportedKnownIssue = new KnownIssue(Category.SDKkiotaTriage, SearchHeaderIsNotSupported, SearchHeaderIsNotSupportedGithubIssue);
+    internal static readonly KnownIssue MissingContentPropertyKnownIssue = new KnownIssue(Category.SDKkiotaTriage, MissingContentProperty, MissingContentPropertyGithubIssue);
     internal static readonly KnownIssue DeleteAsyncIsNotSupportedForReferencesKnownIssue = new KnownIssue(Category.SDKkiotaTriage, DeleteAsyncIsNotSupportedForReferences, DeleteAsyncIsNotSupportedForReferencesGithubIssue);
     internal static readonly KnownIssue EventActionsShouldNotBeReorderedKnownIssue = new KnownIssue(Category.MetadataPreprocessing, EventActionsShouldNotBeReordered, EventActionsShouldNotBeReorderedGithubIssue);
     internal static readonly KnownIssue StructuralPropertiesAreNotHandledKnownIssue = new KnownIssue(Category.SnippetGeneration, StructuralPropertiesAreNotHandled, StructuralPropertiesAreNotHandledGithubIssue);
@@ -209,7 +213,7 @@ public static class KnownIssues
                 { $"unfollow-item-{lng}-Beta-compiles", new KnownIssue(Category.HTTPMethodWrong, GetMethodWrongMessage(DELETE, POST)) },
                 { $"update-openidconnectprovider-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, "OpenIdConnectProvider should be specified") },
                 { $"update-teamsapp-java-V1-compiles", new KnownIssue(Category.Metadata, $"teamsApp needs hasStream=true. In addition to that, we need these fixed: {Environment.NewLine}https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/160 {Environment.NewLine}https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/336") },
-                { $"create-connector-from-connectorgroup-{lng}-Beta-compiles", new KnownIssue(Category.SDK, "Missing method") },
+                { $"create-connector-from-connectorgroup-{lng}-Beta-compiles", new KnownIssue(Category.SDKkiotaTriage, "Missing method") },
             };
     }
 
