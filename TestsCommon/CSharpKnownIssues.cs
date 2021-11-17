@@ -75,7 +75,6 @@ public static class CSharpKnownIssues
                 { "post-channelmessage-3-csharp-V1-compiles", IdentitySetAndIdentityShouldNestAdditionalDataKnownIssue},
                 { "post-channelmessage-2-csharp-V1-compiles", IdentitySetAndIdentityShouldNestAdditionalDataKnownIssue},
                 { "post-chatmessage-2-csharp-V1-compiles", IdentitySetAndIdentityShouldNestAdditionalDataKnownIssue},
-                { "shift-put-csharp-V1-compiles", IdentitySetAndIdentityShouldNestAdditionalDataKnownIssue},
 
                 { "create-educationrubric-from-educationassignment-csharp-V1-compiles", EducationAssignmentRubricContainsTargetPreprocessorKnownIssue},
                 { "create-directorysetting-from-settings-for-guests-csharp-Beta-compiles", new KnownIssue(Category.Metadata, "GroupSetting undefined in metadata")},

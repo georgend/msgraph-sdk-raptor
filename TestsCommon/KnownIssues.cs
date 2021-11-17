@@ -9,7 +9,6 @@ public enum Category
     Raptor,
     SDK,
     HTTP,
-    HTTPMethodWrong,
     Metadata,
     MetadataPreprocessing,
     SnippetGeneration,
@@ -157,17 +156,6 @@ public static class KnownIssues
     }
 
     /// <summary>
-    /// Constructs error message where HTTP method is wrong
-    /// </summary>
-    /// <param name="docsMethod">wrong HTTP method in docs</param>
-    /// <param name="expectedMethod">expected HTTP method in the samples</param>
-    /// <returns>String representation of HTTP method wrong error</returns>
-    internal static string GetMethodWrongMessage(string docsMethod, string expectedMethod)
-    {
-        return HttpSnippetWrong + $": Docs has HTTP method {docsMethod}, it should be {expectedMethod}";
-    }
-
-    /// <summary>
     /// Returns a mapping of issues of which the source comes from service/documentation/metadata and are common accross langauges
     /// </summary>
     /// <param name="language">language to generate the exception from</param>
@@ -209,8 +197,8 @@ public static class KnownIssues
                 { $"remove-user-from-rejectedsenderslist-of-group-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("group", "rejectedSender")) },
                 { $"removeonpremisesagentfromanonpremisesagentgroup-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, RefShouldBeRemoved) },
                 { $"securescorecontrolprofiles-update-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, HttpSnippetWrong + ": A list of SecureScoreControlStateUpdate objects should be provided instead of placeholder string.") },
-                { $"shift-put-{lng}-Beta-compiles", new KnownIssue(Category.HTTPMethodWrong, GetMethodWrongMessage(PUT, PATCH)) },
-                { $"unfollow-item-{lng}-Beta-compiles", new KnownIssue(Category.HTTPMethodWrong, GetMethodWrongMessage(DELETE, POST)) },
+                { $"shift-put-{lng}-{version}-compiles", IdentitySetAndIdentityShouldNestAdditionalDataKnownIssue },
+                { $"unfollow-item-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, "Unfollow uses POST instead of DELETE", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14975") },
                 { $"update-openidconnectprovider-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, "OpenIdConnectProvider should be specified") },
                 { $"update-teamsapp-java-V1-compiles", new KnownIssue(Category.Metadata, $"teamsApp needs hasStream=true. In addition to that, we need these fixed: {Environment.NewLine}https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/160 {Environment.NewLine}https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/336") },
                 { $"create-connector-from-connectorgroup-{lng}-Beta-compiles", new KnownIssue(Category.SDKkiotaTriage, "Missing method") },
