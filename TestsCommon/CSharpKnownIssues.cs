@@ -42,6 +42,7 @@ public static class CSharpKnownIssues
                 { "put-b2xuserflows-apiconnectorconfiguration-postfederationsignup-csharp-V1-compiles", new KnownIssue(Category.SDKkiota, ComplexTypeNavigationProperties, ComplexTypeNavigationPropertiesGithubIssue) },
                 { "update-b2xuserflows-userflowidentityprovider-csharp-Beta-compiles", new KnownIssue(Category.SDKkiotaTriage, "IB2xIdentityUserFlowUserFlowIdentityProvidersCollectionReferencesRequest' does not contain a definition for 'UpdateAsync'")},
                 { "update-b2cuserflows-userflowidentityproviders-csharp-Beta-compiles", new KnownIssue(Category.SDKkiotaTriage, "IB2cIdentityUserFlowUserFlowIdentityProvidersCollectionReferencesRequest' does not contain a definition for 'UpdateAsync'")},
+                { "post-administrativeunits-members-csharp-Beta-compiles", new KnownIssue(Category.SDKkiotaTriage, "SDK doesn't convert actions defined on collections to methods.", "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/250")},
 
                 { "deploymentaudience-updateaudience-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/12811")},
                 { "get-riskyuser-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14876")},
@@ -66,6 +67,7 @@ public static class CSharpKnownIssues
                 { $"create-schema-from-connection-async-csharp-{version}-compiles", new KnownIssue(Category.SnippetGeneration, SnippetGenerationCreateAsyncSupport, SnippetGenerationCreateAsyncSupportGithubIssue) },
                 { "update-deployment-1-csharp-Beta-compiles", NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue},
                 { "update-deployment-2-csharp-Beta-compiles", NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue},
+                { "update-iteminsightssettings-csharp-Beta-compiles", new KnownIssue(Category.SnippetGeneration , GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/792")},
                 { "reports-getuserarchivedprintjobs-csharp-Beta-compiles", DateTimeOffsetHandlingInUrlsKnownIssue },
                 { "reports-getprinterarchivedprintjobs-csharp-Beta-compiles", DateTimeOffsetHandlingInUrlsKnownIssue },
                 { "reports-getgrouparchivedprintjobs-csharp-Beta-compiles", DateTimeOffsetHandlingInUrlsKnownIssue },
