@@ -55,7 +55,6 @@ internal static class JavaKnownIssues
 
                 {$"get-channel-messages-delta-2-java-{version}-compiles", new KnownIssue(Category.Metadata, "Delta function is not declared") },
                 {$"get-channel-messages-delta-3-java-{version}-compiles", new KnownIssue(Category.Metadata, "Delta function is not declared") },
-                { "shift-put-java-V1-compiles", new KnownIssue(Category.HTTPMethodWrong, GetMethodWrongMessage(PUT, PATCH)) },
 
                 {$"upload-via-put-id-java-{version}-compiles", new KnownIssue(Category.SnippetGeneration, "Missing support for content: https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/371") },
 

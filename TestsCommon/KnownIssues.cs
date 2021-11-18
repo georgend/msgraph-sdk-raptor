@@ -9,7 +9,6 @@ public enum Category
     Raptor,
     SDK,
     HTTP,
-    HTTPMethodWrong,
     Metadata,
     MetadataPreprocessing,
     SnippetGeneration,
@@ -116,15 +115,12 @@ public static class KnownIssues
     internal static readonly KnownIssue PermissionsExcelIdKnownIssue = new KnownIssue(Category.Permissions, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/745", TestNamePrefix: "known-issue-permissions-excel-id-");
     internal static readonly KnownIssue SnippetGenerationKnownIssue = new KnownIssue(Category.SnippetGeneration, CustomMessage: "Snippet generation should be fixed", TestNamePrefix: "known-issue-snippet-generation-");
     internal static readonly KnownIssue MetadataMissingNavigationPropertyKnownIssue = new KnownIssue(Category.Metadata, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14703", TestNamePrefix: "known-issue-metadata-missing-navigation-property-");
-    internal static readonly KnownIssue RaptorInfrastructureKnownIssue = new KnownIssue(Category.Raptor, CustomMessage: "Raptor infrastructure work is needed", TestNamePrefix: "known-issue-raptor-infrastructure-");
     internal static readonly KnownIssue SDKFunctionParameterKnownIssue = new KnownIssue(Category.SDK, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1156", TestNamePrefix: "known-issue-sdk-function-parameter-");
     internal static readonly KnownIssue HTTPKnownIssue = new KnownIssue(Category.HTTP, CustomMessage: HttpSnippetWrong, TestNamePrefix: "known-issue-http-snippet-wrong-");
-    internal static readonly KnownIssue SDKMissingCountSupportKnownIssue = new KnownIssue(Category.SDK, "SDK doesn't have support for $count", "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/875", "known-issue-sdk-missing-count-support-");
     internal static readonly KnownIssue NeedsAnalysisKnownIssue = new KnownIssue(Category.NeedsAnalysis, CustomMessage: NeedsAnalysisText, TestNamePrefix: NeedsAnalysisTestNamePrefix);
     internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(Category.MissingData, CustomMessage: MissingDataText, TestNamePrefix: MissingDataTestNamePrefix);
     internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(Category.MissingPermissionScope, CustomMessage: MissingPermissionScopeText, TestNamePrefix: MissingPermissionScopeTestNamePrefix);
 
-    internal static readonly KnownIssue MissingDataEducationResourceKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/572" };
     internal static readonly KnownIssue MissingDataSubjectRightsRequestKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/574" };
     internal static readonly KnownIssue MissingDataOnlineMeetingKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/573" };
 
@@ -157,17 +153,6 @@ public static class KnownIssues
     }
 
     /// <summary>
-    /// Constructs error message where HTTP method is wrong
-    /// </summary>
-    /// <param name="docsMethod">wrong HTTP method in docs</param>
-    /// <param name="expectedMethod">expected HTTP method in the samples</param>
-    /// <returns>String representation of HTTP method wrong error</returns>
-    internal static string GetMethodWrongMessage(string docsMethod, string expectedMethod)
-    {
-        return HttpSnippetWrong + $": Docs has HTTP method {docsMethod}, it should be {expectedMethod}";
-    }
-
-    /// <summary>
     /// Returns a mapping of issues of which the source comes from service/documentation/metadata and are common accross langauges
     /// </summary>
     /// <param name="language">language to generate the exception from</param>
@@ -194,7 +179,7 @@ public static class KnownIssues
                 { $"directoryobject-delta-java-Beta-compiles", new KnownIssue(Category.Metadata, "Delta is not defined on directoryObject, but on user and group") },
                 { $"remove-incompatiblegroup-from-accesspackage-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("accessPackage", "incompatibleGroups"))},
 
-                { $"create-educationschool-from-educationroot-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, GetPropertyNotFoundMessage("EducationSchool", "Status")) },
+                { $"create-educationschool-from-educationroot-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, GetPropertyNotFoundMessage("EducationSchool", "Status"), "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14976") },
                 { $"create-onpremisesagentgroup-from-publishedresource-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, RefShouldBeRemoved) },
                 { $"create-reference-attachment-with-post-java-V1-compiles", new KnownIssue(Category.HTTP, GetPropertyNotFoundMessage("ReferenceAttachment", "SourceUrl, ProviderType, Permission and IsFolder")) },
                 { $"create-directoryobject-from-orgcontact-java-Beta-compiles", new KnownIssue(Category.HTTP, RefNeeded) },
@@ -209,8 +194,8 @@ public static class KnownIssues
                 { $"remove-user-from-rejectedsenderslist-of-group-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("group", "rejectedSender")) },
                 { $"removeonpremisesagentfromanonpremisesagentgroup-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, RefShouldBeRemoved) },
                 { $"securescorecontrolprofiles-update-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, HttpSnippetWrong + ": A list of SecureScoreControlStateUpdate objects should be provided instead of placeholder string.") },
-                { $"shift-put-{lng}-Beta-compiles", new KnownIssue(Category.HTTPMethodWrong, GetMethodWrongMessage(PUT, PATCH)) },
-                { $"unfollow-item-{lng}-Beta-compiles", new KnownIssue(Category.HTTPMethodWrong, GetMethodWrongMessage(DELETE, POST)) },
+                { $"shift-put-{lng}-{version}-compiles", IdentitySetAndIdentityShouldNestAdditionalDataKnownIssue },
+                { $"unfollow-item-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, "Unfollow uses POST instead of DELETE", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14975") },
                 { $"update-openidconnectprovider-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, "OpenIdConnectProvider should be specified") },
                 { $"update-teamsapp-java-V1-compiles", new KnownIssue(Category.Metadata, $"teamsApp needs hasStream=true. In addition to that, we need these fixed: {Environment.NewLine}https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/160 {Environment.NewLine}https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/336") },
                 { $"create-connector-from-connectorgroup-{lng}-Beta-compiles", new KnownIssue(Category.SDKkiotaTriage, "Missing method") },
