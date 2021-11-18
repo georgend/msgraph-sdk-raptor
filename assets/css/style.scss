@@ -1,0 +1,16 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+.container-lg
+{
+    max-width: none;
+}
+
+.markdown-body p
+{
+    max-width: 1012 px;
+    margin-right: auto;
+    margin-left: auto;
+}
