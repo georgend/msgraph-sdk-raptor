@@ -179,7 +179,7 @@ public static class KnownIssues
                 { $"directoryobject-delta-java-Beta-compiles", new KnownIssue(Category.Metadata, "Delta is not defined on directoryObject, but on user and group") },
                 { $"remove-incompatiblegroup-from-accesspackage-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("accessPackage", "incompatibleGroups"))},
 
-                { $"create-educationschool-from-educationroot-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, GetPropertyNotFoundMessage("EducationSchool", "Status")) },
+                { $"create-educationschool-from-educationroot-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, GetPropertyNotFoundMessage("EducationSchool", "Status"), "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14976") },
                 { $"create-onpremisesagentgroup-from-publishedresource-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, RefShouldBeRemoved) },
                 { $"create-reference-attachment-with-post-java-V1-compiles", new KnownIssue(Category.HTTP, GetPropertyNotFoundMessage("ReferenceAttachment", "SourceUrl, ProviderType, Permission and IsFolder")) },
                 { $"create-directoryobject-from-orgcontact-java-Beta-compiles", new KnownIssue(Category.HTTP, RefNeeded) },
