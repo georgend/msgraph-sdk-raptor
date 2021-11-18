@@ -115,15 +115,12 @@ public static class KnownIssues
     internal static readonly KnownIssue PermissionsExcelIdKnownIssue = new KnownIssue(Category.Permissions, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/745", TestNamePrefix: "known-issue-permissions-excel-id-");
     internal static readonly KnownIssue SnippetGenerationKnownIssue = new KnownIssue(Category.SnippetGeneration, CustomMessage: "Snippet generation should be fixed", TestNamePrefix: "known-issue-snippet-generation-");
     internal static readonly KnownIssue MetadataMissingNavigationPropertyKnownIssue = new KnownIssue(Category.Metadata, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14703", TestNamePrefix: "known-issue-metadata-missing-navigation-property-");
-    internal static readonly KnownIssue RaptorInfrastructureKnownIssue = new KnownIssue(Category.Raptor, CustomMessage: "Raptor infrastructure work is needed", TestNamePrefix: "known-issue-raptor-infrastructure-");
     internal static readonly KnownIssue SDKFunctionParameterKnownIssue = new KnownIssue(Category.SDK, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1156", TestNamePrefix: "known-issue-sdk-function-parameter-");
     internal static readonly KnownIssue HTTPKnownIssue = new KnownIssue(Category.HTTP, CustomMessage: HttpSnippetWrong, TestNamePrefix: "known-issue-http-snippet-wrong-");
-    internal static readonly KnownIssue SDKMissingCountSupportKnownIssue = new KnownIssue(Category.SDK, "SDK doesn't have support for $count", "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/875", "known-issue-sdk-missing-count-support-");
     internal static readonly KnownIssue NeedsAnalysisKnownIssue = new KnownIssue(Category.NeedsAnalysis, CustomMessage: NeedsAnalysisText, TestNamePrefix: NeedsAnalysisTestNamePrefix);
     internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(Category.MissingData, CustomMessage: MissingDataText, TestNamePrefix: MissingDataTestNamePrefix);
     internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(Category.MissingPermissionScope, CustomMessage: MissingPermissionScopeText, TestNamePrefix: MissingPermissionScopeTestNamePrefix);
 
-    internal static readonly KnownIssue MissingDataEducationResourceKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/572" };
     internal static readonly KnownIssue MissingDataSubjectRightsRequestKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/574" };
     internal static readonly KnownIssue MissingDataOnlineMeetingKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/573" };
 
