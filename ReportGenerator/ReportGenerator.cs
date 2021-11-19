@@ -89,7 +89,8 @@ class ReportGenerator
         return (issueType switch
         {
             IssueType.Execution => CSharpKnownIssues.GetCSharpExecutionKnownIssues(version),
-            IssueType.Compilation => KnownIssues.GetCompilationKnownIssues(language, version)
+            IssueType.Compilation => KnownIssues.GetCompilationKnownIssues(language, version),
+            _ => throw new ArgumentException($"Unknown issue type: {issueType}")
         }).Where(kv => kv.Key.EndsWith(testNameSuffix)).ToDictionary(kv => kv.Key, kv => kv.Value);
     }
 
