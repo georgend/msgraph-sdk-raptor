@@ -168,6 +168,6 @@ public class IdentifierReplacer
             return input;
         }
 
-        return input.Substring(0, index) + replacement + input.Substring(index + substring.Length);
+        return string.Concat(input.AsSpan(0, index), replacement, input.AsSpan(index + substring.Length));
     }
 }
