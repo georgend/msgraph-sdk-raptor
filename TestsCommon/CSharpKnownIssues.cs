@@ -58,6 +58,9 @@ public static class CSharpKnownIssues
                 { "put-b2xuserflows-apiconnectorconfiguration-postfederationsignup-csharp-Beta-compiles", StructuralPropertiesAreNotHandledKnownIssue },
                 { "put-b2xuserflows-apiconnectorconfiguration-postattributecollection-csharp-Beta-compiles", StructuralPropertiesAreNotHandledKnownIssue },
                 { "put-b2cuserflows-apiconnectorconfiguration-postattributecollection-csharp-Beta-compiles", StructuralPropertiesAreNotHandledKnownIssue },
+                { "get-mailboxsettings-2-csharp-V1-executes", StructuralPropertiesAreNotHandledKnownIssue },
+                { "get-mailboxsettings-3-csharp-V1-executes", StructuralPropertiesAreNotHandledKnownIssue },
+
                 { "create-datasource-from--1-csharp-Beta-compiles", NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue},
                 { "create-deployment-from--csharp-Beta-compiles", NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue},
                 { "create-noncustodialdatasource-from--csharp-Beta-compiles", NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue },
@@ -655,9 +658,6 @@ public static class CSharpKnownIssues
                 { "get-plans-1-csharp-V1-executes", HTTPKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14686" }},
                 { "planner-get-tasks-csharp-V1-executes", HTTPKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14687" } },
 
-                { "get-mailboxsettings-2-csharp-V1-executes", MetadataMissingNavigationPropertyKnownIssue },
-                { "get-mailboxsettings-3-csharp-V1-executes", MetadataMissingNavigationPropertyKnownIssue },
-
                 { "get-bitlockerrecoverykey-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/607" } },
                 { "get-bitlockerrecoverykey-key-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/607" } },
 
@@ -771,8 +771,8 @@ public static class CSharpKnownIssues
 
                 { "get-windowshelloforbusinessauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/638" } },
 
-                { "list-bitlockerrecoverykey-csharp-V1-executes", new KnownIssue(Category.Raptor, "DelegatedAppCreator is failing recently", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/639", "known-issue-delegated-app-creator-") },
-                { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", new KnownIssue(Category.Raptor, "DelegatedAppCreator is failing recently", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/639", "known-issue-delegated-app-creator-") },
+                { "list-bitlockerrecoverykey-csharp-V1-executes", new KnownIssue(Category.NeedsAnalysis, "Service requires UserAgent") },
+                { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", new KnownIssue(Category.NeedsAnalysis, "Service requires UserAgent") },
 
                 { "contenttype-ispublished-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/651" } },
 
@@ -859,12 +859,12 @@ public static class CSharpKnownIssues
                 { "workbookrangeview-range-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-deleteditems-count-csharp-V1-executes", MissingPermissionScopeKnownIssue},
                 { "get-organizationalbranding-frlocale-bannerlogo-csharp-V1-executes", MissingPermissionScopeKnownIssue},
-                { "get-chartpoint-csharp-V1-executes", PermissionsExcelIdKnownIssue },
-                { "get-chartpointscollection-csharp-V1-executes", PermissionsExcelIdKnownIssue },
-                { "get-chartseries-csharp-V1-executes", PermissionsExcelIdKnownIssue },
-                { "get-points-csharp-V1-executes", PermissionsExcelIdKnownIssue },
-                { "get-tablerow-csharp-V1-executes", PermissionsExcelIdKnownIssue },
-                { "tablerow-range-csharp-V1-executes", PermissionsExcelIdKnownIssue },
+                { "get-chartpoint-csharp-V1-executes", ExcelItemAtDocumentationKnownIssue },
+                { "get-chartpointscollection-csharp-V1-executes", ExcelItemAtDocumentationKnownIssue },
+                { "get-chartseries-csharp-V1-executes", ExcelItemAtDocumentationKnownIssue },
+                { "get-points-csharp-V1-executes", ExcelItemAtDocumentationKnownIssue },
+                { "get-tablerow-csharp-V1-executes", ExcelItemAtDocumentationKnownIssue },
+                { "tablerow-range-csharp-V1-executes", ExcelItemAtDocumentationKnownIssue },
                 { "get-educationuser-1-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
                 { "channel-getallchannelmessages-1-csharp-V1-executes", ProtectedAPIKnownIssue },
                 { "chat-getallmessages-1-csharp-V1-executes", ProtectedAPIKnownIssue },

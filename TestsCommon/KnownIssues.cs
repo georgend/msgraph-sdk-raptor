@@ -5,6 +5,7 @@ namespace TestsCommon;
 
 public enum Category
 {
+    Documentation,
     Permissions,
     Raptor,
     SDK,
@@ -101,6 +102,7 @@ public static class KnownIssues
     internal const string PATCH = nameof(PATCH);
     #endregion
 
+    internal static readonly KnownIssue ExcelItemAtDocumentationKnownIssue = new KnownIssue(Category.Documentation, "Excel documentation inconsistency between ID and itemAt. Could also be a service description issue.", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14853");
     internal static readonly KnownIssue TypeCastIsNotSupportedKnownIssue = new KnownIssue(Category.SDKkiotaTriage, TypeCastIsNotSupported, TypeCastIsNotSupportedGithubIssue);
     internal static readonly KnownIssue SearchHeaderIsNotSupportedKnownIssue = new KnownIssue(Category.SDKkiotaTriage, SearchHeaderIsNotSupported, SearchHeaderIsNotSupportedGithubIssue);
     internal static readonly KnownIssue MissingContentPropertyKnownIssue = new KnownIssue(Category.SDKkiotaTriage, MissingContentProperty, MissingContentPropertyGithubIssue);
@@ -112,9 +114,7 @@ public static class KnownIssues
     internal static readonly KnownIssue EducationAssignmentRubricContainsTargetPreprocessorKnownIssue = new KnownIssue(Category.Metadata, EducationAssignmentRubricContainsTargetPreprocessor, EducationAssignmentRubricContainsTargetPreprocessorGithubIssue);
     internal static readonly KnownIssue IdentitySetAndIdentityShouldNestAdditionalDataKnownIssue = new KnownIssue(Category.SnippetGeneration, GitHubIssue: IdentitySetAndIdentityShouldNestAdditionalDataGithubIssue);
     internal static readonly KnownIssue CountIsNotSupportedKnownIssue = new KnownIssue(Category.SDKkiotaTriage, CountIsNotSupported, CountIsNotSupportedGithubIssue);
-    internal static readonly KnownIssue PermissionsExcelIdKnownIssue = new KnownIssue(Category.Permissions, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/745", TestNamePrefix: "known-issue-permissions-excel-id-");
     internal static readonly KnownIssue SnippetGenerationKnownIssue = new KnownIssue(Category.SnippetGeneration, CustomMessage: "Snippet generation should be fixed", TestNamePrefix: "known-issue-snippet-generation-");
-    internal static readonly KnownIssue MetadataMissingNavigationPropertyKnownIssue = new KnownIssue(Category.Metadata, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14703", TestNamePrefix: "known-issue-metadata-missing-navigation-property-");
     internal static readonly KnownIssue SDKFunctionParameterKnownIssue = new KnownIssue(Category.SDK, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1156", TestNamePrefix: "known-issue-sdk-function-parameter-");
     internal static readonly KnownIssue HTTPKnownIssue = new KnownIssue(Category.HTTP, CustomMessage: HttpSnippetWrong, TestNamePrefix: "known-issue-http-snippet-wrong-");
     internal static readonly KnownIssue NeedsAnalysisKnownIssue = new KnownIssue(Category.NeedsAnalysis, CustomMessage: NeedsAnalysisText, TestNamePrefix: NeedsAnalysisTestNamePrefix);
