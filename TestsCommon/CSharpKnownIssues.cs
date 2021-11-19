@@ -771,8 +771,8 @@ public static class CSharpKnownIssues
 
                 { "get-windowshelloforbusinessauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/638" } },
 
-                { "list-bitlockerrecoverykey-csharp-V1-executes", new KnownIssue(Category.Raptor, "DelegatedAppCreator is failing recently", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/639", "known-issue-delegated-app-creator-") },
-                { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", new KnownIssue(Category.Raptor, "DelegatedAppCreator is failing recently", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/639", "known-issue-delegated-app-creator-") },
+                { "list-bitlockerrecoverykey-csharp-V1-executes", new KnownIssue(Category.NeedsAnalysis, "Service requires UserAgent") },
+                { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", new KnownIssue(Category.NeedsAnalysis, "Service requires UserAgent") },
 
                 { "contenttype-ispublished-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/651" } },
 
