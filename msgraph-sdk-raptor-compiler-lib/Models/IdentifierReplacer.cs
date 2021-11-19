@@ -131,10 +131,43 @@ public class IdentifierReplacer
             else
             {
                 currentIdNode = localTree;
-                input = input.Replace(id, currentIdNode.Value, StringComparison.OrdinalIgnoreCase);
+                input = ReplaceFirst(input, id, currentIdNode.Value);
             }
         }
 
         return input;
+    }
+
+    /// <summary>
+    /// Replaces first instance of a substring with a replacement string.
+    /// </summary>
+    /// <param name="input">String to be modified</param>
+    /// <param name="substring">Substring to be replaced</param>
+    /// <param name="replacement">Replacement string</param>
+    /// <returns>input string with first instance of substring replaced</returns>
+    private static string ReplaceFirst(string input, string substring, string replacement)
+    {
+        if (input == null)
+        {
+            throw new ArgumentNullException(nameof(input));
+        }
+
+        if (substring == null)
+        {
+            throw new ArgumentNullException(nameof(substring));
+        }
+
+        if (replacement == null)
+        {
+            throw new ArgumentNullException(nameof(replacement));
+        }
+
+        var index = input.IndexOf(substring, StringComparison.OrdinalIgnoreCase);
+        if (index < 0)
+        {
+            return input;
+        }
+
+        return input.Substring(0, index) + replacement + input.Substring(index + substring.Length);
     }
 }
