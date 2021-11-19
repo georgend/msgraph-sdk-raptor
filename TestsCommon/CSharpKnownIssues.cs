@@ -52,6 +52,7 @@ public static class CSharpKnownIssues
                 { "update-tenantcustomizedinformation-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/13556")},
                 { "update-accessreviewscheduledefinition-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14712")},
                 { "update-appleidentityprovider-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14713")},
+                { "update-appleidentityprovider-csharp-V1-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14992")},
 
                 { "put-b2cuserflows-apiconnectorconfiguration-postfederationsignup-csharp-Beta-compiles", StructuralPropertiesAreNotHandledKnownIssue },
                 { "put-b2xuserflows-apiconnectorconfiguration-postfederationsignup-csharp-Beta-compiles", StructuralPropertiesAreNotHandledKnownIssue },
