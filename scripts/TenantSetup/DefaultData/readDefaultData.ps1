@@ -29,11 +29,6 @@ $unifiedRoleDefinition = Invoke-RequestHelper -Uri "roleManagement/directory/rol
 $unifiedRoleDefinition.id
 $identifiers.unifiedRoleDefinition._value = $unifiedRoleDefinition.id
 
-$unifiedRoleAssignment = Invoke-RequestHelper -Uri "roleManagement/directory/roleAssignments?`$filter=principalId eq '$($user.id)'" |
-    Select-Object -First 1
-$unifiedRoleAssignment.id
-$identifiers.unifiedRoleAssignment._value = $unifiedRoleAssignment.id
-
 $calendarPermission = Invoke-RequestHelper -Uri "users/$($user.id)/calendar/calendarPermissions" |
     Select-Object -First 1
 $calendarPermission.id
@@ -310,6 +305,11 @@ $roleAssignment = Invoke-RequestHelper -Uri "/roleManagement/directory/roleAssig
     Select-Object -First 1
 $roleAssignment.principalId
 $identifiers.roleAssignmentPrincipal._value = $roleAssignment.principalId
+
+$unifiedRoleAssignment = Invoke-RequestHelper -Uri "roleManagement/directory/roleAssignments?`$filter=principalId eq '$($user.id)'" |
+    Select-Object -First 1
+$unifiedRoleAssignment.id
+$identifiers.unifiedRoleAssignment._value = $unifiedRoleAssignment.id
 
 # constant existing value in the tenant
 $identifier.identityUserFlowAttribute._value = "city"
