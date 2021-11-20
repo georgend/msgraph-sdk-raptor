@@ -314,7 +314,7 @@ $identifiers.roleAssignmentPrincipal._value = $roleAssignment.principalId
 # constant existing value in the tenant
 $identifier.identityUserFlowAttribute._value = "city"
 
-$serviceUpdateMessage = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/messages?`$filter=title eq 'Update to Microsoft 365 and Outlook for Windows connectivity'" |
+$serviceUpdateMessage = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/messages" |
     Select-Object -First 1
 $serviceUpdateMessage.id
 $identifiers.serviceUpdateMessage._value = $serviceUpdateMessage.id
