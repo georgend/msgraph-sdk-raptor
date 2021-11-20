@@ -493,5 +493,8 @@
   },
   "unifiedRoleDefinition": {
     "_value": "unifiedRoleDefinition"
+  },
+  "unifiedRoleAssignment": {
+    "_value": "unifiedRoleAssignment"
   }
 }
