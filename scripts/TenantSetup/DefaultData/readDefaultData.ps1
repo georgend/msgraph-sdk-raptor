@@ -319,6 +319,11 @@ $serviceUpdateMessage = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/mes
 $serviceUpdateMessage.id
 $identifiers.serviceUpdateMessage._value = $serviceUpdateMessage.id
 
+$serviceHealthIssue = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/issues" |
+    Select-Object -First 1
+$serviceHealthIssue.id
+$identifiers.serviceHealthIssue._value = $serviceHealthIssue.id
+
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
 
 # data missing

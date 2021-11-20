@@ -502,5 +502,8 @@
   },
   "serviceUpdateMessage": {
     "_value": "serviceUpdateMessage"
+  },
+  "serviceHealthIssue": {
+    "_value": "serviceHealthIssue"
   }
 }
