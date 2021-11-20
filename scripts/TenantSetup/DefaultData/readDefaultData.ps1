@@ -324,6 +324,9 @@ $serviceHealthIssue = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/issue
 $serviceHealthIssue.id
 $identifiers.serviceHealthIssue._value = $serviceHealthIssue.id
 
+# constant existing value in the tenant
+$identifiers.serviceHealth._value = "Exchange Online"
+
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
 
 # data missing

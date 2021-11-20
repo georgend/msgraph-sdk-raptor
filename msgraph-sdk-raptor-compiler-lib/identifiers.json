@@ -505,5 +505,8 @@
   },
   "serviceHealthIssue": {
     "_value": "serviceHealthIssue"
+  },
+  "serviceHealth": {
+    "_value": "serviceHealth"
   }
 }
