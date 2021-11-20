@@ -312,7 +312,7 @@ $unifiedRoleAssignment.id
 $identifiers.unifiedRoleAssignment._value = $unifiedRoleAssignment.id
 
 # constant existing value in the tenant
-$identifier.identityUserFlowAttribute._value = "city"
+$identifiers.identityUserFlowAttribute._value = "city"
 
 $serviceUpdateMessage = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/messages" |
     Select-Object -First 1
