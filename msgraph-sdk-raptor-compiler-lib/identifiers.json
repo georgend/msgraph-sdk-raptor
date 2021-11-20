@@ -499,5 +499,8 @@
   },
   "identityUserFlowAttribute": {
     "_value": "identityUserFlowAttribute"
+  },
+  "serviceUpdateMessage": {
+    "_value": "serviceUpdateMessage"
   }
 }
