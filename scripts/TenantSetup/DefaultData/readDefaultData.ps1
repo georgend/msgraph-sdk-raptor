@@ -311,6 +311,9 @@ $roleAssignment = Invoke-RequestHelper -Uri "/roleManagement/directory/roleAssig
 $roleAssignment.principalId
 $identifiers.roleAssignmentPrincipal._value = $roleAssignment.principalId
 
+# constant existing value in the tenant
+$identifier.identityUserFlowAttribute._value = "city"
+
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
 
 # data missing

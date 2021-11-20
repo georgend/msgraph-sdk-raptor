@@ -496,5 +496,8 @@
   },
   "unifiedRoleAssignment": {
     "_value": "unifiedRoleAssignment"
+  },
+  "identityUserFlowAttribute": {
+    "_value": "identityUserFlowAttribute"
   }
 }
