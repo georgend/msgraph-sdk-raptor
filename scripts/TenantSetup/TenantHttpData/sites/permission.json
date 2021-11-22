@@ -1,0 +1,13 @@
+{
+    "roles": [
+        "write"
+    ],
+    "grantedToIdentities": [
+        {
+            "application": {
+                "id": "",
+                "displayName": "PermissionManager"
+            }
+        }
+    ]
+}
