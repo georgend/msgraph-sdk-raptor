@@ -753,17 +753,9 @@ public static class CSharpKnownIssues
                 { "get-sectiongroups-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/631" } },
                 { "sectionsgroup-get-sections-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/631" } },
 
-                { "get-servicehealth-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/632" } },
-                { "get-servicehealth-with-issues-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/632" } },
-
-                { "get-servicehealthissue-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/633" } },
-                { "servicehealthissue-incidentreport-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/633" } },
-
-                { "get-serviceupdatemessage-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/634" } },
+                { "servicehealthissue-incidentreport-csharp-V1-executes", NeedsAnalysisKnownIssue with { CustomMessage = "Service returns: Your request can not be completed at this time, Please retry this request later."} },
 
                 { "get-teamworkbot-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/635" } },
-
-                { "get-userflowattributes-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/636" } },
 
                 { "get-userflowlanguageconfiguration-3-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
                 { "get-userflowlanguagepage-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
@@ -775,8 +767,6 @@ public static class CSharpKnownIssues
                 { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", new KnownIssue(Category.NeedsAnalysis, "Service requires UserAgent") },
 
                 { "contenttype-ispublished-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/651" } },
-
-                { "get-unifiedroleassignment-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/646" } },
 
                 { "get-document-value-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },
                 { "get-printjob-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },

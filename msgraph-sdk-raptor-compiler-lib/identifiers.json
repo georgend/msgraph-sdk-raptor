@@ -493,5 +493,20 @@
   },
   "unifiedRoleDefinition": {
     "_value": "unifiedRoleDefinition"
+  },
+  "unifiedRoleAssignment": {
+    "_value": "unifiedRoleAssignment"
+  },
+  "identityUserFlowAttribute": {
+    "_value": "identityUserFlowAttribute"
+  },
+  "serviceUpdateMessage": {
+    "_value": "serviceUpdateMessage"
+  },
+  "serviceHealthIssue": {
+    "_value": "serviceHealthIssue"
+  },
+  "serviceHealth": {
+    "_value": "serviceHealth"
   }
 }

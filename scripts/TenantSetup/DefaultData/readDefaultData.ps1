@@ -306,6 +306,27 @@ $roleAssignment = Invoke-RequestHelper -Uri "/roleManagement/directory/roleAssig
 $roleAssignment.principalId
 $identifiers.roleAssignmentPrincipal._value = $roleAssignment.principalId
 
+$unifiedRoleAssignment = Invoke-RequestHelper -Uri "roleManagement/directory/roleAssignments?`$filter=principalId eq '$($user.id)'" |
+    Select-Object -First 1
+$unifiedRoleAssignment.id
+$identifiers.unifiedRoleAssignment._value = $unifiedRoleAssignment.id
+
+# existing constant value in the tenant
+$identifiers.identityUserFlowAttribute._value = "city"
+
+$serviceUpdateMessage = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/messages" |
+    Select-Object -First 1
+$serviceUpdateMessage.id
+$identifiers.serviceUpdateMessage._value = $serviceUpdateMessage.id
+
+$serviceHealthIssue = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/issues" |
+    Select-Object -First 1
+$serviceHealthIssue.id
+$identifiers.serviceHealthIssue._value = $serviceHealthIssue.id
+
+# existing constant value in the tenant
+$identifiers.serviceHealth._value = "Exchange Online"
+
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
 
 # data missing
