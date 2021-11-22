@@ -152,7 +152,7 @@ public class IdentifierReplacer
             throw new ArgumentNullException(nameof(input));
         }
 
-        if (substring == null)
+        if (string.IsNullOrEmpty(substring))
         {
             throw new ArgumentNullException(nameof(substring));
         }
