@@ -878,8 +878,6 @@ public static class CSharpKnownIssues
                 { "list-printconnector-2-csharp-V1-executes", ServicePrinterMultiplePermissionsKnownIssue },
                 { "list-printershare-2-csharp-V1-executes", ServicePrinterMultiplePermissionsKnownIssue },
                 { "get-printtasktrigger-csharp-V1-executes", ServiceTaskPrinterKnownIssue },
-                { "get-one-thumbnail-csharp-V1-executes", SnippetGenerationKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/744" } },
-                { "get-thumbnail-content-csharp-V1-executes", SnippetGenerationKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/744" } },
             };
     }
 }
