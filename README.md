@@ -110,7 +110,7 @@ The scheduled pipelines are categorized into daily and weekly schedules. A singl
 
 ### Known Issue Distribution and Detailed Description Tables
 - [C# V1 Execution Tests - Known Issues Distribution](./report/V1-csharp-execution-known-issues-report.html)
-- [C# V1 Execution Tests - Known Issues Table](./report/V1-csharp-execution-known-issues)
+- [C# V1 Execution Tests - Known Issues Table](./report/V1-csharp-execution-known-issues.md)
 - [C# V1 Compilation Tests - Known Issues Distribution](./report/V1-csharp-compilation-known-issues-report.html)
 - [C# V1 Compilation Tests - Known Issues Table](./report/V1-csharp-compilation-known-issues)
 - [C# Beta Compilation Tests - Known Issues Distribution](./report/Beta-csharp-compilation-known-issues-report.html)
