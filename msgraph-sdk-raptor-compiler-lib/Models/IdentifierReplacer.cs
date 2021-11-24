@@ -20,7 +20,7 @@ public class IdentifierReplacer
     /// regular expression to match strings like {namespace.type-id}
     /// also extracts namespace.type part separately so that we can use it as a lookup key.
     /// </summary>
-    private readonly Regex idRegex = new Regex(@"{([A-Za-z\.]+)\-id}", RegexOptions.Compiled);
+    private readonly Regex idRegex = new Regex(@"{([A-Za-z0-9\.]+)\-id}", RegexOptions.Compiled);
 
     public IdentifierReplacer(IDTree tree)
     {
