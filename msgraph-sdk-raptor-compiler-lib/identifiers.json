@@ -9,6 +9,12 @@
     "_value": "team",
     "channel": {
       "_value": "team_channel",
+      "chatMessage": {
+        "_value": "team_channel_chatMessage",
+        "reply": {
+          "_value": "team_channel_chatMessage_reply"
+        }
+      },
       "conversationMember": {
         "_value": "team_channel_conversationMember"
       }
@@ -213,6 +219,9 @@
     "_value": "drive",
     "driveItem": {
       "_value": "drive_driveItem"
+    },
+    "delta": {
+      "_value": "drive_delta"
     }
   },
   "activityBasedTimeoutPolicy": {
@@ -269,7 +278,13 @@
       "_value": "user_userScopeTeamsAppInstallation"
     },
     "chat": {
-      "_value": "chat"
+      "_value": "chat",
+      "chatMessage": {
+        "_value": "chat_chatMessage",
+        "hostedContent": {
+          "_value": "chat_chatMessage_hostedContent"
+        }
+      }
     }
   },
   "call": {
@@ -301,6 +316,15 @@
   },
   "chat": {
     "_value": "chat",
+    "chatMessage": {
+      "_value": "user_chat_chatMessage",
+      "hostedContent": {
+        "_value": "user_chat_chatMessage_hostedContent"
+      },
+      "chatMessageHostedContent": {
+        "_value": "chat_chatMessageHostedContent"
+      }
+    },
     "conversationMember": {
       "_value": "chat_conversationMember"
     },

@@ -208,8 +208,6 @@ public static class CSharpKnownIssues
                 { "get-case-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-chartlineformat-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-chat-operation-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-chatmessagechannel-1-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-chatmessagechannel-2-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-chatmessagechannel-3-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-cloudpc-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-cloudpcauditevent-csharp-Beta-executes", MissingDataKnownIssue },
@@ -266,11 +264,7 @@ public static class CSharpKnownIssues
                 { "get-governanceresources-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-governancerolesetting-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-group-3-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-hostedcontentchatmessage-1-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-hostedcontentchatmessage-2-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-hostedcontentschannelmessage-1-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-hostedcontentschannelmessage-2-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-hostedcontentschatmessage-1-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-identityapiconnector-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-identityuserflow-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-identityuserflowattributeassignment-1-csharp-Beta-executes", NeedsAnalysisKnownIssue },
@@ -312,7 +306,6 @@ public static class CSharpKnownIssues
                 { "get-languageproficiency-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-legalhold-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-list-multi-expand-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-listmessagereplies-1-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-manageddevicecompliance-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-manageddevicecompliancetrend-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-managementaction-csharp-Beta-executes", MissingDataKnownIssue },
@@ -326,7 +319,6 @@ public static class CSharpKnownIssues
                 { "get-microsoftauthenticatorauthenticationmethodconfiguration-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-mobilitymanagementpolicy-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-noncustodialdatasource-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-oauth2permissiongrant-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-onenoteoperation-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-onlinemeeting-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-onpremisesagent-csharp-Beta-executes", MissingDataKnownIssue },
@@ -676,15 +668,8 @@ public static class CSharpKnownIssues
 
                 { "get-chartlineformat-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/614" } },
 
-                { "get-chatmessagechannel-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/615" } },
-                { "get-chatmessagechannel-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/615" } },
                 { "get-chatmessagechannel-3-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/615" } },
-                { "get-hostedcontentchatmessage-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/615" } },
-                { "get-hostedcontentchatmessage-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/615" } },
-                { "get-hostedcontentschannelmessage-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/615" } },
                 { "get-hostedcontentschannelmessage-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/615" } },
-                { "get-hostedcontentschatmessage-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/615" } },
-                { "get-listmessagereplies-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/615" } },
 
                 { "get-connectionoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
                 { "get-schema-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
@@ -700,7 +685,6 @@ public static class CSharpKnownIssues
 
                 { "get-microsoftauthenticatorauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/621" } },
 
-                { "get-oauth2permissiongrant-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/622" } },
 
                 { "get-onlinemeeting-user-token-csharp-V1-executes", MissingDataOnlineMeetingKnownIssue },
                 { "get-attendee-report-csharp-V1-executes", MissingDataOnlineMeetingKnownIssue },

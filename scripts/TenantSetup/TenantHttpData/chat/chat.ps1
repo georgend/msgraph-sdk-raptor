@@ -42,4 +42,31 @@ if(!$teamsTab){
 $teamsTab.id
 $identifiers.chat.teamsTab._value = $teamsTab.id
 
+# get or create chat message
+$chatMessage = Request-DelegatedResource -Uri "chats/$($chat.id)/messages?`$top=1" -ScopeOverride "Chat.Read"
+if (!$chatMessage){
+    $chatBody = Get-RequestData -ChildEntity "chatMessage"
+    $imageFilePath = Join-Path $PSScriptRoot ".\chatImage.png" -Resolve
+    if(Test-Path -Path $imageFilePath){
+        $base64EncodedImg =[System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes($imageFilePath))
+        $chatBody.hostedContents[0].contentBytes = $base64EncodedImg
+        $chatMessage = Request-DelegatedResource -Uri "chats/$($chat.id)/messages" -Method "POST" -Body $chatBody -ScopeOverride "Chat.ReadWrite"
+    }
+    else
+    {
+        Write-Error "Can't find path $($imageFilePath)"
+        exit
+    }
+}
+$chatMessage.id
+$identifiers.chat.chatMessage._value = $chatMessage.id
+$identifiers.user.chat.chatMessage._value = $chatMessage.id
+
+# Get Chat message hosted content created in chat message creation above
+$hostedContent = Request-DelegatedResource -Uri "chats/$($chat.id)/messages/$($chatMessage.id)/hostedContents?`$top=1" -ScopeOverride "Chat.Read"
+$hostedContent.id
+$identifiers.chat.chatMessage.hostedContent._value = $hostedContent.id
+$identifiers.chat.chatMessage.chatMessageHostedContent._value = $hostedContent.id
+$identifiers.user.chat.chatMessage.hostedContent._value = $hostedContent.id
+
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
