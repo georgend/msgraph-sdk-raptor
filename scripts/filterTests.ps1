@@ -13,9 +13,10 @@ if (!(Test-Path $trxFilePath))
     exit
 }
 
+$outcomeLocal = $outcome
 [xml]$xmlContent = Get-Content $trxFilePath
 $result = $xmlContent.TestRun.Results.UnitTestResult |
-  Where-Object { $_.outcome -eq $outcome } |
+  Where-Object { $_.outcome -eq $outcomeLocal } |
   Select-Object -ExpandProperty testName |
   Sort-Object
 

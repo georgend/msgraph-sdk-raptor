@@ -1,4 +1,4 @@
-# Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿# Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 Param(
     [string] $IdentifiersPath = (Join-Path $PSScriptRoot "../../../../msgraph-sdk-raptor-compiler-lib/identifiers.json" -Resolve)
 )
@@ -7,7 +7,6 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 
 $appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
-$domain = Get-CurrentDomain -AppSettings $appSettings
 
 #Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
 Connect-DefaultTenant -AppSettings $appSettings
@@ -22,7 +21,7 @@ $currentDeletedApplication = Invoke-RequestHelper -Uri $deletedApplicationUrl -M
 #If there is no deletedApp, create one and delete it
 if($null -eq $currentDeletedApplication){
     $currentDeletedApplication = Invoke-RequestHelper -Uri "applications" -Method POST -Body $deletedApplicationData
-    #If App was created successfully, Delete it. Deletion returns No Content, so no expected return object. 
+    #If App was created successfully, Delete it. Deletion returns No Content, so no expected return object.
     if($null -ne $currentDeletedApplication){
         Invoke-RequestHelper -Uri "applications/$($currentDeletedApplication.id)" -Method DELETE
     }

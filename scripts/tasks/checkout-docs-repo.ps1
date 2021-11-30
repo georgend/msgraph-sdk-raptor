@@ -32,4 +32,4 @@ git reset --hard
 git checkout $branchName
 git pull -f
 
-Write-Host "checkout docs repo script"
+Write-Output "checkout docs repo script"

@@ -30,6 +30,9 @@ Param(
   [string]$permissionFileUri = "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-devx-content/dev/permissions/permissions-descriptions.json"
 )
 
+$raptorUtils = Join-Path $PSScriptRoot "./TenantSetup/RaptorUtils.ps1" -Resolve
+. $raptorUtils
+
 if (-not (Test-Path $manifestPath))
 {
   Write-Error "Manifest file not found in $manifestPath"
@@ -109,4 +112,4 @@ $manifest |
   ConvertTo-Json -Depth 10 |
   Out-File -FilePath $outputPath
 
-Write-Host "Updated manifest file with $countDelegated delegated and $countApplication application permissions!" -ForegroundColor Green
+Write-ColorOutput "Updated manifest file with $countDelegated delegated and $countApplication application permissions!" -ForegroundColor Green

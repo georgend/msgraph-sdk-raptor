@@ -7,7 +7,6 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 
 $appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
-$domain = Get-CurrentDomain -AppSettings $appSettings
 
 #Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
 Connect-DefaultTenant -AppSettings $appSettings

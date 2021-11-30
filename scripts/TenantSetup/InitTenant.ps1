@@ -1,8 +1,10 @@
-
 # Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 Param(
     [switch] $CreateDelegatedApps
 )
+$raptorUtils = Join-Path $PSScriptRoot "./RaptorUtils.ps1" -Resolve
+. $raptorUtils
+
 # Check Requirements :-
 if([string]::IsNullOrWhiteSpace($env:RAPTOR_CONFIGCONNECTIONSTRING)){
     Write-Error "Please Set RAPTOR_CONFIGCONNECTIONSTRING environment variable"
@@ -25,7 +27,6 @@ if (!(Get-Module -Name Microsoft.Graph.Applications -ListAvailable)) {
 if (!(Get-Module -Name Az -ListAvailable)) {
     Install-Module -Name Az -Repository PSGallery -Scope CurrentUser -Force
 }
-
 
 # Optional: Build App Creator and Execute AppCreator
 if($CreateDelegatedApps) {
@@ -53,6 +54,6 @@ $nestedScripts | ForEach-Object {
     $scriptName = $_.Name
     $scriptPath = $_.FullName
 
-    Write-Host "Executing $scriptName at $scriptPath" -ForegroundColor Green
+    Write-ColorOutput -ForegroundColor Green "Executing $scriptName at $scriptPath"
     & $scriptPath
 }

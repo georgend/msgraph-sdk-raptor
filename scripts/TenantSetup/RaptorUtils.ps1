@@ -1,11 +1,25 @@
-# Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+﻿# Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
-function Get-AppSettings () {
+using namespace System.Diagnostics.CodeAnalysis
+[SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '', Scope='Function', Target='Get-HtmlDataRequest')]
+[SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '', Scope='Function', Target='Connect-AzureTenant')]
+[SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Scope='Function', Target='Remove-PemHeaderOrFooter')]
+[SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Scope='Function', Target='New-Certificate')]
+[SuppressMessageAttribute('PSUseSingularNouns', '', Scope='Function', Target='Get-CurrentIdentifiers')]
+[SuppressMessageAttribute('PSUseSingularNouns', '', Scope='Function', Target='Get-AppSettings')]
+[SuppressMessageAttribute('PSAvoidGlobalVars', '', Scope='Function', Target='Get-Certificate')]
+[SuppressMessageAttribute('PSUseSingularNouns', '', Scope='Function', Target='Get-Scopes')]
+[SuppressMessageAttribute('PSAvoidGlobalVars', '')]
+param()
+
+function Get-AppSettings ()
+{
     # read app settings from Azure App Config
     $appSettingsPath = "$env:TEMP/appSettings.json"
     # Support Reading Settings from a Custom Label, otherwise default to Development
     $settingsLabel = $env:RAPTOR_CONFIGLABEL
-    if ([string]::IsNullOrWhiteSpace($settingsLabel)) {
+    if ([string]::IsNullOrWhiteSpace($settingsLabel))
+    {
         $settingsLabel = "Development"
     }
     az appconfig kv export --connection-string $env:RAPTOR_CONFIGCONNECTIONSTRING --label $settingsLabel --destination file --path $appSettingsPath --format json --yes
@@ -16,7 +30,8 @@ function Get-AppSettings () {
             -or !$appSettings.ClientID `
             -or !$appSettings.Username `
             -or !$appSettings.Password `
-            -or !$appSettings.TenantID) {
+            -or !$appSettings.TenantID)
+    {
         Write-Error -ErrorAction Stop -Message "please provide CertificateThumbprint, ClientID, Username, Password and TenantID in appsettings.json"
     }
     return $appSettings
@@ -24,7 +39,8 @@ function Get-AppSettings () {
 
 function Get-CurrentIdentifiers (
     [string] $IdentifiersPath = (Join-Path $MyInvocation.PSScriptRoot "../../../../msgraph-sdk-raptor-compiler-lib/identifiers.json")
-) {
+)
+{
     $identifiers = Get-Content $IdentifiersPath -Raw | ConvertFrom-Json
     return $identifiers
 }
@@ -32,7 +48,8 @@ function Get-CurrentIdentifiers (
 function Get-CurrentDomain (
     [PSObject]$AppSettings,
     [Bool]$IsEducation=$false
-) {
+)
+{
     $username = $IsEducation ? $AppSettings.EducationUsername : $AppSettings.Username
     $domain = $username.Split("@")[1]
     return $domain
@@ -52,7 +69,8 @@ function Get-CurrentDomain (
 #>
 function Get-RequestData (
     [string] $ChildEntity
-) {
+)
+{
     $entityPath = Join-Path $MyInvocation.PSScriptRoot "./$($ChildEntity).json"
     $data = Get-Content -Path $entityPath -Raw | ConvertFrom-Json -AsHashtable
     return $data
@@ -75,11 +93,13 @@ function Invoke-RequestHelper (
     $Headers = @{ },
     $Body,
     $User
-) {
+)
+{
     #Append Content-Type to headers collection
     #Append "MS-APP-ACTS-AS" to headers collection
     $headers += @{ "Content-Type" = "application/json" }
-    if ($null -ne $User) {
+    if ($null -ne $User)
+    {
         $headers += @{"MS-APP-ACTS-AS" = $User }
     }
     #Convert Body to Json
@@ -93,7 +113,8 @@ function Invoke-RequestHelper (
 <#
     Get a token for the configured user from Azure AD with the specified Scope
 #>
-function Get-UserToken {
+function Get-UserToken
+{
     param(
         $AppSettings,
         $Application,
@@ -104,18 +125,20 @@ function Get-UserToken {
 
     $domain = Get-CurrentDomain -AppSettings $AppSettings -IsEducation $IsEducation
     $tokenEndpoint = "https://login.microsoftonline.com/$domain/oauth2/v2.0/token"
-    try {
+    try
+    {
         ($username, $password) = $IsEducation ? ($AppSettings.EducationUsername, $AppSettings.EducationPassword) : ($AppSettings.Username, $AppSettings.Password)
         $body = "grant_type=$GrantType&username=$($username)&password=$($password)&client_id=$($Application.ApplicationIdentifier)&scope=$($ScopeString)"
         $token = Invoke-RestMethod -Method Post -Uri $tokenEndpoint -Body $body -ContentType 'application/x-www-form-urlencoded'
 
         Write-Debug "Received Token with the following Scopes"
-        foreach ($scope in $token.scope.Split()) {
+        foreach ($scope in $token.scope.Split())
+        {
             Write-Debug "\t\t$scope"
         }
         return $token
-    }
-    catch {
+    } catch
+    {
         Write-Error $_
         throw
     }
@@ -126,7 +149,8 @@ function Get-UserToken {
     Apps are registered as 'DelegatedApp {Scope Name}` such as `DelegatedApp ChannelMember.ReadWrite.All`.
     If Application cannot be found or scope was determined to be .default, use our Raptor Default Client
 #>
-function Get-Application {
+function Get-Application
+{
     param(
         $AppSettings,
         [string]$joinedScopeString,
@@ -136,11 +160,12 @@ function Get-Application {
     #Connect using the current Application stored in settings
     Connect-Tenant -IsEducation $IsEducation
     $application = @{}
-    if ($joinedScopeString -eq ".default") {
+    if ($joinedScopeString -eq ".default")
+    {
         $application.ApplicationIdentifier = $IsEducation ? $AppSettings.EducationClientID : $AppSettings.ClientID
         $application.DisplayName = "Raptor Default Client"
-    }
-    else {
+    } else
+    {
         #Assume for now that its not default scope (.default)
         $scopeFilter = $Scope
         $filterParam = "DelegatedApp $($scopeFilter)"
@@ -155,17 +180,19 @@ function Get-Application {
 <#
     Get Scopes from DevX API
 #>
-function Get-Scopes {
+function Get-Scopes
+{
     param (
         [Parameter(Mandatory = $False)][ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")][string] $Method = "GET",
         [Parameter(Mandatory = $True)][string] $Path
     )
     $scopes = @()
-    try {
+    try
+    {
         $graphExplorerApi = "https://graphexplorerapi.azurewebsites.net/permissions?requesturl=$Path&method=$Method"
         $scopes = Invoke-RestMethod -Method "GET" -Uri $graphExplorerApi
-    }
-    catch {
+    } catch
+    {
         Write-Error $_
         Write-Warning "No Scopes returned for $Path with Method $Method"
     }
@@ -177,19 +204,19 @@ function Get-Scopes {
     Give ("Files.Read", "Files.ReadWrite") => "Files.Read Files.ReadWrite"
     If no scopes are provides, returns ".default"
 #>
-function Get-ScopeString {
+function Get-ScopeString
+{
     param (
-        [Parameter(Mandatory = $False)][ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")][string] $Method = "GET",
-        [Parameter(Mandatory = $False)][string] $Path,
         [Parameter(Mandatory = $False)] $Scopes = @()
     )
     $joinedScopeString = ""
-    if ($null -eq $Scopes -or ($Scopes.Count -eq 1 -and $Scopes[0].value -eq "Not supported.")) {
+    if ($null -eq $Scopes -or ($Scopes.Count -eq 1 -and $Scopes[0].value -eq "Not supported."))
+    {
         $joinedScopeString = ".default"
-    }
-    else {
+    } else
+    {
         $joinedScopeString = $Scopes.value |
-        Join-String -Separator " "
+            Join-String -Separator " "
     }
     return $joinedScopeString
 }
@@ -206,7 +233,8 @@ function Get-ScopeString {
         - http response if response is a single item
         - http response headers if the first two options return $null.
 #>
-function Request-DelegatedResource {
+Function Request-DelegatedResource
+{
     param(
         [Parameter(Mandatory = $True)][string] $Uri,
         [Parameter(Mandatory = $False)] $Body,
@@ -219,52 +247,60 @@ function Request-DelegatedResource {
         $FilePath,
         $AppSettings
     )
-    if ($null -eq $AppSettings) {
+    if ($null -eq $AppSettings)
+    {
         $AppSettings = Get-AppSettings
     }
     # If content-type not specified assume application/json
-    if (!$headers.ContainsKey("Content-Type")) {
+    if (!$headers.ContainsKey("Content-Type"))
+    {
         $Headers += @{ "Content-Type" = "application/json" }
     }
     $joinedScopeString = ""
     $devxScopes = @()
     $flattenedScopes = @()
     # When Override is set, skip fetching scopes from DeVX API
-    if (-not [string]::IsNullOrWhiteSpace($ScopeOverride)) {
+    if (-not [string]::IsNullOrWhiteSpace($ScopeOverride))
+    {
         $joinedScopeString = $ScopeOverride
         $flattenedScopes += $ScopeOverride
-    }
-    else {
+    } else
+    {
         $devxScopes = Get-Scopes -Path "$Uri" -Method $Method
         $flattenedScopes = $devxScopes.value
-        $joinedScopeString = Get-ScopeString -Scopes $devxScopes -Path $Uri -Method $Method
+        $joinedScopeString = Get-ScopeString -Scopes $devxScopes
         # If the JoinedScopeString is .default, currentScopes will be empty, insert that as the first and only scope.
-        if ($joinedScopeString -eq ".default") {
+        if ($joinedScopeString -eq ".default")
+        {
             $flattenedScopes += $joinedScopeString
         }
     }
 
-    foreach ($currentScope in $flattenedScopes) {
+    foreach ($currentScope in $flattenedScopes)
+    {
         # If JoinedScopeString is .default, we use the Default Raptor Client ID configured in AppSettings.
         # It implies we couldn't get a corresponding app for the specified permission.
         $application = Get-Application -AppSettings $AppSettings -joinedScopeString $joinedScopeString -Scope $currentScope -IsEducation $IsEducation
-        try {
+        try
+        {
             $userToken = Get-UserToken -AppSettings $AppSettings -IsEducation $IsEducation -Application $application -ScopeString $currentScope
-            if ($null -ne $userToken) {
+            if ($null -ne $userToken)
+            {
                 Connect-MgGraph -AccessToken $userToken.access_token | Out-Null
                 $jsonBody = $Body | ConvertTo-Json -Depth 3
-                if ($FilePath -and (Test-Path -Path $FilePath)) {
+                if ($FilePath -and (Test-Path -Path $FilePath))
+                {
                     # provide -InputFilePath param instead of -Body param
                     $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -InputFilePath $FilePath -ResponseHeadersVariable "responseHeaderValue" -OutputType $OutputType
-                }
-                else {
+                } else
+                {
                     $response = Invoke-MgGraphRequest -Method $Method -Headers $Headers -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -Body $jsonBody -ResponseHeadersVariable "responseHeaderValue" -OutputType $OutputType
                 }
                 $responseBody = $response.value -is [System.Array] ? $response.value : $response
                 return $responseBody ?? $responseHeaderValue
             }
-        }
-        catch {
+        } catch
+        {
             $currentApplicationName = $application.DisplayName
             $currentApplicationIdentifier = $application.DisplayName
             Write-Warning "Request Failed for $Uri with Scope: $mergedScope Current RegisteredApp:$currentApplicationIdentifier=>:$currentApplicationName"
@@ -274,23 +310,28 @@ function Request-DelegatedResource {
     }
 }
 
-Function Get-RandomAlphanumericString {
+Function Get-RandomAlphanumericString
+{
     [CmdletBinding()]
     Param (
         [int] $length
     )
-    $randString = ""; do { $randString = $randString + ((0x30..0x39) + (0x41..0x5A) + (0x61..0x7A) | Get-Random | % { [char]$_ }) } until ($randString.length -eq $length)
+    $randString = ""; do
+    { $randString = $randString + ((0x30..0x39) + (0x41..0x5A) + (0x61..0x7A) | Get-Random | ForEach-Object { [char]$_ })
+    } until ($randString.length -eq $length)
     return $randString
 }
 
 
-Function Get-EduAdmin {
+Function Get-EduAdmin
+{
     $eduAdmin = "admin"
     $adminUser = Invoke-RequestHelper -Uri "users?`$filter=mailNickname eq  '$($eduAdmin)'"
     return $adminUser
 }
 
-Function Get-DefaultAdminUser {
+Function Get-DefaultAdminUser
+{
     Connect-Tenant
     $admin = "MOD Administrator"
     $adminUser = Invoke-RequestHelper -Uri "users?`$filter=displayName eq '$($admin)'"
@@ -298,19 +339,22 @@ Function Get-DefaultAdminUser {
 }
 
 
-Function Get-DefaultAdminUserId {
+Function Get-DefaultAdminUserId
+{
     $user = Get-DefaultAdminUser
     return $user.id
 }
 
 
-Function New-Certificate {
+Function New-Certificate
+{
     $selfSignedCert = New-SelfSignedCertificate -Type Custom -NotAfter (Get-Date).AddYears(2) -Subject "CN=Microsoft,O=Microsoft Corp,L=Redmond,ST=Washington,C=US"
     $exportedCert = [System.Convert]::ToBase64String($selfSignedCert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert), [System.Base64FormattingOptions]::InsertLineBreaks)
     return $exportedCert
 }
 
-Function Remove-PemHeaderOrFooter {
+Function Remove-PemHeaderOrFooter
+{
     [CmdletBinding()]
     Param (
         [string] $pemInput
@@ -320,14 +364,17 @@ Function Remove-PemHeaderOrFooter {
         "-----END CERTIFICATE-----"
     )
     $trimmed = $pemInput
-    foreach ($headerOrFooter  in $headerAndFooterList) {
+    foreach ($headerOrFooter  in $headerAndFooterList)
+    {
         $trimmed = $trimmed.Replace($headerOrFooter, [string]::Empty)
     }
     return $trimmed.Replace("\r\n", [string]::Empty)
 }
 
-function Install-Az() {
-    if (-not (Get-Module Az -ListAvailable)) {
+function Install-Az()
+{
+    if (-not (Get-Module Az -ListAvailable))
+    {
         Install-Module Az -Force -AllowClobber -Scope CurrentUser
     }
 }
@@ -336,7 +383,8 @@ function Install-Az() {
     Executes a HTTP Request where content-type is Form-Data
     as required by some graph endpoints such as OneNote Create Page
 #>
-Function Invoke-FormDataRequest {
+Function Invoke-FormDataRequest
+{
     [CmdletBinding()]
     param (
         $FormData = @(),
@@ -371,12 +419,12 @@ Function Invoke-FormDataRequest {
     Gets Html Data using Invoke-WebRequest and
     the token from the current Graph Session.
 #>
-Function Get-HtmlDataRequest {
+Function Get-HtmlDataRequest
+{
     [CmdletBinding()]
     param (
         [string] $Uri,
         [parameter(Mandatory = $False)][ValidateSet("v1.0", "beta")][string] $GraphVersion = "v1.0",
-        [Parameter(Mandatory = $False)][ValidateSet("GET")][string] $Method = "GET",
         $GraphSession = [Microsoft.Graph.PowerShell.Authentication.GraphSession]::Instance
     )
 
@@ -392,17 +440,19 @@ Function Get-HtmlDataRequest {
 <#
     Connect to the Raptor Tenant
 #>
-function Connect-Tenant {
+Function Connect-Tenant
+{
     [CmdletBinding()]
     param(
         [PSObject] $AppSettings,
         [Bool]$IsEducation = $false
     )
-    if ($null -eq $AppSettings) {
+    if ($null -eq $AppSettings)
+    {
         $AppSettings = Get-AppSettings
     }
     ($tenantID, $clientId) = $IsEducation ? ($AppSettings.EducationTenantID, $AppSettings.EducationClientID)
-            : ($AppSettings.TenantID, $AppSettings.ClientID);
+    : ($AppSettings.TenantID, $AppSettings.ClientID);
     $defaultCertificate = Get-Certificate -AppSettings $AppSettings
     #Connect To Microsoft Graph Raptor Default Tenant Using ClientId, TenantId and Certificate
     Connect-MgGraph -Certificate $defaultCertificate -ClientId $clientId -TenantId $tenantID | Out-Null
@@ -412,7 +462,8 @@ function Connect-Tenant {
 <#
     Helper function to Connect to the Education Raptor Tenant
 #>
-function Connect-EduTenant {
+Function Connect-EduTenant
+{
     [CmdletBinding()]
     param(
         [PSObject] $AppSettings
@@ -424,7 +475,8 @@ function Connect-EduTenant {
 <#
     Helper function to Connect to the Regular Raptor Tenant
 #>
-function Connect-DefaultTenant {
+Function Connect-DefaultTenant
+{
     [CmdletBinding()]
     param(
         [PSObject] $AppSettings
@@ -436,7 +488,8 @@ function Connect-DefaultTenant {
 <#
     Connect to Azure Tenant to Access KeyVault and other resources.
 #>
-function Connect-AzureTenant {
+Function Connect-AzureTenant
+{
     [CmdletBinding()]
     param(
         [PSObject] $AppSettings
@@ -456,12 +509,14 @@ function Connect-AzureTenant {
     Get Certificate from Azure KeyVault
 #>
 $global:DefaultCertificate = $null
-function Get-Certificate {
+Function Get-Certificate
+{
     [CmdletBinding()]
     param(
         [PSObject] $AppSettings
     )
-    if ($null -eq $global:DefaultCertificate) {
+    if ($null -eq $global:DefaultCertificate)
+    {
         Connect-AzureTenant -AppSettings $AppSettings
         # Certificate must be downloaded as a Secret instead of a Certificate to bring down the PrivateKey as well.
         $keyVaultCertSecret = Get-AzKeyVaultSecret -VaultName $AppSettings.AzureKeyVaultName -Name $AppSettings.CertificateName
@@ -474,4 +529,31 @@ function Get-Certificate {
         $global:DefaultCertificate = $pfxCertificate
     }
     return $global:DefaultCertificate
+}
+<#
+    Uses Write-Output to write text with color
+#>
+Function Write-ColorOutput
+{
+    param(
+        [System.ConsoleColor] $ForegroundColor = $host.UI.RawUI.ForegroundColor
+    )
+
+    # Get Current UI Color
+    $originalColor = $host.UI.RawUI.ForegroundColor
+
+    # Set the new UI Color
+    $host.UI.RawUI.ForegroundColor = $ForegroundColor
+
+    # Handle Input
+    if ($args)
+    {
+        Write-Output $args
+    } else
+    {
+        $input | Write-Output
+    }
+
+    # Restore Current UI to original color
+    $host.UI.RawUI.ForegroundColor = $originalColor
 }

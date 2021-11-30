@@ -9,13 +9,38 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
+
+    - name: Install PS Test modules
+      shell: pwsh
+      run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module PSScriptAnalyzer -ErrorAction Continue -Force
+          Install-Module Pester -ErrorAction Stop -SkipPublisherCheck -Force
+
     - name: Unit Tests
       run: dotnet test ./UnitTests
+
+    - name: Lint PSScripts
+      shell: pwsh
+      run: |
+        $configuration = New-PesterConfiguration
+        $configuration.Run.PassThru = $true
+        $configuration.Run.Exit = $true
+        $configuration.Run.Path = ".\lintScripts.ps1"
+        $configuration.TestResult.OutputFormat="NUnitXml"
+        $configuration.TestResult.OutputFormat="PSSAResults.xml"
+        $configuration.TestResult.OutputEncoding="UTF8"
+        $configuration.Should.ErrorAction = 'Continue'
+        $configuration.Output.Verbosity  = 'Detailed'
+
+        Invoke-Pester -Configuration $configuration
