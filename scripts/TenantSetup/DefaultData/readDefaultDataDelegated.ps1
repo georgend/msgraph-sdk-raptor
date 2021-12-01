@@ -94,24 +94,6 @@ $teamsApp = Request-DelegatedResource -Uri "appCatalogs/teamsApps" |
 $teamsApp.id
 $identifiers.teamsApp._value = $teamsApp.id
 
-# Use delegated permissions for channelMessage and replies to bypass protected api restricion for application permission.
-#Use Team and channel already in identifiers.json to get chnnel message and replies
-$teamId = $identifiers.team._value
-$teamId
-$channelId = $identifiers.team.channel._value
-$channelId
-# Get channel message default data
-$channelMessage = Request-DelegatedResource -Uri "teams/$teamId/channels/$channelId/messages" -ScopeOverride "ChannelMessage.Read.All" |
-    Where-Object { $_.from.user.displayName -eq "Lynne Robbins"} |
-    Select-Object -First 1
-$channelMessage.id
-$identifiers.team.channel.chatMessage._value = $channelMessage.id
-
-# Get channel message replies default data
-$messageReply = Request-DelegatedResource -Uri "teams/$teamId/channels/$channelId/messages/$($channelMessage.id)/replies?`$top=1" -ScopeOverride "ChannelMessage.Read.All"
-$messageReply.id
-$identifiers.team.channel.chatMessage.reply._value = $messageReply.id
-
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
 
 # bad request

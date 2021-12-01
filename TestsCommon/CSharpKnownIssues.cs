@@ -208,7 +208,6 @@ public static class CSharpKnownIssues
                 { "get-case-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-chartlineformat-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-chat-operation-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-chatmessagechannel-3-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-cloudpc-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-cloudpcauditevent-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-cloudpcconnection-csharp-Beta-executes", MissingDataKnownIssue },
@@ -264,7 +263,6 @@ public static class CSharpKnownIssues
                 { "get-governanceresources-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-governancerolesetting-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-group-3-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-hostedcontentschannelmessage-2-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-identityapiconnector-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-identityuserflow-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-identityuserflowattributeassignment-1-csharp-Beta-executes", NeedsAnalysisKnownIssue },
@@ -665,12 +663,7 @@ public static class CSharpKnownIssues
                 { "get-callrecord-sessions-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
                 { "get-callrecord-sessions-expanded-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
                 { "callrecord-getdirectroutingcalls-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
-
                 { "get-chartlineformat-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/614" } },
-
-                { "get-chatmessagechannel-3-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/615" } },
-                { "get-hostedcontentschannelmessage-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/615" } },
-
                 { "get-connectionoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
                 { "get-schema-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
                 { "get-externalgroup-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },

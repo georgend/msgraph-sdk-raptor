@@ -11,6 +11,9 @@
       "_value": "team_channel",
       "chatMessage": {
         "_value": "team_channel_chatMessage",
+        "chatMessage": {
+          "_value": "<team_channel_chatMessage_chatMessage>"
+        },
         "reply": {
           "_value": "team_channel_chatMessage_reply"
         }
