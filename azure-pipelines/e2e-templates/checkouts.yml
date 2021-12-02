@@ -37,4 +37,5 @@ steps:
   - checkout: self
     displayName: checkout raptor
     fetchDepth: 1
+    submodules: recursive
     persistCredentials: true
