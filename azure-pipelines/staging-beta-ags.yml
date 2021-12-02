@@ -12,11 +12,6 @@ resources:
       endpoint: microsoftgraph
       name: microsoftgraph/microsoft-graph-docs
       ref: main
-    - repository: apidoctor
-      type: github
-      endpoint: microsoftgraph
-      name: microsoftgraph/apidoctor
-      ref: master
     - repository: microsoft-graph-devx-api
       type: github
       endpoint: microsoftgraph
