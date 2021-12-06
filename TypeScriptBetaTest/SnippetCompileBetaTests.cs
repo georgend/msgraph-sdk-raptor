@@ -17,7 +17,7 @@ namespace TypeScriptBetaTest
             {
                 Version = Versions.V1,
                 Language = Languages.TypeScript,
-                KnownFailuresRequested = false
+                TestType = TestType.CompilationStable
             });
 
         /// <summary>

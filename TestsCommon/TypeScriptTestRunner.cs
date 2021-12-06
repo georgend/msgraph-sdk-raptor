@@ -128,7 +128,7 @@ const requestAdapter = new FetchRequestAdapter(new Auth()); ";
             }
             else
             {
-                var compilationOutputMessage = new CompilationOutputMessage(compilationResultsModel, codeToCompile, testData.DocsLink, testData.KnownIssueMessage, testData.IsKnownIssue);
+                var compilationOutputMessage = new CompilationOutputMessage(compilationResultsModel, codeToCompile, testData.DocsLink, testData.KnownIssueMessage, testData.IsCompilationKnownIssue, Languages.TypeScript);
                 Assert.Fail($"{compilationOutputMessage}");
             }
 

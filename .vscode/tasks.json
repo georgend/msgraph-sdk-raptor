@@ -428,6 +428,19 @@
       "problemMatcher": "$msCompile"
     },
     {
+      "label": "Run TypeScriptBetaTest",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "${workspaceFolder}/TypeScriptBetaTest/TypeScriptBetaTest.csproj",
+        "--filter",
+        "\"${input:testFilter}\""
+      ],
+      "isTestCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
       "label": "Debug JavaV1Tests",
       "type": "process",
       "command": "dotnet",
