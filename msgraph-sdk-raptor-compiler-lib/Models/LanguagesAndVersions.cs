@@ -1,4 +1,4 @@
-﻿namespace MsGraphSDKSnippetsCompiler.Models;
+namespace MsGraphSDKSnippetsCompiler.Models;
 
 /// <summary>
 /// Programming languages that we generate snippets for
@@ -8,7 +8,8 @@ public enum Languages
     CSharp,
     JavaScript,
     Java,
-    ObjC
+    ObjC,
+    TypeScript
 }
 
 public static class LanguagesExtension
