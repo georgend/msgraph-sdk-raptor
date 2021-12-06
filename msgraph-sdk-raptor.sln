@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31825.309
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "msgraph-sdk-raptor-compiler-lib", "msgraph-sdk-raptor-compiler-lib\msgraph-sdk-raptor-compiler-lib.csproj", "{744E3FE7-F945-4230-A4AC-D6157BFD5788}"
 EndProject
@@ -70,8 +70,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DefaultData", "DefaultData"
 		scripts\TenantSetup\DefaultData\readDefaultDataDelegated.ps1 = scripts\TenantSetup\DefaultData\readDefaultDataDelegated.ps1
 		scripts\TenantSetup\DefaultData\readDefaultEducationData.ps1 = scripts\TenantSetup\DefaultData\readDefaultEducationData.ps1
 	EndProjectSection
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportGenerator", "ReportGenerator\ReportGenerator.csproj", "{D5F3C37D-D95B-4E8B-9C4E-8955A974276C}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeScriptBetaTest", "TypeScriptBetaTest\TypeScriptBetaTest.csproj", "{757FC453-510F-4DD2-90F9-D652B026803E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportGenerator", "ReportGenerator\ReportGenerator.csproj", "{D5F3C37D-D95B-4E8B-9C4E-8955A974276C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeScriptBetaTest", "TypeScriptBetaTest\TypeScriptBetaTest.csproj", "{757FC453-510F-4DD2-90F9-D652B026803E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
