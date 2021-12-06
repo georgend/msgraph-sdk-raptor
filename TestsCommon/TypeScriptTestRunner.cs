@@ -2,6 +2,7 @@
 using MsGraphSDKSnippetsCompiler.Models;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -18,6 +19,7 @@ namespace TestsCommon
 import { GraphServiceClient } from '@microsoft/msgraph-sdk-typescript';
 import { BaseBearerTokenAuthenticationProvider } from '@microsoft/kiota-abstractions'
 import { ClientSecretCredential } from '@azure/identity';
+--imports--
 
 --auth--
 //insert-code-here";
@@ -50,6 +52,17 @@ const requestAdapter = new FetchRequestAdapter(new Auth()); ";
         private static readonly Regex RegExp = new Regex(Pattern, RegexOptions.Singleline | RegexOptions.Compiled);
 
 
+        private const string DeclarationPattern = @"new (.+?)\(";
+        private static readonly Regex RegExpDeclaration = new Regex(DeclarationPattern, RegexOptions.Singleline | RegexOptions.Compiled);
+
+        public static string ToLowerFirstChar(this string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            return char.ToLower(input[0]) + input.Substring(1);
+        }
+
         /// <summary>
         /// 1. Fetches snippet from docs repo
         /// 2. Asserts that there is one and only one snippet in the file
@@ -71,12 +84,38 @@ const requestAdapter = new FetchRequestAdapter(new Auth()); ";
             var match = RegExp.Match(fileContent);
             Assert.IsTrue(match.Success, "TypeScript snippet file is not in expected format!");
 
+
             var codeSnippetFormatted = match.Groups[1].Value;
+
+            string[] lines = codeSnippetFormatted.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+            var imports = new HashSet<string>();
+            var excludedTypes = new List<string>(){ "Map","DateTimeTimeZone", "Date", "GraphServiceClient"};
+
+            foreach (string line in lines)
+            {
+                var hasDeclaration = RegExpDeclaration.Match(line);
+                if (hasDeclaration.Success)
+                {
+                    var className = hasDeclaration.Groups[1].Value;
+                    if (!excludedTypes.Contains(className))
+                    {
+                        var template = @"import { className } from '@microsoft/msgraph-sdk-typescript/src/models/microsoft/graph/fileName';";
+                        imports.Add(
+                            template
+                            .Replace("className", className)
+                            .Replace("fileName", className.ToLowerFirstChar())
+                            );
+                    }
+                }
+            }
+
+            var generatedImports = string.Join(Environment.NewLine, imports);
             var codeToCompile = BaseTestRunner.ConcatBaseTemplateWithSnippet(codeSnippetFormatted, SDKShellTemplate
+                                                                            .Replace("--imports--", generatedImports)
                                                                             .Replace("--auth--", authProviderCurrent));
 
             // Compile Code
-
             var config = AppSettings.Config();
             var typeScriptFolder = config.GetSection("TypeScriptFolder").Value;
             var microsoftGraphTypeScriptCompiler = new MicrosoftGraphTypescriptCompiler(testData.FileName, typeScriptFolder);
