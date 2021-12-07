@@ -535,5 +535,14 @@
   },
   "serviceHealth": {
     "_value": "serviceHealth"
+  },
+  "externalConnectors.externalConnection": {
+    "_value": "externalConnectors.externalConnection",
+    "externalConnectors.connectionOperation": {
+      "_value": "externalConnectors.externalConnection_externalConnectors.connectionOperation"
+    },
+    "externalConnectors.externalGroup": {
+      "_value": "externalConnectors.externalConnection_externalConnectors.externalGroup"
+    }
   }
 }

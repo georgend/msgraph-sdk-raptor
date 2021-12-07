@@ -83,6 +83,9 @@ public static class KnownIssues
     #region Missing data
     internal const string MissingDataText = "This test is missing data in identifiers.json file";
     internal const string MissingDataTestNamePrefix = "known-issue-missing-data-";
+
+    internal const string MissingDataEphemeralDataInService =
+        "Ephemeral Service data that is deleted after an unknown period of time";
     #endregion
 
     #region Missing permission scope
@@ -120,6 +123,7 @@ public static class KnownIssues
     internal static readonly KnownIssue NeedsAnalysisKnownIssue = new KnownIssue(Category.NeedsAnalysis, CustomMessage: NeedsAnalysisText, TestNamePrefix: NeedsAnalysisTestNamePrefix);
     internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(Category.MissingData, CustomMessage: MissingDataText, TestNamePrefix: MissingDataTestNamePrefix);
     internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(Category.MissingPermissionScope, CustomMessage: MissingPermissionScopeText, TestNamePrefix: MissingPermissionScopeTestNamePrefix);
+    internal static readonly KnownIssue MissingDataEphemeralOperationData = new KnownIssue(Category.Service, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692", CustomMessage: MissingDataEphemeralDataInService, TestNamePrefix: MissingDataTestNamePrefix);
 
     internal static readonly KnownIssue MissingDataSubjectRightsRequestKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/574" };
     internal static readonly KnownIssue MissingDataOnlineMeetingKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/573" };

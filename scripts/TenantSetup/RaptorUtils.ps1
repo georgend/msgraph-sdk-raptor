@@ -92,7 +92,8 @@ function Invoke-RequestHelper (
     [Parameter(Mandatory = $False)][ValidateSet("GET", "POST", "PUT", "PATCH", "DELETE")][string] $Method = "GET",
     $Headers = @{ },
     $Body,
-    $User
+    $User,
+    [string]$ResponseHeadersVariable = "script:ResponseHeaders"
 )
 {
     #Append Content-Type to headers collection
@@ -105,7 +106,7 @@ function Invoke-RequestHelper (
     #Convert Body to Json
     $jsonData = $body | ConvertTo-Json -Depth 3
 
-    $response = Invoke-MgGraphRequest -Headers $headers -Method $Method -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -Body $jsonData -OutputType PSObject
+    $response = Invoke-MgGraphRequest -Headers $headers -Method $Method -Uri "https://graph.microsoft.com/$GraphVersion/$Uri" -Body $jsonData -OutputType PSObject -ResponseHeadersVariable $ResponseHeadersVariable
 
     return $response.value ?? $response
 }
