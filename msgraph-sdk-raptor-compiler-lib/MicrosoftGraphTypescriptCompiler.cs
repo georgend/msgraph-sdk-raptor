@@ -35,7 +35,7 @@ namespace MsGraphSDKSnippetsCompiler
             }
         }
 
-        private static async Task PrepareProjectFolder(string sourceFileDirectory)
+        private static void PrepareProjectFolder(string sourceFileDirectory)
         {
             var cleanUpFiles = new List<string> { "main.ts", "main.js" };
             foreach (var cleanUpFile in cleanUpFiles)
@@ -53,12 +53,12 @@ namespace MsGraphSDKSnippetsCompiler
             var sourceFileDirectory = rootPath;
             if (!currentlyConfiguredVersion.HasValue || currentlyConfiguredVersion.Value != version)
             {
-                PrepareProjectFolder(sourceFileDirectory).GetAwaiter().GetResult();
+                PrepareProjectFolder(sourceFileDirectory);
                 SetCurrentlyConfiguredVersion(version);
             }
 
 
-            File.WriteAllText(Path.Combine(sourceFileDirectory, "main.ts"), codeSnippet); //could be async
+            File.WriteAllText(Path.Combine(sourceFileDirectory, "main.ts"), codeSnippet);
 
             // start info should change for windows vs linux
             using var tscProcess = new Process
