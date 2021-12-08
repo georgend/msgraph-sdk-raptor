@@ -108,7 +108,7 @@ namespace MsGraphSDKSnippetsCompiler
             var stdOutput = stdOuputSB.ToString();
             var stdErr = stdErrSB.ToString();
             return new CompilationResultsModel(
-                hasExited && !stdOutput.Contains(errorsSuffix) && !stdErr.Contains(errorsSuffix),
+                hasExited && !stdOutput.Contains(errorsSuffix, StringComparison.OrdinalIgnoreCase) && !stdErr.Contains(errorsSuffix, StringComparison.OrdinalIgnoreCase),
                 GetDiagnosticsFromStdErr(stdOutput, stdErr, hasExited),
                 _markdownFileName
             );
@@ -124,13 +124,13 @@ namespace MsGraphSDKSnippetsCompiler
             var result = new List<Diagnostic>();
             // tsc return the error as a standard output
 
-            var errorMessage = stdErr.Contains(errorsSuffix) ? stdErr : stdOutput;
-            if (errorMessage.Contains(errorsSuffix))
+            var errorMessage = stdErr.Contains(errorsSuffix, StringComparison.OrdinalIgnoreCase) ? stdErr : stdOutput;
+            if (errorMessage.Contains(errorsSuffix, StringComparison.OrdinalIgnoreCase))
             {
                 var diagnosticsToParse = doubleLineReturnCleanupRegex.Replace(
                                                 errorCountCleanupRegex.Replace(
                                                     notesFilterRegex.Replace(// we don't need informational notes
-                                                        errorMessage[0..errorMessage.IndexOf(errorsSuffix)], // we want the traces before FAILURE
+                                                        errorMessage[0..errorMessage.IndexOf(errorsSuffix, StringComparison.OrdinalIgnoreCase)], // we want the traces before FAILURE
                                                         string.Empty),
                                                     string.Empty),
                                                 string.Empty);

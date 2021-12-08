@@ -17,29 +17,15 @@ namespace TestsCommon
         /// </summary>
         private const string SDKShellTemplate = @"import { FetchRequestAdapter } from '@microsoft/kiota-http-fetchlibrary';
 import { GraphServiceClient } from '@microsoft/msgraph-sdk-typescript';
-import { BaseBearerTokenAuthenticationProvider } from '@microsoft/kiota-abstractions'
 import { ClientSecretCredential } from '@azure/identity';
+import { AzureIdentityAuthenticationProvider } from '@microsoft/kiota-authentication-azure';
 --imports--
 
 --auth--
 //insert-code-here";
 
-        private const string authProviderCurrent = @"class Auth extends BaseBearerTokenAuthenticationProvider {
-	getAuthorizationToken = async (): Promise<string> => {
-	   const tenantId = """";
-	   const clientId = """";
-	   const clientSecret = """";
-	   const scopes = ""https://graph.microsoft.com/.default"";
-
-	   //Create a credential class object with the credentials of the application
-	   const credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
-        const token = (await credential.getToken(""https://graph.microsoft.com/.default"")).token;
-	   return Promise.resolve(token);
-   }
-
-}
-
-const requestAdapter = new FetchRequestAdapter(new Auth()); ";
+        private const string authProviderCurrent = @"const authProvider = new AzureIdentityAuthenticationProvider(new ClientSecretCredential(""tenantId"", ""clientId"", ""clientSecret""));
+const requestAdapter = new FetchRequestAdapter(authProvider);  ";
         /// <summary>
         /// matches typescript snippet from TypeScript snippets markdown output
         /// </summary>
@@ -116,8 +102,7 @@ const requestAdapter = new FetchRequestAdapter(new Auth()); ";
                                                                             .Replace("--auth--", authProviderCurrent));
 
             // Compile Code
-            var config = AppSettings.Config();
-            var typeScriptFolder = config.GetSection("TypeScriptFolder").Value;
+            var typeScriptFolder = TestsSetup.Config.Value.TypeScriptFolder;
             var microsoftGraphTypeScriptCompiler = new MicrosoftGraphTypescriptCompiler(testData.FileName, typeScriptFolder);
 
             var compilationResultsModel = microsoftGraphTypeScriptCompiler.CompileSnippet(codeToCompile, testData.Version);

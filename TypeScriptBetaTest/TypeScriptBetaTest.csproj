@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="$(MSBuildProjectDirectory)\..\RaptorShared.targets"/>
+  <Import Project="$(MSBuildProjectDirectory)\..\RaptorShared.targets" />
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />

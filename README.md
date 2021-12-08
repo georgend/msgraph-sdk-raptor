@@ -15,7 +15,7 @@ A test result for both compilation and execution tests includes:
 - Piece of code that is to be compiled with line numbers
 - Compiler error message
 
-There are 7 C# test projects in total as noted below. The first 4 C# tests below are compilation tests, the next 2 are execution tests and finally an arbitraryDllTest.
+There are 8 C# test projects in total as noted below. The first 4 C# tests below are compilation tests, the next 2 are execution tests and finally an arbitraryDllTest.
 
 1. CsharpBetaTests
 2. CsharpBetaKnownFailureTests
@@ -26,6 +26,7 @@ There are 7 C# test projects in total as noted below. The first 4 C# tests below
 6. CsharpV1ExecutionTests
 
 7. CSharpArbitraryDllTests
+8. TypeScriptBetaTest
 
  The arbitraryDllTest is useful in running customized tests for an unpublished dll, which can consist of a proposed metadata or generator changes.
 
@@ -37,14 +38,23 @@ There are also 4 Java test projects, as listed below. These are all compilation 
 4. JavaV1KnownFailureTests
 
 
+**NB: Typescript Tests**
+TypeScriptBetaTest relies on npm libraries that are not yet released. In order to execute these tests locally, users will be required to build kiota based npm packages and publish them locally.
+You will also be required to install [Typescript](https://www.npmjs.com/package/typescript) in your developer environment
+
 ## How to debug in VSCode locally or in Github Codespaces
 
-1. Set two environment variables, either locally or in your [codespaces settings](https://github.com/settings/codespaces)
+### Codespaces SetUp
+
+1. Set thre environment variables, either locally or in your [codespaces settings](https://github.com/settings/codespaces)
      - `BUILD_SOURCESDIRECTORY`: Where the documentation repository will be checked out. Value should be `/workspaces` for Codespaces.
      - `RAPTOR_CONFIGCONNECTIONSTRING`: Connection string to Azure App Configuration containing settings for execution. An empty App Config works fine for compilation tests.
-1. Create a new codespace or open cloned msgraph-sdk-raptor folder in VSCode
-1. Make sure to use PowerShell (pwsh) as your terminal (automatic in Codespaces)
-1. Make sure that the C# compilation tools are installed (automatic in Codespaces)
+2. Create a new codespace or open cloned msgraph-sdk-raptor folder in VSCode
+3. Make sure to use PowerShell (pwsh) as your terminal (automatic in Codespaces)
+4. Make sure that the C# compilation tools are installed (automatic in Codespaces)
+
+### VS Code SetUp
+
 1. Clone documentation repo using the predefined task:
     - open Command Palette (`Ctrl + Shift + P` or `Cmd + Shift + P`)
     - select `Run Task`
@@ -52,21 +62,21 @@ There are also 4 Java test projects, as listed below. These are all compilation 
     - select your branch from docs, leave `main` if you want to keep default branch
     - confirm with `YES`
       - confirmation is to prevent deleting local changes in case of subsequent runs of the task
-1. Build the solution
+2. Build the solution
     - open Command Palette
     - select `Run Task`
     - select `build`
-1. Run all the tests from a single project (e.g. CsharpV1Tests)
+3. Run all the tests from a single project (e.g. CsharpV1Tests)
     - open Command Palette
     - select `Run Test Task`
     - select `Run CsharpV1Tests`
     - hit Enter when test filter option shows `.` (i.e. all the tests)
-1. Run individual tests
+4. Run individual tests
     - open Command Palette
     - select `Run Test Task`
     - select `Run CsharpV1Tests`
     - enter a test name filter, e.g. `workbook`
-1. Debug individual tests
+5.  Debug individual tests
     - Open Command Palette
     - select `Run Test Task`
     - select `Debug CsharpV1Tests`
