@@ -18,7 +18,6 @@ namespace MsGraphSDKSnippetsCompiler
 
         private readonly string _markdownFileName;
         private static Versions? currentlyConfiguredVersion;
-        private static readonly Lazy<int> currentExcutionFolder = new Lazy<int>(() => new Random().Next(0, int.MaxValue));
         private static readonly object versionLock = new { };
         private static string _rootPath;
 
@@ -36,7 +35,7 @@ namespace MsGraphSDKSnippetsCompiler
             }
         }
 
-        private async Task PrepareProjectFolder(string sourceFileDirectory)
+        private static async Task PrepareProjectFolder(string sourceFileDirectory)
         {
             var cleanUpFiles = new List<string> { "main.ts", "main.js" };
             foreach (var cleanUpFile in cleanUpFiles)
@@ -136,7 +135,7 @@ namespace MsGraphSDKSnippetsCompiler
                                                 string.Empty);
                 result.AddRange(errorMessageCaptureRegex
                                             .Matches(diagnosticsToParse)
-                                            .Select(x => new { message = x.Groups["message"].Value, linenumber = int.Parse(x.Groups["linenumber"].Value) })
+                                            .Select(x => new { message = x.Groups["message"].Value, linenumber = int.Parse(x.Groups["linenumber"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo) })
                                             .Select(x => Diagnostic.Create(new DiagnosticDescriptor("TypeScript1001",
                                                                                 "Error during TypeScript compilation",
                                                                                 x.message,

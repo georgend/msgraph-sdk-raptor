@@ -46,7 +46,7 @@ const requestAdapter = new FetchRequestAdapter(authProvider);  ";
             if (string.IsNullOrEmpty(input))
                 return input;
 
-            return char.ToLower(input[0]) + input.Substring(1);
+            return char.ToLower(input[0], CultureInfo.InvariantCulture) + input.Substring(1);
         }
 
         /// <summary>
