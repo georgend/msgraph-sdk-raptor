@@ -57,8 +57,6 @@ public static class CSharpKnownIssues
                 { "put-b2xuserflows-apiconnectorconfiguration-postfederationsignup-csharp-Beta-compiles", StructuralPropertiesAreNotHandledKnownIssue },
                 { "put-b2xuserflows-apiconnectorconfiguration-postattributecollection-csharp-Beta-compiles", StructuralPropertiesAreNotHandledKnownIssue },
                 { "put-b2cuserflows-apiconnectorconfiguration-postattributecollection-csharp-Beta-compiles", StructuralPropertiesAreNotHandledKnownIssue },
-                { "get-mailboxsettings-2-csharp-V1-executes", StructuralPropertiesAreNotHandledKnownIssue },
-                { "get-mailboxsettings-3-csharp-V1-executes", StructuralPropertiesAreNotHandledKnownIssue },
 
                 { "create-datasource-from--1-csharp-Beta-compiles", NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue},
                 { "create-deployment-from--csharp-Beta-compiles", NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue},
@@ -180,10 +178,7 @@ public static class CSharpKnownIssues
                 { "get-b2cuserflow-list-userflowidentityproviders-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-b2cuserflows-apiconnectorconfiguration-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-b2cuserflows-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-b2xuserflow-list-identityproviders-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-b2xuserflow-list-userflowidentityproviders-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
-                { "get-b2xuserflows-apiconnectorconfiguration-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-b2xuserflows-csharp-Beta-executes", NeedsAnalysisKnownIssue },
+                { $"get-b2xuserflows-apiconnectorconfiguration-csharp-{version}-executes", StructuralPropertiesAreNotHandledKnownIssue},
                 { "get-bitlockerrecoverykey-1-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-bitlockerrecoverykey-2-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-bitlockerrecoverykey-3-csharp-Beta-executes", MissingDataKnownIssue },
@@ -262,13 +257,10 @@ public static class CSharpKnownIssues
                 { "get-governanceresources-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-governancerolesetting-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-group-3-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-identityapiconnector-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-identityuserflow-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-identityuserflowattributeassignment-1-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-identityuserflowattributeassignment-2-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-identityuserflowattributeassignment-3-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-identityuserflowattributeassignment-expand-1-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-identityuserflowattributeassignment-expand-2-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-identityuserflowattributeassignment-expand-3-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-incompatiblegroups-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-informationprotectionlabel-csharp-Beta-executes", MissingDataKnownIssue },
@@ -303,6 +295,8 @@ public static class CSharpKnownIssues
                 { "get-languageproficiency-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-legalhold-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-list-multi-expand-csharp-Beta-executes", NeedsAnalysisKnownIssue },
+                { "get-mailboxsettings-2-csharp-V1-executes", StructuralPropertiesAreNotHandledKnownIssue },
+                { "get-mailboxsettings-3-csharp-V1-executes", StructuralPropertiesAreNotHandledKnownIssue },
                 { "get-manageddevicecompliance-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-manageddevicecompliancetrend-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-managementaction-csharp-Beta-executes", MissingDataKnownIssue },
@@ -424,7 +418,6 @@ public static class CSharpKnownIssues
                 { "get-tenantgroup-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-tenanttag-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-term-2-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-thumbnail-custom-size-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-tiindicator-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-trustframeworkkeyset-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-trustframeworks-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
@@ -446,7 +439,6 @@ public static class CSharpKnownIssues
                 { "get-useraccountinformation-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-userconsentrequest-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-userflowlanguageconfiguration-1-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-userflowlanguageconfiguration-2-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-userflowlanguageconfiguration-3-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-userflowlanguageconfiguration-filter-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-userflowlanguagepage-1-csharp-Beta-executes", MissingDataKnownIssue },
@@ -647,14 +639,6 @@ public static class CSharpKnownIssues
                 { "list-userconsentrequest-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
                 { "userconsentrequest-filterbycurrentuser-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
 
-                { "get-b2xuserflow-list-identityproviders-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/613" } },
-                { "get-b2xuserflows-apiconnectorconfiguration-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/613" } },
-                { "get-b2xuserflows-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/613" } },
-                { "get-identityuserflowattributeassignment-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/613" } },
-                { "get-userflowlanguageconfiguration-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/613" } },
-                { "get-identityuserflowattributeassignment-expand-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/613" } },
-                { "identityuserflowattributeassignment-getorder-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/613" } },
-
                 { "get-callrecord-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
                 { "callrecord-getpstncalls-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
                 { "get-callrecord-expanded-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
@@ -665,12 +649,12 @@ public static class CSharpKnownIssues
                 { "get-connectionoperation-csharp-V1-executes", MissingDataEphemeralOperationData with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692"} },
                 { "get-externalgroup-csharp-V1-executes", MissingPermissionScopeKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/693" } },
                 { "get-schema-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
+                { "get-externalgroup-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
+                { "get-externalconnection-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
+
                 { "get-contract-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/322", CustomMessage = "blocked" } },
 
-                { "get-identityapiconnector-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/619" } },
 
-                { "get-identityuserflowattributeassignment-3-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/620" } },
-                { "get-identityuserflowattributeassignment-expand-3-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/620" } },
 
                 { "get-microsoftauthenticatorauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/621" } },
 
@@ -704,9 +688,6 @@ public static class CSharpKnownIssues
 
                 { "get-teamworkbot-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/635" } },
 
-                { "get-userflowlanguageconfiguration-3-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
-                { "get-userflowlanguagepage-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
-                { "get-userflowlanguagepage-3-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/637" } },
 
                 { "get-windowshelloforbusinessauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/638" } },
 

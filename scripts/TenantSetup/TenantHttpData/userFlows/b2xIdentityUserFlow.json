@@ -1,0 +1,10 @@
+{
+    "id": "Partner",
+    "userFlowType": "signUpOrSignIn",
+    "userFlowTypeVersion": 1,
+    "apiConnectorConfiguration":{
+        "postAttributeCollection":{
+            "@odata.id": "https://graph.microsoft.com/v1/identity/apiConnectors/"
+        }
+    }
+}

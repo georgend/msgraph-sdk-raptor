@@ -1,0 +1,9 @@
+{
+    "displayName":"raptorcallbacks_test_api",
+    "targetUrl":"https://raptorcallbacks.azurewebsites.net/api",
+    "authenticationConfiguration": {
+      "@odata.type":"#microsoft.graph.basicAuthentication",
+      "username": "MyUsername",
+      "password": ""
+    }
+}

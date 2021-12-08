@@ -2,6 +2,21 @@
   "application": {
     "_value": "application"
   },
+  "identityApiConnector": {
+    "_value": "identityApiConnector"
+  },
+  "b2xIdentityUserFlow": {
+    "_value": "b2xIdentityUserFlow",
+    "identityUserFlowAttributeAssignment": {
+      "_value": "b2xIdentityUserFlow_identityUserFlowAttributeAssignment"
+    },
+    "userFlowLanguageConfiguration": {
+      "_value": "b2xIdentityUserFlow_userFlowLanguageConfiguration",
+      "userFlowLanguagePage": {
+        "_value": "b2xIdentityUserFlow_userFlowLanguageConfiguration_userFlowLanguagePage"
+      }
+    }
+  },
   "calendarGroup": {
     "_value": "calendarGroup"
   },
