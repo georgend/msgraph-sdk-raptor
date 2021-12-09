@@ -327,6 +327,13 @@ $identifiers.serviceHealthIssue._value = $serviceHealthIssue.id
 # existing constant value in the tenant
 $identifiers.serviceHealth._value = "Exchange Online"
 
+# Cannot create Alerts as they are System Generated. Read available generated alert
+# https://docs.microsoft.com/en-us/graph/api/alert-list?view=graph-rest-1.0&tabs=http
+$alert = Invoke-RequestHelper -Uri "security/alerts" |
+    Select-Object -First 1
+$alert.id
+$identifiers.alert._value = $alert.id
+
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
 
 # data missing
