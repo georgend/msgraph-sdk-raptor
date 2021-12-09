@@ -1,4 +1,6 @@
-﻿namespace UnitTests;
+﻿using FluentAssertions;
+
+namespace UnitTests;
 
 public class Tests
 {
@@ -34,4 +36,22 @@ public class Tests
         Assert.AreEqual(expectedUrl, newUrl);
     }
 
+    [TestCase]
+    public void ShouldReplaceIdentifiersSpecifiedByEdgeCaseRegex()
+    {
+        const string snippet = @"
+GraphServiceClient graphClient = new GraphServiceClient( authProvider );
+
+var queryOptions = new List<QueryOption>()
+{
+	new QueryOption(""token"", ""2021-09-29T20:00:00Z"")
+};
+var delta = await graphClient.Me.Drive.Root
+	.Delta()
+	.Request( queryOptions )
+	.GetAsync();
+";
+        var result = IdentifierReplacer.RegexReplaceEdgeCases(IdentifierReplacer.EdgeCaseRegexes, snippet);
+        result.Should().NotContain("2021-09-29T20:00:00Z");
+    }
 }

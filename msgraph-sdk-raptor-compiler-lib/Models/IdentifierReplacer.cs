@@ -22,6 +22,20 @@ public class IdentifierReplacer
     /// </summary>
     private readonly Regex idRegex = new Regex(@"{([A-Za-z0-9\.]+)\-id}", RegexOptions.Compiled);
 
+    /// <summary>
+    /// Regular Expr mapped to replacement texts 
+    /// </summary>
+    internal static readonly List<(Regex SearchRegex, string ReplacementContent)> EdgeCaseRegexes = new()
+    {
+        // https://docs.microsoft.com/en-us/graph/api/driveitem-delta?view=graph-rest-1.0&tabs=csharp#request-3
+        // Swap out this date for to now, which is similar to latest.
+        // For new tenants, we cannot pick an arbitrary date since we won't know the state of the tenant. 
+        new ValueTuple<Regex, string>(
+            new Regex(@"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?", RegexOptions.Compiled),
+            DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)
+        )
+    };
+
     public IdentifierReplacer(IDTree tree)
     {
         this.tree = tree;
@@ -61,8 +75,10 @@ public class IdentifierReplacer
         {
             throw new ArgumentNullException(nameof(input));
         }
-
-        return ReplaceIdsFromIdentifiersFile(ReplaceEdgeCases(input));
+        // Start with Regex Edge Cases replacement.
+        var regexEdgeCases = RegexReplaceEdgeCases(EdgeCaseRegexes, input);
+        var baseEdgeCases = ReplaceEdgeCases(regexEdgeCases);
+        return ReplaceIdsFromIdentifiersFile(baseEdgeCases);
     }
 
     private static string ReplaceEdgeCases(string input)
@@ -87,13 +103,28 @@ public class IdentifierReplacer
                 { ".Directory.DeletedItems[\"{directoryObject-id}\"]", ".Directory.DeletedItems[\"{deletedDirectoryObject-id}\"]"},
                 // https://docs.microsoft.com/en-us/graph/api/rbacapplication-list-roleassignments?view=graph-rest-1.0&tabs=http#example-2-request-using-a-filter-on-principalid
                 // PrincipalId is tenant specific data, replace hardcoded id with tenant specific id
-                { ".Filter(\" principalId eq 'f1847572-48aa-47aa-96a3-2ec61904f41f'\")", ".Filter(\" principalId eq '{roleAssignmentPrincipal-id}'\")"},
-
+                { ".Filter(\" principalId eq 'f1847572-48aa-47aa-96a3-2ec61904f41f'\")", ".Filter(\" principalId eq '{roleAssignmentPrincipal-id}'\")"}
             };
 
         foreach (var (key, value) in edgeCases)
         {
             input = input.Replace(key, value, StringComparison.Ordinal);
+        }
+
+        return input;
+    }
+
+    /// <summary>
+    /// Replace text found in input, by Search Regex with ReplacementContent
+    /// </summary>
+    /// <param name="edgeCaseRegexes"></param>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    internal static string RegexReplaceEdgeCases(List<(Regex SearchRegex, string ReplacementContent)> edgeCaseRegexes, string input)
+    {
+        foreach (var (searchRegex, replacementContent) in edgeCaseRegexes)
+        {
+            input = searchRegex.Replace(input, replacementContent);
         }
 
         return input;
