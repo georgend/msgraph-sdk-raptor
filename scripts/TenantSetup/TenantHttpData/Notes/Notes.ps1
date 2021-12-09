@@ -75,8 +75,22 @@ $identifiers.onenoteResource._value = $imageResourceSegment -Replace ".$"
 $copyOperationData = Get-RequestData -ChildEntity "CopyOperation"
 $renameRandomString = Get-RandomAlphanumericString -length 10
 $copyOperationData.renameAs = "Raptor Rename $renameRandomString"
-$copyOperation = Invoke-RequestHelper -Uri "users/$($user)/onenote/notebooks/$($currentNoteBook.id)/copyNotebook" -Method POST -Body $copyOperationData
+$copyOperation = Request-DelegatedResource -Uri "users/$($user)/onenote/notebooks/$($currentNoteBook.id)/copyNotebook" -Method POST -Body $copyOperationData
 $copyOperation.id
 $identifiers.onenoteOperation._value = $copyOperation.id
+
+#Create OneNote SectionGroups https://docs.microsoft.com/en-us/graph/api/notebook-post-sectiongroups?view=graph-rest-1.0&tabs=http
+$sectionGroupData = Get-RequestData -ChildEntity "SectionGroup"
+$sectionGroupUrl = "/me/onenote/sectionGroups"
+$currentSectionGroupData = Request-DelegatedResource -Uri $sectionGroupUrl |
+        Where-Object { $_.displayName -eq $sectionGroupData.displayName } |
+        Select-Object -First 1
+
+if($null -eq $currentSectionGroupData){
+    $sectionGroupCreateUrl = "/me/onenote/notebooks/$($currentNoteBook.id)/sectionGroups"
+    $currentSectionGroupData = Request-DelegatedResource -Uri $sectionGroupCreateUrl -Method POST -Body $sectionGroupData
+    $currentSectionGroupData.id
+}
+$identifiers.sectionGroup._value = $currentSectionGroupData.id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

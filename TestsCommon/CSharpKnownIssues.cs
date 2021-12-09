@@ -383,6 +383,7 @@ public static class CSharpKnownIssues
                 { "get-roledefinitions-cloudpc-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-rows-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-rubric-csharp-Beta-executes", NeedsAnalysisKnownIssue },
+                { "get-schema-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-sectiongroup-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-sectiongroups-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-securityaction-csharp-Beta-executes", MissingDataKnownIssue },
@@ -528,7 +529,6 @@ public static class CSharpKnownIssues
                 { "rbacapplication-rolescheduleinstances-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "rbacapplication-roleschedules-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "search-sites-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "sectiongroup-get-sections-csharp-Beta-executes", MissingDataKnownIssue },
                 { "servicehealthissue-incidentreport-csharp-Beta-executes", MissingDataKnownIssue },
                 { "synchronizationschema-filteroperators-csharp-Beta-executes", MissingDataKnownIssue },
                 { "synchronizationschema-functions-csharp-Beta-executes", MissingDataKnownIssue },
@@ -679,8 +679,6 @@ public static class CSharpKnownIssues
 
                 { "get-printusagebyuser-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/629" } },
 
-                { "get-sectiongroup-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/631" } },
-                { "get-sectiongroups-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/631" } },
                 { "sectionsgroup-get-sections-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/631" } },
 
                 { "servicehealthissue-incidentreport-csharp-V1-executes", NeedsAnalysisKnownIssue with { CustomMessage = "Service returns: Your request can not be completed at this time, Please retry this request later."} },
