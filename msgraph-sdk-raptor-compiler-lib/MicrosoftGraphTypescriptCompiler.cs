@@ -40,10 +40,7 @@ namespace MsGraphSDKSnippetsCompiler
             var cleanUpFiles = new List<string> { "main.ts", "main.js" };
             foreach (var cleanUpFile in cleanUpFiles)
             {
-                if (File.Exists(Path.Combine(sourceFileDirectory, cleanUpFile)))
-                {
-                    File.Delete(Path.Combine(sourceFileDirectory, cleanUpFile));
-                }
+                File.Delete(Path.Combine(sourceFileDirectory, cleanUpFile));
             }
         }
 
@@ -154,22 +151,13 @@ namespace MsGraphSDKSnippetsCompiler
                 result.Add(Diagnostic.Create(new DiagnosticDescriptor("TypeScript1000",
                                                                         "Sample didn't finish compiling",
                                                                         "The compilation for that sample timed out",
-                                                                        "TypeScript1000: 'Gradle.Build'",
+                                                                        "TypeScript1000: 'Typescript.Compile'",
                                                                         DiagnosticSeverity.Error,
                                                                         true),
                                             null));
             }
 
             return result;
-        }
-
-        private static void CreateDirectoryStructure(string rootPath, string[] subdirectoriesNames)
-        {
-            var dirsAsList = subdirectoriesNames.ToList();
-            dirsAsList.ForEach(name =>
-            {
-                Directory.CreateDirectory(Path.Combine(new string[] { rootPath }.Union(dirsAsList.Take(dirsAsList.IndexOf(name) + 1)).ToArray()));
-            });
         }
 
         public Task<ExecutionResultsModel> ExecuteSnippet(string codeSnippet, Versions version)

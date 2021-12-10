@@ -62,21 +62,21 @@ You will also be required to install [Typescript](https://www.npmjs.com/package/
     - select your branch from docs, leave `main` if you want to keep default branch
     - confirm with `YES`
       - confirmation is to prevent deleting local changes in case of subsequent runs of the task
-2. Build the solution
+1. Build the solution
     - open Command Palette
     - select `Run Task`
     - select `build`
-3. Run all the tests from a single project (e.g. CsharpV1Tests)
+1. Run all the tests from a single project (e.g. CsharpV1Tests)
     - open Command Palette
     - select `Run Test Task`
     - select `Run CsharpV1Tests`
     - hit Enter when test filter option shows `.` (i.e. all the tests)
-4. Run individual tests
+1. Run individual tests
     - open Command Palette
     - select `Run Test Task`
     - select `Run CsharpV1Tests`
     - enter a test name filter, e.g. `workbook`
-5.  Debug individual tests
+1.  Debug individual tests
     - Open Command Palette
     - select `Run Test Task`
     - select `Debug CsharpV1Tests`

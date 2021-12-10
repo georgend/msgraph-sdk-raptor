@@ -81,7 +81,7 @@ namespace TypeScriptBetaTest
         public static IEnumerable<TestCaseData> TestDataV1 => TestDataGenerator.GetTestCaseData(
             new RunSettings(TestContext.Parameters)
             {
-                Version = Versions.V1,
+                Version = Versions.Beta,
                 Language = Languages.TypeScript,
                 TestType = TestType.CompilationStable
             });
