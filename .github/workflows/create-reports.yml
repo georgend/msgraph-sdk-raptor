@@ -39,24 +39,16 @@ jobs:
       run: |
         dotnet run --project ./ReportGenerator/ReportGenerator.csproj
       shell: pwsh
-      working-directory: ${{ env.BUILD_SOURCESDIRECTORY }}/msgraph-sdk-raptor
+      working-directory: msgraph-sdk-raptor
       env:
         RAPTOR_CONFIGCONNECTIONSTRING : ${{ secrets.RAPTOR_CONFIGCONNECTIONSTRING }}
-
     - name: push reports
-      run: |
-        Write-Host "Pushing reports to $env:CURRENT_BRANCH branch"
-        git config --global user.email "muzengin@microsoft.com"
-        git config --global user.name "Mustafa Zengin"
-        git add report/
-        git commit -m "Update reports"
-
-        git remote remove origin
-        git remote add origin https://$env:PAT@github.com/microsoftgraph/msgraph-sdk-raptor.git
-
-        git push origin $env:CURRENT_BRANCH
-      shell: pwsh
-      working-directory: ${{ env.BUILD_SOURCESDIRECTORY }}/msgraph-sdk-raptor
-      env:
-        CURRENT_BRANCH: ${{ env.CURRENT_BRANCH }}
-        PAT: ${{ secrets.PAT }}
+      uses: actions-x/commit@v4
+      with:
+        directory: '/home/runner/work/msgraph-sdk-raptor/msgraph-sdk-raptor/msgraph-sdk-raptor' # multi-repo checkout requires this
+        token: ${{ secrets.PAT }}
+        branch: ${{ env.CURRENT_BRANCH }}
+        message: 'Update reports'
+        force: 'true'
+        name: 'Mustafa Zengin'
+        email: 'muzengin@microsoft.com'
