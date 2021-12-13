@@ -12,7 +12,7 @@ public static class CSharpTestRunner
     /// </summary>
     private const string SDKShellTemplate = @"public class GraphSDKTest
 {
-    public async Task Main(IAuthenticationProvider authProvider, IHttpProvider httpProvider)
+    public async System.Threading.Tasks.Task Main(IAuthenticationProvider authProvider, IHttpProvider httpProvider)
     {
         //insert-code-here
     }
