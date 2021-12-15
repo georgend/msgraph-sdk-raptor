@@ -17,22 +17,18 @@ namespace MsGraphSDKSnippetsCompiler
     {
 
         private readonly string _markdownFileName;
-        private static Versions? currentlyConfiguredVersion;
-        private static readonly object versionLock = new { };
         private static string _rootPath;
+
+        private const string errorsSuffix = "error";
+        private static readonly Regex notesFilterRegex = new Regex(@"^Note:\s[^\n]*$", RegexOptions.Compiled | RegexOptions.Multiline);
+        private static readonly Regex doubleLineReturnCleanupRegex = new Regex(@"\n{2,}", RegexOptions.Compiled | RegexOptions.Multiline);
+        private static readonly Regex errorCountCleanupRegex = new Regex(@"\d+ error", RegexOptions.Compiled);
+        private static readonly Regex errorMessageCaptureRegex = new Regex(@":(?<linenumber>\d+):(?<message>[^\/\\]+)", RegexOptions.Compiled | RegexOptions.Multiline);
 
         public MicrosoftGraphTypescriptCompiler(string markdownFileName, string rootPath)
         {
             _markdownFileName = markdownFileName;
             _rootPath = rootPath;
-        }
-
-        private static void SetCurrentlyConfiguredVersion(Versions version)
-        {// prevent reseting the typescript source everytime
-            lock (versionLock)
-            {
-                currentlyConfiguredVersion = version;
-            }
         }
 
         private static void PrepareProjectFolder(string sourceFileDirectory)
@@ -48,11 +44,7 @@ namespace MsGraphSDKSnippetsCompiler
         {
             var rootPath = _rootPath;
             var sourceFileDirectory = rootPath;
-            if (!currentlyConfiguredVersion.HasValue || currentlyConfiguredVersion.Value != version)
-            {
-                PrepareProjectFolder(sourceFileDirectory);
-                SetCurrentlyConfiguredVersion(version);
-            }
+            PrepareProjectFolder(sourceFileDirectory);
 
 
             File.WriteAllText(Path.Combine(sourceFileDirectory, "main.ts"), codeSnippet);
@@ -110,11 +102,6 @@ namespace MsGraphSDKSnippetsCompiler
             );
         }
 
-        private const string errorsSuffix = "error";
-        private static readonly Regex notesFilterRegex = new Regex(@"^Note:\s[^\n]*$", RegexOptions.Compiled | RegexOptions.Multiline);
-        private static readonly Regex doubleLineReturnCleanupRegex = new Regex(@"\n{2,}", RegexOptions.Compiled | RegexOptions.Multiline);
-        private static readonly Regex errorCountCleanupRegex = new Regex(@"\d+ error", RegexOptions.Compiled);
-        private static readonly Regex errorMessageCaptureRegex = new Regex(@":(?<linenumber>\d+):(?<message>[^\/\\]+)", RegexOptions.Compiled | RegexOptions.Multiline);
         private static List<Diagnostic> GetDiagnosticsFromStdErr(string stdOutput, string stdErr, bool hasExited)
         {
             var result = new List<Diagnostic>();
