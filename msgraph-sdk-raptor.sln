@@ -73,7 +73,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DefaultData", "DefaultData"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportGenerator", "ReportGenerator\ReportGenerator.csproj", "{D5F3C37D-D95B-4E8B-9C4E-8955A974276C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeScriptBetaTests", "TypeScriptBetaTest\TypeScriptBetaTests.csproj", "{757FC453-510F-4DD2-90F9-D652B026803E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeScriptBetaTests", "TypeScriptBetaTests\TypeScriptBetaTests.csproj", "{757FC453-510F-4DD2-90F9-D652B026803E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

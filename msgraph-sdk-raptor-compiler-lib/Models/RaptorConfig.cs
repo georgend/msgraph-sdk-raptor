@@ -122,6 +122,7 @@ public class RaptorConfig
         init;
     }
 
+    //TODO Move typescript code generation to use a temporary folder
     public string TypeScriptFolder
     {
         get;

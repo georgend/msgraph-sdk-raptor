@@ -26,7 +26,7 @@ There are 8 C# test projects in total as noted below. The first 4 C# tests below
 6. CsharpV1ExecutionTests
 
 7. CSharpArbitraryDllTests
-8. TypeScriptBetaTest
+8. TypeScriptBetaTests
 
  The arbitraryDllTest is useful in running customized tests for an unpublished dll, which can consist of a proposed metadata or generator changes.
 
@@ -39,14 +39,14 @@ There are also 4 Java test projects, as listed below. These are all compilation 
 
 
 **NB: Typescript Tests**
-TypeScriptBetaTest relies on npm libraries that are not yet released. In order to execute these tests locally, users will be required to build kiota based npm packages and publish them locally.
+TypeScriptBetaTests relies on npm libraries that are not yet released. In order to execute these tests locally, users will be required to build kiota based npm packages and publish them locally.
 You will also be required to install [Typescript](https://www.npmjs.com/package/typescript) in your developer environment
 
 ## How to debug in VSCode locally or in Github Codespaces
 
 ### Codespaces SetUp
 
-1. Set thre environment variables, either locally or in your [codespaces settings](https://github.com/settings/codespaces)
+1. Set two environment variables, either locally or in your [codespaces settings](https://github.com/settings/codespaces)
      - `BUILD_SOURCESDIRECTORY`: Where the documentation repository will be checked out. Value should be `/workspaces` for Codespaces.
      - `RAPTOR_CONFIGCONNECTIONSTRING`: Connection string to Azure App Configuration containing settings for execution. An empty App Config works fine for compilation tests.
 2. Create a new codespace or open cloned msgraph-sdk-raptor folder in VSCode

@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using TestsCommon;
 
-namespace TypeScriptBetaTest
+namespace TypeScriptBetaTests
 {
     [TestFixture]
     class SnippetCompileBetaTests
@@ -75,10 +75,10 @@ namespace TypeScriptBetaTest
         }
 
         /// <summary>
-        /// Gets TestCaseData for V1
+        /// Gets TestCaseData for Beta
         /// TestCaseData contains snippet file name, version and test case name
         /// </summary>
-        public static IEnumerable<TestCaseData> TestDataV1 => TestDataGenerator.GetTestCaseData(
+        public static IEnumerable<TestCaseData> TestDataBeta => TestDataGenerator.GetTestCaseData(
             new RunSettings(TestContext.Parameters)
             {
                 Version = Versions.Beta,
@@ -93,7 +93,7 @@ namespace TypeScriptBetaTest
         /// <param name="docsLink">documentation page where the snippet is shown</param>
         /// <param name="version">Docs version (e.g. V1, Beta)</param>
         [Test]
-        [TestCaseSource(typeof(SnippetCompileBetaTests), nameof(TestDataV1))]
+        [TestCaseSource(typeof(SnippetCompileBetaTests), nameof(TestDataBeta))]
         public void Test(LanguageTestData testData)
         {
             TypeScriptTestRunner.Run(testData);
