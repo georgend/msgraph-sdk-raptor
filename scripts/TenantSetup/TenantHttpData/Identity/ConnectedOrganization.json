@@ -1,0 +1,12 @@
+{
+    "displayName":"Raptor Connected Organization",
+    "description":"Raptor Connected Organization Description",
+    "identitySources": [
+        {
+          "@odata.type": "#microsoft.graph.domainIdentitySource",
+          "domainName": "example.com",
+          "displayName": "example.com"
+          }
+      ],
+    "state":"proposed"
+  }

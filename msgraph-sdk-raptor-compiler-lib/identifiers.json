@@ -559,5 +559,8 @@
     "externalConnectors.externalGroup": {
       "_value": "externalConnectors.externalConnection_externalConnectors.externalGroup"
     }
-  }
+  },
+  "connectedOrganization": {
+      "_value": "connectedOrganization"
+  } 
 }

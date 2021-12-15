@@ -98,5 +98,18 @@ if($null -eq $currentOrganizationalBrandingPropertiesLocalizationsGerman){
 }
 $identifiers.organization.organizationalBrandingLocalization._value= $currentOrganizationalBrandingPropertiesLocalizationsGerman.id
 
+# Create Connected Organization https://docs.microsoft.com/en-us/graph/api/entitlementmanagement-post-connectedorganizations?view=graph-rest-1.0&tabs=http
+$connectedOrganizationData = Get-RequestData -ChildEntity "ConnectedOrganization"
+$connectedOrganizationUrl = "identityGovernance/entitlementManagement/connectedOrganizations"
+$currentConnectedOrganization = Invoke-RequestHelper -Uri $connectedOrganizationUrl -Method GET |
+        Where-Object { $_.displayName -eq $connectedOrganizationData.displayName } |
+        Select-Object -First 1
+
+if($null -eq $currentConnectedOrganization){
+    $currentConnectedOrganization = Invoke-RequestHelper -Uri $connectedOrganizationUrl -Method POST -Body $connectedOrganizationData
+    $currentConnectedOrganization.id
+}
+
+$identifiers.connectedOrganization._value = $currentConnectedOrganization.id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
