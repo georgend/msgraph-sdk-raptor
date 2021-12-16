@@ -2,6 +2,21 @@
   "application": {
     "_value": "application"
   },
+  "accessReviewScheduleDefinition": {
+    "_value": "accessReviewScheduleDefinition",
+    "accessReviewInstance": {
+      "_value": "accessReviewScheduleDefinition_accessReviewInstance",
+      "accessReviewInstanceDecisionItem": {
+        "_value": "accessReviewScheduleDefinition_accessReviewInstance_accessReviewInstanceDecisionItem"
+      }
+    }
+  },
+  "accessReview": {
+    "_value": "accessReview"
+  },
+  "accessReviewInstance": {
+    "_value": "accessReviewInstance"
+  },
   "identityApiConnector": {
     "_value": "identityApiConnector"
   },
@@ -562,5 +577,5 @@
   },
   "connectedOrganization": {
       "_value": "connectedOrganization"
-  } 
+  }
 }

@@ -1,0 +1,35 @@
+{
+  "displayName": "Raptor access review test create",
+  "descriptionForAdmins": "New scheduled access review",
+  "descriptionForReviewers": "If you have any questions, contact jerry@contoso.com",
+  "scope": {
+    "@odata.type": "#microsoft.graph.accessReviewQueryScope",
+    "query": "/groups/",
+    "queryType": "MicrosoftGraph"
+  },
+  "reviewers": [
+    {
+      "query": "/users/",
+      "queryType": "MicrosoftGraph"
+    }
+  ],
+  "settings": {
+    "mailNotificationsEnabled": false,
+    "reminderNotificationsEnabled": false,
+    "justificationRequiredOnApproval": true,
+    "defaultDecisionEnabled": true,
+    "defaultDecision": "Deny",
+    "instanceDurationInDays": 1,
+    "recommendationsEnabled": true,
+    "recurrence": {
+      "pattern": {
+        "type": "weekly",
+        "interval": 1
+      },
+      "range": {
+        "type": "numbered",
+        "numberOfOccurrences": 1
+      }
+    }
+  }
+}
