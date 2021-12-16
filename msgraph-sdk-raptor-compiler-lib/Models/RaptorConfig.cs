@@ -19,7 +19,8 @@ public class RaptorConfig
             EducationClientSecret = config.GetNonEmptyValue(nameof(EducationClientSecret)),
             DocsRepoCheckoutDirectory = config.GetNonEmptyValue("BUILD_SOURCESDIRECTORY"),
             RaptorStorageConnectionString = config.GetNonEmptyValue(nameof(RaptorStorageConnectionString)),
-            IsLocalRun = bool.Parse(config.GetNonEmptyValue(nameof(IsLocalRun)))
+            IsLocalRun = bool.Parse(config.GetNonEmptyValue(nameof(IsLocalRun))),
+            TypeScriptFolder = Path.Join(config.GetNonEmptyValue("BUILD_SOURCESDIRECTORY"), "typescript-tests")
         };
 
         if (!Directory.Exists(Path.Join(raptorConfig.DocsRepoCheckoutDirectory, "microsoft-graph-docs")))
@@ -116,6 +117,13 @@ public class RaptorConfig
     }
 
     public bool IsLocalRun
+    {
+        get;
+        init;
+    }
+
+    //TODO Move typescript code generation to use a temporary folder
+    public string TypeScriptFolder
     {
         get;
         init;

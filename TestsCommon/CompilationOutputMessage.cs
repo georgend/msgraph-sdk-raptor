@@ -111,6 +111,7 @@ public record CompilationOutputMessage(CompilationResultsModel Model, string Cod
         {
             Languages.CSharp => "GraphServiceClient graphClient = new GraphServiceClient( authProvider );",
             Languages.Java => "GraphServiceClient graphClient = GraphServiceClient.builder().authenticationProvider( authProvider ).buildClient();",
+            Languages.TypeScript => "const graphServiceClient = new GraphServiceClient(requestAdapter);",
             _ => throw new NotImplementedException($"Language {Language} is not supported"),
         };
     }
