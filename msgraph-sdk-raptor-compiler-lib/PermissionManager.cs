@@ -248,7 +248,7 @@ public class PermissionManager
     }
 
     /// <summary>
-    /// Assigns application permissions to the service principal of the application
+    /// Assigns application permissions to the service principal of the application (equivalent of clicking "Grant admin consent" in Azure Portal)
     /// </summary>
     /// <param name="principalId">service principal id of the application</param>
     /// <param name="resourceId">Microsoft Graph Service service principal id</param>
