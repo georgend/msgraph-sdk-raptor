@@ -155,6 +155,17 @@ public static class KnownIssues
         return MetadataWrong + $": {type}->{property} shouldn't have `ContainsTarget=true`";
     }
 
+     /// <summary>
+    /// Constructs metadata errors where a nav property should include ContainsTarget=true
+    /// </summary>
+    /// <param name="type">parent type in metadata</param>
+    /// <param name="property">nav property which is missing ContainsTarget=true</param>
+    /// <returns>String representation of metadata error</returns>
+    internal static string MetadataAddContainsTargetMessage(string type, string property)
+    {
+        return MetadataWrong + $": {type}->{property} should have `ContainsTarget=true` for Nav property to expand into constituent object";
+    }
+
     /// <summary>
     /// Returns a mapping of issues of which the source comes from service/documentation/metadata and are common accross langauges
     /// </summary>
@@ -171,8 +182,10 @@ public static class KnownIssues
                 { $"create-directoryobject-from-featurerolloutpolicy-csharp-V1-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
                 { $"create-directoryobject-from-featurerolloutpolicy-policies-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo"))},
                 { $"create-educationrubric-from-educationassignment-{lng}-Beta-compiles", EducationAssignmentRubricContainsTargetPreprocessorKnownIssue},
-                { $"create-externalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "externalSponsor")) },
-                { $"create-internalsponsor-from-connectedorganization-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "internalSponsor")) },
+                { $"create-externalsponsor-from-connectedorganization-{lng}-{version}-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "externalSponsor")) },
+                { $"create-internalsponsor-from-connectedorganization-{lng}-{version}-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "internalSponsor")) },
+                { $"delete-internalsponsor-from-connectedorganization-{lng}-V1-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("connectedOrganization", "internalSponsor"))},
+                { $"list-directoryobject-{lng}-V1-compiles", new KnownIssue(Category.Metadata, MetadataAddContainsTargetMessage("accessPackageAssignment", "target"))},
                 { $"delete-directoryobject-from-featurerolloutpolicy-java-{version}-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
                 { $"delete-directoryobject-from-featurerolloutpolicy-csharp-V1-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
                 { $"delete-directoryobject-from-featurerolloutpolicy-policies-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("featureRolloutPolicy", "appliesTo")) },
