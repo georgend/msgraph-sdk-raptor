@@ -212,6 +212,11 @@ public class PermissionManager
     /// <returns>updated application</returns>
     public async Task<Application> UpdateApplication(IEnumerable<string> scopeGuids)
     {
+        if (scopeGuids is null)
+        {
+            throw new ArgumentNullException(nameof(scopeGuids));
+        }
+
         var listOfResourceAccesses = new List<ResourceAccess>();
         foreach (var scopeGuid in scopeGuids)
         {
