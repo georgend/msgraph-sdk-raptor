@@ -44,13 +44,12 @@ steps:
     arguments: '--configuration $(buildConfiguration)'
   displayName: 'Build ApplicationPermissionsUpdater'
 
-
 # not using dotnet run due to the following issue preventing us from picking up appsettings.json file
 # consistently between VS and dotnet command line: https://github.com/dotnet/project-system/issues/3619
 - pwsh: |
     chmod +x ./ApplicationPermissionsUpdater
     ./ApplicationPermissionsUpdater
   workingDirectory: '$(Build.SourcesDirectory)/msgraph-sdk-raptor/ApplicationPermissionsUpdater/bin/Release/net6.0'
-  displayName: 'Create delegated apps'
+  displayName: 'Update Application Permissions'
   env:
     RAPTOR_CONFIGCONNECTIONSTRING: $(RAPTOR_CONFIGCONNECTIONSTRING)
