@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="$(MSBuildProjectDirectory)\..\RaptorShared.targets" />
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\msgraph-sdk-raptor-compiler-lib\msgraph-sdk-raptor-compiler-lib.csproj" />
+    </ItemGroup>
+
+</Project>

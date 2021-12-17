@@ -8,6 +8,13 @@ namespace MsGraphSDKSnippetsCompiler;
 public class PermissionManager
 {
     /// <summary>
+    /// The Graph resource ID. Constant across tenants.
+    /// </summary>
+    const string GraphResourceId = "00000003-0000-0000-c000-000000000000";
+    const string DefaultAuthScope = "https://graph.microsoft.com/.default";
+    const string PermissionManagerAppName = "PermissionManager";
+
+    /// <summary>
     /// Graph service client with application permissions
     /// </summary>
     private readonly GraphServiceClient _client;
@@ -40,12 +47,25 @@ public class PermissionManager
             ? new ClientSecretCredential(_config.EducationTenantID, _config.EducationClientID, _config.EducationClientSecret)
             : new ClientSecretCredential(_config.TenantID, _config.ClientID, _config.ClientSecret);
 
-        const string DefaultAuthScope = "https://graph.microsoft.com/.default";
         AuthProvider = new TokenCredentialAuthProvider(
             clientSecretCredential,
             new List<string> { DefaultAuthScope });
         _client = new GraphServiceClient(AuthProvider);
         _authProviders = new Dictionary<string, TokenCredentialAuthProvider>();
+    }
+
+    /// <summary>
+    /// Gets service principal id for the permission manager
+    /// </summary>
+    public async Task<string> GetPermissionManagerServicePrincipalId()
+    {
+        var servicePrincipal = await _client.ServicePrincipals
+            .Request()
+            .Filter($"displayName eq '{PermissionManagerAppName}'")
+            .GetAsync()
+            .ConfigureAwait(false);
+
+        return servicePrincipal.FirstOrDefault()?.Id;
     }
 
     /// <summary>
@@ -94,6 +114,35 @@ public class PermissionManager
     }
 
     /// <summary>
+    /// Gets existing application permissions from the Permission Manager application
+    /// </summary>
+    /// <returns>application permissions</returns>
+    public async Task<HashSet<string>> GetExistingApplicationPermissions()
+    {
+        var result = new HashSet<string>();
+
+        var application = await GetPermissionManagerApplication().ConfigureAwait(false);
+
+        var requiredResourceAccess = application.RequiredResourceAccess
+            .SingleOrDefault(x => x.ResourceAppId == GraphResourceId);
+        if (requiredResourceAccess == null)
+        {
+            throw new InvalidDataException("Application PermissionManager has no required resource access");
+        }
+
+        var resourceAccess = requiredResourceAccess.ResourceAccess;
+        foreach (var resource in resourceAccess)
+        {
+            if (resource.Type == "Role") // application permission
+            {
+                result.Add(resource.Id.ToString());
+            }
+        }
+
+        return result;
+    }
+
+    /// <summary>
     /// Gets id of the service principal representing Microsoft Graph Service in the tenant.
     /// </summary>
     /// <returns>Microsoft Graph Service Principal id</returns>
@@ -134,7 +183,7 @@ public class PermissionManager
         var requiredResourceAccess = new RequiredResourceAccess()
         {
             ResourceAccess = new List<ResourceAccess> { resourceAccess },
-            ResourceAppId = "00000003-0000-0000-c000-000000000000"
+            ResourceAppId = GraphResourceId
         };
 
         var application = new Application
@@ -154,6 +203,63 @@ public class PermissionManager
             .AddAsync(application).ConfigureAwait(false);
 
         return createdApplication;
+    }
+
+    /// <summary>
+    /// Updates PermissionManager application with desired Microsoft Graph application scopes
+    /// </summary>
+    /// <param name="scopeGuids">guids of each application permission</param>
+    /// <returns>updated application</returns>
+    public async Task<Application> UpdateApplication(IEnumerable<string> scopeGuids)
+    {
+        var listOfResourceAccesses = new List<ResourceAccess>();
+        foreach (var scopeGuid in scopeGuids)
+        {
+            listOfResourceAccesses.Add(new ResourceAccess
+            {
+                Type = "Role", // application permission
+                Id = new Guid(scopeGuid)
+            });
+        }
+
+        var requiredResourceAccess = new RequiredResourceAccess()
+        {
+            ResourceAccess = listOfResourceAccesses,
+            ResourceAppId = GraphResourceId
+        };
+
+        var application = new Application
+        {
+            RequiredResourceAccess = new List<RequiredResourceAccess> { requiredResourceAccess },
+        };
+
+        var permissionManagerApplication = await GetPermissionManagerApplication().ConfigureAwait(false);
+
+        var updatedApplication = await _client.Applications[permissionManagerApplication.Id]
+            .Request()
+            .UpdateAsync(application).ConfigureAwait(false);
+
+        return updatedApplication;
+    }
+
+    /// <summary>
+    /// Assigns application permissions to the service principal of the application
+    /// </summary>
+    /// <param name="principalId">service principal id of the application</param>
+    /// <param name="resourceId">Microsoft Graph Service service principal id</param>
+    /// <param name="appRoleId">application permission guid</param>
+    /// <returns></returns>
+    public async Task AssignAppRole(string principalId, string resourceId, string appRoleId)
+    {
+        _ = await _client.ServicePrincipals[principalId].AppRoleAssignments
+            .Request()
+            .AddAsync(new AppRoleAssignment
+            {
+                PrincipalId = new Guid(principalId),
+                ResourceId = new Guid(resourceId),
+                AppRoleId = new Guid(appRoleId)
+            })
+            .ConfigureAwait(false);
     }
 
     /// <summary>
@@ -289,5 +395,18 @@ public class PermissionManager
                 await Out.WriteLineAsync($"Couldn't create an auth provider for scope: {scopeName}").ConfigureAwait(false);
             }
         }
+    }
+
+    /// <summary>
+    /// Gets PermissionManager Application
+    /// </summary>
+    /// <returns>PermissionManager Application</returns>
+    private async Task<Application> GetPermissionManagerApplication()
+    {
+        var collectionPage = await _client.Applications
+                          .Request()
+                          .Filter($"displayName eq '{ PermissionManagerAppName }'")
+                          .GetAsync().ConfigureAwait(false);
+        return collectionPage?.FirstOrDefault();
     }
 }
