@@ -1,0 +1,55 @@
+# Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+
+trigger: none # disable triggers based on commits.
+pr: none # disable this as a PR check
+name: 'Weekly Application Permissions Updater'
+
+schedules:
+  - cron: "0 3 * * SAT" # every Saturday at 3AM UTC (off hours for Redmond, Nairobi and Montréal)
+    displayName: 'Weekly Application Permissions Updater'
+    branches:
+      include:
+      - dev
+    always: true
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+resources:
+  repositories:
+    - repository: microsoft-graph-docs
+      type: github
+      endpoint: microsoftgraph
+      name: microsoftgraph/microsoft-graph-docs
+      ref: main
+
+steps:
+- checkout: self
+  clean: true
+  fetchDepth: 1
+
+- checkout: microsoft-graph-docs
+  displayName: checkout docs
+  fetchDepth: 1
+  persistCredentials: true
+
+- template: common-templates/use-dotnet-sdk.yml
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '**/ApplicationPermissionsUpdater.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+  displayName: 'Build ApplicationPermissionsUpdater'
+
+# not using dotnet run due to the following issue preventing us from picking up appsettings.json file
+# consistently between VS and dotnet command line: https://github.com/dotnet/project-system/issues/3619
+- pwsh: |
+    chmod +x ./ApplicationPermissionsUpdater
+    ./ApplicationPermissionsUpdater
+  workingDirectory: '$(Build.SourcesDirectory)/msgraph-sdk-raptor/ApplicationPermissionsUpdater/bin/Release/net6.0'
+  displayName: 'Update Application Permissions'
+  env:
+    RAPTOR_CONFIGCONNECTIONSTRING: $(RAPTOR_CONFIGCONNECTIONSTRING)
