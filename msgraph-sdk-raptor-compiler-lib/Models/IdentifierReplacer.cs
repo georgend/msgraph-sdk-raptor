@@ -23,13 +23,13 @@ public class IdentifierReplacer
     private readonly Regex idRegex = new Regex(@"{([A-Za-z0-9\.]+)\-id}", RegexOptions.Compiled);
 
     /// <summary>
-    /// Regular Expr mapped to replacement texts 
+    /// Regular Expr mapped to replacement texts
     /// </summary>
     internal static readonly List<(Regex SearchRegex, string ReplacementContent)> EdgeCaseRegexes = new()
     {
         // https://docs.microsoft.com/en-us/graph/api/driveitem-delta?view=graph-rest-1.0&tabs=csharp#request-3
         // Swap out this date for to now, which is similar to latest.
-        // For new tenants, we cannot pick an arbitrary date since we won't know the state of the tenant. 
+        // For new tenants, we cannot pick an arbitrary date since we won't know the state of the tenant.
         new ValueTuple<Regex, string>(
             new Regex(@"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?", RegexOptions.Compiled),
             DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)
@@ -56,7 +56,8 @@ public class IdentifierReplacer
         else
         {
             const string blobContainerName = "raptoridentifiers";
-            const string blobName = "identifiers.json";
+            var getDomain = (string email) => email.Split('@')[1].Split('.')[0]; // DOMAIN from admin@DOMAIN.onmicrosoft.com
+            var blobName = $"identifiers_{getDomain(config.Username)}_{getDomain(config.EducationUsername)}.json";
 
             var raptorStorageConnectionString = config.RaptorStorageConnectionString;
             var blobClient = new BlobClient(raptorStorageConnectionString, blobContainerName, blobName);
