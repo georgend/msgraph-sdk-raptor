@@ -20,9 +20,8 @@ $currentNameLocation = Invoke-RequestHelper -Uri $nameLocationUrl -Method GET |
 
 if ($null -eq $currentNameLocation) {
     $currentNameLocation = Request-DelegatedResource -Uri $nameLocationUrl -Body $namedLocationData -Method POST
-    $currentNameLocation.id
 }
 
-$identifiers.namedLocation._value = $currentNameLocation.id
+$identifiers = Add-Identifier $identifiers @("namedLocation") $currentNameLocation.id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

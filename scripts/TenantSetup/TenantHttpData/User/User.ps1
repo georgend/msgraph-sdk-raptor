@@ -10,7 +10,7 @@ $appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 $userId = Get-DefaultAdminUserId
 
-#Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
+# Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
 Connect-DefaultTenant -AppSettings $appSettings
 
 $contactData = Get-RequestData -ChildEntity "Contact"
@@ -21,9 +21,8 @@ $currentContact = Request-DelegatedResource -Uri $contactUrl |
 
 if($null -eq $currentContact) {
     $currentContact = Request-DelegatedResource -Uri $contactUrl -Body $contactData -Method POST
-    $currentContact.id
 }
 
-$identifiers.contact._value = $currentContact.id
+$identifiers = Add-Identifier $identifiers @("contact") $currentContact.id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

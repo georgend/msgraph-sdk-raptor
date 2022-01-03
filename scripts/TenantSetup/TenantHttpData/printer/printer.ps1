@@ -16,7 +16,6 @@ if ($printer){
     $printer_id = $printer.id
 }
 else{
-
     # if printer is $null, Create printer
     $storedSecretContent = $appSettings.csrData
     $storedSecretTransportKey = $appSettings.transportKey
@@ -27,7 +26,7 @@ else{
     $printerOperationRequestUri = $printerOperationUrl.Split("v1.0/")[1]
     $createPrinterOps = Request-DelegatedResource -Uri $printerOperationRequestUri
     if (@("running", "notStarted") -contains $createPrinterOps.status.state){
-        start-Sleep -Milliseconds 1000  # wait for 1second before retrying
+        Start-Sleep -Milliseconds 1000  # wait for 1second before retrying
         $createPrinterOps = Request-DelegatedResource -Uri $printerOperationRequestUri
     }
     if ($createPrinterOps.status.state -ne "succeeded") {
@@ -39,8 +38,8 @@ else{
         $printer_id = $printer.id
     }
 }
-$printer_id
-$identifiers.printer._value = $printer_id
+
+$identifiers = Add-Identifier $identifiers @("printer") $printer_id
 
 #create PrintJob
 $printJob = Request-DelegatedResource -Uri "print/printers/$($printer_id)/jobs?`$expand=documents&`$top=1" -ScopeOverride "PrintJob.ReadWrite.All"
@@ -49,22 +48,18 @@ if(!$printJob)
     $printJobData = Get-RequestData -ChildEntity "printJob"
     $printJob = Request-DelegatedResource -Uri "print/printers/$($printer_id)/jobs" -Method "POST" -Body $printJobData -ScopeOverride "PrintJob.ReadWrite.All"
 }
-$printJob.id
-$identifiers.printer.printJob._value = $printJob.id
-$printJob.documents[0].id
-$identifiers.printer.printJob.printDocument._value = $printJob.documents[0].id
+
+$identifiers = Add-Identifier $identifiers @("printer", "printJob") $printJob.id
+$identifiers = Add-Identifier $identifiers @("printer", "printJob", "printDocument") $printJob.documents[0].id
 
 # Connect to Default Tenant
 Connect-DefaultTenant -AppSettings $appSettings
 $printTaskDefinition = Invoke-RequestHelper -Uri "print/taskDefinitions" | Select-Object -First 1
 if (!$printTaskDefinition){
-        # create printTaskDefinition
-        $printTaskDefinitionData = Get-RequestData -ChildEntity "printTaskDefinition"
-        $printTaskDefinition = Invoke-RequestHelper -Uri "print/taskDefinitions" -Method "POST" -Body $printTaskDefinitionData
-
+    # create printTaskDefinition
+    $printTaskDefinitionData = Get-RequestData -ChildEntity "printTaskDefinition"
+    $printTaskDefinition = Invoke-RequestHelper -Uri "print/taskDefinitions" -Method "POST" -Body $printTaskDefinitionData
 }
-$printTaskDefinition.id
-
 
 $printTaskTrigger = Request-DelegatedResource -Uri "print/printers/$($printer_id)/taskTriggers" -ScopeOverride "Printer.ReadWrite.All," | Select-Object -First 1
 if(!$printTaskTrigger -and $printTaskDefinition.id){
@@ -73,17 +68,16 @@ if(!$printTaskTrigger -and $printTaskDefinition.id){
     $printTaskTriggerData."definition@odata.bind" += $printTaskDefinition.id
     $printTaskTrigger = Request-DelegatedResource -Uri "print/printers/$($printer_id)/taskTriggers" -Method "POST" -Body $printTaskTriggerData -ScopeOverride "Printer.ReadWrite.All,"
 }
-$printTaskTrigger.id
-$identifiers.printer.printTaskTrigger._value = $printTaskTrigger.id
+$identifiers = Add-Identifier $identifiers @("printer", "printTaskTrigger") $printTaskTrigger.id
 
 <#
     Get Devices https://docs.microsoft.com/en-us/graph/api/device-list?view=graph-rest-1.0&tabs=http
     Once a Printer is Created by ealier cmds in this script, its treated as a device.
 #>
 $printerDevices = Request-DelegatedResource -Uri "devices" -Method "GET" -ScopeOverride "Device.Read.All" |
-        Select-Object -First 1
+    Select-Object -First 1
 
-$identifiers.device._value = $printerDevices.id
+$identifiers = Add-Identifier $identifiers @("device") $printerDevices.id
 
 # save identifiers
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
