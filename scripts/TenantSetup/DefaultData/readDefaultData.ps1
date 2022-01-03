@@ -59,12 +59,15 @@ $installedApp = Invoke-RequestHelper -Uri "teams/$($team.id)/installedApps" |
 $identifiers = Add-Identifier $identifiers @("team", "teamsAppInstallation") $installedApp.id
 
 $drive = Invoke-RequestHelper -Uri "drives" |
-    Where-Object { $_.createdBy.user.displayName -eq $admin } |
+    Where-Object { $_.createdBy.user.email -eq $user.email } |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("drive") $drive.id
 
-$driveItem = Invoke-RequestHelper -Uri "drives/$($drive.id)/root/children" |
-    Where-Object { $_.name -eq "Blog Post preview.docx" } |
+$demoFilesFolder = Invoke-RequestHelper -Uri "drives/$($drive.id)/root/children" |
+    Where-Object { $_.name -eq "Demo Files" } |
+    Select-Object -First 1
+$driveItem = Invoke-RequestHelper -Uri "drives/$($drive.id)/items/$($demoFilesFolder.id)/children" |
+    Where-Object { $_.name -eq "Customer Data.xlsx" } |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("drive", "driveItem") $driveItem.id
 
@@ -77,7 +80,7 @@ $permission = Invoke-RequestHelper -Uri "drives/$($drive.id)/items/$($driveItem.
 $identifiers = Add-Identifier $identifiers @("driveItem", "permission") $permission.id
 
 $application = Invoke-RequestHelper -Uri "applications" |
-    Where-Object { $_.displayName -eq "Salesforce" } |
+    Where-Object { $_.displayName -eq "PermissionManager" } |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("application") $application.id
 
@@ -140,9 +143,10 @@ $schemaExtension = Invoke-RequestHelper -Uri "schemaExtensions?`$filter=descript
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("schemaExtension") $schemaExtension.id
 
-$secureScore = Invoke-RequestHelper -Uri "security/secureScores?`$top=1" |
-    Select-Object -First 1
-$identifiers = Add-Identifier $identifiers @("secureScore") $secureScore.id
+# TODO delegated
+# $secureScore = Invoke-RequestHelper -Uri "security/secureScores?`$top=1" |
+#     Select-Object -First 1
+# $identifiers = Add-Identifier $identifiers @("secureScore") $secureScore.id
 
 $subscribedSku = Invoke-RequestHelper -Uri "subscribedSkus" |
     Where-Object { $_.skuPartNumber -eq 'ENTERPRISEPACK'}
@@ -197,8 +201,7 @@ $identifiers = Add-Identifier $identifiers @("site", "contentType", "columnDefin
 # $sitePermission.id
 # $identifiers.site.permission._value=$sitePermission.id
 
-$servicePrincipal = Invoke-RequestHelper -Uri "servicePrincipals" |
-    Where-Object {$_.displayName -eq "Microsoft Insider Risk Management"}
+$servicePrincipal = Invoke-RequestHelper -Uri "servicePrincipals?`$filter=displayName eq 'PermissionManager'" |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("servicePrincipal") $servicePrincipal.id
 
@@ -214,11 +217,11 @@ $identifiers = Add-Identifier $identifiers @("message") $message.id
 
 #When Message with attachment is created, this should work
 #TODO: Create Message with Attachment
-$attachmentMessage = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/messages?`$filter=hasAttachments eq true" |
-    Select-Object -First 1
-$attachment = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/messages/$($attachmentMessage.id)/attachments" |
-    Select-Object -First 1
-$identifiers = Add-Identifier $identifiers @("message", "attachment") $attachment.id
+# $attachmentMessage = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/messages?`$filter=hasAttachments eq true" |
+#     Select-Object -First 1
+# $attachment = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/messages/$($attachmentMessage.id)/attachments" |
+#     Select-Object -First 1
+# $identifiers = Add-Identifier $identifiers @("message", "attachment") $attachment.id
 
 #OData Invoke-RequestHelperuest is not Supported.
 # $messageExtensions = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/messages/$($identifiers.message._value)/extensions" |
@@ -235,15 +238,16 @@ $orgContact = Invoke-RequestHelper -Uri "contacts" |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("orgContact") $orgContact.id
 
-#Contact Folder is Missing from Tenant
-$contactFolder = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/contactFolders" |
-    Select-Object -First 1
-$identifiers = Add-Identifier $identifiers @("contactFolder") $contactFolder.id
+# TODO: Contact Folder is missing from tenant
+# $contactFolder = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/contactFolders" |
+#     Select-Object -First 1
+# $identifiers = Add-Identifier $identifiers @("contactFolder") $contactFolder.id
 
-$place = Invoke-RequestHelper -Uri "places/microsoft.graph.room" |
-    Where-Object {$_.displayName -eq "Conf Room Rainier"}
-    Select-Object -First 1
-$identifiers = Add-Identifier $identifiers @("place") $place.id
+# TODO: Place is missing from tenant
+# $place = Invoke-RequestHelper -Uri "places/microsoft.graph.room" |
+#     Where-Object {$_.displayName -eq "Conf Room Rainier"}
+#     Select-Object -First 1
+# $identifiers = Add-Identifier $identifiers @("place") $place.id
 
 #Outlook Categories are pre-defined https://docs.microsoft.com/en-us/graph/api/resources/outlookcategory?view=graph-rest-1.0
 $outlookCategory = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/outlook/masterCategories" |
