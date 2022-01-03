@@ -558,3 +558,35 @@ Function Write-ColorOutput
     # Restore Current UI to original color
     $host.UI.RawUI.ForegroundColor = $originalColor
 }
+
+<#
+    Adds a new identifier into the identifiers object
+    To add identifiers->site->list->_value to "newValue"
+      Add-Identifier $identifiers @("site", "list") "newValue"
+#>
+function Add-Identifier ($identifiers, [string[]]$path, $value) {
+    if ($null -eq $path) {
+        return $identifiers
+    }
+
+    if ([string]::IsNullOrEmpty($value)) {
+        Write-Error "[EMPTY VALUE] $([string]::join('->', $path))"
+        return $identifiers
+    }
+
+    $current = $identifiers
+    foreach ($p in $path) {
+        if ($null -eq $current."$p") { # create path if it doesn't exist
+            $pObject = New-Object PSObject
+            $pObject | Add-Member -NotePropertyName "_value" -NotePropertyValue ""
+            $current | Add-Member -NotePropertyName $p -NotePropertyValue $pObject
+        }
+        $current = $current."$p"
+    }
+
+    $current._value = $value
+
+    Write-Host "[ADDED] $([string]::join('->', $path)) = $value" -ForegroundColor Cyan
+
+    return $identifiers
+}
