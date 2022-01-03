@@ -46,7 +46,8 @@ $plannerBucket = Request-DelegatedResource -Uri "planner/plans/$($plannerPlan.id
 $identifiers = Add-Identifier $identifiers @("plannerBucket") $plannerBucket.id
 
 # tenant agnostic data
-$identifiers = Add-Identifier $identifiers @("printService", "printServiceEndpoint") "mpsdiscovery"
+$printEndpointId = "mpsdiscovery"
+$identifiers = Add-Identifier $identifiers @("printService", "printServiceEndpoint") $printEndpointId
 
 $printService = Request-DelegatedResource -Uri "print/services" -ScopeOverride "Printer.Read.All" |
     Where-Object { $_.endpoints[0].id -eq $printEndpointId } |

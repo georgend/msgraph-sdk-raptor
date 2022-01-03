@@ -188,6 +188,11 @@ function Get-Scopes
         [Parameter(Mandatory = $True)][string] $Path
     )
     $scopes = @()
+    if ($Path[0] -ne "/") # DevX API expects a trailing slash
+    {
+        $Path = "/$Path"
+    }
+
     try
     {
         $graphExplorerApi = "https://graphexplorerapi.azurewebsites.net/permissions?requesturl=$Path&method=$Method"
