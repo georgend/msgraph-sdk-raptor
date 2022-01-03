@@ -15,7 +15,7 @@ $uploadFileName = "raptorWorkbookDriveItemTest.xlsx"
 # if it exists, it will just generate a new version
 $driveItem = Request-DelegatedResource -Uri "me/drive/root:/$($uploadFileName):/content" -Method "PUT" -FilePath $workbookFilePath -ScopeOverride "Files.ReadWrite.All"
 # create a second version of the file
-_ =  Request-DelegatedResource -Uri "me/drive/root:/$($uploadFileName):/content" -Method "PUT" -FilePath $workbookFilePath -ScopeOverride "Files.ReadWrite.All"
+Request-DelegatedResource -Uri "me/drive/root:/$($uploadFileName):/content" -Method "PUT" -FilePath $workbookFilePath -ScopeOverride "Files.ReadWrite.All"
 
 $identifiers = Add-Identifier $identifiers @("driveItem") $driveItem.id
 $identifiers = Add-Identifier $identifiers @("driveItem", "driveItemVersion") "1.0" # standard first version number
