@@ -13,12 +13,11 @@ $raptorUtils = Join-Path $PSScriptRoot "../RaptorUtils.ps1" -Resolve
 $appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
-#Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
+# Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
 Connect-EduTenant -AppSettings $appSettings
 
 $educationUser = Invoke-RequestHelper -Uri "education/users" |
     Where-Object { $_.mailNickname -eq "admin" }
-$educationUser.id
-$identifiers.educationUser._value = $educationUser.id
+$identifiers = Add-Identifier $identifiers @("educationUser") $educationUser.id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

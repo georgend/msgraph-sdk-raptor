@@ -8,7 +8,6 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 $appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
-
 $userId = Get-DefaultAdminUserId
 $exportDataRequest = az storage blob exists --container-name exportpersonaldatastorage --name RequestInfo.json --connection-string $appSettings.RaptorStorageConnectionString
 $exportDataExists = $exportDataRequest[1].split(":")[1]
@@ -21,6 +20,6 @@ $dataPolicyOperation = Request-DelegatedResource -Uri "users/$($userId)/exportPe
 $dataPolicyOperation.Location
 $dataPolicyOperation_id = $dataPolicyOperation.Location -split "/" | Select-Object -last 1
 
-$identifiers.dataPolicyOperation._value = $dataPolicyOperation_id
+$identifiers = Add-Identifier $identifiers @("dataPolicyOperation") $dataPolicyOperation_id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

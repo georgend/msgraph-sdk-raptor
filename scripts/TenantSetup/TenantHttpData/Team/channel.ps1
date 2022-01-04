@@ -7,17 +7,14 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
-#Use Team and channel already in identifiers.json to get chnnel message and replies
+# Use Team and channel already in identifiers.json to get chnnel message and replies
 $teamId = $identifiers.team._value
-$teamId
 $channelId = $identifiers.team.channel._value
-$channelId
 # Get channel message default data
 $channelMessage = Request-DelegatedResource -Uri "teams/$teamId/channels/$channelId/messages" -ScopeOverride "ChannelMessage.Read.All" |
-Where-Object { $_.from.user.displayName -eq "Lynne Robbins"} |
-Select-Object -First 1
-$channelMessage.id
-$identifiers.team.channel.chatMessage._value = $channelMessage.id
+    Where-Object { $_.from.user.displayName -eq "Lynne Robbins"} |
+    Select-Object -First 1
+$identifiers = Add-Identifier $identifiers @("team", "channel", "chatMessage") $channelMessage.id
 
 # Get channel message reply that has hosted content
 $senderId = $identifiers.user._value
@@ -25,6 +22,7 @@ $replies = Request-DelegatedResource -Uri "teams/$teamId/channels/$channelId/mes
 $messageReply = $replies |
     Where-Object { $_.from.user.id -eq "$senderId"} |
     Select-Object -First 1
+
 # create a reply with hostedContent as channel message reply
 if (!$messageReply){
     $messageBody = Get-RequestData -ChildEntity "chatMessage"
@@ -41,12 +39,13 @@ if (!$messageReply){
         exit
     }
 }
+
 # if still no reply created, pick first reply on the message
 if(!$messageReply){
     $messageReply = replies[0]
 }
-$messageReply.id
-$identifiers.team.channel.chatMessage.reply._value = $messageReply.id
-$identifiers.team.channel.chatMessage.chatMessage._value = $messageReply.id  # To cover for error in docs where reply-id is saved as chatMessage-id
+
+$identifiers = Add-Identifier $identifiers @("team", "channel", "chatMessage", "reply") $messageReply.id
+$identifiers = Add-Identifier $identifiers @("team", "channel", "chatMessage", "chatMessage") $messageReply.id  # To cover for error in docs where reply-id is saved as chatMessage-id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

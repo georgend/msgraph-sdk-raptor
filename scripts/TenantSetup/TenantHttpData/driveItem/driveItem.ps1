@@ -9,100 +9,73 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
-
 $uploadFileName = "raptorWorkbookDriveItemTest.xlsx"
 
 # no need to check the existence of driveItem, as it will be created if it does not exist
 # if it exists, it will just generate a new version
 $driveItem = Request-DelegatedResource -Uri "me/drive/root:/$($uploadFileName):/content" -Method "PUT" -FilePath $workbookFilePath -ScopeOverride "Files.ReadWrite.All"
 # create a second version of the file
-$driveItemVersion2 =  Request-DelegatedResource -Uri "me/drive/root:/$($uploadFileName):/content" -Method "PUT" -FilePath $workbookFilePath -ScopeOverride "Files.ReadWrite.All"
+Request-DelegatedResource -Uri "me/drive/root:/$($uploadFileName):/content" -Method "PUT" -FilePath $workbookFilePath -ScopeOverride "Files.ReadWrite.All"
 
-$driveItem.id
-$driveItemVersion2.id
-$identifiers.driveItem._value = $driveItem.id
-$identifiers.driveItem.driveItemVersion._value = "1.0" # standard first version number
+$identifiers = Add-Identifier $identifiers @("driveItem") $driveItem.id
+$identifiers = Add-Identifier $identifiers @("driveItem", "driveItemVersion") "1.0" # standard first version number
 
 $driveItemPermission = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/permissions" -ScopeOverride "Files.Read" |
     Select-Object -First 1
-$driveItemPermission.id
-$identifiers.driveItem.permission._value = $driveItemPermission.id
-
+$identifiers = Add-Identifier $identifiers @("driveItem", "permission") $driveItemPermission.id
 
 $driveItemThumbnail = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/thumbnails?`$top=1" -ScopeOverride "Files.Read" |
     Select-Object -First 1
-$driveItemThumbnail.id
-$identifiers.driveItem.thumbnailSet._value = $driveItemThumbnail.id
-$identifiers.driveItem.thumbnailSet.thumbnailSet._value = "small"
-
+$identifiers = Add-Identifier $identifiers @("driveItem", "thumbnailSet") $driveItemThumbnail.id
+$identifiers = Add-Identifier $identifiers @("driveItem", "thumbnailSet", "thumbnailSet") "small"
 
 $driveItemWorkbookTable = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/tables" -ScopeOverride "Files.Read" |
     Where-Object { $_.name -eq "Table1" } |
     Select-Object -First 1
-$driveItemWorkbookTable.id
-$identifiers.driveItem.workbookTable._value = $driveItemWorkbookTable.id
-
+$identifiers = Add-Identifier $identifiers @("driveItem", "workbookTable") $driveItemWorkbookTable.id
 
 $tableColumn = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/tables/$($driveItemWorkbookTable.id)/columns" -ScopeOverride "Files.Read" |
     Select-Object -First 1
-$tableColumn.id
-$identifiers.driveItem.workbookTable.workbookTableColumn._value = $tableColumn.id
-
+$identifiers = Add-Identifier $identifiers @("driveItem", "workbookTable", "workbookTableColumn") $tableColumn.id
 
 $tableRow = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/tables/$($driveItemWorkbookTable.id)/rows" -ScopeOverride "Files.Read" |
     Select-Object -First 1
-$tableRow.index
-$identifiers.driveItem.workbookTable.workbookTableRow._value = "itemAt(index=$($tableRow.index))"
-
+$identifiers = Add-Identifier $identifiers @("driveItem", "workbookTable", "workbookTableRow") "itemAt(index=$($tableRow.index))"
 
 $worksheet = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/worksheets" -ScopeOverride "Files.Read" |
     Where-Object { $_.name -eq "Sheet1" } |
     Select-Object -First 1
-$worksheet.id
-$identifiers.driveItem.workbookWorksheet._value = $worksheet.id
-$identifiers.workbookWorksheet._value = $worksheet.id
-
+$identifiers = Add-Identifier $identifiers @("driveItem", "workbookWorksheet") $worksheet.id
+$identifiers = Add-Identifier $identifiers @("workbookWorksheet") $worksheet.id
 
 $workbookNamedItem = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/names/test2" -ScopeOverride "Files.Read"
-$workbookNamedItem.name
-$identifiers.driveItem.workbookNamedItem._value = $workbookNamedItem.name
+$identifiers = Add-Identifier $identifiers @("driveItem", "workbookNamedItem") $workbookNamedItem.id
 
 $namedItemFormatBorder = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/names/$($workbookNamedItem.name)/range/format/borders?`$top=1" -ScopeOverride "Files.Read" |
     Select-Object -First 1
-$namedItemFormatBorder.id
-$identifiers.driveItem.workbookNamedItem.workbookRangeBorder._value = $namedItemFormatBorder.id
-
+$identifiers = Add-Identifier $identifiers @("driveItem", "workbookNamedItem", "workbookRangeBorder") $namedItemFormatBorder.id
 
 $workbookChart = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/worksheets/$($worksheet.id)/charts" -ScopeOverride "Files.Read" |
     Select-Object -First 1
-$workbookChart.name
-$identifiers.driveItem.workbookWorksheet.workbookChart._value = $workbookChart.name
-
+$identifiers = Add-Identifier $identifiers @("driveItem", "workbookWorkSheet", "workbookChart") $workbookChart.id
 
 $workbookChartSeries = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/worksheets/$($worksheet.id)/charts/$($workbookChart.name)/series" -ScopeOverride "Files.Read" |
     Select-Object -First 1
-$workbookChartSeries."@odata.id"
 $series_id = $workbookChartSeries."@odata.id".Split("series/")[1]
-$identifiers.driveItem.workbookWorksheet.workbookChart.workbookChartSeries._value = $series_id
-
+$identifiers = Add-Identifier $identifiers @("driveItem", "workbookWorkSheet", "workbookChart", "workbookChartSeries") $series_id
 
 $workbookChartPoint = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/worksheets/$($worksheet.id)/charts/$($workbookChart.name)/series/$($series_id)/points" -ScopeOverride "Files.ReadWrite.All" |
     Select-Object -First 1
-$workbookChartPoint."@odata.id"
 $chartPoint_id = $workbookChartPoint."@odata.id".split("points/")[1]
-$identifiers.driveItem.workbookWorksheet.workbookChart.workbookChartSeries.workbookChartPoint._value = $chartPoint_id
-
+$identifiers = Add-Identifier $identifiers @("driveItem", "workbookWorkSheet", "workbookChart", "workbookChartSeries", "workbookChartPoint") $chartPoint_id
 
 $workbookComment = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/comments" -ScopeOverride "Files.Read" |
     Select-Object -First 1
-$workbookComment.id
-$identifiers.driveItem.workbookComment._value = $workbookComment.id
-
+$identifiers = Add-Identifier $identifiers @("driveItem", "workbookComment") $workbookComment.id
 
 $workbookCommentReply = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/comments/$($workbookComment.id)/replies" -ScopeOverride "Files.Read" |
     Select-Object -First 1
-$workbookCommentReply.id
-$identifiers.driveItem.workbookComment.workbookCommentReply._value = $workbookCommentReply.id
+$identifiers = Add-Identifier $identifiers @("driveItem", "workbookComment", "workbookCommentReply") $workbookCommentReply.id
 
 $currentOperationId = $identifiers.driveItem.workbookOperation._value
 if ($currentOperationId){
@@ -112,9 +85,9 @@ if (!$driveItemWorkbookOperation){
     $operationData = Get-RequestData -ChildEntity "driveItemWorkbookOperation"
     $operationHeaders = @{"Prefer"="respond-async"}
     $driveItemWorkbookOperation = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/createSession" -Method "POST" -Headers $operationHeaders -Body $operationData -ScopeOverride "Files.ReadWrite"
-    $identifiers.driveItem.workbookOperation._value = $driveItemWorkbookOperation.id
 }
-$driveItemWorkbookOperation.id
+
+$identifiers = Add-Identifier $identifiers @("driveItem", "workbookOperation") $driveItemWorkbookOperation.id
 
 #SharedDriveItem
 $sharingUrl = $null
@@ -133,18 +106,16 @@ if ( ![string]::IsNullOrWhitespace($sharingUrl)){
     # Encoding sharing URLs as detailed in docs:https://docs.microsoft.com/en-us/graph/api/shares-get?view=graph-rest-1.0&tabs=http#encoding-sharing-urls
     $base64Value = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($sharingUrl));
     $encodedUrl = "u!" + $base64Value.TrimEnd('=').Replace('/', '_').Replace('+', '-');
-    $encodedUrl
-    $identifiers.sharedDriveItem._value = $encodedUrl
+    $identifiers = Add-Identifier $identifiers @("sharedDriveItem") $encodedUrl
 }
 
 # Get Delta https://docs.microsoft.com/en-us/graph/api/driveitem-delta?view=graph-rest-1.0&amp%3Btabs=csharp&tabs=http#request-1
 
 $delta = Request-DelegatedResource -Uri "/me/drive/root/delta" -Method "GET" -OutputType "Json" | ConvertFrom-Json -AsHashtable
-$delta.'@odata.deltaLink'
 $deltaUri = [uri] $delta.'@odata.deltaLink'
 $deltaParts = $deltaUri.Query.Split("=")
 $deltaToken = $deltaParts[1]
 
-$identifiers.driveDelta._value = $deltaToken
+$identifiers = Add-Identifier $identifiers @("driveDelta") $deltaToken
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

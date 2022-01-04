@@ -33,7 +33,6 @@ if($null -eq $permission)
     $permission = Invoke-RequestHelper -Uri "sites/$siteId/permissions" -Method "POST" -Body $permissionData
 }
 
-$permission.id
-$identifiers.site.permission._value = $permission.id
+$identifiers = Add-Identifier $identifiers @("site", "permission") $permission.id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

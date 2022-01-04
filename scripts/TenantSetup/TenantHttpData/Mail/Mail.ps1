@@ -10,7 +10,7 @@ $appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 $user = Get-DefaultAdminUser
 
-#Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
+# Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
 Connect-DefaultTenant -AppSettings $appSettings
 
 $messageRuleData = Get-RequestData -ChildEntity "MessageRule"
@@ -21,9 +21,8 @@ $currentMessageRuleData = Request-DelegatedResource -Uri $messageRuleUrl |
 
 if ($null -eq $currentMessageRuleData) {
     $currentMessageRuleData = Request-DelegatedResource -Uri $messageRuleUrl -Body $messageRuleData -Method POST
-    $currentMessageRuleData.id
 }
 
-$identifiers.mailFolder.messageRule._value = $currentMessageRuleData.id
+$identifiers = Add-Identifier $identifiers @("mailFolder", "messageRule") $currentMessageRuleData.id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

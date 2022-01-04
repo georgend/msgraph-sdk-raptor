@@ -16,9 +16,8 @@ if ($null -eq $administrativeUnit) {
     $administrativeUnit = Request-DelegatedResource -Uri "/directory/administrativeUnits" -Method "POST" -Body $administrativeUnitData
 }
 
-$administrativeUnit.id
 $administrativeUnitId = $administrativeUnit.id
-$identifiers.administrativeUnit._value = $administrativeUnitId
+$identifiers = Add-Identifier $identifiers @("administrativeUnit") $administrativeUnitId
 
 # get scopeRoleMembership
 $scopedRoleMembership = Request-DelegatedResource -Uri "directory/administrativeUnits/$administrativeUnitId/scopedRoleMembers" -ScopeOverride "Directory.AccessAsUser.All" |
@@ -41,7 +40,6 @@ if ($null -eq $scopedRoleMembership)
         $directoryRoleData = Get-RequestData -ChildEntity "directoryRole"
         $directoryRoleData.roleTemplateId = $helpdeskAdministratorRoleTemplateId
         $helpdeskAdministratorRole = Request-DelegatedResource -Uri "directoryRoles" -Method "POST" -Body $directoryRoleData -ScopeOverride "Directory.AccessAsUser.All"
-        $helpdeskAdministratorRole.id
     }
 
     # create scopedRoleMembership
@@ -52,8 +50,7 @@ if ($null -eq $scopedRoleMembership)
     $scopedRoleMembership = Request-DelegatedResource -Uri "directory/administrativeUnits/$administrativeUnitId/scopedRoleMembers" -Method "POST" -Body $scopedRoleMemberData -ScopeOverride "Directory.AccessAsUser.All"
 }
 
-$scopedRoleMembership.id
-$identifiers.administrativeUnit.scopedRoleMembership._value = $scopedRoleMembership.id
+$identifiers = Add-Identifier $identifiers @("administrativeUnit", "scopedRoleMembership") $scopedRoleMembership.id
 
 # save identifiers
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

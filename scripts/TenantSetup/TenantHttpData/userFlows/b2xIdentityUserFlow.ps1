@@ -14,8 +14,7 @@ if (!$apiConnector){
     $apiConnectorData.authenticationConfiguration.password = Get-RandomAlphanumericString -length 10
     $apiConnector = Request-DelegatedResource -Uri "identity/apiConnectors" -Method "POST" -Body $apiConnectorData -ScopeOverride "APIConnectors.ReadWrite.All"
 }
-$apiConnector.id
-$identifiers.identityApiConnector._value = $apiConnector.id
+$identifiers = Add-Identifier $identifiers @("identityApiConnector") $apiConnector.id
 
 $b2xuserFlowData = Get-RequestData -ChildEntity "b2xIdentityUserFlow"
 $b2xIdentityUserFlow = Request-DelegatedResource -Uri "identity/b2xUserFlows?`$filter=id eq 'B2X_1_$($b2xuserFlowData.id)'" -ScopeOverride "IdentityUserFlow.Read.All"
@@ -23,19 +22,15 @@ if (!$b2xIdentityUserFlow){
     $b2xuserFlowData.apiConnectorConfiguration.postAttributeCollection."@odata.id" += $apiConnector.id
     $b2xIdentityUserFlow = Request-DelegatedResource -Uri "identity/b2xUserFlows" -Method "POST" -Body $b2xuserFlowData -ScopeOverride "IdentityUserFlow.ReadWrite.All"
 }
-$b2xIdentityUserFlow.id
-$identifiers.b2xIdentityUserFlow._value = $b2xIdentityUserFlow.id
+$identifiers = Add-Identifier $identifiers @("b2xIdentityUserFlow") $b2xIdentityUserFlow.id
 
 $identityUserFlowAttributeAssignment = Request-DelegatedResource -Uri "identity/b2xUserFlows/$($b2xIdentityUserFlow.id)/userAttributeAssignments?`$top=1" -ScopeOverride "IdentityUserFlow.Read.All"
-$identityUserFlowAttributeAssignment.id
-$identifiers.b2xIdentityUserFlow.identityUserFlowAttributeAssignment._value = $identityUserFlowAttributeAssignment.id
+$identifiers = Add-Identifier $identifiers @("b2xIdentityUserFlow", "identityUserFlowAttributeAssignment") $identityUserFlowAttributeAssignment.id
 
 $userLanguage = Request-DelegatedResource -Uri "identity/b2xUserFlows/$($b2xIdentityUserFlow.id)/languages?`$filter=displayName eq 'français'" -ScopeOverride "IdentityUserFlow.Read.All"
-$userLanguage.id
-$identifiers.b2xIdentityUserFlow.userFlowLanguageConfiguration._value = $userLanguage.id
+$identifiers = Add-Identifier $identifiers @("b2xIdentityUserFlow", "userFlowLanguageConfiguration") $userLanguage.id
 
 $userLanguagePage = Request-DelegatedResource -Uri "identity/b2xUserFlows/B2X_1_Partner/languages/fr/defaultPages?`$top=1" -ScopeOverride "IdentityUserFlow.Read.All"
-$userLanguagePage.id
-$identifiers.b2xIdentityUserFlow.userFlowLanguageConfiguration.userFlowLanguagePage._value = $userLanguagePage.id
+$identifiers = Add-Identifier $identifiers @("b2xIdentityUserFlow", "userFlowLanguageConfiguration", "userFlowLanguagePage") $userLanguagePage.id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

@@ -8,7 +8,7 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 $appSettings = Get-AppSettings
 
-#Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
+# Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
 Connect-DefaultTenant -AppSettings $appSettings
 
 $user = Get-DefaultAdminUser
@@ -20,10 +20,8 @@ if (!$accessReviewScheduleDefinition) {
     $scheduleDefData.scope.query += "$($group.id)/transitiveMembers"  # the group whose users should be reviewed
     $accessReviewScheduleDefinition = Invoke-RequestHelper -Uri "identityGovernance/accessReviews/definitions" -Method "POST" -Body $scheduleDefData
 }
-$accessReviewScheduleDefinition.id
-$identifiers.accessReviewScheduleDefinition._value = $accessReviewScheduleDefinition.id
-$identifiers.accessReview._value = $accessReviewScheduleDefinition.id  # Support for Beta
-
+$identifiers = Add-Identifier $identifiers @("accessReviewScheduleDefinition") $accessReviewScheduleDefinition.id
+$identifiers = Add-Identifier $identifiers @("accessReview") $accessReviewScheduleDefinition.id # Support for Beta
 
 # AccessReviewInstance autocreated based on accessReviewScheduleDefinition creation settings
 $accessReviewInstance = Invoke-RequestHelper -Uri "identityGovernance/accessReviews/definitions/$($accessReviewScheduleDefinition.id)/instances/?`$top=1" -User $user
@@ -44,9 +42,8 @@ while(!$accessReviewInstance){
         break
     }
 }
-$accessReviewInstance.id
-$identifiers.accessReviewScheduleDefinition.accessReviewInstance._value = $accessReviewInstance.id
-$identifiers.accessReviewInstance._value = $accessReviewInstance.id  # Support for Beta
+$identifiers = Add-Identifier $identifiers @("accessReviewScheduleDefinition", "accessReviewInstance") $accessReviewInstance.id
+$identifiers = Add-Identifier $identifiers @("accessReviewInstance") $accessReviewInstance.id # Support for Beta
 
 # Access review decision should be autopopulated a couple of seconds after access review was scheduled and instance completed
 if($accessReviewInstance.id){
@@ -62,9 +59,7 @@ if($accessReviewInstance.id){
     }
     $consoleMsg = $accessReviewDecision ? "Successfully retrieved accessReviewDecision": "Failed to retrieve accessReviewDecision"
     Write-Host $consoleMsg
-    $accessReviewDecision.id
-    $identifiers.accessReviewScheduleDefinition.accessReviewInstance.accessReviewInstanceDecisionItem._value = $accessReviewDecision.id
+    $identifiers = Add-Identifier $identifiers @("accessReviewScheduleDefinition", "accessReviewInstance", "accessReviewInstanceDecisionItem") $accessReviewDecision.id
 }
-
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
