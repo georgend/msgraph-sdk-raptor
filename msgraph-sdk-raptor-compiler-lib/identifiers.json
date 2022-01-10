@@ -576,6 +576,12 @@
     }
   },
   "connectedOrganization": {
-      "_value": "connectedOrganization"
+    "_value": "connectedOrganization"
+  },
+  "accessPackage": {
+    "_value": "accessPackage"
+  },
+  "accessPackageAssignmentRequest": {
+    "_value": "accessPackage"
   }
 }

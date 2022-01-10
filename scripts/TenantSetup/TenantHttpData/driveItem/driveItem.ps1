@@ -48,8 +48,8 @@ $worksheet = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/wor
 $identifiers = Add-Identifier $identifiers @("driveItem", "workbookWorksheet") $worksheet.id
 $identifiers = Add-Identifier $identifiers @("workbookWorksheet") $worksheet.id
 
-$workbookNamedItem = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/names/test2" -ScopeOverride "Files.Read"
-$identifiers = Add-Identifier $identifiers @("driveItem", "workbookNamedItem") $workbookNamedItem.id
+$workbookNamedItem = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/names/test2" -ScopeOverride "Files.Read.All"
+$identifiers = Add-Identifier $identifiers @("driveItem", "workbookNamedItem") "test2"
 
 $namedItemFormatBorder = Request-DelegatedResource -Uri "me/drive/items/$($driveItem.id)/workbook/names/$($workbookNamedItem.name)/range/format/borders?`$top=1" -ScopeOverride "Files.Read" |
     Select-Object -First 1

@@ -7,6 +7,9 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
+#Wake Up The Callbacks Site to prevent timeouts.
+Invoke-CallbackSiteWakeup
+
 # Create an api configuration for use in creating a userflow if it doesn't exist.
 $apiConnectorData = Get-RequestData -ChildEntity "apiConnector"
 $apiConnector = Request-DelegatedResource -Uri "identity/apiConnectors?`$filter=displayName eq '$($apiConnectorData.displayName)'" -ScopeOverride "APIConnectors.ReadWrite.All"

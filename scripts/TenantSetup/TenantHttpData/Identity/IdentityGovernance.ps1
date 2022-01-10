@@ -26,16 +26,19 @@ $identifiers = Add-Identifier $identifiers @("agreement") $currentAgreement.id
 
 # Get identityProvider  https://docs.microsoft.com/en-us/graph/api/resources/identityprovider?view=graph-rest-1.0
 # This API has been DEPRECATED
+# Only Supports Delegated Permissions
 $identityProvider = Get-RequestData -ChildEntity "IdentityProvider"
-$currentIdentityProvider = Invoke-RequestHelper -Uri "identityProviders" -Method GET |
+$currentIdentityProvider = Request-DelegatedResource -Uri "identityProviders" -Method GET |
     Where-Object { $_.type -eq $identityProvider.type} |
     Select-Object -First 1
 
 # To avoid storing Secrets in Files, Generate them on the fly.
 if($null -eq $currentIdentityProvider){
-    $identityProvider.clientId = New-Guid
+    $clientId = New-Guid
+    $identityProvider.clientId = $clientId.ToString()
     $identityProvider.clientSecret = Get-RandomAlphanumericString -length 10
-    $currentIdentityProvider = Invoke-RequestHelper -Uri "identity/identityProviders" -Method POST -Body $identityProvider
+
+    $currentIdentityProvider = Request-DelegatedResource -Uri "identityProviders" -Method POST -Body $identityProvider -Debug
 }
 
 $identifiers = Add-Identifier $identifiers @("identityProvider") $currentIdentityProvider.id
@@ -53,20 +56,20 @@ if($null -eq $currentIdentityProviderBase){
     $currentIdentityProviderBase = Invoke-RequestHelper -Uri "identity/identityProviders" -Method POST -Body $identityProviderBase
 }
 
-$identifiers.identityProviderBase._value = $currentIdentityProviderBase.id
+$identifiers = Add-Identifier $identifiers @("identityProviderBase") $currentIdentityProviderBase.id
 
 # Get certificateBasedAuthConfiguration https://docs.microsoft.com/en-us/graph/api/certificatebasedauthconfiguration-get?view=graph-rest-1.0&tabs=http
 $certificateBasedAuthConfiguration = Get-RequestData -ChildEntity "CertificateBasedAuthConfiguration"
-$currentCertificateBasedAuthConfiguration = Invoke-RequestHelper -Uri "organization/$($identifiers.organization._value)/certificateBasedAuthConfiguration" -Method GET |
+$currentCertificateBasedAuthConfiguration = Request-DelegatedResource -Uri "organization/$($identifiers.organization._value)/certificateBasedAuthConfiguration" -Method GET |
     Select-Object -First 1
 
 if($null -eq $currentCertificateBasedAuthConfiguration || $currentCertificateBasedAuthConfiguration.value.Count -lt 1){
     $selfSignedCertificate = New-Certificate
     $certificateBasedAuthConfiguration.certificateAuthorities[0].certificate = $selfSignedCertificate
-    $currentCertificateBasedAuthConfiguration = Invoke-RequestHelper -Uri "organization/$($identifiers.organization._value)/certificateBasedAuthConfiguration" -Method POST -Body $certificateBasedAuthConfiguration
+    $currentCertificateBasedAuthConfiguration = Request-DelegatedResource -Uri "organization/$($identifiers.organization._value)/certificateBasedAuthConfiguration" -Method POST -Body $certificateBasedAuthConfiguration
 }
 
-$identifiers.organization.certificateBasedAuthConfiguration._value = $currentCertificateBasedAuthConfiguration.id
+$identifiers = Add-Identifier $identifiers @("organization", "certificateBasedAuthConfiguration") $currentCertificateBasedAuthConfiguration.id
 
 # Get organizationalBrandingProperties https://docs.microsoft.com/en-us/graph/api/organizationalbrandingproperties-create?view=graph-rest-1.0&tabs=http
 $organizationalBrandingProperties = Get-RequestData -ChildEntity "Branding"

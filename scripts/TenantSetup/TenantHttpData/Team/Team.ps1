@@ -16,11 +16,11 @@ Connect-DefaultTenant -AppSettings $appSettings
 $team = $identifiers.team._value
 $user = $identifiers.user._value
 
-# Create or Replace Schedule https://docs.microsoft.com/en-us/graph/api/team-put-schedule?view=graph-rest-1.0
-# $scheduleData = Get-RequestData -ChildEntity "Schedule"
-# $schedule = Request-DelegatedResource -Uri "teams/$($team)/schedule" -Body $scheduleData -Method PUT
+#Create or Replace Schedule https://docs.microsoft.com/en-us/graph/api/team-put-schedule?view=graph-rest-1.0
+$scheduleData = Get-RequestData -ChildEntity "Schedule"
+Request-DelegatedResource -Uri "teams/$($team)/schedule" -Body $scheduleData -Method PUT
 
-# Create Scheduling Group https://docs.microsoft.com/en-us/graph/api/schedule-post-schedulinggroups?view=graph-rest-1.0&tabs=http
+#Create Scheduling Group https://docs.microsoft.com/en-us/graph/api/schedule-post-schedulinggroups?view=graph-rest-1.0&tabs=http
 <#
     Create a Scheduling Group with all the Team members as members.
 #>

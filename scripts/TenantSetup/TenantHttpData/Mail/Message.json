@@ -1,0 +1,26 @@
+{
+    "message": {
+        "subject": "Raptor Development Test Message Subject 3",
+        "body": {
+            "contentType": "Text",
+            "content": "Raptor Development Test Message Content"
+        },
+        "hasAttachments": true,
+        "attachments": [
+            {
+                "@odata.type": "#microsoft.graph.fileAttachment",
+                "contentBytes": "UmFwdG9yIFRlc3QgTWVzc2FnZSBBdHRhY2htZW50Lg==",
+                "name": "Raptor Test Message Attachment.txt",
+                "size": 31,
+                "contentType": "text/plain"
+            }
+        ],
+        "toRecipients": [
+            {
+                "emailAddress": {
+                    "address": "fannyd@contoso.onmicrosoft.com"
+                }
+            }
+        ]
+    }
+}

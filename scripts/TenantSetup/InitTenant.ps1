@@ -1,6 +1,7 @@
 # Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 Param(
-    [switch] $CreateDelegatedApps
+    [switch] $CreateDelegatedApps,
+    [switch] $UpdateApplicationPermissions
 )
 $raptorUtils = Join-Path $PSScriptRoot "./RaptorUtils.ps1" -Resolve
 . $raptorUtils
@@ -34,6 +35,14 @@ if($CreateDelegatedApps) {
     dotnet restore $delegatedApp
     dotnet build $delegatedApp -c Release
     dotnet run --project $delegatedApp -c Release
+}
+
+# Optional: Build ApplicationPermission Updater and Execute
+if($UpdateApplicationPermissions) {
+    $applicationPermissionsUpdater = Join-Path $PSScriptRoot "..\..\ApplicationPermissionsUpdater"
+    dotnet restore $applicationPermissionsUpdater
+    dotnet build $applicationPermissionsUpdater -c Release
+    dotnet run --project $applicationPermissionsUpdater -c Release
 }
 
 #3. Execute Default Data Script

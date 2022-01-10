@@ -1,0 +1,9 @@
+{
+    "displayName": "General",
+    "description": "Built-in catalog.",
+    "catalogType": "serviceDefault",
+    "state": "published",
+    "isExternallyVisible": true,
+    "createdDateTime": "2021-12-02T16:22:43.213Z",
+    "modifiedDateTime": "2021-12-02T16:22:43.213Z"
+}

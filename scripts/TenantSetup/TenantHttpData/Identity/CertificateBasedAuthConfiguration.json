@@ -1,7 +1,8 @@
 {
     "certificateAuthorities": [
       {
-        "isRootAuthority": true
+        "isRootAuthority": true,
+        "certificate":"{certificate}"
       }
     ]
   }

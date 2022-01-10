@@ -7,7 +7,6 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 
 $appSettings = Get-AppSettings
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
-
 #Connect To Microsoft Graph Using ClientId, TenantId and Certificate in AppSettings
 Connect-DefaultTenant -AppSettings $appSettings
 
@@ -19,7 +18,7 @@ $currentNameLocation = Invoke-RequestHelper -Uri $nameLocationUrl -Method GET |
     Select-Object -First 1
 
 if ($null -eq $currentNameLocation) {
-    $currentNameLocation = Request-DelegatedResource -Uri $nameLocationUrl -Body $namedLocationData -Method POST
+    $currentNameLocation = Invoke-RequestHelper -Uri $nameLocationUrl -Body $namedLocationData -Method POST
 }
 
 $identifiers = Add-Identifier $identifiers @("namedLocation") $currentNameLocation.id

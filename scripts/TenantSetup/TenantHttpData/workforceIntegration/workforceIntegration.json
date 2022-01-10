@@ -6,6 +6,6 @@
       "secret": ""
     },
     "isActive": true,
-    "url": "https://raptorcallbacks.azurewebsites.net/api",
+    "url": "https://raptorcallbacks.azurewebsites.net/Values",
     "supportedEntities": "shift"
   }

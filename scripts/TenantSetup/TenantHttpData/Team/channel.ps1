@@ -12,7 +12,7 @@ $teamId = $identifiers.team._value
 $channelId = $identifiers.team.channel._value
 # Get channel message default data
 $channelMessage = Request-DelegatedResource -Uri "teams/$teamId/channels/$channelId/messages" -ScopeOverride "ChannelMessage.Read.All" |
-    Where-Object { $_.from.user.displayName -eq "Lynne Robbins"} |
+    Where-Object { $_.from.user.displayName -eq "Adele Vance"} |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("team", "channel", "chatMessage") $channelMessage.id
 

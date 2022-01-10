@@ -12,19 +12,19 @@ $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 Connect-DefaultTenant -AppSettings $appSettings
 
 # Create External Connection https://docs.microsoft.com/en-us/graph/api/externalconnectors-external-post-connections?view=graph-rest-1.0&tabs=http
-$externalConnectionData = Get-RequestData -ChildEntity "ExternalConnection"
-$externalConnectionUrl =  "/external/connections"
-$currentExternalConnectionData = Invoke-RequestHelper -Uri $externalConnectionUrl -Method GET -ResponseHeadersVariable "script:ResponseHeaders" |
-    Where-Object { $_.id -eq $externalConnectionData.id } |
-    Select-Object -First 1
+# Missing Permissions https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/748
+# $externalConnectionData = Get-RequestData -ChildEntity "ExternalConnection"
+# $externalConnectionUrl =  "/external/connections"
+# $currentExternalConnectionData = Invoke-RequestHelper -Uri $externalConnectionUrl -Method GET -ResponseHeadersVariable "script:ResponseHeaders" |
+#     Where-Object { $_.id -eq $externalConnectionData.id } |
+#     Select-Object -First 1
 
-if($null -eq $currentExternalConnectionData){
-    $currentExternalConnectionData = Invoke-RequestHelper -Uri $externalConnectionUrl -Method POST -Body $externalConnectionData -ResponseHeadersVariable "script:ResponseHeaders"
-}
+# if($null -eq $currentExternalConnectionData){
+#     $currentExternalConnectionData = Invoke-RequestHelper -Uri $externalConnectionUrl -Method POST -Body $externalConnectionData -ResponseHeadersVariable "script:ResponseHeaders"
+# }
+# $identifiers = Add-Identifier $identifiers @("externalConnectors.externalConnection") $currentExternalConnectionData.id
 
-$identifiers = Add-Identifier $identifiers @("externalConnectors.externalConnection") $currentExternalConnectionData.id
-
-# Create Schema https://docs.microsoft.com/en-us/graph/api/externalconnectors-schema-create?view=graph-rest-1.0&tabs=http
+# Create Schema https://docs.microsoft.com/en-us/graph/api/externalconnectors-schema-create?view=graph-rest-1.0&tabs=hclearttp
 $schemaData = Get-RequestData -ChildEntity "Schema"
 $schemaUrl =  "/external/connections/$($currentExternalConnectionData.id)/schema"
 $currentSchema = Invoke-RequestHelper -Uri $schemaUrl -Method GET -ResponseHeadersVariable "script:ResponseHeaders" |

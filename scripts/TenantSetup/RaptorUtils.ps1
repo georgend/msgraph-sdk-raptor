@@ -188,6 +188,11 @@ function Get-Scopes
         [Parameter(Mandatory = $True)][string] $Path
     )
     $scopes = @()
+    if ($Path[0] -ne "/") # DevX API expects a leading slash
+    {
+        $Path = "/$Path"
+    }
+
     try
     {
         $graphExplorerApi = "https://graphexplorerapi.azurewebsites.net/permissions?requesturl=$Path&method=$Method"
@@ -276,7 +281,6 @@ Function Request-DelegatedResource
             $flattenedScopes += $joinedScopeString
         }
     }
-
     foreach ($currentScope in $flattenedScopes)
     {
         # If JoinedScopeString is .default, we use the Default Raptor Client ID configured in AppSettings.
@@ -288,7 +292,7 @@ Function Request-DelegatedResource
             if ($null -ne $userToken)
             {
                 Connect-MgGraph -AccessToken $userToken.access_token | Out-Null
-                $jsonBody = $Body | ConvertTo-Json -Depth 3
+                $jsonBody = $Body | ConvertTo-Json -Depth 5
                 if ($FilePath -and (Test-Path -Path $FilePath))
                 {
                     # provide -InputFilePath param instead of -Body param
@@ -349,7 +353,7 @@ Function Get-DefaultAdminUserId
 
 Function New-Certificate
 {
-    $selfSignedCert = New-SelfSignedCertificate -Type Custom -NotAfter (Get-Date).AddYears(2) -Subject "CN=Microsoft,O=Microsoft Corp,L=Redmond,ST=Washington,C=US"
+    $selfSignedCert = New-SelfSignedCertificate -Type Custom -NotAfter (Get-Date).AddYears(2) -Subject "CN=Microsoft,O=Microsoft Corp,L=Redmond,ST=Washington,C=US" -CertStoreLocation "Cert:\CurrentUser\My"
     $exportedCert = [System.Convert]::ToBase64String($selfSignedCert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert), [System.Base64FormattingOptions]::InsertLineBreaks)
     return $exportedCert
 }
@@ -589,4 +593,17 @@ function Add-Identifier ($identifiers, [string[]]$path, $value) {
     Write-Host "[ADDED] $([string]::join('->', $path)) = $value" -ForegroundColor Cyan
 
     return $identifiers
+}
+
+<#
+    Wake up CallBack Validation Site
+#>
+function Invoke-CallbackSiteWakeup{
+    [CmdletBinding()]
+    param (
+        [Parameter()]
+        [string]
+        $CallBackSiteUrl = "https://raptorcallbacks.azurewebsites.net/Values"
+    )
+    Invoke-RestMethod -Uri $CallBackSiteUrl -Method POST
 }

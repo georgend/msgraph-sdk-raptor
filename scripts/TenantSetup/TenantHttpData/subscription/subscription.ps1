@@ -12,6 +12,10 @@ $subscription = Request-DelegatedResource -Uri "subscriptions" -ScopeOverride "M
 if(!$subscription){
     $subData = Get-RequestData -ChildEntity "subscription"
     $subData.expirationDateTime = (Get-Date).AddDays(1).ToString("yyyy-MM-ddThh:mm:ss.0000000Z")
+
+    #Wake Up The Callbacks Site to prevent timeouts.
+    Invoke-CallbackSiteWakeup
+
     $subscription = Request-DelegatedResource -Uri "subscriptions" -Method "POST" -Body $subData -ScopeOverride "Mail.Read"
 }
 

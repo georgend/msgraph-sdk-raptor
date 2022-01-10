@@ -24,6 +24,15 @@ $user = Get-DefaultAdminUser
 $identifiers = Add-Identifier $identifiers @("user") $user.id
 $identifiers = Add-Identifier $identifiers @("directoryObject") $user.id
 
+#TODO: Place is missing from tenant
+# Requires to be created manually via Admin UI Interaction.
+# After Creation requires 48hrs to propagate
+# https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/747
+$place = Invoke-RequestHelper -Uri "places/microsoft.graph.room" |
+    Where-Object {$_.displayName -eq "Raptor Test Room"}
+    Select-Object -First 1
+$identifiers = Add-Identifier $identifiers @("place") $place.id
+
 $unifiedRoleDefinition = Invoke-RequestHelper -Uri "roleManagement/directory/roleDefinitions?`$filter=displayName eq 'Groups Administrator'" |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("unifiedRoleDefinition") $unifiedRoleDefinition.id
@@ -38,13 +47,13 @@ $userScopeTeamsAppInstallation = Invoke-RequestHelper -Uri "users/$($user.id)/te
 $identifiers = Add-Identifier $identifiers @("user", "userScopeTeamsAppInstallation") $userScopeTeamsAppInstallation.id
 
 $team = Invoke-RequestHelper -Uri "groups" |
-    Where-Object { $_.resourceProvisioningOptions -eq "Team" -and $_.displayName -eq "U.S. Sales"} |
+    Where-Object { $_.resourceProvisioningOptions -eq "Team" -and $_.displayName -eq "Mark 8 Project Team"} |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("team") $team.id
 $identifiers = Add-Identifier $identifiers @("group") $team.id
 
 $channel = Invoke-RequestHelper -Uri "teams/$($team.id)/channels" |
-    Where-Object { $_.displayName -eq "Sales West"}
+    Where-Object { $_.displayName -eq "Research and Development"}
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("team", "channel") $channel.id
 
@@ -59,12 +68,15 @@ $installedApp = Invoke-RequestHelper -Uri "teams/$($team.id)/installedApps" |
 $identifiers = Add-Identifier $identifiers @("team", "teamsAppInstallation") $installedApp.id
 
 $drive = Invoke-RequestHelper -Uri "drives" |
-    Where-Object { $_.createdBy.user.displayName -eq $admin } |
+    Where-Object { $_.createdBy.user.email -eq $user.email } |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("drive") $drive.id
 
-$driveItem = Invoke-RequestHelper -Uri "drives/$($drive.id)/root/children" |
-    Where-Object { $_.name -eq "Blog Post preview.docx" } |
+$demoFilesFolder = Invoke-RequestHelper -Uri "drives/$($drive.id)/root/children" |
+    Where-Object { $_.name -eq "Demo Files" } |
+    Select-Object -First 1
+$driveItem = Invoke-RequestHelper -Uri "drives/$($drive.id)/items/$($demoFilesFolder.id)/children" |
+    Where-Object { $_.name -eq "Customer Data.xlsx" } |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("drive", "driveItem") $driveItem.id
 
@@ -77,7 +89,7 @@ $permission = Invoke-RequestHelper -Uri "drives/$($drive.id)/items/$($driveItem.
 $identifiers = Add-Identifier $identifiers @("driveItem", "permission") $permission.id
 
 $application = Invoke-RequestHelper -Uri "applications" |
-    Where-Object { $_.displayName -eq "Salesforce" } |
+    Where-Object { $_.displayName -eq "PermissionManager" } |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("application") $application.id
 
@@ -104,7 +116,7 @@ $directoryRoleTemplate = Invoke-RequestHelper -Uri "directoryRoleTemplates" |
 $identifiers = Add-Identifier $identifiers @("directoryRoleTemplate") $directoryRoleTemplate.id
 
 $conversation = Invoke-RequestHelper -Uri "groups/$($team.id)/conversations" |
-    Where-Object { $_.topic -eq "The new U.S. Sales group is ready" }
+    Where-Object { $_.topic -eq "Mark 8 Project Sync" }
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("group", "conversation") $conversation.id
 
@@ -113,7 +125,7 @@ $conversationThread = Invoke-RequestHelper -Uri "groups/$($team.id)/conversation
 $identifiers = Add-Identifier $identifiers @("group", "conversationThread") $conversationThread.id
 
 $post = Invoke-RequestHelper -Uri "groups/$($team.id)/conversations/$($conversation.id)/threads/$($conversationThread.id)/posts" |
-    Where-Object { $_.from.emailAddress.name -eq "U.S. Sales" } |
+    #Where-Object { $_.from.emailAddress.name -eq "U.S. Sales" } |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("group", "conversationThread", "post") $post.id
 
@@ -139,10 +151,6 @@ $identifiers = Add-Identifier $identifiers @("secureScoreControlProfile") "OneAd
 $schemaExtension = Invoke-RequestHelper -Uri "schemaExtensions?`$filter=description eq 'Global settings'" |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("schemaExtension") $schemaExtension.id
-
-$secureScore = Invoke-RequestHelper -Uri "security/secureScores?`$top=1" |
-    Select-Object -First 1
-$identifiers = Add-Identifier $identifiers @("secureScore") $secureScore.id
 
 $subscribedSku = Invoke-RequestHelper -Uri "subscribedSkus" |
     Where-Object { $_.skuPartNumber -eq 'ENTERPRISEPACK'}
@@ -197,8 +205,7 @@ $identifiers = Add-Identifier $identifiers @("site", "contentType", "columnDefin
 # $sitePermission.id
 # $identifiers.site.permission._value=$sitePermission.id
 
-$servicePrincipal = Invoke-RequestHelper -Uri "servicePrincipals" |
-    Where-Object {$_.displayName -eq "Microsoft Insider Risk Management"}
+$servicePrincipal = Invoke-RequestHelper -Uri "servicePrincipals?`$filter=displayName eq 'PermissionManager'" |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("servicePrincipal") $servicePrincipal.id
 
@@ -206,19 +213,6 @@ $permissionGrantPolicy = Invoke-RequestHelper -Uri "policies/permissionGrantPoli
     Where-Object {$_.displayName -eq "All application permissions, for any client app"}
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("permissionGrantPolicy") $permissionGrantPolicy.id
-
-#Tenant has no messages with Attachments
-$message = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/messages?`$orderBy=createdDateTime asc" |
-    Select-Object -First 1
-$identifiers = Add-Identifier $identifiers @("message") $message.id
-
-#When Message with attachment is created, this should work
-#TODO: Create Message with Attachment
-$attachmentMessage = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/messages?`$filter=hasAttachments eq true" |
-    Select-Object -First 1
-$attachment = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/messages/$($attachmentMessage.id)/attachments" |
-    Select-Object -First 1
-$identifiers = Add-Identifier $identifiers @("message", "attachment") $attachment.id
 
 #OData Invoke-RequestHelperuest is not Supported.
 # $messageExtensions = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/messages/$($identifiers.message._value)/extensions" |
@@ -234,16 +228,6 @@ $identifiers = Add-Identifier $identifiers @("calendarGroup") $calendarGroup.id
 $orgContact = Invoke-RequestHelper -Uri "contacts" |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("orgContact") $orgContact.id
-
-#Contact Folder is Missing from Tenant
-$contactFolder = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/contactFolders" |
-    Select-Object -First 1
-$identifiers = Add-Identifier $identifiers @("contactFolder") $contactFolder.id
-
-$place = Invoke-RequestHelper -Uri "places/microsoft.graph.room" |
-    Where-Object {$_.displayName -eq "Conf Room Rainier"}
-    Select-Object -First 1
-$identifiers = Add-Identifier $identifiers @("place") $place.id
 
 #Outlook Categories are pre-defined https://docs.microsoft.com/en-us/graph/api/resources/outlookcategory?view=graph-rest-1.0
 $outlookCategory = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/outlook/masterCategories" |

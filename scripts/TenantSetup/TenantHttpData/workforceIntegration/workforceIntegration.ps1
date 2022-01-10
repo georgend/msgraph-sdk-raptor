@@ -7,12 +7,14 @@ $raptorUtils = Join-Path $PSScriptRoot "../../RaptorUtils.ps1" -Resolve
 
 $identifiers = Get-CurrentIdentifiers -IdentifiersPath $IdentifiersPath
 
+#Wake Up The Callbacks Site to prevent timeouts.
+Invoke-CallbackSiteWakeup
 
 $integration = Request-DelegatedResource -Uri "teamwork/workforceintegrations" -ScopeOverride "WorkforceIntegration.Read.All"| Select-Object -First 1
 if (!$integration){
     $integrationData = Get-RequestData -ChildEntity "workforceIntegration"
     $integrationData.encryption.secret = Get-RandomAlphanumericString -length 64
-    $integration = Request-DelegatedResource -Uri "teamwork/workforceintegrations" -Method "POST" -Body $integrationData -ScopeOverride "WorkforceIntegration.ReadWrite.Al"
+    $integration = Request-DelegatedResource -Uri "teamwork/workforceintegrations" -Method "POST" -Body $integrationData -ScopeOverride "WorkforceIntegration.ReadWrite.All"
 }
 
 $identifiers = Add-Identifier $identifiers @("workforceIntegration") $integration.id

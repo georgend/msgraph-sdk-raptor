@@ -46,7 +46,8 @@ $plannerBucket = Request-DelegatedResource -Uri "planner/plans/$($plannerPlan.id
 $identifiers = Add-Identifier $identifiers @("plannerBucket") $plannerBucket.id
 
 # tenant agnostic data
-$identifiers = Add-Identifier $identifiers @("printService", "printServiceEndpoint") "mpsdiscovery"
+$printEndpointId = "mpsdiscovery"
+$identifiers = Add-Identifier $identifiers @("printService", "printServiceEndpoint") $printEndpointId
 
 $printService = Request-DelegatedResource -Uri "print/services" -ScopeOverride "Printer.Read.All" |
     Where-Object { $_.endpoints[0].id -eq $printEndpointId } |
@@ -65,5 +66,9 @@ $teamsApp = Request-DelegatedResource -Uri "appCatalogs/teamsApps" |
     Where-Object { $_.displayName -eq "Teams" } |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("teamsApp") $teamsApp.id
+
+$secureScore = Request-DelegatedResource -Uri "security/secureScores?`$top=1" |
+     Select-Object -First 1
+$identifiers = Add-Identifier $identifiers @("secureScore") $secureScore.id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

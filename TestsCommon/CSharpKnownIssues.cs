@@ -792,6 +792,15 @@ public static class CSharpKnownIssues
                 { "list-printconnector-2-csharp-V1-executes", ServicePrinterMultiplePermissionsKnownIssue },
                 { "list-printershare-2-csharp-V1-executes", ServicePrinterMultiplePermissionsKnownIssue },
                 { "get-printtasktrigger-csharp-V1-executes", ServiceTaskPrinterKnownIssue },
+
+                { "accesspackage-filterbycurrentuser-csharp-V1-executes", SDKFunctionParameterKnownIssue },
+                { "accesspackageassignment-filterbycurrentuser-csharp-V1-executes", MissingPermissionScopeKnownIssue },
+                { "accesspackageassignmentrequest-filterbycurrentuser-csharp-V1-executes", MissingPermissionScopeKnownIssue },
+                { "get-accesspackageassignmentrequest-csharp-V1-executes", MissingPermissionScopeKnownIssue },
+                { "get-accesspackagecatalog-csharp-V1-executes", MissingPermissionScopeKnownIssue },
+                { "list-accesspackageassignment-csharp-V1-executes", MissingPermissionScopeKnownIssue },
+                { "list-accesspackageassignmentrequest-csharp-V1-executes", MissingPermissionScopeKnownIssue },
+                { "list-accesspackagecatalog-csharp-V1-executes", MissingPermissionScopeKnownIssue }
             };
     }
 }
