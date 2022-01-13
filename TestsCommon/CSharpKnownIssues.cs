@@ -12,9 +12,9 @@ public static class CSharpKnownIssues
         var version = versionEnum.ToString();
         return new Dictionary<string, KnownIssue>()
             {
-                {$"delete-userflowlanguagepage-csharp-{version}-compiles", new KnownIssue(Category.SDKkiotaTriage, StreamRequestDoesNotSupportDelete) },
-                {$"unfollow-site-csharp-{version}-compiles", new KnownIssue(Category.SDKkiotaTriage, "SDK doesn't convert actions defined on collections to methods.", "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/250") },
-                {$"follow-site-csharp-{version}-compiles", new KnownIssue(Category.SDKkiotaTriage, "SDK doesn't convert actions defined on collections to methods.", "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/250") },
+                {$"delete-userflowlanguagepage-csharp-{version}-compiles", new KnownIssue(Category.SDK, StreamRequestDoesNotSupportDelete) },
+                {$"unfollow-site-csharp-{version}-compiles", new KnownIssue(Category.SDK, "SDK doesn't convert actions defined on collections to methods.", "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/250") },
+                {$"follow-site-csharp-{version}-compiles", new KnownIssue(Category.SDK, "SDK doesn't convert actions defined on collections to methods.", "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/250") },
                 { "get-android-count-csharp-V1-compiles", CountIsNotSupportedKnownIssue },
                 {$"get-group-transitivemembers-count-csharp-{version}-compiles", CountIsNotSupportedKnownIssue },
                 { "get-transitivereports-csharp-Beta-compiles", CountIsNotSupportedKnownIssue},
@@ -23,7 +23,7 @@ public static class CSharpKnownIssues
                 {$"get-tier-count-csharp-{version}-compiles", SearchHeaderIsNotSupportedKnownIssue },
                 {$"get-wa-count-csharp-{version}-compiles", SearchHeaderIsNotSupportedKnownIssue },
                 {$"get-web-count-csharp-{version}-compiles", SearchHeaderIsNotSupportedKnownIssue },
-                {$"get-rooms-in-roomlist-csharp-{version}-compiles", new KnownIssue(Category.SDKkiotaTriage, "SDK doesn't generate type segment in OData URL.", GitHubIssue: "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/239") },
+                {$"get-rooms-in-roomlist-csharp-{version}-compiles", new KnownIssue(Category.SDK, "SDK doesn't generate type segment in OData URL.", GitHubIssue: "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/239") },
                 { "create-externaldomainname-from--csharp-Beta-compiles", TypeCastIsNotSupportedKnownIssue},
                 { "list-externaldomainname-csharp-Beta-compiles", TypeCastIsNotSupportedKnownIssue},
                 { "list-updatableasset-csharp-Beta-compiles", TypeCastIsNotSupportedKnownIssue},
@@ -38,11 +38,11 @@ public static class CSharpKnownIssues
                 { "remove-rejectedsender-from-group-csharp-V1-compiles", DeleteAsyncIsNotSupportedForReferencesKnownIssue },
                 { "delete-acceptedsenders-from-group-csharp-V1-compiles", DeleteAsyncIsNotSupportedForReferencesKnownIssue },
                 { "send-sharing-invite-csharp-Beta-compiles", new KnownIssue(Category.SDK, "C# depends on nonguaranteed parameter ordering", "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1202")},
-                { "put-b2xuserflows-apiconnectorconfiguration-postattributecollection-csharp-V1-compiles", new KnownIssue(Category.SDKkiota, ComplexTypeNavigationProperties, ComplexTypeNavigationPropertiesGithubIssue) },
-                { "put-b2xuserflows-apiconnectorconfiguration-postfederationsignup-csharp-V1-compiles", new KnownIssue(Category.SDKkiota, ComplexTypeNavigationProperties, ComplexTypeNavigationPropertiesGithubIssue) },
-                { "update-b2xuserflows-userflowidentityprovider-csharp-Beta-compiles", new KnownIssue(Category.SDKkiotaTriage, "IB2xIdentityUserFlowUserFlowIdentityProvidersCollectionReferencesRequest' does not contain a definition for 'UpdateAsync'")},
-                { "update-b2cuserflows-userflowidentityproviders-csharp-Beta-compiles", new KnownIssue(Category.SDKkiotaTriage, "IB2cIdentityUserFlowUserFlowIdentityProvidersCollectionReferencesRequest' does not contain a definition for 'UpdateAsync'")},
-                { "post-administrativeunits-members-csharp-Beta-compiles", new KnownIssue(Category.SDKkiotaTriage, "SDK doesn't convert actions defined on collections to methods.", "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/250")},
+                { "put-b2xuserflows-apiconnectorconfiguration-postattributecollection-csharp-V1-compiles", new KnownIssue(Category.SDK, ComplexTypeNavigationProperties, ComplexTypeNavigationPropertiesGithubIssue) },
+                { "put-b2xuserflows-apiconnectorconfiguration-postfederationsignup-csharp-V1-compiles", new KnownIssue(Category.SDK, ComplexTypeNavigationProperties, ComplexTypeNavigationPropertiesGithubIssue) },
+                { "update-b2xuserflows-userflowidentityprovider-csharp-Beta-compiles", new KnownIssue(Category.SDK, "IB2xIdentityUserFlowUserFlowIdentityProvidersCollectionReferencesRequest' does not contain a definition for 'UpdateAsync'")},
+                { "update-b2cuserflows-userflowidentityproviders-csharp-Beta-compiles", new KnownIssue(Category.SDK, "IB2cIdentityUserFlowUserFlowIdentityProvidersCollectionReferencesRequest' does not contain a definition for 'UpdateAsync'")},
+                { "post-administrativeunits-members-csharp-Beta-compiles", new KnownIssue(Category.SDK, "SDK doesn't convert actions defined on collections to methods.", "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/250")},
 
                 { "deploymentaudience-updateaudience-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/12811")},
                 { "get-devicecompliancepolicysettingstatesummary-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/13596")},
@@ -613,8 +613,8 @@ public static class CSharpKnownIssues
                 { "get-plans-1-csharp-V1-executes", HTTPKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14686" }},
                 { "planner-get-tasks-csharp-V1-executes", HTTPKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14687" } },
 
-                { "get-bitlockerrecoverykey-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/607" } },
-                { "get-bitlockerrecoverykey-key-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/607" } },
+                { "get-bitlockerrecoverykey-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/607" } },
+                { "get-bitlockerrecoverykey-key-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/607" } },
 
                 { "accessreviewinstance-filterbycurrentuser-csharp-V1-executes", SDKFunctionParameterKnownIssue },
                 { "accessreviewinstancedecisionitem-filterbycurrentuser-csharp-V1-executes", SDKFunctionParameterKnownIssue },
@@ -626,10 +626,10 @@ public static class CSharpKnownIssues
 
                 { "get-alert-csharp-V1-executes", MissingDataEphemeralAlertData },
 
-                { "get-appconsentrequest-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
-                { "get-userconsentrequest-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
-                { "list-userconsentrequest-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
-                { "userconsentrequest-filterbycurrentuser-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
+                { "get-appconsentrequest-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
+                { "get-userconsentrequest-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
+                { "list-userconsentrequest-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
+                { "userconsentrequest-filterbycurrentuser-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
 
                 { "get-callrecord-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
                 { "callrecord-getpstncalls-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
@@ -645,15 +645,12 @@ public static class CSharpKnownIssues
 
                 { "get-contract-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/322", CustomMessage = "blocked" } },
 
-
-
-                { "get-microsoftauthenticatorauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/621" } },
-
+                { "get-microsoftauthenticatorauthenticationmethod-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/621" } },
 
                 { "get-onlinemeeting-user-token-csharp-V1-executes", MissingDataOnlineMeetingKnownIssue },
                 { "get-attendee-report-csharp-V1-executes", MissingDataOnlineMeetingKnownIssue },
 
-                { "get-printconnector-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/624" } },
+                { "get-printconnector-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/624" } },
 
                 { "get-printershare-capabilities-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/625" } },
                 { "get-printershare-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/625" } },
@@ -676,7 +673,7 @@ public static class CSharpKnownIssues
                 { "get-teamworkbot-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/635" } },
 
 
-                { "get-windowshelloforbusinessauthenticationmethod-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/638" } },
+                { "get-windowshelloforbusinessauthenticationmethod-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/638" } },
 
                 { "list-bitlockerrecoverykey-csharp-V1-executes", new KnownIssue(Category.NeedsAnalysis, "Service requires UserAgent") },
                 { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", new KnownIssue(Category.NeedsAnalysis, "Service requires UserAgent") },
@@ -692,7 +689,7 @@ public static class CSharpKnownIssues
 
                 { "user-chat-teamsapps-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/509" } },
 
-                { "get-manager-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/511" } },
+                { "get-manager-1-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/511" } },
 
                 { "get-event-based-on-eventmessage-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/518" } },
 

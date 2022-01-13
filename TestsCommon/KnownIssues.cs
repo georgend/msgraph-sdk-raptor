@@ -17,8 +17,7 @@ public enum Category
     NeedsAnalysis,
     MissingData,
     MissingPermissionScope,
-    SDKkiota,
-    SDKkiotaTriage,
+    NoProgrammaticWay,
     ProtectedAPI,
     Service
 }
@@ -91,6 +90,11 @@ public static class KnownIssues
     internal const string MissingDataEphemeralDataInService = "Ephemeral Service data that is deleted after an unknown period of time.";
     #endregion
 
+    #region No Programmatic Way
+    internal const string NoProgrammaticWayText = "There is no programmatic way to generate this data";
+    internal const string NoProgrammaticWayPrefix = "known-issue-no-programmatic-way-";
+    #endregion
+
     #region Test Owner values (to categorize results in Azure DevOps)
 
     #endregion
@@ -104,22 +108,23 @@ public static class KnownIssues
     #endregion
 
     internal static readonly KnownIssue ExcelItemAtDocumentationKnownIssue = new KnownIssue(Category.Documentation, "Excel documentation inconsistency between ID and itemAt. Could also be a service description issue.", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14853");
-    internal static readonly KnownIssue TypeCastIsNotSupportedKnownIssue = new KnownIssue(Category.SDKkiotaTriage, TypeCastIsNotSupported, TypeCastIsNotSupportedGithubIssue);
-    internal static readonly KnownIssue SearchHeaderIsNotSupportedKnownIssue = new KnownIssue(Category.SDKkiotaTriage, SearchHeaderIsNotSupported, SearchHeaderIsNotSupportedGithubIssue);
-    internal static readonly KnownIssue MissingContentPropertyKnownIssue = new KnownIssue(Category.SDKkiotaTriage, MissingContentProperty, MissingContentPropertyGithubIssue);
-    internal static readonly KnownIssue DeleteAsyncIsNotSupportedForReferencesKnownIssue = new KnownIssue(Category.SDKkiotaTriage, DeleteAsyncIsNotSupportedForReferences, DeleteAsyncIsNotSupportedForReferencesGithubIssue);
+    internal static readonly KnownIssue TypeCastIsNotSupportedKnownIssue = new KnownIssue(Category.SDK, TypeCastIsNotSupported, TypeCastIsNotSupportedGithubIssue);
+    internal static readonly KnownIssue SearchHeaderIsNotSupportedKnownIssue = new KnownIssue(Category.SDK, SearchHeaderIsNotSupported, SearchHeaderIsNotSupportedGithubIssue);
+    internal static readonly KnownIssue MissingContentPropertyKnownIssue = new KnownIssue(Category.SDK, MissingContentProperty, MissingContentPropertyGithubIssue);
+    internal static readonly KnownIssue DeleteAsyncIsNotSupportedForReferencesKnownIssue = new KnownIssue(Category.SDK, DeleteAsyncIsNotSupportedForReferences, DeleteAsyncIsNotSupportedForReferencesGithubIssue);
     internal static readonly KnownIssue EventActionsShouldNotBeReorderedKnownIssue = new KnownIssue(Category.MetadataPreprocessing, EventActionsShouldNotBeReordered, EventActionsShouldNotBeReorderedGithubIssue);
     internal static readonly KnownIssue StructuralPropertiesAreNotHandledKnownIssue = new KnownIssue(Category.SnippetGeneration, StructuralPropertiesAreNotHandled, StructuralPropertiesAreNotHandledGithubIssue);
     internal static readonly KnownIssue NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue = new KnownIssue(Category.SnippetGeneration, NamespaceOdataTypeAnnotationsWithoutHashSymbol, NamespaceOdataTypeAnnotationsWithoutHashSymbolGithubIssue);
     internal static readonly KnownIssue DateTimeOffsetHandlingInUrlsKnownIssue = new KnownIssue(Category.SnippetGeneration, DateTimeOffsetHandlingInUrls, DateTimeOffsetHandlingInUrlsGithubIssue);
     internal static readonly KnownIssue EducationAssignmentRubricContainsTargetPreprocessorKnownIssue = new KnownIssue(Category.Metadata, EducationAssignmentRubricContainsTargetPreprocessor, EducationAssignmentRubricContainsTargetPreprocessorGithubIssue);
     internal static readonly KnownIssue IdentitySetAndIdentityShouldNestAdditionalDataKnownIssue = new KnownIssue(Category.SnippetGeneration, GitHubIssue: IdentitySetAndIdentityShouldNestAdditionalDataGithubIssue);
-    internal static readonly KnownIssue CountIsNotSupportedKnownIssue = new KnownIssue(Category.SDKkiotaTriage, CountIsNotSupported, CountIsNotSupportedGithubIssue);
+    internal static readonly KnownIssue CountIsNotSupportedKnownIssue = new KnownIssue(Category.SDK, CountIsNotSupported, CountIsNotSupportedGithubIssue);
     internal static readonly KnownIssue SnippetGenerationKnownIssue = new KnownIssue(Category.SnippetGeneration, CustomMessage: "Snippet generation should be fixed", TestNamePrefix: "known-issue-snippet-generation-");
     internal static readonly KnownIssue SDKFunctionParameterKnownIssue = new KnownIssue(Category.SDK, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1156", TestNamePrefix: "known-issue-sdk-function-parameter-");
     internal static readonly KnownIssue HTTPKnownIssue = new KnownIssue(Category.HTTP, CustomMessage: HttpSnippetWrong, TestNamePrefix: "known-issue-http-snippet-wrong-");
     internal static readonly KnownIssue NeedsAnalysisKnownIssue = new KnownIssue(Category.NeedsAnalysis, CustomMessage: NeedsAnalysisText, TestNamePrefix: NeedsAnalysisTestNamePrefix);
     internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(Category.MissingData, CustomMessage: MissingDataText, TestNamePrefix: MissingDataTestNamePrefix);
+    internal static readonly KnownIssue NoProgrammaticWayKnownIssue = new KnownIssue(Category.NoProgrammaticWay, CustomMessage: NoProgrammaticWayText, TestNamePrefix: NoProgrammaticWayPrefix);
     internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(Category.MissingPermissionScope, CustomMessage: MissingPermissionScopeText, TestNamePrefix: MissingPermissionScopeTestNamePrefix);
     internal static readonly KnownIssue MissingDataEphemeralAlertData = new KnownIssue(Category.Service,  GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/611", CustomMessage: MissingDataEphemeralDataInService, TestNamePrefix: MissingDataTestNamePrefix);
     internal static readonly KnownIssue MissingDataEphemeralOperationData = new KnownIssue(Category.Service, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692", CustomMessage: MissingDataEphemeralDataInService, TestNamePrefix: MissingDataTestNamePrefix);
@@ -214,7 +219,7 @@ public static class KnownIssues
                 { $"unfollow-item-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, "Unfollow uses POST instead of DELETE", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14975") },
                 { $"update-openidconnectprovider-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, "OpenIdConnectProvider should be specified") },
                 { $"update-teamsapp-java-V1-compiles", new KnownIssue(Category.Metadata, $"teamsApp needs hasStream=true. In addition to that, we need these fixed: {Environment.NewLine}https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/160 {Environment.NewLine}https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/336") },
-                { $"create-connector-from-connectorgroup-{lng}-Beta-compiles", new KnownIssue(Category.SDKkiotaTriage, "Missing method") },
+                { $"create-connector-from-connectorgroup-{lng}-Beta-compiles", new KnownIssue(Category.SDK, "Missing method") },
             };
     }
 
