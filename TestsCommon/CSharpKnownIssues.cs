@@ -691,7 +691,7 @@ public static class CSharpKnownIssues
 
                 { "get-manager-1-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/511" } },
 
-                { "get-event-based-on-eventmessage-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/518" } },
+                { "get-event-based-on-eventmessage-csharp-V1-executes", new KnownIssue(Category.Documentation, "Delegated permissions don't work as documented", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/15507") },
 
                 { "get-onenoteoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/520" } },
 
