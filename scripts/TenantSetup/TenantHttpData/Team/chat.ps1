@@ -41,7 +41,7 @@ $identifiers = Add-Identifier $identifiers @("chat", "teamsTab") $teamsTab.id
 
 # get or create chat message
 $chatMessage = Request-DelegatedResource -Uri "chats/$($chat.id)/messages?`$top=1" -ScopeOverride "Chat.Read"
-if (!$chatMessage){
+if (!$chatMessage -or !$chatMessage.body.content.Contains("hostedContents") ){
     $chatBody = Get-RequestData -ChildEntity "chatMessage"
     $imageFilePath = Join-Path $PSScriptRoot ".\chatImage.png" -Resolve
     if(Test-Path -Path $imageFilePath){
