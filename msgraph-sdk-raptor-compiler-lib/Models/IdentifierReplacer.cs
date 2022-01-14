@@ -108,12 +108,33 @@ public class IdentifierReplacer
                 { ".Directory.DeletedItems[\"{directoryObject-id}\"]", ".Directory.DeletedItems[\"{deletedDirectoryObject-id}\"]"},
                 // https://docs.microsoft.com/en-us/graph/api/rbacapplication-list-roleassignments?view=graph-rest-1.0&tabs=http#example-2-request-using-a-filter-on-principalid
                 // PrincipalId is tenant specific data, replace hardcoded id with tenant specific id
-                { ".Filter(\" principalId eq 'f1847572-48aa-47aa-96a3-2ec61904f41f'\")", ".Filter(\" principalId eq '{roleAssignmentPrincipal-id}'\")"}
+                { ".Filter(\" principalId eq 'f1847572-48aa-47aa-96a3-2ec61904f41f'\")", ".Filter(\" principalId eq '{roleAssignmentPrincipal-id}'\")"},
+                // this query seems to only work with fully qualified name of the type
+                { "Expand(\"eventMessage/event\")", "Expand(\"microsoft.graph.eventMessage/event\")"},
             };
+
+        // each tuple in the list represents:
+        // 1. a condition defined on the input (e.g. containing some substring)
+        // 2. string to be replaced
+        // 3. string to replace with
+        var conditionalEdgeCases = new List<Tuple<Func<string, bool>, string, string>>();
+        conditionalEdgeCases.Add(new Tuple<Func<string, bool>, string, string>(
+            (input) => input.Contains("Expand(\"microsoft.graph.eventMessage/event\")", StringComparison.Ordinal),
+            "{message-id}",
+            "{eventMessageRequest-id}"
+        ));
 
         foreach (var (key, value) in edgeCases)
         {
             input = input.Replace(key, value, StringComparison.Ordinal);
+        }
+
+        foreach (var (condition, oldValue, newValue) in conditionalEdgeCases)
+        {
+            if (condition(input))
+            {
+                input = input.Replace(oldValue, newValue, StringComparison.Ordinal);
+            }
         }
 
         return input;
