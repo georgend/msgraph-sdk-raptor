@@ -265,6 +265,18 @@ global using KeyValuePair = Microsoft.Graph.KeyValuePair;
             path = path[versionSegmentLength..];
         }
 
+        // DevX API only knows about URLs from the documentation, so convert the URL back for DevX API call
+        // if we had an edge case replacement
+        var cases = new Dictionary<string, string>()
+        {
+            { "valueAxis", "seriesAxis" }
+        };
+
+        foreach (var (key, value) in cases)
+        {
+            path = path.Replace(key, value, StringComparison.OrdinalIgnoreCase);
+        }
+
         using var httpClient = new HttpClient();
 
         async Task<Scope[]> getScopesForScopeType(string scopeType)
