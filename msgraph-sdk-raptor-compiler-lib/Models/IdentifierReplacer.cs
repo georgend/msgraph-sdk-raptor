@@ -89,6 +89,10 @@ public class IdentifierReplacer
 
         var edgeCases = new Dictionary<string, string>
             {
+                // Series Axis (a.k.a. depth axis) appears only in 3D charts. Our chart object is 2D, so we need to replace it with a valueAxis
+                // https://support.microsoft.com/en-us/office/change-the-scale-of-the-depth-series-axis-in-a-chart-73f15b8c-b81a-4d11-accc-6e95f3d85d14
+                // https://docs.microsoft.com/en-us/graph/api/chartlineformat-get?view=graph-rest-1.0&tabs=http
+                { "SeriesAxis.Format.Line", "ValueAxis.Format.Line" },
                 // https://docs.microsoft.com/en-us/graph/api/drive-get-specialfolder?view=graph-rest-1.0&amp%3Btabs=csharp&tabs=csharp#http-request-1
                 { "Special[\"{driveItem-id}\"]", "Special[\"music\"]" },
                 // https://docs.microsoft.com/en-us/graph/api/driveitem-get-content-format?view=graph-rest-1.0&tabs=csharp
