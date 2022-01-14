@@ -669,9 +669,6 @@ public static class CSharpKnownIssues
 
                 { "servicehealthissue-incidentreport-csharp-V1-executes", NeedsAnalysisKnownIssue with { CustomMessage = "Service returns: Your request can not be completed at this time, Please retry this request later."} },
 
-                { "get-teamworkbot-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/635" } },
-
-
                 { "get-windowshelloforbusinessauthenticationmethod-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/638" } },
 
                 { "list-bitlockerrecoverykey-csharp-V1-executes", new KnownIssue(Category.NeedsAnalysis, "Service requires UserAgent") },
