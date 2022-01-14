@@ -63,9 +63,13 @@ $presence = Request-DelegatedResource -Uri "users/$($identifiers.user._value)/pr
 $identifiers = Add-Identifier $identifiers @("presence") $presence.id
 
 $teamsApp = Request-DelegatedResource -Uri "appCatalogs/teamsApps" |
-    Where-Object { $_.displayName -eq "Teams" } |
+    Where-Object { $_.displayName -eq "Developer Portal" } |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("teamsApp") $teamsApp.id
+
+$appDefinition = Request-DelegatedResource -Uri "appCatalogs/teamsApps/$($teamsApp.id)/appDefinitions" -ScopeOverride "AppCatalog.Read.All" |
+    Select-Object -First 1
+$identifiers = Add-Identifier $identifiers @("teamsApp", "teamsAppDefinition") $appDefinition.id
 
 $secureScore = Request-DelegatedResource -Uri "security/secureScores?`$top=1" |
      Select-Object -First 1
