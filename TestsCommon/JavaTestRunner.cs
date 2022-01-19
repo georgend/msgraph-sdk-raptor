@@ -165,30 +165,80 @@ public class --classname--
             }
         }
 
-        using var javacProcess = new Process
-        {
-            StartInfo = new ProcessStartInfo
-            {
-                FileName = "gradle",
-                Arguments = "build",
-                WorkingDirectory = rootPath,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true            }
-        };
-
         await TestContext.Out.WriteLineAsync("Root Path = " + rootPath)
             .ConfigureAwait(false);
 
+        var startInfo = new ProcessStartInfo
+        {
+            FileName = "gradle",
+            Arguments = "build",
+            WorkingDirectory = rootPath,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true
+        };
+
+        if (OperatingSystem.IsWindows())
+        {
+            startInfo.FileName = "cmd.exe";
+            startInfo.Arguments = "/C gradle.bat build";
+        }
+
+        using var javacProcess = new Process { StartInfo = startInfo };
+
         javacProcess.Start();
-
-        string stdOutput = await javacProcess.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
-        string stdError = await javacProcess.StandardError.ReadToEndAsync().ConfigureAwait(false);
-
-        javacProcess.WaitForExit();
-
+        var stdOuputSB = new StringBuilder();
+        var stdErrSB = new StringBuilder();
+        using var outputWaitHandle = new AutoResetEvent(false);
+        using var errorWaitHandle = new AutoResetEvent(false);
+        javacProcess.OutputDataReceived += (sender, e) =>
+        {
+            if (string.IsNullOrEmpty(e.Data))
+            {
+                outputWaitHandle.Set();
+            }
+            else
+            {
+                stdOuputSB.AppendLine(e.Data);
+            }
+        };
+        javacProcess.ErrorDataReceived += (sender, e) =>
+        {
+            if (string.IsNullOrEmpty(e.Data))
+            {
+                errorWaitHandle.Set();
+            }
+            else
+            {
+                stdErrSB.AppendLine(e.Data);
+            }
+        };
+        javacProcess.Start();
+        javacProcess.BeginOutputReadLine();
+        javacProcess.BeginErrorReadLine();
+        var hasExited = javacProcess.WaitForExit(5 * 60 * 1000);
+        if (!hasExited)
+        {
+            javacProcess.Kill(true);
+            Console.WriteLine("Compilation timed out.");
+        }
+        var stdOutput = stdOuputSB.ToString();
+        var stdError = stdErrSB.ToString();
         var allOutput = stdOutput + Environment.NewLine + stdError;
 
         await TestContext.Out.WriteLineAsync(allOutput)
             .ConfigureAwait(false);
+
+        await TestContext.Out.WriteLineAsync("Number of files compiled: " + testDataList.Count())
+            .ConfigureAwait(false);
+
+        await TestContext.Out.WriteLineAsync("Number of files failed: " + Environment.NewLine +
+            allOutput.Split(Environment.NewLine)
+                .Where(line => line.StartsWith(rootPath))
+                .Count());
+                // .Select(line => line.Split(": error:")[0])
+                // .Select(line => line.Split(Path.DirectorySeparatorChar).Last())
+                // .Select(line => line.Split(":")[0])
+                // .Distinct()
+                // .Aggregate(Environment.NewLine, (current, line) => current + (line + Environment.NewLine)));
     }
 }

@@ -27,10 +27,18 @@ public class SnippetCompileV1Tests
     /// <param name="fileName">snippet file name in docs repo</param>
     /// <param name="docsLink">documentation page where the snippet is shown</param>
     /// <param name="version">Docs version (e.g. V1, Beta)</param>
+    // [Test]
+    // public async System.Threading.Tasks.Task Test()
+    // {
+    //     //JavaTestRunner.Run(testData);
+    //     await JavaTestRunner.RunAllSnippets(TestDataV1.Select(x => x.Arguments[0] as LanguageTestData));
+    // }
+
     [Test]
-    public async System.Threading.Tasks.Task Test()
+    //[TestCaseSource(typeof(KnownFailuresV1), nameof(TestDataV1))]
+    public async System.Threading.Tasks.Task Test()//LanguageTestData testData)
     {
-        //JavaTestRunner.Run(testData);
-        await JavaTestRunner.RunAllSnippets(TestDataV1.Select(x => x.Arguments[0] as LanguageTestData));
+        await JavaTestRunner.RunAllSnippets(TestDataV1.Select(x => x.Arguments[0] as LanguageTestData))
+            .ConfigureAwait(false);
     }
 }

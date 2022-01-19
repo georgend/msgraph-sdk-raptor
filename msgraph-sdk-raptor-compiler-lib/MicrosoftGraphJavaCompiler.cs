@@ -23,6 +23,13 @@ dependencies {
 }
 application {
     mainClassName = 'com.microsoft.graph.raptor.App'
+}
+allprojects {
+  gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << ""-Xmaxerrs"" << ""10000""
+    }
+  }
 }";
     private const string v1GradleBuildFileTemplate = @"plugins {
     id 'java'
@@ -38,6 +45,13 @@ dependencies {
 }
 application {
     mainClassName = 'com.microsoft.graph.raptor.App'
+}
+allprojects {
+  gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << ""-Xmaxerrs"" << ""10000""
+    }
+  }
 }";
     private const string betaGradleBuildFileTemplate = @"plugins {
     id 'java'
@@ -182,7 +196,7 @@ allprojects {
         await File.WriteAllTextAsync(Path.Combine(rootPath, gradleBuildFileName), buildGradleFileContent
                                                                         .Replace("--deps--", deps, StringComparison.OrdinalIgnoreCase)
                                                                         .Replace("--coreversion--", languageTestData.JavaCoreVersion, StringComparison.OrdinalIgnoreCase)
-                                                                        .Replace("--libversion--", languageTestData.JavaCoreVersion, StringComparison.OrdinalIgnoreCase)).ConfigureAwait(false);
+                                                                        .Replace("--libversion--", languageTestData.JavaLibVersion, StringComparison.OrdinalIgnoreCase)).ConfigureAwait(false);
         var gradleSettingsFilePath = Path.Combine(rootPath, gradleSettingsFileName);
         if (!File.Exists(gradleSettingsFilePath))
             await File.WriteAllTextAsync(gradleSettingsFilePath, gradleSettingsFileTemplate).ConfigureAwait(false);
