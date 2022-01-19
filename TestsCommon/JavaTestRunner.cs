@@ -114,6 +114,11 @@ public class --classname--
 
     public static async Task RunAllSnippets(IEnumerable<LanguageTestData> testDataList)
     {
+        if (testDataList == null)
+        {
+            throw new ArgumentNullException(nameof(testDataList));
+        }
+
         var version = testDataList.First().Version;
         var tempPath = Path.Combine(Path.GetTempPath(), "msgraph-sdk-raptor");
         Directory.CreateDirectory(tempPath);
@@ -121,7 +126,8 @@ public class --classname--
         var sourceFileDirectory = Path.Combine(new string[] { rootPath }.Union(MicrosoftGraphJavaCompiler.testFileSubDirectories).ToArray());
         if (!MicrosoftGraphJavaCompiler.currentlyConfiguredVersion.HasValue || MicrosoftGraphJavaCompiler.currentlyConfiguredVersion.Value != version)
         {
-            MicrosoftGraphJavaCompiler.InitializeProjectStructure(testDataList.First(), version, rootPath).GetAwaiter().GetResult();
+            await MicrosoftGraphJavaCompiler.InitializeProjectStructure(testDataList.First(), version, rootPath)
+                .ConfigureAwait(false);
             MicrosoftGraphJavaCompiler.SetCurrentlyConfiguredVersion(version);
         }
 
@@ -170,7 +176,8 @@ public class --classname--
                 RedirectStandardError = true            }
         };
 
-        TestContext.Out.WriteLine("Root Path = " + rootPath);
+        await TestContext.Out.WriteLineAsync("Root Path = " + rootPath)
+            .ConfigureAwait(false);
 
         javacProcess.Start();
 
@@ -181,6 +188,7 @@ public class --classname--
 
         var allOutput = stdOutput + Environment.NewLine + stdError;
 
-        TestContext.Out.WriteLine(allOutput);
+        await TestContext.Out.WriteLineAsync(allOutput)
+            .ConfigureAwait(false);
     }
 }

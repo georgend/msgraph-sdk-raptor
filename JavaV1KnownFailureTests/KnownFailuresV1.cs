@@ -31,6 +31,7 @@ public class KnownFailuresV1
     //[TestCaseSource(typeof(KnownFailuresV1), nameof(TestDataV1))]
     public async System.Threading.Tasks.Task Test()//LanguageTestData testData)
     {
-        await JavaTestRunner.RunAllSnippets(TestDataV1.Select(x => x.Arguments[0] as LanguageTestData));
+        await JavaTestRunner.RunAllSnippets(TestDataV1.Select(x => x.Arguments[0] as LanguageTestData))
+            .ConfigureAwait(false);
     }
 }

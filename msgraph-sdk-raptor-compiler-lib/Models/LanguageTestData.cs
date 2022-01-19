@@ -42,7 +42,7 @@ public record LanguageTestData(
                     return null;
                 }
 
-                var name = Path.GetFileNameWithoutExtension(FileName).Replace("-java-snippets", string.Empty);
+                var name = Path.GetFileNameWithoutExtension(FileName).Replace("-java-snippets", string.Empty, StringComparison.Ordinal);
                 var charArray = name.ToCharArray();
                 var newArray = new char[charArray.Length];
 
@@ -57,7 +57,7 @@ public record LanguageTestData(
                         continue;
                     }
 
-                    newArray[newArrayIndex++] = toUpper ? char.ToUpper(charArray[i]) : charArray[i];
+                    newArray[newArrayIndex++] = toUpper ? char.ToUpper(charArray[i], CultureInfo.InvariantCulture) : charArray[i];
                     toUpper = false;
                 }
 

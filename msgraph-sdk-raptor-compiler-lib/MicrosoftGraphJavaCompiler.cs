@@ -170,6 +170,11 @@ allprojects {
 
     public static async Task InitializeProjectStructure(LanguageTestData languageTestData, Versions version, string rootPath)
     {
+        if (languageTestData == null)
+        {
+            throw new ArgumentNullException(nameof(languageTestData));
+        }
+
         Directory.CreateDirectory(rootPath);
         var buildGradleFileContent = version == Versions.V1 ? v1GradleBuildFileTemplate : betaGradleBuildFileTemplate;
         if (!string.IsNullOrEmpty(languageTestData.JavaPreviewLibPath))
