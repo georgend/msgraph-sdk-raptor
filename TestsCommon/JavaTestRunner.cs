@@ -1,4 +1,5 @@
-﻿namespace TestsCommon;
+﻿using System.Diagnostics;
+namespace TestsCommon;
 
 public static class JavaTestRunner
 {
@@ -29,7 +30,7 @@ import com.microsoft.graph.core.*;
 import com.microsoft.graph.options.*;
 import com.microsoft.graph.serializer.*;
 import com.microsoft.graph.authentication.*;
-public class App
+public class --classname--
 {
     public static void main(String[] args) throws Exception
     {
@@ -86,7 +87,7 @@ public class App
                                                                         .Replace("--auth--", authProviderCurrent));
 
         // Compile Code
-        var microsoftGraphCSharpCompiler = new MicrosoftGraphJavaCompiler(testData.FileName, testData.JavaPreviewLibPath, testData.JavaLibVersion, testData.JavaCoreVersion);
+        var microsoftGraphCSharpCompiler = new MicrosoftGraphJavaCompiler(testData);
 
         var jvmRetryAttmptsLeft = 3;
         while (jvmRetryAttmptsLeft > 0)
@@ -109,5 +110,77 @@ public class App
             Assert.Fail($"{compilationOutputMessage}");
             break;
         }
+    }
+
+    public static async Task RunAllSnippets(IEnumerable<LanguageTestData> testDataList)
+    {
+        var version = testDataList.First().Version;
+        var tempPath = Path.Combine(Path.GetTempPath(), "msgraph-sdk-raptor");
+        Directory.CreateDirectory(tempPath);
+        var rootPath = Path.Combine(tempPath, "java" + MicrosoftGraphJavaCompiler.CurrentExecutionFolder.Value);
+        var sourceFileDirectory = Path.Combine(new string[] { rootPath }.Union(MicrosoftGraphJavaCompiler.testFileSubDirectories).ToArray());
+        if (!MicrosoftGraphJavaCompiler.currentlyConfiguredVersion.HasValue || MicrosoftGraphJavaCompiler.currentlyConfiguredVersion.Value != version)
+        {
+            MicrosoftGraphJavaCompiler.InitializeProjectStructure(testDataList.First(), version, rootPath).GetAwaiter().GetResult();
+            MicrosoftGraphJavaCompiler.SetCurrentlyConfiguredVersion(version);
+        }
+
+        var first = true;
+        foreach (var testData in testDataList)
+        {
+            var fullPath = Path.Join(GraphDocsDirectory.GetSnippetsDirectory(testData.Version, Languages.Java), testData.FileName);
+            Assert.IsTrue(File.Exists(fullPath), "Snippet file referenced in documentation is not found!");
+
+            var fileContent = File.ReadAllText(fullPath);
+            var match = RegExp.Match(fileContent);
+            Assert.IsTrue(match.Success, "Java snippet file is not in expected format!");
+
+            var codeSnippetFormatted = match.Groups[1].Value
+                .Replace("\r\n", "\r\n        ")            // add indentation to match with the template
+                .Replace("\r\n        \r\n", "\r\n\r\n")    // remove indentation added to empty lines
+                .Replace("\t", "    ")                      // do not use tabs
+                .Replace("\r\n\r\n\r\n", "\r\n\r\n");       // do not have two consecutive empty lines
+            var isCurrentSdk = string.IsNullOrEmpty(testData.JavaPreviewLibPath);
+            var javaClassName = testData.JavaClassName;
+            var codeToCompile = BaseTestRunner.ConcatBaseTemplateWithSnippet(codeSnippetFormatted, SDKShellTemplate
+                                                                            .Replace("--auth--", authProviderCurrent))
+                                                                            .Replace("--classname--", javaClassName);
+
+            await File.WriteAllTextAsync(Path.Combine(sourceFileDirectory, $"{javaClassName}.java"), codeToCompile).ConfigureAwait(false);
+            if (first) // TODO one off App.java write
+            {
+                javaClassName = "App";
+                codeToCompile = BaseTestRunner.ConcatBaseTemplateWithSnippet(codeSnippetFormatted, SDKShellTemplate
+                                                                            .Replace("--auth--", authProviderCurrent))
+                                                                            .Replace("--classname--", javaClassName);
+
+                await File.WriteAllTextAsync(Path.Combine(sourceFileDirectory, $"{javaClassName}.java"), codeToCompile).ConfigureAwait(false);
+                first = false;
+            }
+        }
+
+        using var javacProcess = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = "gradle",
+                Arguments = "build",
+                WorkingDirectory = rootPath,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true            }
+        };
+
+        TestContext.Out.WriteLine("Root Path = " + rootPath);
+
+        javacProcess.Start();
+
+        string stdOutput = await javacProcess.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
+        string stdError = await javacProcess.StandardError.ReadToEndAsync().ConfigureAwait(false);
+
+        javacProcess.WaitForExit();
+
+        var allOutput = stdOutput + Environment.NewLine + stdError;
+
+        TestContext.Out.WriteLine(allOutput);
     }
 }

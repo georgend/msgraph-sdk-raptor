@@ -1,4 +1,5 @@
-﻿using MsGraphSDKSnippetsCompiler.Models;
+﻿using System.Linq;
+using MsGraphSDKSnippetsCompiler.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
 using TestsCommon;
@@ -27,9 +28,9 @@ public class SnippetCompileV1Tests
     /// <param name="docsLink">documentation page where the snippet is shown</param>
     /// <param name="version">Docs version (e.g. V1, Beta)</param>
     [Test]
-    [TestCaseSource(typeof(SnippetCompileV1Tests), nameof(TestDataV1))]
-    public void Test(LanguageTestData testData)
+    public async System.Threading.Tasks.Task Test()
     {
-        JavaTestRunner.Run(testData);
+        //JavaTestRunner.Run(testData);
+        await JavaTestRunner.RunAllSnippets(TestDataV1.Select(x => x.Arguments[0] as LanguageTestData));
     }
 }

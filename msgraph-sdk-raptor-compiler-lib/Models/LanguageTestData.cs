@@ -31,4 +31,37 @@ public record LanguageTestData(
     string JavaPreviewLibPath,
     string TestName,
     string Owner,
-    string FileContent);
+    string FileContent)
+    {
+        public string JavaClassName
+        {
+            get
+            {
+                if (FileName == null)
+                {
+                    return null;
+                }
+
+                var name = Path.GetFileNameWithoutExtension(FileName).Replace("-java-snippets", string.Empty);
+                var charArray = name.ToCharArray();
+                var newArray = new char[charArray.Length];
+
+                // convert kabab case to pascal case e.g. my-snippet-name -> MySnippetName
+                bool toUpper = true;
+                var newArrayIndex = 0;
+                for(int i = 0; i < charArray.Length; i++)
+                {
+                    if (charArray[i] == '-')
+                    {
+                        toUpper = true;
+                        continue;
+                    }
+
+                    newArray[newArrayIndex++] = toUpper ? char.ToUpper(charArray[i]) : charArray[i];
+                    toUpper = false;
+                }
+
+                return new string(newArray, 0, newArrayIndex) + Version;
+            }
+        }
+    };

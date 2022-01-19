@@ -2,11 +2,7 @@
 
 public class MicrosoftGraphJavaCompiler : IMicrosoftGraphSnippetsCompiler
 {
-    private readonly string _markdownFileName;
-    private readonly string _previewLibraryPath;
-    private readonly string _javaLibVersion;
-    private readonly string _javaCoreVersion;
-    private static readonly string[] testFileSubDirectories = new string[] { "src", "main", "java", "com", "microsoft", "graph", "raptor" };
+    public static readonly string[] testFileSubDirectories = new string[] { "src", "main", "java", "com", "microsoft", "graph", "raptor" };
 
     private const string gradleBuildFileName = "build.gradle";
     private const string previewGradleBuildFileTemplate = @"plugins {
@@ -60,6 +56,13 @@ dependencies {
 }
 application {
     mainClassName = 'com.microsoft.graph.raptor.App'
+}
+allprojects {
+  gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << ""-Xmaxerrs"" << ""10000""
+    }
+  }
 }";
     private const string deps = @"implementation 'com.google.guava:guava:30.1.1-jre'
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -68,13 +71,13 @@ application {
     private const string gradleSettingsFileName = "settings.gradle";
     private const string gradleSettingsFileTemplate = @"rootProject.name = 'msgraph-sdk-java-raptor'";
 
-    private static Versions? currentlyConfiguredVersion;
+    public static Versions? currentlyConfiguredVersion;
 #pragma warning disable CA5394 // Do not use insecure randomness: security is not a concern here
-    private static readonly Lazy<int> currentExcutionFolder = new Lazy<int>(() => new Random().Next(0, int.MaxValue));
+    public static readonly Lazy<int> CurrentExecutionFolder = new Lazy<int>(() => new Random().Next(0, int.MaxValue));
 #pragma warning restore CA5394 // Do not use insecure randomness
     private static readonly object versionLock = new { };
 
-    private static void SetCurrentlyConfiguredVersion(Versions version)
+    public static void SetCurrentlyConfiguredVersion(Versions version)
     {// we don't want to overwrite the build.gradle for each test, this prevents gradle from caching things and slows down build time
         lock (versionLock)
         {
@@ -82,74 +85,20 @@ application {
         }
     }
 
-    public MicrosoftGraphJavaCompiler(string markdownFileName, string previewLibPath, string javaLibVersion, string javaCoreVersion)
+    private readonly LanguageTestData _languageTestData;
+
+    public MicrosoftGraphJavaCompiler(LanguageTestData languageTestData)
     {
-        _markdownFileName = markdownFileName;
-        _previewLibraryPath = previewLibPath;
-        _javaLibVersion = javaLibVersion;
-        _javaCoreVersion = javaCoreVersion;
+        _languageTestData = languageTestData;
     }
+
     public CompilationResultsModel CompileSnippet(string codeSnippet, Versions version)
     {
-        var tempPath = Path.Combine(Path.GetTempPath(), "msgraph-sdk-raptor");
-        Directory.CreateDirectory(tempPath);
-        var rootPath = Path.Combine(tempPath, "java" + currentExcutionFolder.Value);
-        var sourceFileDirectory = Path.Combine(new string[] { rootPath }.Union(testFileSubDirectories).ToArray());
-        if (!currentlyConfiguredVersion.HasValue || currentlyConfiguredVersion.Value != version)
-        {
-            InitializeProjectStructure(version, rootPath).GetAwaiter().GetResult();
-            SetCurrentlyConfiguredVersion(version);
-        }
-        File.WriteAllText(Path.Combine(sourceFileDirectory, "App.java"), codeSnippet); //could be async
-        using var javacProcess = new Process
-        {
-            StartInfo = new ProcessStartInfo
-            {
-                FileName = "gradle",
-                Arguments = "build",
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                WorkingDirectory = rootPath,
-            },
-        };
-        var stdOuputSB = new StringBuilder();
-        var stdErrSB = new StringBuilder();
-        using var outputWaitHandle = new AutoResetEvent(false);
-        using var errorWaitHandle = new AutoResetEvent(false);
-        javacProcess.OutputDataReceived += (sender, e) =>
-        {
-            if (string.IsNullOrEmpty(e.Data))
-            {
-                outputWaitHandle.Set();
-            }
-            else
-            {
-                stdOuputSB.Append(e.Data);
-            }
-        };
-        javacProcess.ErrorDataReceived += (sender, e) =>
-        {
-            if (string.IsNullOrEmpty(e.Data))
-            {
-                errorWaitHandle.Set();
-            }
-            else
-            {
-                stdErrSB.Append(e.Data);
-            }
-        };
-        javacProcess.Start();
-        javacProcess.BeginOutputReadLine();
-        javacProcess.BeginErrorReadLine();
-        var hasExited = javacProcess.WaitForExit(20000);
-        if (!hasExited)
-            javacProcess.Kill(true);
-        var stdOutput = stdOuputSB.ToString();
-        var stdErr = stdErrSB.ToString();
+
         return new CompilationResultsModel(
-            hasExited && stdOutput.Contains("BUILD SUCCESSFUL", StringComparison.OrdinalIgnoreCase),
-            GetDiagnosticsFromStdErr(stdOutput, stdErr, hasExited),
-            _markdownFileName
+            true,
+            new List<Diagnostic>(),
+            _languageTestData.FileName
         );
     }
 
@@ -219,16 +168,16 @@ application {
         return result;
     }
 
-    private async Task InitializeProjectStructure(Versions version, string rootPath)
+    public static async Task InitializeProjectStructure(LanguageTestData languageTestData, Versions version, string rootPath)
     {
         Directory.CreateDirectory(rootPath);
         var buildGradleFileContent = version == Versions.V1 ? v1GradleBuildFileTemplate : betaGradleBuildFileTemplate;
-        if (!string.IsNullOrEmpty(_previewLibraryPath))
-            buildGradleFileContent = previewGradleBuildFileTemplate.Replace("--path--", _previewLibraryPath, StringComparison.OrdinalIgnoreCase);
+        if (!string.IsNullOrEmpty(languageTestData.JavaPreviewLibPath))
+            buildGradleFileContent = previewGradleBuildFileTemplate.Replace("--path--", languageTestData.JavaPreviewLibPath, StringComparison.OrdinalIgnoreCase);
         await File.WriteAllTextAsync(Path.Combine(rootPath, gradleBuildFileName), buildGradleFileContent
                                                                         .Replace("--deps--", deps, StringComparison.OrdinalIgnoreCase)
-                                                                        .Replace("--coreversion--", _javaCoreVersion, StringComparison.OrdinalIgnoreCase)
-                                                                        .Replace("--libversion--", _javaLibVersion, StringComparison.OrdinalIgnoreCase)).ConfigureAwait(false);
+                                                                        .Replace("--coreversion--", languageTestData.JavaCoreVersion, StringComparison.OrdinalIgnoreCase)
+                                                                        .Replace("--libversion--", languageTestData.JavaCoreVersion, StringComparison.OrdinalIgnoreCase)).ConfigureAwait(false);
         var gradleSettingsFilePath = Path.Combine(rootPath, gradleSettingsFileName);
         if (!File.Exists(gradleSettingsFilePath))
             await File.WriteAllTextAsync(gradleSettingsFilePath, gradleSettingsFileTemplate).ConfigureAwait(false);

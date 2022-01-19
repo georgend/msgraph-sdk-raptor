@@ -1,6 +1,7 @@
 ﻿using MsGraphSDKSnippetsCompiler.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using TestsCommon;
 
 namespace JavaV1KnownFailureTests;
@@ -27,9 +28,9 @@ public class KnownFailuresV1
     /// <param name="docsLink">documentation page where the snippet is shown</param>
     /// <param name="version">Docs version (e.g. V1, Beta)</param>
     [Test]
-    [TestCaseSource(typeof(KnownFailuresV1), nameof(TestDataV1))]
-    public void Test(LanguageTestData testData)
+    //[TestCaseSource(typeof(KnownFailuresV1), nameof(TestDataV1))]
+    public async System.Threading.Tasks.Task Test()//LanguageTestData testData)
     {
-        JavaTestRunner.Run(testData);
+        await JavaTestRunner.RunAllSnippets(TestDataV1.Select(x => x.Arguments[0] as LanguageTestData));
     }
 }
