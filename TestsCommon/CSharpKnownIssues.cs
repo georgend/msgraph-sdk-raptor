@@ -52,7 +52,6 @@ public static class CSharpKnownIssues
                 { "update-tenantcustomizedinformation-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/13556")},
                 { "update-accessreviewscheduledefinition-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14712")},
                 { "update-appleidentityprovider-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14713")},
-                { "update-appleidentityprovider-csharp-V1-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14992")},
 
                 { "put-b2cuserflows-apiconnectorconfiguration-postfederationsignup-csharp-Beta-compiles", StructuralPropertiesAreNotHandledKnownIssue },
                 { "put-b2xuserflows-apiconnectorconfiguration-postfederationsignup-csharp-Beta-compiles", StructuralPropertiesAreNotHandledKnownIssue },
@@ -104,8 +103,6 @@ public static class CSharpKnownIssues
                 { $"create-certificatebasedauthconfiguration-from-certificatebasedauthconfiguration-csharp-{version}-compiles", new KnownIssue(Category.HTTP, RefNeeded, "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14004") },
                 { $"create-tokenlifetimepolicy-from-application-csharp-Beta-compiles", new KnownIssue(Category.HTTP, RefNeeded) },
 
-
-                { "update-accessreviewscheduledefinition-csharp-V1-compiles", NeedsAnalysisKnownIssue},
                 { "team-put-schedule-2-csharp-Beta-compiles", NeedsAnalysisKnownIssue},
                 { "add-incompatibleaccesspackage-to-accesspackage-csharp-Beta-compiles", NeedsAnalysisKnownIssue},
                 { "create-datasource-from--2-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
@@ -114,8 +111,6 @@ public static class CSharpKnownIssues
                 { "recent-notebooks-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
                 { "update-passwordlessmicrosoftauthenticatorauthenticationmethodconfiguration-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
                 { "create-connectorgroup-from-connector-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
-                { "set-presence-csharp-V1-compiles", NeedsAnalysisKnownIssue },
-                { "clear--presence-csharp-V1-compiles", NeedsAnalysisKnownIssue },
                 { "managementactiontenantdeploymentstatus-changedeploymentstatus-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
                 { "search-query-csharp-Beta-compiles", NeedsAnalysisKnownIssue }
             };
