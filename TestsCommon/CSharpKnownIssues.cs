@@ -673,20 +673,20 @@ public static class CSharpKnownIssues
 
                 { "get-printconnector-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/624" } },
 
-                { "get-printershare-capabilities-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/625" } },
-                { "get-printershare-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/625" } },
-                { "list-printjob-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/625" } },
-                { "list-group-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/625" } },
-                { "list-user-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/625" } },
+                { "get-printershare-capabilities-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
+                { "get-printershare-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
+                { "list-printjob-2-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
+                { "list-group-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
+                { "list-user-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
 
-                { "get-printoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/626" } },
+                { "get-printoperation-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
 
                 { "get-printtask-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/627" } },
                 { "get-printtaskdefinition-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/627" } },
 
-                { "get-printusagebyprinter-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/628" } },
+                { "get-printusagebyprinter-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
 
-                { "get-printusagebyuser-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/629" } },
+                { "get-printusagebyuser-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
 
                 { "get-windowshelloforbusinessauthenticationmethod-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/638" } },
 
@@ -792,8 +792,8 @@ public static class CSharpKnownIssues
                 { "get-a-count-endswith-csharp-V1-executes", CountIsNotSupportedKnownIssue },
                 { "get-devices-by-extensionattribute-csharp-V1-executes", CountIsNotSupportedKnownIssue },
                 { "get-enabled-dynamic-groups-csharp-V1-executes", CountIsNotSupportedKnownIssue },
-                { "list-printconnector-2-csharp-V1-executes", ServicePrinterMultiplePermissionsKnownIssue },
-                { "list-printershare-2-csharp-V1-executes", ServicePrinterMultiplePermissionsKnownIssue },
+                { "list-printconnector-2-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
+                { "list-printershare-2-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
                 { "get-printtasktrigger-csharp-V1-executes", ServiceTaskPrinterKnownIssue },
 
                 { "accesspackage-filterbycurrentuser-csharp-V1-executes", SDKFunctionParameterKnownIssue },

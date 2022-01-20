@@ -6,7 +6,7 @@ namespace TestsCommon;
 public enum Category
 {
     Documentation,
-    Permissions,
+    MoreThanOnePermission,
     Raptor,
     SDK,
     HTTP,
@@ -138,8 +138,7 @@ public static class KnownIssues
     internal static readonly KnownIssue ProtectedAPIKnownIssue = new KnownIssue(Category.ProtectedAPI, "Need resource specific consent", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/506", "known-issue-protected-api-");
 
     internal static readonly KnownIssue ServiceTaskPrinterKnownIssue = new KnownIssue(Category.Service, "taskTrigger returns 404 even though it exists", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14774", "known-issue-service-task-trigger-");
-    internal static readonly KnownIssue ServicePrinterMultiplePermissionsKnownIssue = new KnownIssue(Category.Service, "some printer GET calls require `Printer.Create` permission", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/603", "known-issue-service-printer-multiple-permissions-");
-    internal static readonly KnownIssue PermissionsMoreThanOnePermissionKnownIssue = new KnownIssue(Category.Permissions, "More than one permission is required", "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/778", "known-issue-permissions-more-than-one-permission-");
+    internal static readonly KnownIssue PermissionsMoreThanOnePermissionKnownIssue = new KnownIssue(Category.MoreThanOnePermission, "More than one permission is required", "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/778", "known-issue-permissions-more-than-one-permission-");
 
     /// <summary>
     /// Constructs property not found message
