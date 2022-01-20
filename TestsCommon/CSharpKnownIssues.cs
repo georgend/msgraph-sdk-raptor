@@ -116,7 +116,8 @@ public static class CSharpKnownIssues
                 { "create-connectorgroup-from-connector-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
                 { "set-presence-csharp-V1-compiles", NeedsAnalysisKnownIssue },
                 { "clear--presence-csharp-V1-compiles", NeedsAnalysisKnownIssue },
-                { "managementactiontenantdeploymentstatus-changedeploymentstatus-csharp-Beta-compiles", NeedsAnalysisKnownIssue}
+                { "managementactiontenantdeploymentstatus-changedeploymentstatus-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
+                { "search-query-csharp-Beta-compiles", NeedsAnalysisKnownIssue }
             };
     }
 
