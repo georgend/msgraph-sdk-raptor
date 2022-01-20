@@ -250,7 +250,7 @@ $serviceUpdateMessage = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/mes
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("serviceUpdateMessage") $serviceUpdateMessage.id
 
-$serviceHealthIssue = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/issues" |
+$serviceHealthIssue = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/issues?`$filter=status eq 'postIncidentReviewPublished'" |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("serviceHealthIssue") $serviceHealthIssue.id
 
