@@ -200,7 +200,7 @@ public static class KnownIssues
                 { $"directoryobject-delta-java-Beta-compiles", new KnownIssue(Category.Metadata, "Delta is not defined on directoryObject, but on user and group") },
                 { $"remove-incompatiblegroup-from-accesspackage-{lng}-Beta-compiles", new KnownIssue(Category.Metadata, GetContainsTargetRemoveMessage("accessPackage", "incompatibleGroups"))},
 
-                { $"create-educationschool-from-educationroot-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, GetPropertyNotFoundMessage("EducationSchool", "Status"), "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14976") },
+                { $"create-educationschool-from-educationroot-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GetPropertyNotFoundMessage("EducationSchool", "Status"), "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14976") },
                 { $"create-onpremisesagentgroup-from-publishedresource-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, RefShouldBeRemoved) },
                 { $"create-reference-attachment-with-post-java-V1-compiles", new KnownIssue(Category.HTTP, GetPropertyNotFoundMessage("ReferenceAttachment", "SourceUrl, ProviderType, Permission and IsFolder")) },
                 { $"create-directoryobject-from-orgcontact-java-Beta-compiles", new KnownIssue(Category.HTTP, RefNeeded) },
@@ -216,7 +216,7 @@ public static class KnownIssues
                 { $"removeonpremisesagentfromanonpremisesagentgroup-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, RefShouldBeRemoved) },
                 { $"securescorecontrolprofiles-update-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, HttpSnippetWrong + ": A list of SecureScoreControlStateUpdate objects should be provided instead of placeholder string.") },
                 { $"shift-put-{lng}-{version}-compiles", IdentitySetAndIdentityShouldNestAdditionalDataKnownIssue },
-                { $"unfollow-item-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, "Unfollow uses POST instead of DELETE", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14975") },
+                { $"unfollow-item-csharp-Beta-compiles", new KnownIssue(Category.HTTP, "Unfollow uses POST instead of DELETE", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14975") },
                 { $"update-openidconnectprovider-{lng}-Beta-compiles", new KnownIssue(Category.HTTP, "OpenIdConnectProvider should be specified") },
                 { $"update-teamsapp-java-V1-compiles", new KnownIssue(Category.Metadata, $"teamsApp needs hasStream=true. In addition to that, we need these fixed: {Environment.NewLine}https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/160 {Environment.NewLine}https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/336") },
                 { $"create-connector-from-connectorgroup-{lng}-Beta-compiles", new KnownIssue(Category.SDK, "Missing method") },
