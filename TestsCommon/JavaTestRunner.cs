@@ -233,7 +233,7 @@ public class --classname--
 
         await TestContext.Out.WriteLineAsync("Number of files failed: " + Environment.NewLine +
             allOutput.Split(Environment.NewLine)
-                .Where(line => line.StartsWith(rootPath))
+                .Where(line => line.StartsWith(rootPath, StringComparison.OrdinalIgnoreCase))
                 .Count());
                 // .Select(line => line.Split(": error:")[0])
                 // .Select(line => line.Split(Path.DirectorySeparatorChar).Last())

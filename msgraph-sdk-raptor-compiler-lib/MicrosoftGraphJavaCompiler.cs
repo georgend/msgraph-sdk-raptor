@@ -84,6 +84,8 @@ allprojects {
     implementation 'com.azure:azure-identity:1.2.5'";
     private const string gradleSettingsFileName = "settings.gradle";
     private const string gradleSettingsFileTemplate = @"rootProject.name = 'msgraph-sdk-java-raptor'";
+    private const string gradlePropertiesFileName = "gradle.properties";
+    private const string gradlePropertiesFileTemplate = @"org.gradle.jvmargs=-Xmx3072m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8";
 
     public static Versions? currentlyConfiguredVersion;
 #pragma warning disable CA5394 // Do not use insecure randomness: security is not a concern here
@@ -200,6 +202,10 @@ allprojects {
         var gradleSettingsFilePath = Path.Combine(rootPath, gradleSettingsFileName);
         if (!File.Exists(gradleSettingsFilePath))
             await File.WriteAllTextAsync(gradleSettingsFilePath, gradleSettingsFileTemplate).ConfigureAwait(false);
+
+        var gradlePropertiesFilePath = Path.Combine(rootPath, gradlePropertiesFileName);
+        if (!File.Exists(gradlePropertiesFilePath))
+            await File.WriteAllTextAsync(gradlePropertiesFilePath, gradlePropertiesFileTemplate).ConfigureAwait(false);
 
         CreateDirectoryStructure(rootPath, testFileSubDirectories);
     }
