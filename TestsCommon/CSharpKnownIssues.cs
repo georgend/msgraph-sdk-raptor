@@ -26,7 +26,6 @@ public static class CSharpKnownIssues
                 {$"get-rooms-in-roomlist-csharp-{version}-compiles", new KnownIssue(Category.SDK, "SDK doesn't generate type segment in OData URL.", GitHubIssue: "https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/239") },
                 { "create-externaldomainname-from--csharp-Beta-compiles", TypeCastIsNotSupportedKnownIssue},
                 { "list-externaldomainname-csharp-Beta-compiles", TypeCastIsNotSupportedKnownIssue},
-                { "list-updatableasset-csharp-Beta-compiles", TypeCastIsNotSupportedKnownIssue},
                 { "reportroot-getm365appplatformusercounts-csv-csharp-Beta-compiles", MissingContentPropertyKnownIssue },
                 { "reportroot-getm365appplatformusercounts-json-csharp-Beta-compiles", MissingContentPropertyKnownIssue },
                 { "reportroot-getm365appusercoundetail-csharp-Beta-compiles", MissingContentPropertyKnownIssue },
@@ -46,12 +45,9 @@ public static class CSharpKnownIssues
 
                 { "deploymentaudience-updateaudience-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/12811")},
                 { "get-devicecompliancepolicysettingstatesummary-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/13596")},
-                { "get-mailboxsettings-4-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14238")},
                 { "list-administrativeunit-csharp-V1-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/12770")},
                 { "list-devicecompliancepolicysettingstatesummary-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/13597")},
                 { "update-tenantcustomizedinformation-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/13556")},
-                { "update-accessreviewscheduledefinition-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14712")},
-                { "update-appleidentityprovider-csharp-Beta-compiles", new KnownIssue(Category.HTTP, GitHubIssue: "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14713")},
 
                 { "put-b2cuserflows-apiconnectorconfiguration-postfederationsignup-csharp-Beta-compiles", StructuralPropertiesAreNotHandledKnownIssue },
                 { "put-b2xuserflows-apiconnectorconfiguration-postfederationsignup-csharp-Beta-compiles", StructuralPropertiesAreNotHandledKnownIssue },
@@ -60,7 +56,6 @@ public static class CSharpKnownIssues
 
                 { "create-datasource-from--1-csharp-Beta-compiles", NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue},
                 { "create-deployment-from--csharp-Beta-compiles", NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue},
-                { "create-noncustodialdatasource-from--csharp-Beta-compiles", NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue },
                 { "create-noncustodialdatasource-from-email-csharp-Beta-compiles", NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue},
                 { "create-noncustodialdatasource-from-siteurl-csharp-Beta-compiles", NamespaceOdataTypeAnnotationsWithoutHashSymbolKnownIssue},
                 { "create-externalgroupmember-from--1-csharp-Beta-compiles", new KnownIssue(Category.SnippetGeneration, "Generation of non-existent class", "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/821") },
@@ -104,11 +99,8 @@ public static class CSharpKnownIssues
                 { $"create-tokenlifetimepolicy-from-application-csharp-Beta-compiles", new KnownIssue(Category.HTTP, RefNeeded) },
 
                 { "team-put-schedule-2-csharp-Beta-compiles", NeedsAnalysisKnownIssue},
-                { "add-incompatibleaccesspackage-to-accesspackage-csharp-Beta-compiles", NeedsAnalysisKnownIssue},
-                { "create-datasource-from--2-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
                 { "create-directoryobject-from-orgcontact-1-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
                 { "create-directoryobject-from-orgcontact-2-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
-                { "recent-notebooks-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
                 { "update-passwordlessmicrosoftauthenticatorauthenticationmethodconfiguration-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
                 { "create-connectorgroup-from-connector-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
                 { "managementactiontenantdeploymentstatus-changedeploymentstatus-csharp-Beta-compiles", NeedsAnalysisKnownIssue },
