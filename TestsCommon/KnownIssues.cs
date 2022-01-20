@@ -19,7 +19,8 @@ public enum Category
     MissingPermissionScope,
     NoProgrammaticWay,
     ProtectedAPI,
-    Service
+    Service,
+    EphemeralData
 }
 
 public static class KnownIssues
@@ -87,8 +88,10 @@ public static class KnownIssues
     #region Missing permission scope
     internal const string MissingPermissionScopeText = "DevX API is not returning any delegated or application permissions for the URI.";
     internal const string MissingPermissionScopeTestNamePrefix = "known-issue-missing-permission-scope-";
-    internal const string MissingDataEphemeralDataInService = "Ephemeral Service data that is deleted after an unknown period of time.";
     #endregion
+
+    internal const string EphemeralDataInServiceText = "Ephemeral Service data that is deleted after an unknown period of time.";
+    internal const string EphemeralDataInServiceTestNamePrefix = "known-issue-ephemeral-data-";
 
     #region No Programmatic Way
     internal const string NoProgrammaticWayText = "There is no programmatic way to generate this data";
@@ -126,8 +129,8 @@ public static class KnownIssues
     internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(Category.MissingData, CustomMessage: MissingDataText, TestNamePrefix: MissingDataTestNamePrefix);
     internal static readonly KnownIssue NoProgrammaticWayKnownIssue = new KnownIssue(Category.NoProgrammaticWay, CustomMessage: NoProgrammaticWayText, TestNamePrefix: NoProgrammaticWayPrefix);
     internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(Category.MissingPermissionScope, CustomMessage: MissingPermissionScopeText, TestNamePrefix: MissingPermissionScopeTestNamePrefix);
-    internal static readonly KnownIssue MissingDataEphemeralAlertData = new KnownIssue(Category.Service,  GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/611", CustomMessage: MissingDataEphemeralDataInService, TestNamePrefix: MissingDataTestNamePrefix);
-    internal static readonly KnownIssue MissingDataEphemeralOperationData = new KnownIssue(Category.Service, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692", CustomMessage: MissingDataEphemeralDataInService, TestNamePrefix: MissingDataTestNamePrefix);
+    internal static readonly KnownIssue EphemeralAlertDataKnownIssue = new KnownIssue(Category.EphemeralData,  GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/611", CustomMessage: EphemeralDataInServiceText, TestNamePrefix: EphemeralDataInServiceTestNamePrefix);
+    internal static readonly KnownIssue EphemeralOperationDataKnownIssue = new KnownIssue(Category.EphemeralData, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692", CustomMessage: EphemeralDataInServiceText, TestNamePrefix: EphemeralDataInServiceTestNamePrefix);
 
     internal static readonly KnownIssue MissingDataSubjectRightsRequestKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/574" };
     internal static readonly KnownIssue MissingDataOnlineMeetingKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/573" };

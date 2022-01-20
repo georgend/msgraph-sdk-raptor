@@ -185,7 +185,7 @@ public static class CSharpKnownIssues
                 { "get-accessreviewhistorydefinition-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-agentgroups-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-agents-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-alert-csharp-Beta-executes", MissingDataEphemeralAlertData },
+                { "get-alert-csharp-Beta-executes", EphemeralAlertDataKnownIssue },
                 { "get-all-roomlists-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-all-rooms-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-allchannelmessages-1-csharp-Beta-executes", NeedsAnalysisKnownIssue },
@@ -646,7 +646,7 @@ public static class CSharpKnownIssues
                 { "get-event-multiple-locations-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/610" } },
                 { "get-instances-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/610" } },
 
-                { "get-alert-csharp-V1-executes", MissingDataEphemeralAlertData },
+                { "get-alert-csharp-V1-executes", EphemeralAlertDataKnownIssue },
 
                 { "get-appconsentrequest-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
                 { "get-userconsentrequest-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/612" } },
@@ -659,7 +659,7 @@ public static class CSharpKnownIssues
                 { "get-callrecord-sessions-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
                 { "get-callrecord-sessions-expanded-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
                 { "callrecord-getdirectroutingcalls-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
-                { "get-connectionoperation-csharp-V1-executes", MissingDataEphemeralOperationData with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692"} },
+                { "get-connectionoperation-csharp-V1-executes", EphemeralOperationDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692"} },
                 { "get-externalgroup-csharp-V1-executes", MissingPermissionScopeKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/693" } },
                 { "get-schema-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
                 { "get-externalconnection-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
