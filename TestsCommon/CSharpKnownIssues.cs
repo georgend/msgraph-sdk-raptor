@@ -710,10 +710,10 @@ public static class CSharpKnownIssues
 
                 { "get-workbookoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/524" } },
 
-                { "get-subjectrightsrequest-csharp-V1-executes", MissingDataSubjectRightsRequestKnownIssue },
-                { "list-authorednote-csharp-V1-executes", MissingDataSubjectRightsRequestKnownIssue },
-                { "subjectrightsrequest-getfinalattachment-csharp-V1-executes", MissingDataSubjectRightsRequestKnownIssue },
-                { "subjectrightsrequest-getfinalreport-csharp-V1-executes", MissingDataSubjectRightsRequestKnownIssue },
+                { "get-subjectrightsrequest-csharp-V1-executes", MissingPermissionDescriptionKnownIssue },
+                { "list-authorednote-csharp-V1-executes", MissingPermissionDescriptionKnownIssue },
+                { "subjectrightsrequest-getfinalattachment-csharp-V1-executes", MissingPermissionDescriptionKnownIssue },
+                { "subjectrightsrequest-getfinalreport-csharp-V1-executes", MissingPermissionDescriptionKnownIssue },
 
                 { "drive-root-subscriptions-socketio-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "enum-lists-csharp-V1-executes", MissingPermissionScopeKnownIssue },
