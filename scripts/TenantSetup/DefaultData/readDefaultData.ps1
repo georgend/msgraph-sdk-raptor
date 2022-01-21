@@ -250,17 +250,11 @@ $serviceUpdateMessage = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/mes
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("serviceUpdateMessage") $serviceUpdateMessage.id
 
-$serviceHealthIssue = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/issues" |
+$serviceHealthIssue = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/issues?`$filter=status eq 'postIncidentReviewPublished'" |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("serviceHealthIssue") $serviceHealthIssue.id
 
 # existing constant value in the tenant
 $identifiers = Add-Identifier $identifiers @("serviceHealth") "Exchange Online"
-
-# Cannot create Alerts as they are System Generated. Read available generated alert
-# https://docs.microsoft.com/en-us/graph/api/alert-list?view=graph-rest-1.0&tabs=http
-$alert = Invoke-RequestHelper -Uri "security/alerts" |
-    Select-Object -First 1
-$identifiers = Add-Identifier $identifiers @("alert") $alert.id
 
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
