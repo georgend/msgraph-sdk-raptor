@@ -123,7 +123,6 @@ public static class CSharpKnownIssues
         var version = versionEnum.ToString();
         return new Dictionary<string, KnownIssue>()
             {
-                { "get-resource-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/776" } },
                 { "list-printusagebyuser-1-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
                 { "list-printusagebyprinter-2-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
                 { "list-printusagebyprinter-1-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
