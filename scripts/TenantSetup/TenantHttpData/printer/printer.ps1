@@ -78,6 +78,7 @@ $printerDevices = Request-DelegatedResource -Uri "devices" -Method "GET" -ScopeO
     Select-Object -First 1
 
 $identifiers = Add-Identifier $identifiers @("device") $printerDevices.id
+$identifiers = Add-Identifier $identifiers @("printTaskDefinition") $printTaskDefinition.id
 
 # save identifiers
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath
