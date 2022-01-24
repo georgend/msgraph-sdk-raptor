@@ -692,10 +692,10 @@ public static class CSharpKnownIssues
 
                 { "contenttype-ispublished-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/651" } },
 
-                { "get-document-value-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },
-                { "get-printjob-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },
-                { "get-printjob-withdocumentdata-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },
-                { "get-printjob-withtasks-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/502" } },
+                { "get-document-value-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
+                { "get-printjob-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
+                { "get-printjob-withdocumentdata-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
+                { "get-printjob-withtasks-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
 
                 { "get-rubric-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/507" } },
 
@@ -705,9 +705,9 @@ public static class CSharpKnownIssues
 
                 { "get-event-based-on-eventmessage-csharp-V1-executes", new KnownIssue(Category.Documentation, "Delegated permissions don't work as documented", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/15507") },
 
-                { "get-onenoteoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/520" } },
+                { "get-onenoteoperation-csharp-V1-executes", EphemeralOnenoteOperationDataKnownIssue },
 
-                { "get-workbookoperation-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/524" } },
+                { "get-workbookoperation-csharp-V1-executes", EphemeralWorkbookOperationDataKnownIssue },
 
                 { "get-subjectrightsrequest-csharp-V1-executes", MissingPermissionDescriptionKnownIssue },
                 { "list-authorednote-csharp-V1-executes", MissingPermissionDescriptionKnownIssue },

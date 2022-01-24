@@ -137,8 +137,11 @@ public static class KnownIssues
     internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(Category.MissingPermissionScope, CustomMessage: MissingPermissionScopeText, TestNamePrefix: MissingPermissionScopeTestNamePrefix);
     internal static readonly KnownIssue MissingPermissionDescriptionKnownIssue = new KnownIssue(Category.MissingPermissionDescription, MissingPermissionDescriptionText, "https://github.com/microsoftgraph/microsoft-graph-devx-content/issues/178", MissingPermissionDescriptionTestNamePrefix);
 
-    internal static readonly KnownIssue EphemeralAlertDataKnownIssue = new KnownIssue(Category.EphemeralData,  GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/611", CustomMessage: EphemeralDataInServiceText, TestNamePrefix: EphemeralDataInServiceTestNamePrefix);
-    internal static readonly KnownIssue EphemeralOperationDataKnownIssue = new KnownIssue(Category.EphemeralData, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692", CustomMessage: EphemeralDataInServiceText, TestNamePrefix: EphemeralDataInServiceTestNamePrefix);
+    internal static readonly KnownIssue EphemeralDataKnownIssue = new KnownIssue(Category.EphemeralData, CustomMessage: EphemeralDataInServiceText, TestNamePrefix: EphemeralDataInServiceTestNamePrefix);
+    internal static readonly KnownIssue EphemeralAlertDataKnownIssue = EphemeralDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/611" };
+    internal static readonly KnownIssue EphemeralOperationDataKnownIssue = EphemeralAlertDataKnownIssue with  { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692" };
+    internal static readonly KnownIssue EphemeralWorkbookOperationDataKnownIssue = EphemeralAlertDataKnownIssue with  { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/524" };
+    internal static readonly KnownIssue EphemeralOnenoteOperationDataKnownIssue = EphemeralAlertDataKnownIssue with  { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/520" };
 
     internal static readonly KnownIssue ProtectedAPIKnownIssue = new KnownIssue(Category.ProtectedAPI, "Need resource specific consent", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/506", "known-issue-protected-api-");
 
