@@ -14,12 +14,12 @@ Connect-DefaultTenant -AppSettings $appSettings
 
 # Get Agreements https://docs.microsoft.com/en-us/graph/api/agreement-list?view=graph-rest-1.0&tabs=http
 $agreement = Get-RequestData -ChildEntity "Agreement"
-$currentAgreement = Invoke-RequestHelper -Uri "identityGovernance/termsOfUse/agreements" -Method GET |
+$currentAgreement = Request-DelegatedResource -Uri "identityGovernance/termsOfUse/agreements" -Method GET |
     Where-Object { $_.displayName -eq $agreement.displayName } |
     Select-Object -First 1
 
 if($null -eq $currentAgreement){
-    $currentAgreement = Invoke-RequestHelper -Uri "identityGovernance/termsOfUse/agreements" -Method POST -Body $agreement
+    $currentAgreement = Request-DelegatedResource -Uri "identityGovernance/termsOfUse/agreements" -Method POST -Body $agreement
 }
 
 $identifiers = Add-Identifier $identifiers @("agreement") $currentAgreement.id
@@ -73,26 +73,51 @@ $identifiers = Add-Identifier $identifiers @("organization", "certificateBasedAu
 
 # Get organizationalBrandingProperties https://docs.microsoft.com/en-us/graph/api/organizationalbrandingproperties-create?view=graph-rest-1.0&tabs=http
 $organizationalBrandingProperties = Get-RequestData -ChildEntity "Branding"
-$currentOrganizationalBrandingProperties = Invoke-RequestHelper -Uri  "organization/$($identifiers.organization._value)/branding" -Method PATCH -Body $organizationalBrandingProperties
+$currentOrganizationalBrandingProperties = Request-DelegatedResource -Uri  "organization/$($identifiers.organization._value)/branding" -Method PATCH -Body $organizationalBrandingProperties
 $currentOrganizationalBrandingProperties.id
 
 # Get organizationalBrandingProperties https://docs.microsoft.com/en-us/graph/api/organizationalbrandingproperties-create?view=graph-rest-1.0&tabs=http
 # French
 $organizationalBrandingPropertiesLocalizationsFrench = Get-RequestData -ChildEntity "LocalizationsFrench"
-$currentOrganizationalBrandingPropertiesLocalizationsFrench = Invoke-RequestHelper -Uri "organization/$($identifiers.organization._value)/branding/localizations/$($organizationalBrandingPropertiesLocalizationsFrench.id)" -Method GET
+$currentOrganizationalBrandingPropertiesLocalizationsFrench = Request-DelegatedResource -Uri "organization/$($identifiers.organization._value)/branding/localizations/$($organizationalBrandingPropertiesLocalizationsFrench.id)" -Method GET
 
 if($null -eq $currentOrganizationalBrandingPropertiesLocalizationsFrench){
-    $currentOrganizationalBrandingPropertiesLocalizationsFrench = Invoke-RequestHelper -Uri  "organization/$($identifiers.organization._value)/branding/localizations" -Method POST -Body $organizationalBrandingPropertiesLocalizationsFrench
+    $currentOrganizationalBrandingPropertiesLocalizationsFrench = Request-DelegatedResource -Uri  "organization/$($identifiers.organization._value)/branding/localizations" -Method POST -Body $organizationalBrandingPropertiesLocalizationsFrench
+}
+#Update French localization to have a banner required in beta execution tests.
+if (!$currentOrganizationalBrandingPropertiesLocalizationsFrench.bannerLogoRelativeUrl){
+    $bannerFilePath = Join-Path $PSScriptRoot ".\bannerLogo.png" -Resolve
+    if(Test-Path -Path $bannerFilePath){
+        $bannerLogoStream =[System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes($bannerFilePath))
+        $fileTypeHeader = @{"Content-Type" = "image/jpeg"}
+        Request-DelegatedResource -Uri  "organization/$($identifiers.organization._value)/branding/localizations/$($currentOrganizationalBrandingPropertiesLocalizationsFrench.id)/bannerLogo" -Method PUT -Body $bannerLogoStream -Headers $fileTypeHeader -ScopeOverride "Organization.ReadWrite.All"
+    }
+    else{
+        Write-Error "Image file path for banner logo couldn't be found"
+    }
 }
 
 # German
 $organizationalBrandingPropertiesLocalizationsGerman = Get-RequestData -ChildEntity "LocalizationsGerman"
-$currentOrganizationalBrandingPropertiesLocalizationsGerman = Invoke-RequestHelper -Uri "organization/$($identifiers.organization._value)/branding/localizations/$($organizationalBrandingPropertiesLocalizationsGerman.id)" -Method GET
+$currentOrganizationalBrandingPropertiesLocalizationsGerman = Request-DelegatedResource -Uri "organization/$($identifiers.organization._value)/branding/localizations/$($organizationalBrandingPropertiesLocalizationsGerman.id)" -Method GET
 
 if($null -eq $currentOrganizationalBrandingPropertiesLocalizationsGerman){
-    $currentOrganizationalBrandingPropertiesLocalizationsGerman = Invoke-RequestHelper -Uri  "organization/$($identifiers.organization._value)/branding/localizations" -Method POST -Body $organizationalBrandingPropertiesLocalizationsGerman
+    $currentOrganizationalBrandingPropertiesLocalizationsGerman = Request-DelegatedResource -Uri  "organization/$($identifiers.organization._value)/branding/localizations" -Method POST -Body $organizationalBrandingPropertiesLocalizationsGerman
 }
 $identifiers = Add-Identifier $identifiers @("organization", "organizationalBrandingLocalization") $currentOrganizationalBrandingPropertiesLocalizationsGerman.id
+
+#Update German localization to have a banner required in execution tests.
+if (!$currentOrganizationalBrandingPropertiesLocalizationsGerman.bannerLogoRelativeUrl){
+    $bannerFilePath = Join-Path $PSScriptRoot ".\bannerLogo.png" -Resolve
+    if(Test-Path -Path $bannerFilePath){
+        $bannerLogoStream =[System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes($bannerFilePath))
+        $fileTypeHeader = @{"Content-Type" = "image/jpeg"}
+        Request-DelegatedResource -Uri  "organization/$($identifiers.organization._value)/branding/localizations/$($organizationalBrandingPropertiesLocalizationsGerman.id)/bannerLogo" -Method PUT -Body $bannerLogoStream -Headers $fileTypeHeader -ScopeOverride "Organization.ReadWrite.All"
+    }
+    else{
+        Write-Error "Image file path for banner logo couldn't be found"
+    }
+}
 
 # Create Connected Organization https://docs.microsoft.com/en-us/graph/api/entitlementmanagement-post-connectedorganizations?view=graph-rest-1.0&tabs=http
 $connectedOrganizationData = Get-RequestData -ChildEntity "ConnectedOrganization"
