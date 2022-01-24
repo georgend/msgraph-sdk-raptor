@@ -140,8 +140,6 @@ public static class KnownIssues
     internal static readonly KnownIssue EphemeralAlertDataKnownIssue = new KnownIssue(Category.EphemeralData,  GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/611", CustomMessage: EphemeralDataInServiceText, TestNamePrefix: EphemeralDataInServiceTestNamePrefix);
     internal static readonly KnownIssue EphemeralOperationDataKnownIssue = new KnownIssue(Category.EphemeralData, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692", CustomMessage: EphemeralDataInServiceText, TestNamePrefix: EphemeralDataInServiceTestNamePrefix);
 
-    internal static readonly KnownIssue MissingDataOnlineMeetingKnownIssue = MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/573" };
-
     internal static readonly KnownIssue ProtectedAPIKnownIssue = new KnownIssue(Category.ProtectedAPI, "Need resource specific consent", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/506", "known-issue-protected-api-");
 
     internal static readonly KnownIssue ServiceTaskPrinterKnownIssue = new KnownIssue(Category.Service, "taskTrigger returns 404 even though it exists", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14774", "known-issue-service-task-trigger-");

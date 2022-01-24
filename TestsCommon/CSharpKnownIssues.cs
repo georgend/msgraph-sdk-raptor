@@ -667,8 +667,7 @@ public static class CSharpKnownIssues
 
                 { "get-microsoftauthenticatorauthenticationmethod-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/621" } },
 
-                { "get-onlinemeeting-user-token-csharp-V1-executes", MissingDataOnlineMeetingKnownIssue },
-                { "get-attendee-report-csharp-V1-executes", MissingDataOnlineMeetingKnownIssue },
+                { "get-attendee-report-csharp-V1-executes", MissingPermissionDescriptionKnownIssue },
 
                 { "get-printconnector-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/624" } },
 
