@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
+using System;
+
 namespace TestsCommon;
 
 // Owner is used to categorize known test failures, so that we can redirect issues faster
@@ -69,10 +71,30 @@ public static class TestDataGenerator
     /// Test case name is also set to to unique name based on file name
     /// </summary>
     /// <param name="runSettings">Test run settings</param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     /// <returns>
     /// TestCaseData to be consumed by C# execution tests
     /// </returns>
     public static IEnumerable<TestCaseData> GetExecutionTestData(RunSettings runSettings)
+    {
+        if (runSettings == null)
+        {
+            throw new ArgumentNullException(nameof(runSettings));
+        }
+
+        bool CsharpFilter(LanguageTestData executionTestData) => executionTestData.FileContent.Contains("GetAsync()");
+        bool PowerShellFilter(LanguageTestData executionTestData) => executionTestData.FileContent.Contains("Get-");
+        Func<LanguageTestData, bool> languageFilter = runSettings.Language switch
+        {
+            Languages.CSharp => CsharpFilter,
+            Languages.PowerShell => PowerShellFilter,
+            _ => throw new ArgumentOutOfRangeException(nameof(runSettings))
+        };
+        return GetExecutionTestDataInternal(runSettings).Where(languageFilter)
+            .Select(executionTestData => new TestCaseData(executionTestData).SetName(executionTestData.KnownIssueTestNamePrefix + executionTestData.TestName).SetProperty("Owner", executionTestData.Owner));
+    }
+
+    private static IEnumerable<LanguageTestData> GetExecutionTestDataInternal(RunSettings runSettings)
     {
         return from testData in GetLanguageTestData(runSettings)
                let executionTestData = testData with
@@ -80,9 +102,8 @@ public static class TestDataGenerator
                    TestName = testData.TestName.Replace("-compiles", "-executes"),
                }
                where !executionTestData.IsCompilationKnownIssue // select compiling tests
-               && !(executionTestData.IsExecutionKnownIssue ^ runSettings.TestType == TestType.ExecutionKnownIssues) // select known execution issues iff requested
-               && executionTestData.FileContent.Contains("GetAsync()") // select only the get tests
-               select new TestCaseData(executionTestData).SetName(executionTestData.KnownIssueTestNamePrefix + executionTestData.TestName).SetProperty("Owner", executionTestData.Owner);
+                     && !(executionTestData.IsExecutionKnownIssue ^ runSettings.TestType == TestType.ExecutionKnownIssues) // select known execution issues iff requested
+               select executionTestData;
     }
 
     private static IEnumerable<LanguageTestData> GetLanguageTestData(RunSettings runSettings)

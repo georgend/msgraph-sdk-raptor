@@ -4,16 +4,16 @@ namespace UnitTests;
 
 public class Tests
 {
-    private IdentifierReplacer idReplacer;
+    private IdentifierReplacer _idReplacer;
 
     [SetUp]
     public void Setup()
     {
         // identifiers.json holds sample tree constructed from V1 urls
         var identifiersJson = System.IO.File.ReadAllText("identifiers.json");
-        var tree = System.Text.Json.JsonSerializer.Deserialize<IDTree>(identifiersJson);
+        var tree = JsonSerializer.Deserialize<IDTree>(identifiersJson);
 
-        idReplacer = new IdentifierReplacer(tree);
+        _idReplacer = new IdentifierReplacer(tree);
     }
 
     [TestCase("https://graph.microsoft.com/v1.0/applications/{application-id}/owners",
@@ -32,7 +32,7 @@ public class Tests
     public void TestIds(string snippetUrl, string expectedUrl)
 #pragma warning restore CA1054 // URI-like parameters should not be strings
     {
-        var newUrl = idReplacer.ReplaceIds(snippetUrl);
+        var newUrl = _idReplacer.ReplaceIds(snippetUrl);
         Assert.AreEqual(expectedUrl, newUrl);
     }
 

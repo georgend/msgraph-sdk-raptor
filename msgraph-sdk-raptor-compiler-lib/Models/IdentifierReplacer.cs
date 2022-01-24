@@ -2,6 +2,22 @@
 
 namespace MsGraphSDKSnippetsCompiler.Models;
 
+internal static class IdentifierRegexes
+{
+    internal static readonly Regex CsharpIdRegex = new(@"{([A-Za-z0-9\.]+)\-id}", RegexOptions.Compiled);
+    internal static readonly Regex PowerShellIdRegex = new(@"\$([a-zA-Z0-9\.]+)Id", RegexOptions.Compiled | RegexOptions.Multiline);
+}
+
+public class PsIdentifiersReplacer : IdentifierReplacer
+{
+    public static new PsIdentifiersReplacer Instance => lazy.Value;
+
+    private static readonly Lazy<PsIdentifiersReplacer> lazy = new(() => new PsIdentifiersReplacer());
+    public PsIdentifiersReplacer() : base(IdentifierRegexes.PowerShellIdRegex)
+    {
+    }
+}
+
 public class IdentifierReplacer
 {
     /// <summary>
@@ -9,18 +25,21 @@ public class IdentifierReplacer
     /// </summary>
     public static IdentifierReplacer Instance => lazy.Value;
 
-    private static readonly Lazy<IdentifierReplacer> lazy = new(() => new IdentifierReplacer());
+    private static readonly Lazy<IdentifierReplacer> lazy = new(() => new IdentifierReplacer(IdentifierRegexes.CsharpIdRegex));
 
     /// <summary>
     /// tree of IDs that appear in sample Graph URLs
     /// </summary>
-    private readonly IDTree tree;
+    private readonly IDTree _tree;
+
+    private readonly Regex _identifierRegex;
 
     /// <summary>
     /// regular expression to match strings like {namespace.type-id}
     /// also extracts namespace.type part separately so that we can use it as a lookup key.
     /// </summary>
-    private readonly Regex idRegex = new Regex(@"{([A-Za-z0-9\.]+)\-id}", RegexOptions.Compiled);
+
+
 
     /// <summary>
     /// Regular Expr mapped to replacement texts
@@ -38,9 +57,14 @@ public class IdentifierReplacer
 
     public IdentifierReplacer(IDTree tree)
     {
-        this.tree = tree;
+        this._tree = tree;
+        _identifierRegex = IdentifierRegexes.CsharpIdRegex;
     }
 
+    public IdentifierReplacer(Regex identifierRegex) : this()
+    {
+        _identifierRegex = identifierRegex;
+    }
     /// <summary>
     /// Default constructor which builds the tree from Azure blob storage
     /// </summary>
@@ -67,7 +91,7 @@ public class IdentifierReplacer
             json = new UTF8Encoding().GetString(stream.ToArray());
         }
 
-        tree = JsonSerializer.Deserialize<IDTree>(json);
+        _tree = JsonSerializer.Deserialize<IDTree>(json);
     }
 
     public string ReplaceIds(string input)
@@ -172,8 +196,8 @@ public class IdentifierReplacer
             throw new ArgumentNullException(nameof(input));
         }
 
-        var matches = idRegex.Matches(input);
-        IDTree currentIdNode = tree;
+        var matches = _identifierRegex.Matches(input);
+        IDTree currentIdNode = _tree;
         foreach (Match match in matches)
         {
             var id = match.Groups[0].Value;     // e.g. {site-id}

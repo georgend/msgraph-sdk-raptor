@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 trigger: none # disable triggers based on commits.
-name: 'Beta C# Snippet Execution Tests'
+name: 'V1 PowerShell Snippet Execution Tests'
 
 resources:
  repositories:
@@ -11,16 +11,14 @@ resources:
      name: microsoftgraph/microsoft-graph-docs
      ref: main
 
-pool:
-  vmImage: 'ubuntu-latest'
-
 variables:
   buildConfiguration: 'Release'
 
-steps:
-- template: common-templates/checkout.yml
-- template: compile-run-tests-template.yml
+jobs:
+- template: powershell-execution-tests-template.yml
   parameters:
-    projectFileName: CsharpBetaExecutionTests
-    runName: 'Beta C# Snippet Execution Tests $(testRunTitle)'
+    projectFileName: PowerShellV1ExecutionTests
+    runName: 'V1 PowerShell Snippet Execution Tests $(testRunTitle)'
     testType: 'Execution'
+    pool: MsGraphBuildAgentsWindows
+    timeoutInMinutes: 600

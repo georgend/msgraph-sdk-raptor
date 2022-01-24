@@ -7,6 +7,9 @@
         <TieredCompilationQuickJitForLoops>true</TieredCompilationQuickJitForLoops>
         <AnalysisMode>AllEnabledByDefault</AnalysisMode>
         <IsPackable>false</IsPackable>
+        <ServerGarbageCollection>true</ServerGarbageCollection>
+        <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+        <RetainVMGarbageCollection>true</RetainVMGarbageCollection>
         <RunSettingsFilePath>$(MSBuildProjectDirectory)\..\Test.runsettings</RunSettingsFilePath>
     </PropertyGroup>
 </Project>

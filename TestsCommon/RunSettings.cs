@@ -74,6 +74,7 @@ public record RunSettings
                 "OBJECTIVEC" => Languages.ObjC,
                 "OBJECTIVE-C" => Languages.ObjC,
                 "TYPESCRIPT" => Languages.TypeScript,
+                "POWERSHELL" => Languages.PowerShell,
                 _ => Languages.CSharp
             };
         }

@@ -1,5 +1,6 @@
 ﻿using static TestsCommon.JavaKnownIssues;
 using static TestsCommon.CSharpKnownIssues;
+using static TestsCommon.PowerShellKnownIssues;
 
 namespace TestsCommon;
 
@@ -170,7 +171,7 @@ public static class KnownIssues
         return MetadataWrong + $": {type}->{property} shouldn't have `ContainsTarget=true`";
     }
 
-     /// <summary>
+    /// <summary>
     /// Constructs metadata errors where a nav property should include ContainsTarget=true
     /// </summary>
     /// <param name="type">parent type in metadata</param>
@@ -259,6 +260,7 @@ public static class KnownIssues
         return language switch
         {
             Languages.CSharp => GetCSharpExecutionKnownIssues(version),
+            Languages.PowerShell => GetPowerShellExecutionKnownIssues(version),
             _ => new Dictionary<string, KnownIssue>()
         };
     }

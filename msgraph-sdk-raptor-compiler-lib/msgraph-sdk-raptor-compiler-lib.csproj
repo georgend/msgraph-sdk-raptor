@@ -8,19 +8,21 @@
     <ItemGroup>
         <PackageReference Include="Azure.Core" Version="1.22.0" />
         <PackageReference Include="Azure.Identity" Version="1.5.0" />
+        <PackageReference Include="Azure.Security.KeyVault.Certificates" Version="4.2.0" />
         <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.0.1" />
         <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="4.5.1" />
         <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />                                                                
+        <PackageReference Include="NUnit" Version="3.13.2" />
+        <PackageReference Include="System.CodeDom" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
         <PackageReference Include="Microsoft.Graph" Version="4.16.0" />
         <PackageReference Include="Microsoft.Graph.Beta" Version="4.26.0-preview" />
         <PackageReference Include="Microsoft.Graph.Core" Version="2.*" />
-        <PackageReference Include="NUnit" Version="3.13.2" />
-        <PackageReference Include="System.CodeDom" Version="6.0.0" />
+        <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.2.1" />
     </ItemGroup>
     <ItemGroup>
         <None Update="appsettings.json">
@@ -41,5 +43,7 @@
                 <Aliases>beta</Aliases>
             </ReferencePath>
         </ItemGroup>
+        <ItemGroup>
+    </ItemGroup>
     </Target>
 </Project>

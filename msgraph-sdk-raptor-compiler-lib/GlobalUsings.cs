@@ -18,6 +18,8 @@ global using Microsoft.Graph;
 global using System.Net.Http;
 global using NUnit.Framework;
 global using Microsoft.Extensions.Configuration;
+global using System.Management.Automation;
+global using System.Management.Automation.Runspaces;
 
 // Microsoft.Graph has very generic names in the namespaces
 // disambiguate collisions

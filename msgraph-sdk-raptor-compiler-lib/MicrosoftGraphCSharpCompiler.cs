@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.Emit;
 using System.Linq.Expressions;
 using System.Runtime.Loader;
 using System.Reflection;
+using Platform = Microsoft.CodeAnalysis.Platform;
 
 namespace MsGraphSDKSnippetsCompiler;
 

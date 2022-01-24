@@ -1,6 +1,10 @@
-﻿namespace MsGraphSDKSnippetsCompiler.Models;
+﻿using System.Security.Cryptography.X509Certificates;
+using Azure;
+using Azure.Security.KeyVault.Certificates;
 
-public class RaptorConfig
+namespace MsGraphSDKSnippetsCompiler.Models;
+
+public sealed class RaptorConfig
 {
     public static RaptorConfig Create(IConfigurationRoot config)
     {
@@ -14,15 +18,20 @@ public class RaptorConfig
             TenantID = config.GetNonEmptyValue(nameof(TenantID)),
             ClientID = config.GetNonEmptyValue(nameof(ClientID)),
             ClientSecret = config.GetNonEmptyValue(nameof(ClientSecret)),
+            CertificateName = config.GetNonEmptyValue(nameof(CertificateName)),
             EducationTenantID = config.GetNonEmptyValue(nameof(EducationTenantID)),
             EducationClientID = config.GetNonEmptyValue(nameof(EducationClientID)),
             EducationClientSecret = config.GetNonEmptyValue(nameof(EducationClientSecret)),
             DocsRepoCheckoutDirectory = config.GetNonEmptyValue("BUILD_SOURCESDIRECTORY"),
             RaptorStorageConnectionString = config.GetNonEmptyValue(nameof(RaptorStorageConnectionString)),
             IsLocalRun = bool.Parse(config.GetNonEmptyValue(nameof(IsLocalRun))),
-            TypeScriptFolder = Path.Join(config.GetNonEmptyValue("BUILD_SOURCESDIRECTORY"), "typescript-tests")
+            TypeScriptFolder = Path.Join(config.GetNonEmptyValue("BUILD_SOURCESDIRECTORY"), "typescript-tests"),
+            AzureKeyVaultUri = new Uri(config.GetNonEmptyValue(nameof(AzureKeyVaultUri))),
+            AzureApplicationID = config.GetNonEmptyValue(nameof(AzureApplicationID)),
+            AzureClientSecret = config.GetNonEmptyValue(nameof(AzureClientSecret)),
+            AzureKeyVaultName = config.GetNonEmptyValue(nameof(AzureKeyVaultName)),
+            AzureTenantID = config.GetNonEmptyValue(nameof(AzureTenantID))
         };
-
         if (!Directory.Exists(Path.Join(raptorConfig.DocsRepoCheckoutDirectory, "microsoft-graph-docs")))
         {
             throw new FileNotFoundException("If you are running this locally, please set environment" +
@@ -30,6 +39,60 @@ public class RaptorConfig
         }
 
         return raptorConfig;
+    }
+
+    private static X509Certificate2 GetCertificate(RaptorConfig raptorConfig)
+    {
+        try
+        {
+            var clientSecretCredential = new ClientSecretCredential(raptorConfig.AzureTenantID, raptorConfig.AzureApplicationID, raptorConfig.AzureClientSecret);
+            var client = new CertificateClient(raptorConfig.AzureKeyVaultUri, clientSecretCredential);
+            var certificate = client.DownloadCertificate(certificateName: raptorConfig.CertificateName);
+            return certificate;
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail("Could Not Get Auth Certificate:{0}", ex.Message);
+            throw;
+        }
+    }
+
+    public string AzureTenantID
+    {
+        get;
+        set;
+    }
+
+    public string AzureApplicationID
+    {
+        get;
+        set;
+    }
+    public string AzureKeyVaultName
+    {
+        get;
+        set;
+    }
+
+    public string AzureClientSecret
+    {
+        get;
+        set;
+    }
+
+    private X509Certificate2 _certificate;
+    public Lazy<X509Certificate2> Certificate => new(() => _certificate ??= GetCertificate(this));
+
+    public string CertificateName
+    {
+        get;
+        set;
+    }
+
+    public Uri AzureKeyVaultUri
+    {
+        get;
+        set;
     }
 
     public string ClientID

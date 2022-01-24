@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+﻿using Microsoft.Extensions.Azure;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 
 namespace MsGraphSDKSnippetsCompiler;
 

@@ -1,0 +1,27 @@
+parameters:
+  projectFileName: PowerShellV1ExecutionTests
+  runName: 'V1 PowerShell Snippet Execution Tests'
+  testType: 'Execution'
+  pool: MsGraphBuildAgentsWindows
+  timeoutInMinutes: 0
+jobs:
+- job: ${{ parameters.projectFileName }}
+  pool: ${{ parameters.pool }}
+  timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
+
+  steps:
+  - task: PowerShell@2
+    displayName: Install Required Modules
+    inputs:
+      targetType: 'inline'
+      script: |
+        if (!(Get-Module -Name Microsoft.Graph -ListAvailable)) {
+            Install-Module Microsoft.Graph -Repository PSGallery -Scope AllUsers -Force -AllowClobber
+            Import-Module Microsoft.Graph -Global -Force 
+        }
+  - template: common-templates/checkout.yml
+  - template: compile-run-tests-template.yml
+    parameters:
+      projectFileName: ${{ parameters.projectFileName }}
+      runName: ${{ parameters.projectFileName }}
+      testType: ${{ parameters.testType }}
