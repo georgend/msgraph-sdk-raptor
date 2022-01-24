@@ -798,7 +798,18 @@ public static class CSharpKnownIssues
                 { "get-accesspackagecatalog-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "list-accesspackageassignment-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "list-accesspackageassignmentrequest-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "list-accesspackagecatalog-csharp-V1-executes", MissingPermissionScopeKnownIssue }
+                { "list-accesspackagecatalog-csharp-V1-executes", MissingPermissionScopeKnownIssue },
+
+                { "get-user-assignments-expand-submissions-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-riskyuser-1-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "workbook-tablerowoperationresult-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "list-attendancerecord-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-attendancereports-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-riskdetection-1-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-user-assignments-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-riskyuserhistoryitem-2-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-attendancereport-by-id-csharp-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-riskyuserhistoryitem-1-csharp-V1-executes", NeedsAnalysisKnownIssue },
             };
     }
 }
