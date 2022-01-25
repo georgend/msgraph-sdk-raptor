@@ -799,7 +799,8 @@ public static class CSharpKnownIssues
                 { "list-accesspackageassignment-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "list-accesspackageassignmentrequest-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "list-accesspackagecatalog-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "get-user-assignments-expand-submissions-csharp-V1-executes", MissingPermissionDescriptionKnownIssue },
+                { "get-user-assignments-expand-submissions-csharp-V1-executes", MissingPermissionScopeKnownIssue },
+
                 { "workbook-tablerowoperationresult-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-attendancereports-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-user-assignments-csharp-V1-executes", MissingPermissionScopeKnownIssue },
