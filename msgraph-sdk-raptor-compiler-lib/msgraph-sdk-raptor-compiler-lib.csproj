@@ -15,12 +15,12 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />                                                                
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Graph.Beta" Version="4.26.0-preview" />                                                                
         <PackageReference Include="NUnit" Version="3.13.2" />
         <PackageReference Include="System.CodeDom" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
         <PackageReference Include="Microsoft.Graph" Version="4.16.0" />
-        <PackageReference Include="Microsoft.Graph.Beta" Version="4.26.0-preview" />
         <PackageReference Include="Microsoft.Graph.Core" Version="2.*" />
         <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.2.1" />
     </ItemGroup>
