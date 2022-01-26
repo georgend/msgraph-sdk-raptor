@@ -397,7 +397,6 @@ public static class CSharpKnownIssues
                 { "get-resources-2-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-reviewset-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-reviewsetquery-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-riskdetection-2-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-riskyuser-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-riskyuser-historyitem-1-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-riskyuser-historyitem-2-csharp-Beta-executes", MissingDataKnownIssue },
@@ -509,7 +508,6 @@ public static class CSharpKnownIssues
                 { "list-plannerrostermember-csharp-Beta-executes", MissingDataKnownIssue },
                 { "list-reviewset-csharp-Beta-executes", MissingDataKnownIssue },
                 { "list-reviewsetquery-csharp-Beta-executes", MissingDataKnownIssue },
-                { "list-riskdetection-2-csharp-Beta-executes", MissingDataKnownIssue },
                 { "list-riskyuser-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "list-sitesource-csharp-Beta-executes", MissingDataKnownIssue },
                 { "list-sourcecollection-csharp-Beta-executes", MissingDataKnownIssue },
@@ -804,8 +802,6 @@ public static class CSharpKnownIssues
 
                 { "get-attendancereport-by-id-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/792" } },
                 { "list-attendancerecord-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/792" } },
-
-                { "get-riskdetection-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/794" } },
             };
     }
 }

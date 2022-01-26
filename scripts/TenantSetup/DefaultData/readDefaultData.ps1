@@ -258,6 +258,10 @@ $riskyUser = Invoke-RequestHelper -Uri "identityProtection/riskyUsers" |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("riskyUser") $riskyUser.id
 
+$riskDetection = Invoke-RequestHelper -Uri "identityProtection/riskDetections" |
+    Select-Object -First 1
+$identifiers = Add-Identifier $identifiers @("riskDetection") $riskDetection.id
+
 # existing constant value in the tenant
 $identifiers = Add-Identifier $identifiers @("serviceHealth") "Exchange Online"
 
