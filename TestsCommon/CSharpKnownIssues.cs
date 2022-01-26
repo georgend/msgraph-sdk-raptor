@@ -585,6 +585,12 @@ public static class CSharpKnownIssues
                 { "get-printjob-withdocumentdata-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "user-get-room-lists-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "user-get-rooms-in-tenant-csharp-Beta-executes", NeedsAnalysisKnownIssue },
+                { "list-applicationsignindetailedsummary-csharp-Beta-executes", NeedsAnalysisKnownIssue },
+                { "workbook-tablerowoperationresult-csharp-Beta-executes", NeedsAnalysisKnownIssue },
+                { "get-bookingcustomquestion-csharp-Beta-executes", NeedsAnalysisKnownIssue },
+                { "list-bookingcustomquestion-csharp-Beta-executes", NeedsAnalysisKnownIssue },
+                { "get-externalregistration-csharp-Beta-executes", NeedsAnalysisKnownIssue },
+                { "list-externalregistratrants-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "userconsentrequest-filterbycurrentuser-csharp-Beta-executes", MissingDataKnownIssue },
 
                 { "get-applicationsignindetailedsummary-csharp-Beta-executes", MissingDataKnownIssue },
