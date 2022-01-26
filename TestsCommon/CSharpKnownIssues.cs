@@ -166,7 +166,6 @@ public static class CSharpKnownIssues
                 { "convert-item-content-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "drive-root-subscriptions-socketio-csharp-Beta-executes", MissingDataKnownIssue },
                 { "event-delta-calendarview-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "event-get-attachments-beta-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-a-count-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-a-count-endswith-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-accesspackageassignmentpolicy-csharp-Beta-executes", MissingDataKnownIssue },
@@ -271,9 +270,6 @@ public static class CSharpKnownIssues
                 { "get-enabled-dynamic-groups-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-endpoint-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-event-based-on-eventmessage-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-event-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-event-in-text-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-event-multiple-locations-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-fido2authenticationmethod-1-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-fido2authenticationmethodconfiguration-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-file-attachment-beta-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
@@ -287,7 +283,6 @@ public static class CSharpKnownIssues
                 { "get-identityuserflowattributeassignment-expand-3-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-incompatiblegroups-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-informationprotectionlabel-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-instances-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-item-attachment-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "list-serviceplans-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "list-federatedidentitycredential-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
@@ -632,11 +627,6 @@ public static class CSharpKnownIssues
 
                 { "accessreviewinstance-filterbycurrentuser-csharp-V1-executes", SDKFunctionParameterKnownIssue },
                 { "accessreviewinstancedecisionitem-filterbycurrentuser-csharp-V1-executes", SDKFunctionParameterKnownIssue },
-
-                { "event-get-attachments-v1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/610" } },
-                { "get-event-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/610" } },
-                { "get-event-multiple-locations-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/610" } },
-                { "get-instances-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/610" } },
 
                 { "get-alert-csharp-V1-executes", EphemeralAlertDataKnownIssue },
 
