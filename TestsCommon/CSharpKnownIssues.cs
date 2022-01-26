@@ -800,8 +800,8 @@ public static class CSharpKnownIssues
                 { "get-attendancereports-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-user-assignments-csharp-V1-executes", MissingPermissionScopeKnownIssue },
 
-                { "get-attendancereport-by-id-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/792" } },
-                { "list-attendancerecord-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/792" } },
+                { "get-attendancereport-by-id-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/792" } },
+                { "list-attendancerecord-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/792" } },
             };
     }
 }
