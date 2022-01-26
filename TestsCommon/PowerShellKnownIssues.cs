@@ -828,7 +828,9 @@ public static class PowerShellKnownIssues
                 { "notebook-get-sectiongroups-powershell-V1-executes", NeedsAnalysisKnownIssue },
                 { "recent-notebooks-powershell-V1-executes", NeedsAnalysisKnownIssue },
                 { "sectionsgroup-get-sections-powershell-V1-executes", NeedsAnalysisKnownIssue },
-                { "list-attendancerecord-powershell-V1-executes", NeedsAnalysisKnownIssue }
+                { "list-attendancerecord-powershell-V1-executes", NeedsAnalysisKnownIssue },
+                { "get-timeoffrequest-1-powershell-V1-executes", Add_MS_APP_ACTS_CustomheaderIssue},
+                { "get-me-assignments-powershell-V1-executes", NeedsAnalysisKnownIssue}
         };
     }
 }
