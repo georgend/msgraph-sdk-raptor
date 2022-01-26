@@ -398,7 +398,6 @@ public static class CSharpKnownIssues
                 { "get-reviewset-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-reviewsetquery-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-riskdetection-2-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-riskyuser-1-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-riskyuser-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-riskyuser-historyitem-1-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-riskyuser-historyitem-2-csharp-Beta-executes", MissingDataKnownIssue },
@@ -461,8 +460,6 @@ public static class CSharpKnownIssues
                 { "get-userflowlanguagepage-2-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-userflowlanguagepage-3-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-userflows-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-userriskhitsory-1-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-userriskhitsory-2-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-usersource-1-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-usersource-2-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-webaccount-csharp-Beta-executes", MissingDataKnownIssue },
@@ -804,10 +801,6 @@ public static class CSharpKnownIssues
                 { "workbook-tablerowoperationresult-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-attendancereports-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-user-assignments-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-
-                { "get-riskyuser-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/793" } },
-                { "get-riskyuserhistoryitem-2-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/793" } },
-                { "get-riskyuserhistoryitem-1-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/793" } },
 
                 { "get-attendancereport-by-id-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/792" } },
                 { "list-attendancerecord-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/792" } },
