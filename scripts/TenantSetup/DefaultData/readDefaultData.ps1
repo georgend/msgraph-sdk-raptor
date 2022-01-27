@@ -254,6 +254,19 @@ $serviceHealthIssue = Invoke-RequestHelper -Uri "admin/serviceAnnouncement/issue
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("serviceHealthIssue") $serviceHealthIssue.id
 
+$riskyUser = Invoke-RequestHelper -Uri "identityProtection/riskyUsers" |
+    Select-Object -First 1
+$identifiers = Add-Identifier $identifiers @("riskyUser") $riskyUser.id
+
+$riskDetection = Invoke-RequestHelper -Uri "identityProtection/riskDetections" |
+    Select-Object -First 1
+$identifiers = Add-Identifier $identifiers @("riskDetection") $riskDetection.id
+
+$userEvent = Invoke-RequestHelper -Uri "users/$($identifiers.user._value)/calendar/events" |
+    Where-Object { $_.recurrence -ne $null } | # need a recurring event for "get instances" API call
+    Select-Object -First 1
+$identifiers = Add-Identifier $identifiers @("event") $userEvent.id
+
 # existing constant value in the tenant
 $identifiers = Add-Identifier $identifiers @("serviceHealth") "Exchange Online"
 
