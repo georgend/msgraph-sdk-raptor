@@ -643,7 +643,7 @@ public static class CSharpKnownIssues
                 { "callrecord-getdirectroutingcalls-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
                 { "get-connectionoperation-csharp-V1-executes", EphemeralOperationDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692"} },
                 { "get-externalgroup-csharp-V1-executes", MissingPermissionScopeKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/693" } },
-                { "get-schema-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
+                { "get-schema-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-externalconnection-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
 
                 { "get-contract-1-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/322", CustomMessage = "blocked" } },
@@ -662,7 +662,7 @@ public static class CSharpKnownIssues
 
                 { "get-printoperation-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
 
-                { "get-printtask-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/779" } },
+                { "get-printtask-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/779" } },
 
                 { "get-printusagebyprinter-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
 
@@ -673,7 +673,7 @@ public static class CSharpKnownIssues
                 { "list-bitlockerrecoverykey-csharp-V1-executes", new KnownIssue(Category.NeedsAnalysis, "Service requires UserAgent") },
                 { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", new KnownIssue(Category.NeedsAnalysis, "Service requires UserAgent") },
 
-                { "contenttype-ispublished-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/651" } },
+                { "contenttype-ispublished-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/651" } },
 
                 { "get-document-value-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
                 { "get-printjob-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
