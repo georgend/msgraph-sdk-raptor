@@ -148,7 +148,7 @@ public static class KnownIssues
 
     internal static readonly KnownIssue ServiceTaskPrinterKnownIssue = new KnownIssue(Category.Service, "taskTrigger returns 404 even though it exists", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14774", "known-issue-service-task-trigger-");
     internal static readonly KnownIssue PermissionsMoreThanOnePermissionKnownIssue = new KnownIssue(Category.MoreThanOnePermission, "More than one permission is required", "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/778", "known-issue-permissions-more-than-one-permission-");
-
+    internal static readonly KnownIssue Add_MS_APP_ACTS_CustomheaderIssue = new KnownIssue(Category.Metadata, GitHubIssue: "https://github.com/microsoftgraph/msgraph-metadata/issues/109", TestNamePrefix: MissingDataTestNamePrefix);
     /// <summary>
     /// Constructs property not found message
     /// </summary>
