@@ -123,11 +123,7 @@ public static class CSharpKnownIssues
         var version = versionEnum.ToString();
         return new Dictionary<string, KnownIssue>()
             {
-                { "list-printusagebyuser-1-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
-                { "list-printusagebyprinter-2-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
-                { "list-printusagebyprinter-1-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
-                { "list-printusagebyuser-2-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
-                { "get-chartgridlines-csharp-V1-executes", MissingPermissionScopeKnownIssue },
+                // Beta Execution Issues
                 { "get-cloudpcgalleryimage-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-teams-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-customsecurityattributedefinition-csharp-Beta-executes", NeedsAnalysisKnownIssue },
@@ -313,8 +309,6 @@ public static class CSharpKnownIssues
                 { "get-languageproficiency-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-legalhold-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-list-multi-expand-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-mailboxsettings-2-csharp-V1-executes", StructuralPropertiesAreNotHandledKnownIssue },
-                { "get-mailboxsettings-3-csharp-V1-executes", StructuralPropertiesAreNotHandledKnownIssue },
                 { "get-manageddevicecompliance-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-manageddevicecompliancetrend-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-managementaction-csharp-Beta-executes", MissingDataKnownIssue },
@@ -617,6 +611,16 @@ public static class CSharpKnownIssues
                 { "list-identityapiconnectors-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "user-get-calendarview-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "user-reminderview-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
+
+                // V1 Execution Issues
+                { "get-mailboxsettings-2-csharp-V1-executes", StructuralPropertiesAreNotHandledKnownIssue },
+                { "get-mailboxsettings-3-csharp-V1-executes", StructuralPropertiesAreNotHandledKnownIssue },
+
+                { "list-printusagebyuser-1-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
+                { "list-printusagebyprinter-2-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
+                { "list-printusagebyprinter-1-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
+                { "list-printusagebyuser-2-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
+                { "get-chartgridlines-csharp-V1-executes", MissingPermissionScopeKnownIssue },
 
                 { "get-plans-1-csharp-V1-executes", HTTPKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14686" }},
                 { "planner-get-tasks-csharp-V1-executes", HTTPKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14687" } },
