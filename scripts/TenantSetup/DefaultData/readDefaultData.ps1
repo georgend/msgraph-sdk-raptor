@@ -41,8 +41,7 @@ $calendarPermission = Invoke-RequestHelper -Uri "users/$($user.id)/calendar/cale
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("user", "calendarPermission") $calendarPermission.id
 
-$userScopeTeamsAppInstallation = Invoke-RequestHelper -Uri "users/$($user.id)/teamwork/installedApps?`$expand=teamsAppDefinition" |
-    Where-Object { $_.teamsAppDefinition.displayName -eq "Teams" }
+$userScopeTeamsAppInstallation = Invoke-RequestHelper -Uri "users/$($user.id)/teamwork/installedApps?`$expand=teamsApp&`$filter=teamsApp/displayName eq 'Approvals'" |
     Select-Object -First 1
 $identifiers = Add-Identifier $identifiers @("user", "userScopeTeamsAppInstallation") $userScopeTeamsAppInstallation.id
 
