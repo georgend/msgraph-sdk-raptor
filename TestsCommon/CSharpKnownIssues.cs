@@ -539,7 +539,6 @@ public static class CSharpKnownIssues
                 { "teamsappicon-get-hostedcontentbytes-outlineicon-value-csharp-Beta-executes", MissingDataKnownIssue },
                 { "timecard-get-csharp-Beta-executes", MissingDataKnownIssue },
                 { "trustframeworkkeyset-getactivekey-csharp-Beta-executes", MissingDataKnownIssue },
-                { "user-chat-teamsapps-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "user-get-rooms-from-specific-list-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "user-supportedtimezones-iana-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "virtualendpoint-geteffectivepermissions-csharp-Beta-executes", NeedsAnalysisKnownIssue },
@@ -681,8 +680,6 @@ public static class CSharpKnownIssues
                 { "get-printjob-withtasks-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
 
                 { "get-rubric-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/507" } },
-
-                { "user-chat-teamsapps-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/509" } },
 
                 { "get-manager-1-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/511" } },
 
