@@ -8,11 +8,11 @@ namespace TestsCommon;
 public record KnownIssue(
     Category Category,
     string CustomMessage = null,
-    string GitHubIssue = null,
-    string TestNamePrefix = "known-issue-")
+    string GitHubIssue = null)
 {
     public string Message => string.Join(Environment.NewLine, new[] { CustomMessage, GitHubIssue }.Where(s => !string.IsNullOrEmpty(s)));
     public string Owner => Category.ToString();
+    public string TestNamePrefix => "KnownIssue-" + Category.ToString() + "-";
 };
 
 

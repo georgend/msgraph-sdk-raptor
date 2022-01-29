@@ -77,37 +77,12 @@ public static class KnownIssues
     internal const string IdentitySetAndIdentityShouldNestAdditionalDataGithubIssue = "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/613";
     #endregion
 
-    #region Needs analysis
     internal const string NeedsAnalysisText = "This is a consistently failing test, the root cause is not yet identified";
-    internal const string NeedsAnalysisTestNamePrefix = "known-issue-needs-analysis-";
-    #endregion
-
-    #region Missing data
     internal const string MissingDataText = "This test is missing data in identifiers.json file";
-    internal const string MissingDataTestNamePrefix = "known-issue-missing-data-";
-    #endregion
-
-    #region Missing permission scope
     internal const string MissingPermissionScopeText = "DevX API is not returning any delegated or application permissions for the URI.";
-    internal const string MissingPermissionScopeTestNamePrefix = "known-issue-missing-permission-scope-";
-    #endregion
-
-    #region Missing permission description
     internal const string MissingPermissionDescriptionText = "DevX Content repo doesn't have a description for the permission.";
-    internal const string MissingPermissionDescriptionTestNamePrefix = "known-issue-missing-permission-description-";
-    #endregion
-
     internal const string EphemeralDataInServiceText = "Ephemeral Service data that is deleted after an unknown period of time.";
-    internal const string EphemeralDataInServiceTestNamePrefix = "known-issue-ephemeral-data-";
-
-    #region No Programmatic Way
     internal const string NoProgrammaticWayText = "There is no programmatic way to generate this data";
-    internal const string NoProgrammaticWayPrefix = "known-issue-no-programmatic-way-";
-    #endregion
-
-    #region Test Owner values (to categorize results in Azure DevOps)
-
-    #endregion
 
     #region HTTP methods
     internal const string DELETE = nameof(DELETE);
@@ -129,26 +104,25 @@ public static class KnownIssues
     internal static readonly KnownIssue EducationAssignmentRubricContainsTargetPreprocessorKnownIssue = new KnownIssue(Category.Metadata, EducationAssignmentRubricContainsTargetPreprocessor, EducationAssignmentRubricContainsTargetPreprocessorGithubIssue);
     internal static readonly KnownIssue IdentitySetAndIdentityShouldNestAdditionalDataKnownIssue = new KnownIssue(Category.SnippetGeneration, GitHubIssue: IdentitySetAndIdentityShouldNestAdditionalDataGithubIssue);
     internal static readonly KnownIssue CountIsNotSupportedKnownIssue = new KnownIssue(Category.SDK, CountIsNotSupported, CountIsNotSupportedGithubIssue);
-    internal static readonly KnownIssue SnippetGenerationKnownIssue = new KnownIssue(Category.SnippetGeneration, CustomMessage: "Snippet generation should be fixed", TestNamePrefix: "known-issue-snippet-generation-");
-    internal static readonly KnownIssue SDKFunctionParameterKnownIssue = new KnownIssue(Category.SDK, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1156", TestNamePrefix: "known-issue-sdk-function-parameter-");
-    internal static readonly KnownIssue HTTPKnownIssue = new KnownIssue(Category.HTTP, CustomMessage: HttpSnippetWrong, TestNamePrefix: "known-issue-http-snippet-wrong-");
-    internal static readonly KnownIssue NeedsAnalysisKnownIssue = new KnownIssue(Category.NeedsAnalysis, CustomMessage: NeedsAnalysisText, TestNamePrefix: NeedsAnalysisTestNamePrefix);
-    internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(Category.MissingData, CustomMessage: MissingDataText, TestNamePrefix: MissingDataTestNamePrefix);
-    internal static readonly KnownIssue NoProgrammaticWayKnownIssue = new KnownIssue(Category.NoProgrammaticWay, CustomMessage: NoProgrammaticWayText, TestNamePrefix: NoProgrammaticWayPrefix);
-    internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(Category.MissingPermissionScope, CustomMessage: MissingPermissionScopeText, TestNamePrefix: MissingPermissionScopeTestNamePrefix);
-    internal static readonly KnownIssue MissingPermissionDescriptionKnownIssue = new KnownIssue(Category.MissingPermissionDescription, MissingPermissionDescriptionText, "https://github.com/microsoftgraph/microsoft-graph-devx-content/issues/178", MissingPermissionDescriptionTestNamePrefix);
+    internal static readonly KnownIssue SDKFunctionParameterKnownIssue = new KnownIssue(Category.SDK, GitHubIssue: "https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1156");
+    internal static readonly KnownIssue HTTPKnownIssue = new KnownIssue(Category.HTTP, CustomMessage: HttpSnippetWrong);
+    internal static readonly KnownIssue NeedsAnalysisKnownIssue = new KnownIssue(Category.NeedsAnalysis, CustomMessage: NeedsAnalysisText);
+    internal static readonly KnownIssue MissingDataKnownIssue = new KnownIssue(Category.MissingData, CustomMessage: MissingDataText);
+    internal static readonly KnownIssue NoProgrammaticWayKnownIssue = new KnownIssue(Category.NoProgrammaticWay, CustomMessage: NoProgrammaticWayText);
+    internal static readonly KnownIssue MissingPermissionScopeKnownIssue = new KnownIssue(Category.MissingPermissionScope, CustomMessage: MissingPermissionScopeText);
+    internal static readonly KnownIssue MissingPermissionDescriptionKnownIssue = new KnownIssue(Category.MissingPermissionDescription, MissingPermissionDescriptionText, "https://github.com/microsoftgraph/microsoft-graph-devx-content/issues/178");
 
-    internal static readonly KnownIssue EphemeralDataKnownIssue = new KnownIssue(Category.EphemeralData, CustomMessage: EphemeralDataInServiceText, TestNamePrefix: EphemeralDataInServiceTestNamePrefix);
+    internal static readonly KnownIssue EphemeralDataKnownIssue = new KnownIssue(Category.EphemeralData, CustomMessage: EphemeralDataInServiceText);
     internal static readonly KnownIssue EphemeralAlertDataKnownIssue = EphemeralDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/611" };
     internal static readonly KnownIssue EphemeralOperationDataKnownIssue = EphemeralAlertDataKnownIssue with  { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692" };
     internal static readonly KnownIssue EphemeralWorkbookOperationDataKnownIssue = EphemeralAlertDataKnownIssue with  { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/524" };
     internal static readonly KnownIssue EphemeralOnenoteOperationDataKnownIssue = EphemeralAlertDataKnownIssue with  { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/520" };
 
-    internal static readonly KnownIssue ProtectedAPIKnownIssue = new KnownIssue(Category.ProtectedAPI, "Need resource specific consent", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/506", "known-issue-protected-api-");
+    internal static readonly KnownIssue ProtectedAPIKnownIssue = new KnownIssue(Category.ProtectedAPI, "Need resource specific consent", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/506");
 
-    internal static readonly KnownIssue ServiceTaskPrinterKnownIssue = new KnownIssue(Category.Service, "taskTrigger returns 404 even though it exists", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14774", "known-issue-service-task-trigger-");
-    internal static readonly KnownIssue PermissionsMoreThanOnePermissionKnownIssue = new KnownIssue(Category.MoreThanOnePermission, "More than one permission is required", "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/778", "known-issue-permissions-more-than-one-permission-");
-    internal static readonly KnownIssue Add_MS_APP_ACTS_CustomheaderIssue = new KnownIssue(Category.Metadata, GitHubIssue: "https://github.com/microsoftgraph/msgraph-metadata/issues/109", TestNamePrefix: MissingDataTestNamePrefix);
+    internal static readonly KnownIssue ServiceTaskPrinterKnownIssue = new KnownIssue(Category.Service, "taskTrigger returns 404 even though it exists", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/14774");
+    internal static readonly KnownIssue PermissionsMoreThanOnePermissionKnownIssue = new KnownIssue(Category.MoreThanOnePermission, "More than one permission is required", "https://github.com/microsoftgraph/microsoft-graph-devx-api/issues/778");
+    internal static readonly KnownIssue Add_MS_APP_ACTS_CustomheaderIssue = new KnownIssue(Category.Metadata, GitHubIssue: "https://github.com/microsoftgraph/msgraph-metadata/issues/109");
     /// <summary>
     /// Constructs property not found message
     /// </summary>
