@@ -124,6 +124,12 @@ public static class CSharpKnownIssues
         return new Dictionary<string, KnownIssue>()
             {
                 // Beta Execution Issues
+                { "{list-serviceannouncementattachment-csharp-Beta-executes}", NeedsAnalysisKnownIssue },
+                { "{list-permission-csharp-Beta-executes}", NeedsAnalysisKnownIssue },
+                { "{get-richlongrunningoperation-csharp-Beta-executes}", NeedsAnalysisKnownIssue },
+                { "{get-attendance-report-csharp-Beta-executes}", NeedsAnalysisKnownIssue },
+                { "{get-userregistrationdetails-csharp-Beta-executes}", NeedsAnalysisKnownIssue },
+                { "{get-serviceannouncementattachment-csharp-Beta-executes}", NeedsAnalysisKnownIssue },
                 { "get-cloudpcgalleryimage-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-teams-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-customsecurityattributedefinition-csharp-Beta-executes", NeedsAnalysisKnownIssue },
@@ -146,7 +152,6 @@ public static class CSharpKnownIssues
                 { "get-chartgridlines-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "list-attributeset-orderby-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-endpoints-3-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "list-basetasklist-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "accesspackageassignment-filterbycurrentuser-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "accesspackageassignmentrequest-filterbycurrentuser-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "accessreviewinstance-filterbycurrentuser-csharp-Beta-executes", SDKFunctionParameterKnownIssue },
@@ -237,7 +242,6 @@ public static class CSharpKnownIssues
                 { "get-conditionalaccesspolicycoverage-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-connection-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-connectionoperation-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-connections-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-connector-1-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-connector-2-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-connectorgroup-csharp-Beta-executes", MissingDataKnownIssue },
@@ -281,10 +285,7 @@ public static class CSharpKnownIssues
                 { "get-informationprotectionlabel-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-item-attachment-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "list-serviceplans-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
-                { "list-federatedidentitycredential-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
-                { "get-user-assignments-expand-submissions-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "list-subjectrightsrequest-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
-                { "get-user-assignments-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "list-supportedregions-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-devices-by-extensionattribute-csharp-Beta-executes", MissingDataKnownIssue with {GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/570"} },
                 { "get-custom-question-csharp-Beta-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/573"} },
@@ -568,7 +569,6 @@ public static class CSharpKnownIssues
                 { "get-printjob-withdocumentdata-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "user-get-room-lists-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "user-get-rooms-in-tenant-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "list-applicationsignindetailedsummary-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "workbook-tablerowoperationresult-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-bookingcustomquestion-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "list-bookingcustomquestion-csharp-Beta-executes", NeedsAnalysisKnownIssue },
@@ -588,16 +588,12 @@ public static class CSharpKnownIssues
                 { "get-chartpointscollection-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-chartseries-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-deleteditems-count-csharp-Beta-executes", MissingPermissionScopeKnownIssue},
-                { "get-endpoints-2-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-jobs-3-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-messagerules-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-organizationalbrandingproperties-2-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-points-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
-                { "get-printservice-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
-                { "get-printserviceendpoint-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-profilecardproperties-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-regionalandlanguagesettings-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
-                { "get-services-2-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-subscriptions-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-swapshiftschangerequest-1-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
                 { "get-user-presences-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
@@ -613,6 +609,8 @@ public static class CSharpKnownIssues
                 { "user-reminderview-csharp-Beta-executes", MissingPermissionScopeKnownIssue },
 
                 // V1 Execution Issues
+                { "{list-serviceannouncementattachment-csharp-V1-executes}", NeedsAnalysisKnownIssue },
+                { "{get-serviceannouncementattachment-csharp-V1-executes}", NeedsAnalysisKnownIssue },
                 { "get-mailboxsettings-2-csharp-V1-executes", StructuralPropertiesAreNotHandledKnownIssue },
                 { "get-mailboxsettings-3-csharp-V1-executes", StructuralPropertiesAreNotHandledKnownIssue },
 
@@ -645,7 +643,6 @@ public static class CSharpKnownIssues
                 { "get-callrecord-sessions-expanded-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
                 { "callrecord-getdirectroutingcalls-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
                 { "get-connectionoperation-csharp-V1-executes", EphemeralOperationDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692"} },
-                { "get-externalgroup-csharp-V1-executes", MissingPermissionScopeKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/693" } },
                 { "get-schema-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-externalconnection-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
 
@@ -724,8 +721,6 @@ public static class CSharpKnownIssues
                 { "get-participant-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-participants-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-pivottables-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "get-printservice-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "get-printserviceendpoint-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-printsettings-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-recent-activities-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-reference-attachment-csharp-V1-executes", MissingPermissionScopeKnownIssue },
@@ -740,10 +735,7 @@ public static class CSharpKnownIssues
                 { "get-workbookpivottable-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "item-search-all-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "list-conversation-members-1-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "list-externalconnection-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "list-identityapiconnectors-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "list-printservice-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "list-printserviceendpoint-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "list-subjectrightsrequest-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "user-get-calendarview-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "user-reminderview-csharp-V1-executes", MissingPermissionScopeKnownIssue },
@@ -781,18 +773,16 @@ public static class CSharpKnownIssues
                 { "accesspackageassignment-filterbycurrentuser-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "accesspackageassignmentrequest-filterbycurrentuser-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-accesspackageassignmentrequest-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "get-accesspackagecatalog-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "list-accesspackageassignment-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "list-accesspackageassignmentrequest-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "list-accesspackagecatalog-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "get-user-assignments-expand-submissions-csharp-V1-executes", MissingPermissionScopeKnownIssue },
 
                 { "workbook-tablerowoperationresult-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "get-attendancereports-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "get-user-assignments-csharp-V1-executes", MissingPermissionScopeKnownIssue },
 
                 { "get-attendancereport-by-id-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/792" } },
                 { "list-attendancerecord-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/792" } },
             };
     }
 }
+
+
+
+
