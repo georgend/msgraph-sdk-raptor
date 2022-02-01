@@ -61,4 +61,10 @@ if (!$educationRubric){
 $identifiers = Add-Identifier $identifiers @("educationRubric") $educationRubric.id
 $identifiers = Add-Identifier $identifiers @("educationUser", "educationRubric") $educationRubric.id
 
+# Attach education rubric to assignment
+$assignmentRubricData = Get-RequestData -ChildEntity "assignmentRubric"
+$assignmentRubricData."@odata.id" += $educationRubric.id
+Request-DelegatedResource -Uri "education/classes/$($educationClass.id)/assignments/$($educationAssignment.id)/rubric/`$ref" -IsEducation $true -Method "PUT" -Body $assignmentRubricData
+
+
 $identifiers | ConvertTo-Json -Depth 10 > $identifiersPath

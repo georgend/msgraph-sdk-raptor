@@ -680,8 +680,6 @@ public static class CSharpKnownIssues
                 { "get-printjob-withdocumentdata-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
                 { "get-printjob-withtasks-csharp-V1-executes", PermissionsMoreThanOnePermissionKnownIssue },
 
-                { "get-rubric-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/507" } },
-
                 { "get-manager-1-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/511" } },
 
                 { "get-event-based-on-eventmessage-csharp-V1-executes", new KnownIssue(Category.Documentation, "Delegated permissions don't work as documented", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/15507") },
@@ -782,7 +780,3 @@ public static class CSharpKnownIssues
             };
     }
 }
-
-
-
-
