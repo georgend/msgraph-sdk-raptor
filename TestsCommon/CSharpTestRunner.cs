@@ -14,7 +14,7 @@ public static class CSharpTestRunner
 {
     public async System.Threading.Tasks.Task Main(IAuthenticationProvider authProvider, IHttpProvider httpProvider)
     {
-        //insert-code-here
+//insert-code-here
     }
 
     public HttpRequestMessage GetRequestMessage(IAuthenticationProvider authProvider)
@@ -182,7 +182,7 @@ public static class CSharpTestRunner
 
         // have another transformation to insert GetRequestMessage method
         codeToCompile = codeToCompile.Replace("GraphServiceClient( authProvider );", "GraphServiceClient( authProvider, httpProvider );");
-        codeToCompile = codeToCompile.Replace("return null; //return-request-message", "//insert-code-here");
+        codeToCompile = codeToCompile.Replace("        return null; //return-request-message", "//insert-code-here");
         codeToCompile = BaseTestRunner.ConcatBaseTemplateWithSnippet(ReturnHttpRequestMessage(codeSnippetFormatted), codeToCompile);
         return (codeToCompile, codeSnippetFormatted);
     }
@@ -197,15 +197,15 @@ public static class CSharpTestRunner
         var match = CSharpSnippetRegex.Match(fileContent);
         Assert.IsTrue(match.Success, "Csharp snippet file is not in expected format!");
 
-        var codeSnippetFormatted = match.Groups[1].Value
-            .Replace("\r\n", "\r\n        ")            // add indentation to match with the template
-            .Replace("\r\n        \r\n", "\r\n\r\n")    // remove indentation added to empty lines
-            .Replace("\t", "    ");                     // do not use tabs
+        const string fourSpaces = "    ";
+        const string windowsNewLine = "\r\n";
+        const string unixNewLine = "\n";
+        const string tab = "\t";
+        var linesFormatted = match.Groups[1].Value
+            .Split(new[] { unixNewLine, windowsNewLine}, Int32.MaxValue, StringSplitOptions.RemoveEmptyEntries)
+            .Select(line => fourSpaces + fourSpaces + line.Replace(tab, fourSpaces)); // add indentation to match with the template and remove tabs
 
-        while (codeSnippetFormatted.Contains("\r\n\r\n"))
-        {
-            codeSnippetFormatted = codeSnippetFormatted.Replace("\r\n\r\n", "\r\n"); // do not have empty lines for shorter error messages
-        }
+        var codeSnippetFormatted = string.Join(windowsNewLine, linesFormatted);
 
         var codeToCompile = BaseTestRunner.ConcatBaseTemplateWithSnippet(codeSnippetFormatted, SDKShellTemplate);
 

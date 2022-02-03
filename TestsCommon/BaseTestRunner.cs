@@ -11,10 +11,8 @@ public static class BaseTestRunner
     /// </returns>
     internal static string ConcatBaseTemplateWithSnippet(string snippet, string SDKShellTemplate)
     {
-        // there are mixture of line endings, namely \r\n and \n, normalize that into \r\n
         string codeToCompile = SDKShellTemplate
-                   .Replace("//insert-code-here", snippet)
-                   .Replace("\r\n", "\n").Replace("\n", "\r\n");
+                   .Replace("//insert-code-here", snippet);
 
         return codeToCompile;
     }
