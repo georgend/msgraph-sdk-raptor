@@ -18,7 +18,7 @@
     Required. Determines whether known issue tests should be run
 
 .Parameter DllPath
-    Required. Full path to Microsoft.Graph.dll
+    Optional. Full path to Microsoft.Graph.dll
 
 .Parameter RunSettingsPath
     Required. Full or relative path to .runsettings file to be modified
@@ -43,7 +43,7 @@ Param(
     [Parameter(Mandatory = $true, ParameterSetName="CSharp")]
     [Parameter(Mandatory = $false, ParameterSetName="Java")]
     [string]$TestType,
-    [Parameter(Mandatory = $true, ParameterSetName="CSharp")][string]$DllPath,
+    [Parameter(Mandatory = $false, ParameterSetName="CSharp")][string]$DllPath,
     [Parameter(Mandatory = $true, ParameterSetName="CSharp")]
     [Parameter(Mandatory = $false, ParameterSetName="Java")]
     [string]$Language,

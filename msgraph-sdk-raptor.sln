@@ -73,7 +73,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DefaultData", "DefaultData"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportGenerator", "ReportGenerator\ReportGenerator.csproj", "{D5F3C37D-D95B-4E8B-9C4E-8955A974276C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeScriptBetaTests", "TypeScriptBetaTests\TypeScriptBetaTests.csproj", "{757FC453-510F-4DD2-90F9-D652B026803E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeScriptV1Tests", "TypeScriptV1Tests\TypeScriptV1Tests.csproj", "{2DE901F3-7896-4A96-84F5-81FD8AC6104E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellV1ExecutionTests", "PowerShellV1ExecutionTests\PowerShellV1ExecutionTests.csproj", "{8B340395-87C5-4219-9F95-75C780AD1AD8}"
 EndProject
@@ -167,6 +167,10 @@ Global
 		{757FC453-510F-4DD2-90F9-D652B026803E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{757FC453-510F-4DD2-90F9-D652B026803E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{757FC453-510F-4DD2-90F9-D652B026803E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DE901F3-7896-4A96-84F5-81FD8AC6104E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DE901F3-7896-4A96-84F5-81FD8AC6104E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DE901F3-7896-4A96-84F5-81FD8AC6104E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DE901F3-7896-4A96-84F5-81FD8AC6104E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8B340395-87C5-4219-9F95-75C780AD1AD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8B340395-87C5-4219-9F95-75C780AD1AD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B340395-87C5-4219-9F95-75C780AD1AD8}.Release|Any CPU.ActiveCfg = Release|Any CPU

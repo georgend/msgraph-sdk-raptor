@@ -10,146 +10,52 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using System.Collections.ObjectModel;
 
 namespace MsGraphSDKSnippetsCompiler
 {
     public class MicrosoftGraphTypescriptCompiler : IMicrosoftGraphSnippetsCompiler
     {
 
-        private readonly string _markdownFileName;
-        private static string _rootPath;
-
-        private const string errorsSuffix = "error";
-        private static readonly Regex notesFilterRegex = new Regex(@"^Note:\s[^\n]*$", RegexOptions.Compiled | RegexOptions.Multiline);
-        private static readonly Regex doubleLineReturnCleanupRegex = new Regex(@"\n{2,}", RegexOptions.Compiled | RegexOptions.Multiline);
-        private static readonly Regex errorCountCleanupRegex = new Regex(@"\d+ error", RegexOptions.Compiled);
-        private static readonly Regex errorMessageCaptureRegex = new Regex(@":(?<linenumber>\d+):(?<message>[^\/\\]+)", RegexOptions.Compiled | RegexOptions.Multiline);
-
-        public MicrosoftGraphTypescriptCompiler(string markdownFileName, string rootPath)
-        {
-            _markdownFileName = markdownFileName;
-            _rootPath = rootPath;
-        }
-
-        private static void PrepareProjectFolder(string sourceFileDirectory)
-        {
-            var cleanUpFiles = new List<string> { "main.ts", "main.js" };
-            foreach (var cleanUpFile in cleanUpFiles)
-            {
-                File.Delete(Path.Combine(sourceFileDirectory, cleanUpFile));
-            }
-        }
-
         public CompilationResultsModel CompileSnippet(string codeSnippet, Versions version)
         {
-            var rootPath = _rootPath;
-            var sourceFileDirectory = rootPath;
-            PrepareProjectFolder(sourceFileDirectory);
-
-
-            File.WriteAllText(Path.Combine(sourceFileDirectory, "main.ts"), codeSnippet);
-
-            // start info should change for windows vs linux
-            using var tscProcess = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "powershell",
-                    Arguments = "tsc --lib dom -t es5 --downlevelIteration true --moduleResolution node --module commonjs main.ts",
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    WorkingDirectory = rootPath,
-                },
-            };
-
-            var stdOuputSB = new StringBuilder();
-            var stdErrSB = new StringBuilder();
-            using var outputWaitHandle = new AutoResetEvent(false);
-            using var errorWaitHandle = new AutoResetEvent(false);
-            tscProcess.OutputDataReceived += (sender, e) => {
-                if (string.IsNullOrEmpty(e.Data))
-                {
-                    outputWaitHandle.Set();
-                }
-                else
-                {
-                    stdOuputSB.Append(e.Data);
-                }
-            };
-            tscProcess.ErrorDataReceived += (sender, e) =>
-            {
-                if (string.IsNullOrEmpty(e.Data))
-                {
-                    errorWaitHandle.Set();
-                }
-                else
-                {
-                    stdErrSB.Append(e.Data);
-                }
-            };
-            tscProcess.Start();
-            tscProcess.BeginOutputReadLine();
-            tscProcess.BeginErrorReadLine();
-            var hasExited = tscProcess.WaitForExit(240000);
-            if (!hasExited)
-                tscProcess.Kill(true);
-            var stdOutput = stdOuputSB.ToString();
-            var stdErr = stdErrSB.ToString();
-            return new CompilationResultsModel(
-                hasExited && !stdOutput.Contains(errorsSuffix, StringComparison.OrdinalIgnoreCase) && !stdErr.Contains(errorsSuffix, StringComparison.OrdinalIgnoreCase),
-                GetDiagnosticsFromStdErr(stdOutput, stdErr, hasExited),
-                _markdownFileName
-            );
-        }
-
-        private static List<Diagnostic> GetDiagnosticsFromStdErr(string stdOutput, string stdErr, bool hasExited)
-        {
-            var result = new List<Diagnostic>();
-            // tsc return the error as a standard output
-
-            var errorMessage = stdErr.Contains(errorsSuffix, StringComparison.OrdinalIgnoreCase) ? stdErr : stdOutput;
-            if (errorMessage.Contains(errorsSuffix, StringComparison.OrdinalIgnoreCase))
-            {
-                var diagnosticsToParse = doubleLineReturnCleanupRegex.Replace(
-                                                errorCountCleanupRegex.Replace(
-                                                    notesFilterRegex.Replace(// we don't need informational notes
-                                                        errorMessage[0..errorMessage.IndexOf(errorsSuffix, StringComparison.OrdinalIgnoreCase)], // we want the traces before FAILURE
-                                                        string.Empty),
-                                                    string.Empty),
-                                                string.Empty);
-                result.AddRange(errorMessageCaptureRegex
-                                            .Matches(diagnosticsToParse)
-                                            .Select(x => new { message = x.Groups["message"].Value, linenumber = int.Parse(x.Groups["linenumber"].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo) })
-                                            .Select(x => Diagnostic.Create(new DiagnosticDescriptor("TypeScript1001",
-                                                                                "Error during TypeScript compilation",
-                                                                                x.message,
-                                                                                "TypeScript1001: 'TypeScript.Language'",
-                                                                                DiagnosticSeverity.Error,
-                                                                                true),
-                                                                            Location.Create("main.ts",
-                                                                                new TextSpan(0, 5),
-                                                                                new LinePositionSpan(
-                                                                                    new LinePosition(x.linenumber, 0),
-                                                                                    new LinePosition(x.linenumber, 2))))));
-            }
-
-            if (!hasExited)
-            {
-                result.Add(Diagnostic.Create(new DiagnosticDescriptor("TypeScript1000",
-                                                                        "Sample didn't finish compiling",
-                                                                        "The compilation for that sample timed out",
-                                                                        "TypeScript1000: 'Typescript.Compile'",
-                                                                        DiagnosticSeverity.Error,
-                                                                        true),
-                                            null));
-            }
-
-            return result;
+            throw new NotImplementedException();
         }
 
         public Task<ExecutionResultsModel> ExecuteSnippet(string codeSnippet, Versions version)
         {
             throw new NotImplementedException();
+        }
+
+        public static IReadOnlyCollection<Diagnostic> GetDiagnostics(string fileName, Collection<Dictionary<string, string>> errorList)
+        {
+            if (errorList == null)
+            {
+                throw new ArgumentNullException(nameof(errorList));
+            }
+
+            var result = new List<Diagnostic>();
+
+            foreach (var error in errorList)
+            {
+                var positions = error["errorPosition"].Replace("(", "", StringComparison.InvariantCulture).Replace(")", "", StringComparison.InvariantCulture).Split(",").Select(Int32.Parse).ToList(); ;
+                result.Add(
+                    Diagnostic.Create(
+                        new DiagnosticDescriptor(error["errorCode"],
+                                                        "Error during TypeScript compilation",
+                                                        error["errorMessage"],
+                                                        error["errorCode"],
+                                                        DiagnosticSeverity.Error,
+                                                        true),
+                                            Location.Create(fileName,
+                                                                            new TextSpan(0, 5),
+                                                                            new LinePositionSpan(
+                                                                                new LinePosition(positions[0], 0),
+                                                                                new LinePosition(positions[0], positions[1]))))
+                    );
+            }
+
+            return result;
         }
     }
 }

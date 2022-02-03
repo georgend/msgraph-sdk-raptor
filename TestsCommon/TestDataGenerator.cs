@@ -59,6 +59,21 @@ public static class TestDataGenerator
     /// <returns>
     /// TestCaseData to be consumed by C# compilation tests
     /// </returns>
+    public static IEnumerable<LanguageTestData> GetLanguageTestCaseData(RunSettings runSettings)
+    {
+        return from testData in GetLanguageTestData(runSettings)
+               where !(testData.IsCompilationKnownIssue ^ runSettings.TestType == TestType.CompilationKnownIssues) // select known compilation issues iff requested
+               select testData;
+    }
+
+    /// <summary>
+    /// For each snippet file creates a test case which takes the file name and version as reference
+    /// Test case name is also set to to unique name based on file name
+    /// </summary>
+    /// <param name="runSettings">Test run settings</param>
+    /// <returns>
+    /// TestCaseData to be consumed by C# compilation tests
+    /// </returns>
     public static IEnumerable<TestCaseData> GetTestCaseData(RunSettings runSettings)
     {
         return from testData in GetLanguageTestData(runSettings)
