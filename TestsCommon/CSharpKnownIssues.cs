@@ -643,7 +643,6 @@ public static class CSharpKnownIssues
                 { "get-callrecord-sessions-expanded-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
                 { "callrecord-getdirectroutingcalls-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
                 { "get-connectionoperation-csharp-V1-executes", EphemeralOperationDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692"} },
-                { "get-schema-csharp-V1-executes", MissingPermissionScopeKnownIssue },
 
                 { "get-contract-1-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/322", CustomMessage = "blocked" } },
 
@@ -682,7 +681,6 @@ public static class CSharpKnownIssues
                 { "get-manager-1-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/511" } },
 
                 { "get-event-based-on-eventmessage-csharp-V1-executes", new KnownIssue(Category.Documentation, "Delegated permissions don't work as documented", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/15507") },
-                { "get-externalconnection-csharp-V1-executes", new KnownIssue(Category.Documentation, "Application permission available but endpoint returns 401", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/810") },
 
                 { "get-onenoteoperation-csharp-V1-executes", EphemeralOnenoteOperationDataKnownIssue },
 
@@ -734,7 +732,7 @@ public static class CSharpKnownIssues
                 { "item-search-all-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "list-conversation-members-1-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "list-identityapiconnectors-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "list-subjectrightsrequest-csharp-V1-executes", MissingPermissionScopeKnownIssue },
+                { $"list-serviceannouncementattachment-csharp-{version}-executes", MissingPermissionScopeKnownIssue},
                 { "user-get-calendarview-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "user-reminderview-csharp-V1-executes", MissingPermissionScopeKnownIssue },
                 { "workbookrange-columnsafter-csharp-V1-executes", MissingPermissionScopeKnownIssue },
@@ -773,7 +771,6 @@ public static class CSharpKnownIssues
                 { "get-accesspackageassignmentrequest-csharp-V1-executes", MissingPermissionScopeKnownIssue },
 
                 { "workbook-tablerowoperationresult-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "get-attendancereports-csharp-V1-executes", MissingPermissionScopeKnownIssue },
 
                 { "get-attendancereport-by-id-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/792" } },
                 { "list-attendancerecord-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/792" } },
