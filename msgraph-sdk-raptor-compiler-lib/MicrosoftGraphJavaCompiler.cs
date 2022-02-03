@@ -126,7 +126,7 @@ application {
                 }
                 catch(ObjectDisposedException ode)
                 {
-                    stdErrSB.AppendLine("process timed out and killed while error stream was still being written by the compiler!");
+                    stdErrSB.AppendLine("process timed out and killed while standard output stream was still being written by the compiler!");
                     stdErrSB.AppendLine(ode.Message);
                 }
             }
