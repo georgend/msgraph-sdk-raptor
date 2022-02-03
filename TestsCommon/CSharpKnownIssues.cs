@@ -204,10 +204,10 @@ public static class CSharpKnownIssues
                 { "get-b2cuserflows-apiconnectorconfiguration-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { "get-b2cuserflows-csharp-Beta-executes", NeedsAnalysisKnownIssue },
                 { $"get-b2xuserflows-apiconnectorconfiguration-csharp-{version}-executes", StructuralPropertiesAreNotHandledKnownIssue},
-                { "get-bitlockerrecoverykey-1-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-bitlockerrecoverykey-2-csharp-Beta-executes", NeedsAnalysisKnownIssue },
-                { "get-bitlockerrecoverykey-3-csharp-Beta-executes", MissingDataKnownIssue },
-                { "get-bitlockerrecoverykey-4-csharp-Beta-executes", MissingDataKnownIssue },
+                { "get-bitlockerrecoverykey-1-csharp-Beta-executes", new KnownIssue(Category.Documentation, "endpoint requires UserAgent header", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/15739")},
+                { "get-bitlockerrecoverykey-2-csharp-Beta-executes", new KnownIssue(Category.Documentation, "endpoint requires UserAgent header", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/15739")},
+                { "get-bitlockerrecoverykey-3-csharp-Beta-executes", new KnownIssue(Category.Documentation, "endpoint requires UserAgent header", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/15739")},
+                { "get-bitlockerrecoverykey-4-csharp-Beta-executes", new KnownIssue(Category.Documentation, "endpoint requires UserAgent header", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/15739")},
                 { "get-bookingappointment-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-bookingbusiness-csharp-Beta-executes", MissingDataKnownIssue },
                 { "get-bookingcurrency-csharp-Beta-executes", MissingDataKnownIssue },
@@ -644,7 +644,6 @@ public static class CSharpKnownIssues
                 { "callrecord-getdirectroutingcalls-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/320" } },
                 { "get-connectionoperation-csharp-V1-executes", EphemeralOperationDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/692"} },
                 { "get-schema-csharp-V1-executes", MissingPermissionScopeKnownIssue },
-                { "get-externalconnection-csharp-V1-executes", MissingDataKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/617" } },
 
                 { "get-contract-1-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/322", CustomMessage = "blocked" } },
 
@@ -670,8 +669,8 @@ public static class CSharpKnownIssues
 
                 { "get-windowshelloforbusinessauthenticationmethod-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/638" } },
 
-                { "list-bitlockerrecoverykey-csharp-V1-executes", new KnownIssue(Category.NeedsAnalysis, "Service requires UserAgent") },
-                { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", new KnownIssue(Category.NeedsAnalysis, "Service requires UserAgent") },
+                { "list-bitlockerrecoverykey-csharp-V1-executes", new KnownIssue(Category.Documentation, "endpoint requires UserAgent header", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/15738") },
+                { "list-bitlockerrecoverykey-filter-deviceid-csharp-V1-executes", new KnownIssue(Category.Documentation, "endpoint requires UserAgent header", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/15738") },
 
                 { "contenttype-ispublished-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/651" } },
 
@@ -683,6 +682,7 @@ public static class CSharpKnownIssues
                 { "get-manager-1-csharp-V1-executes", NoProgrammaticWayKnownIssue with { GitHubIssue = "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/511" } },
 
                 { "get-event-based-on-eventmessage-csharp-V1-executes", new KnownIssue(Category.Documentation, "Delegated permissions don't work as documented", "https://github.com/microsoftgraph/microsoft-graph-docs/issues/15507") },
+                { "get-externalconnection-csharp-V1-executes", new KnownIssue(Category.Documentation, "Application permission available but endpoint returns 401", "https://github.com/microsoftgraph/msgraph-sdk-raptor/issues/810") },
 
                 { "get-onenoteoperation-csharp-V1-executes", EphemeralOnenoteOperationDataKnownIssue },
 
