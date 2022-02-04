@@ -1,5 +1,4 @@
 # Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
-
 parameters:
 - name: BuildAgentPool
   displayName: Build Agent Pool
@@ -11,28 +10,16 @@ parameters:
   type: number
   default: 600
 
-- name: PipelineTimeout
-  displayName: PipelineTimeout
-  type: number
-  default: 600
-
-- name: RunName
-  displayName: RunName
-  type: string
-  default: "PowerShell"
-
-- name: Schedule
-  displayName: Schedule
-  type: string
-  default: "0 3 * * WED"  # every Wednesday at 3AM UTC (off hours for Redmond, Nairobi and Montréal)
-
 trigger: none # disable triggers based on commits.
 pr: none
-name: ${{ parameters.RunName }}
+name: 'Weekly V1 PowerShell Snippet Execution Tests'
+
+variables:
+  buildConfiguration: 'Release'
 
 schedules:
-  - cron: ${{ parameters.Schedule }}
-    displayName: ${{ parameters.RunName }}
+  - cron: "0 3 * * *"  # every Wednesday at 3AM UTC (off hours for Redmond, Nairobi and MontrÃ©al)
+    displayName: 'Weekly V1 PowerShell Snippet Execution Tests'
     branches:
       include:
       - dev
@@ -46,20 +33,17 @@ resources:
      name: microsoftgraph/microsoft-graph-docs
      ref: main
 
-variables:
-  buildConfiguration: 'Release'
-
 jobs:
 - job: PowerShell
   pool: ${{ parameters.BuildAgentPool }}
   timeoutInMinutes: ${{ parameters.PipelineTimeout }}
   strategy:
-    maxParallel: 4
+    maxParallel: 2
     matrix:
         PowerShellBetaExecutionTests:
-            projectFileName: PowerShellBetaExecutionTests
+            projectFileName: PowerShellV1ExecutionTests
         PowerShellBetaExecutionKnownFailureTests:
-            projectFileName: PowerShellBetaExecutionKnownFailureTests
+            projectFileName: PowerShellV1ExecutionKnownFailureTests
   steps:
   - template: powershell-execution-tests-template.yml
     parameters:
