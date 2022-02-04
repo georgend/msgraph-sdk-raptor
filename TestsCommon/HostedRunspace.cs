@@ -77,7 +77,8 @@ public class HostedRunspace : IDisposable
     /// <param name="scriptContents">The script file contents.</param>
     /// <param name="scriptParameters">A dictionary of parameter names and parameter values.</param>
     /// <param name="output"></param>
-    public async Task<(bool HadErrors, ConcurrentQueue<ErrorRecord> ErrorRecords, PSDataCollection<PSObject> Results)> RunScript(string scriptContents,
+    /// <param name="currentScope"></param>
+    public async Task<(bool HadErrors, List<ErrorRecord> ErrorRecords, PSDataCollection<PSObject> Results)> RunScript(string scriptContents,
         Dictionary<string, object> scriptParameters,
         Func<string, Task> output,
         Scope currentScope = default)
@@ -107,11 +108,6 @@ public class HostedRunspace : IDisposable
         var currentState = _defaultSessionState.Clone();
         if (scriptParameters.Any())
         {
-            currentState.Variables.Add(new List<SessionStateVariableEntry>()
-            {
-                new("AccessToken", scriptParameters["AccessToken"], "Current AccessToken",
-                    ScopedItemOptions.AllScope)
-            });
             currentState.EnvironmentVariables.Add(new List<SessionStateVariableEntry>()
             {
                 new("AccessToken", scriptParameters["AccessToken"], "Current AccessToken",
@@ -126,14 +122,12 @@ public class HostedRunspace : IDisposable
         ps.AddScript(scriptContents);
 
         // subscribe to events from some of the streams
-        var errors = new ConcurrentQueue<ErrorRecord>();
         async void OnErrorOnDataAdded(object sender, DataAddedEventArgs e)
         {
             if (sender is PSDataCollection<ErrorRecord> streamObjectsReceived)
             {
                 var streamObjectsList = streamObjectsReceived.ToList();
                 var currentStreamRecord = streamObjectsList[e.Index];
-                errors.Enqueue(currentStreamRecord);
                 await output($@"ErrorStreamEvent: {currentStreamRecord.Exception.Message}  Current Scope: {currentScope?.value}").ConfigureAwait(false);
             }
         }
@@ -164,7 +158,7 @@ public class HostedRunspace : IDisposable
 
         // execute the script and await the result.
         var pipelineObjects = await ps.InvokeAsync().ConfigureAwait(false);
-        return (ps.HadErrors, errors, pipelineObjects);
+        return (ps.HadErrors, ps.Streams.Error.ToList(), pipelineObjects);
     }
 
     private static string PrintJson(dynamic psData)

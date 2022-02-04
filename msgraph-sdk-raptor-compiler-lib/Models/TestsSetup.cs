@@ -17,6 +17,7 @@ public static class TestsSetup
     {
         var permissionManagerApplication = new PermissionManager(isEducation);
         await permissionManagerApplication.CreateDelegatedAuthProviders().ConfigureAwait(false);
+        permissionManagerApplication.CreateCertificateCredentials();
         return permissionManagerApplication;
     }
 }

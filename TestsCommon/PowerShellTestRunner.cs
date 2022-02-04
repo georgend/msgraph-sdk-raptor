@@ -4,6 +4,7 @@ using System.Management.Automation;
 using System.Net.Http;
 using System.Text.Json;
 using Azure.Core;
+using Azure.Identity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.PowerShell.Commands;
 
@@ -132,8 +133,7 @@ public static class PowerShellTestRunner
                         .ConfigureAwait(false);
                 if (powershellExecutionResultsModel.Success)
                 {
-                    Assert.Pass(
-                        $"Snippet Executed Successfully with {powershellExecutionResultsModel.Scope.value}{Environment.NewLine}{powershellExecutionResultsModel.ExecutionSnippet}");
+                    Assert.Pass($"Snippet Executed Successfully with {powershellExecutionResultsModel.Scope.value}{Environment.NewLine}{powershellExecutionResultsModel.ExecutionSnippet}");
                 }
             }
 
@@ -157,11 +157,33 @@ public static class PowerShellTestRunner
 
     private static async Task<PowerShellExecutionResultsModel> ExecuteWithApplicationPermissions(string codeToExecute)
     {
+        var tokenContext = new TokenRequestContext(new[] {"https://graph.microsoft.com/.default"});
+        var permissionManager = await GetPermissionManager().ConfigureAwait(false);
+        var config = TestsSetup.Config.Value;
+        ClientCertificateCredential clientCertificateCredential;
+        if (_isEducation)
+        {
+            clientCertificateCredential = permissionManager.GetClientCertificateCredential(config.EducationTenantID, config.ClientID,
+                    config.Certificate.Value);
+        }
+        else
+        {
+            clientCertificateCredential = permissionManager.GetClientCertificateCredential(config.TenantID,
+                config.ClientID,
+                config.Certificate.Value);
+        }
+        var delegatedSnippet = codeToExecute
+            .Replace(DefaultAppOnlyInitScript, DefaultDelegatedInitScript)
+            .Replace(EducationAppOnlyInitScript, DefaultDelegatedInitScript);
         var stringBuilder = new StringBuilder();
         var handler = new StringBuilder.AppendInterpolatedStringHandler(1, 1, stringBuilder);
-        var (hadErrors, errorRecords, results) = await HostedRunSpace.RunScript(codeToExecute,
-                new Dictionary<string, object>(),
-                TestContext.Out.WriteAsync)
+        var token = await clientCertificateCredential.GetTokenAsync(tokenContext, default).ConfigureAwait(false);
+        var (hadErrors, errorRecords, results) = await HostedRunSpace.RunScript(delegatedSnippet,
+                new Dictionary<string, object>()
+                {
+                    {"AccessToken", token.Token}
+                },
+                TestContext.Out.WriteLineAsync)
             .ConfigureAwait(false);
         if (hadErrors)
         {
@@ -171,10 +193,10 @@ public static class PowerShellTestRunner
                 handler.AppendLiteral(Environment.NewLine);
             }
 
-            return new PowerShellExecutionResultsModel(false, codeToExecute, null, stringBuilder.ToString());
+            return new PowerShellExecutionResultsModel(false, delegatedSnippet, null, stringBuilder.ToString());
         }
 
-        return new PowerShellExecutionResultsModel(true, codeToExecute, null, stringBuilder.ToString());
+        return new PowerShellExecutionResultsModel(true, delegatedSnippet, null, stringBuilder.ToString());
     }
 
     private static async Task<PowerShellExecutionResultsModel> ExecuteSnippetWithDelegatedPermissions(IEnumerable<Scope> delegatedScopes, string codeToExecute)
@@ -188,11 +210,11 @@ public static class PowerShellTestRunner
         var handler = new StringBuilder.AppendInterpolatedStringHandler(1, 1, stringBuilder);
         foreach (var scope in delegatedScopes)
         {
-            var currentTokenRequestContext = new TokenRequestContext(new[] { scope.value });
+            var currentTokenRequestContext = new TokenRequestContext();
             try
             {
-                var authProvider = await permissionManager.GetTokenCredential(scope).ConfigureAwait(false);
-                var token = await authProvider.GetTokenAsync(currentTokenRequestContext, default).ConfigureAwait(false);
+                var tokenCredential = permissionManager.GetTokenCredential(scope);
+                var token = await tokenCredential.GetTokenAsync(currentTokenRequestContext, default).ConfigureAwait(false);
                 var (hadErrors, errorRecords, results) = await HostedRunSpace.RunScript(delegatedSnippet,
                         new Dictionary<string, object>()
                         {

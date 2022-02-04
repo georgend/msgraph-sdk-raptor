@@ -1,4 +1,6 @@
-﻿using Azure.Core;
+﻿using System.Collections.Concurrent;
+using System.Security.Cryptography.X509Certificates;
+using Azure.Core;
 using static NUnit.Framework.TestContext;
 
 namespace MsGraphSDKSnippetsCompiler;
@@ -31,6 +33,9 @@ public class PermissionManager
     /// </summary>
     private readonly IDictionary<string, TokenCredentialAuthProvider> _authProviders;
 
+    private readonly ConcurrentDictionary<string, TokenCredential> _tokenCredentials;
+    private readonly ConcurrentDictionary<string, ClientCertificateCredential> _clientCertificateCredentials;
+
     /// <summary>
     /// Auth provider to initialize GraphServiceClients within the snippets
     /// when application permissions are needed
@@ -53,6 +58,8 @@ public class PermissionManager
             new List<string> { DefaultAuthScope });
         _client = new GraphServiceClient(AuthProvider);
         _authProviders = new Dictionary<string, TokenCredentialAuthProvider>();
+        _tokenCredentials = new ConcurrentDictionary<string, TokenCredential>();
+        _clientCertificateCredentials = new ConcurrentDictionary<string, ClientCertificateCredential>();
     }
 
     /// <summary>
@@ -368,6 +375,7 @@ public class PermissionManager
     ///   2. b. Creates a token credential provider for the app
     /// </summary>
     /// <returns></returns>
+    ///
     internal async Task CreateDelegatedAuthProviders()
     {
         var permissionDescriptions = await GetPermissionDescriptions().ConfigureAwait(false);
@@ -381,8 +389,8 @@ public class PermissionManager
             try
             {
                 var application = await GetApplication(delegatedPermissionScope).ConfigureAwait(false);
-                _authProviders[delegatedPermissionScope.value] = new TokenCredentialAuthProvider(
-                    new UsernamePasswordCredential(username, password, tenantID, application.AppId, new UsernamePasswordCredentialOptions
+                var usernamePasswordCredential = new UsernamePasswordCredential(username, password,
+                    tenantID, application.AppId, new UsernamePasswordCredentialOptions
                     {
                         TokenCachePersistenceOptions = new TokenCachePersistenceOptions
                         {
@@ -393,8 +401,9 @@ public class PermissionManager
                             // So we are OK to use unencrypted storage for Raptor tokens at the moment.
                             UnsafeAllowUnencryptedStorage = true
                         }
-                    }),
-                    new List<string> { scopeName });
+                    });
+                _authProviders[delegatedPermissionScope.value] = new TokenCredentialAuthProvider(usernamePasswordCredential, new List<string> { scopeName });
+                _tokenCredentials[delegatedPermissionScope.value] = usernamePasswordCredential;
             }
             catch
             {
@@ -403,29 +412,37 @@ public class PermissionManager
         }
     }
 
-    public async Task<TokenCredential> GetTokenCredential(Scope delegatedPermissionScope)
+    internal void CreateCertificateCredentials()
     {
-        (string username, string password, string tenantId) = IsEducation
-            ? (_config.EducationUsername, _config.EducationPassword, _config.EducationTenantID)
-            : (_config.Username, _config.Password, _config.TenantID);
-        var application = await GetApplication(delegatedPermissionScope).ConfigureAwait(false);
-        var credential = new UsernamePasswordCredential(username, password, tenantId, application.AppId,
-            new UsernamePasswordCredentialOptions
-            {
-                TokenCachePersistenceOptions = new TokenCachePersistenceOptions
-                {
-                    Name = username + delegatedPermissionScope.value,
-                    // there is no default linux implementation for safe storage. This project is run in 2 environments:
-                    // 1. local development
-                    // 2. disposable Azure DevOps machines
-                    // So we are OK to use unencrypted storage for Raptor tokens at the moment.
-                    UnsafeAllowUnencryptedStorage = true,
-
-                }
-            });
-        return credential;
+        (string tenantID, string clientID, Lazy<X509Certificate2> certificate) = IsEducation
+            ? (_config.EducationTenantID, _config.EducationClientID, _config.Certificate)
+            : (_config.TenantID, _config.ClientID, _config.Certificate);
+        GetClientCertificateCredential(tenantID, clientID, certificate.Value);
+    }
+    public TokenCredential GetTokenCredential(Scope delegatedScope)
+    {
+        return _tokenCredentials[delegatedScope?.value];
     }
 
+    public ClientCertificateCredential GetClientCertificateCredential(string tenantId, string clientId, X509Certificate2 certificate)
+    {
+        var tokenName = $"{tenantId}:{clientId}";
+        var gotValue = _clientCertificateCredentials.TryGetValue(tokenName, out var clientCertificateCredential);
+        if (!gotValue || clientCertificateCredential == null)
+        {
+            clientCertificateCredential = new ClientCertificateCredential(tenantId, clientId, certificate,
+                new ClientCertificateCredentialOptions()
+                {
+                    TokenCachePersistenceOptions = new TokenCachePersistenceOptions
+                    {
+                        Name = tokenName,
+                        UnsafeAllowUnencryptedStorage = true,
+                    }
+                });
+            _clientCertificateCredentials[tokenName] = clientCertificateCredential;
+        }
+        return clientCertificateCredential;
+    }
     /// <summary>
     /// Gets PermissionManager Application
     /// </summary>
