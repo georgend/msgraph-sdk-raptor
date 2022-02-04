@@ -17,8 +17,8 @@ name: 'V1 PowerShell Snippet Execution Tests'
 resources:
  repositories:
    - repository: microsoft-graph-docs
-     type: georgend
-     endpoint: microsoftgraph
+     type: github
+     endpoint: georgend
      name: microsoftgraph/microsoft-graph-docs
      ref: main
 
