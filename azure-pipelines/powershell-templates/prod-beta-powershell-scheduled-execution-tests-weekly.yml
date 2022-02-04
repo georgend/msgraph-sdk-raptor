@@ -11,17 +11,12 @@ parameters:
   type: number
   default: 600
 
-- name: PipelineTimeout
-  displayName: PipelineTimeout
-  type: number
-  default: 600
-
 trigger: none # disable triggers based on commits.
 pr: none
 name: 'Weekly Beta PowerShell Snippet Execution Tests'
 
 schedules:
-  - cron: "0 3 * * WED"  # every Wednesday at 3AM UTC (off hours for Redmond, Nairobi and Montréal)
+  - cron: "0 3 * * WED"  # every Wednesday at 3AM UTC (off hours for Redmond, Nairobi and MontrÃ©al)
     displayName: 'Weekly Beta PowerShell Snippet Execution Tests'
     branches:
       include:
