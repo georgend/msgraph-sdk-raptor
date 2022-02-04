@@ -1,4 +1,5 @@
-﻿using static NUnit.Framework.TestContext;
+﻿using Azure.Core;
+using static NUnit.Framework.TestContext;
 
 namespace MsGraphSDKSnippetsCompiler;
 
@@ -354,7 +355,7 @@ public class PermissionManager
     /// <param name="delegatedScope">delegated scope</param>
     /// <exception cref="KeyNotFoundException">throws key not found if there is no app in the tenant representing the given scope</exception>
     /// <returns>token credential provider for the delegated scope</returns>
-    internal TokenCredentialAuthProvider GetDelegatedAuthProvider(Scope delegatedScope)
+    public TokenCredentialAuthProvider GetDelegatedAuthProvider(Scope delegatedScope)
     {
         return _authProviders[delegatedScope?.value];
     }
@@ -386,11 +387,11 @@ public class PermissionManager
                         TokenCachePersistenceOptions = new TokenCachePersistenceOptions
                         {
                             Name = username + delegatedPermissionScope.value,
-                                // there is no default linux implementation for safe storage. This project is run in 2 environments:
-                                // 1. local development
-                                // 2. disposable Azure DevOps machines
-                                // So we are OK to use unencrypted storage for Raptor tokens at the moment.
-                                UnsafeAllowUnencryptedStorage = true
+                            // there is no default linux implementation for safe storage. This project is run in 2 environments:
+                            // 1. local development
+                            // 2. disposable Azure DevOps machines
+                            // So we are OK to use unencrypted storage for Raptor tokens at the moment.
+                            UnsafeAllowUnencryptedStorage = true
                         }
                     }),
                     new List<string> { scopeName });
@@ -400,6 +401,29 @@ public class PermissionManager
                 await Out.WriteLineAsync($"Couldn't create an auth provider for scope: {scopeName}").ConfigureAwait(false);
             }
         }
+    }
+
+    public async Task<TokenCredential> GetTokenCredential(Scope delegatedPermissionScope)
+    {
+        (string username, string password, string tenantId) = IsEducation
+            ? (_config.EducationUsername, _config.EducationPassword, _config.EducationTenantID)
+            : (_config.Username, _config.Password, _config.TenantID);
+        var application = await GetApplication(delegatedPermissionScope).ConfigureAwait(false);
+        var credential = new UsernamePasswordCredential(username, password, tenantId, application.AppId,
+            new UsernamePasswordCredentialOptions
+            {
+                TokenCachePersistenceOptions = new TokenCachePersistenceOptions
+                {
+                    Name = username + delegatedPermissionScope.value,
+                    // there is no default linux implementation for safe storage. This project is run in 2 environments:
+                    // 1. local development
+                    // 2. disposable Azure DevOps machines
+                    // So we are OK to use unencrypted storage for Raptor tokens at the moment.
+                    UnsafeAllowUnencryptedStorage = true,
+
+                }
+            });
+        return credential;
     }
 
     /// <summary>
