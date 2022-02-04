@@ -12,13 +12,13 @@ parameters:
   default: 600
 
 trigger: none # disable triggers based on commits.
-name: 'PowerShell Snippet Execution Tests'
+name: 'V1 PowerShell Snippet Execution Tests - Known Issues'
 
 resources:
  repositories:
    - repository: microsoft-graph-docs
      type: github
-     endpoint: microsoftgraph
+     endpoint: georgend
      name: microsoftgraph/microsoft-graph-docs
      ref: main
 
@@ -26,21 +26,14 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
-- job: PowerShell
-  pool:
-    vmImage: windows-latest
+- job: Beta PowerShell Snippet Execution Tests - Known Issues
+  pool: ${{ parameters.BuildAgentPool }}
   timeoutInMinutes: ${{ parameters.PipelineTimeout }}
   strategy:
-    maxParallel: 4
+    maxParallel: 1
     matrix:
-        PowerShellV1ExecutionTests:
-            projectFileName: PowerShellV1ExecutionTests
         PowerShellV1ExecutionKnownFailureTests:
             projectFileName: PowerShellV1ExecutionKnownFailureTests
-        PowerShellBetaExecutionTests:
-            projectFileName: PowerShellBetaExecutionTests
-        PowerShellBetaExecutionKnownFailureTests:
-            projectFileName: PowerShellBetaExecutionKnownFailureTests
   steps:
   - template: powershell-execution-tests-template.yml
     parameters:
