@@ -17,8 +17,9 @@ if ($printer){
 }
 else{
     # if printer is $null, Create printer
-    $storedSecretContent = $appSettings.csrData
-    $storedSecretTransportKey = $appSettings.transportKey
+    Connect-AzureTenant -AppSettings $appSettings
+    $storedSecretContent = Get-AzKeyVaultSecret -VaultName $appSettings.AzureKeyVaultName -Name "csrData" -AsPlainText
+    $storedSecretTransportKey = Get-AzKeyVaultSecret -VaultName $appSettings.AzureKeyVaultName -Name "transportKey" -AsPlainText
     $printerData.certificateSigningRequest.content = $storedSecretContent
     $printerData.certificateSigningRequest.transportKey = $storedSecretTransportKey
     $printerHeaderResp = Request-DelegatedResource -Uri "print/printers/create" -Method "POST" -Body $printerData -ScopeOverride "Printer.Create"
@@ -61,12 +62,12 @@ if (!$printTaskDefinition){
     $printTaskDefinition = Invoke-RequestHelper -Uri "print/taskDefinitions" -Method "POST" -Body $printTaskDefinitionData
 }
 
-$printTaskTrigger = Request-DelegatedResource -Uri "print/printers/$($printer_id)/taskTriggers" -ScopeOverride "Printer.ReadWrite.All," | Select-Object -First 1
+$printTaskTrigger = Request-DelegatedResource -Uri "print/printers/$($printer_id)/taskTriggers" -ScopeOverride "Printer.ReadWrite.All" | Select-Object -First 1
 if(!$printTaskTrigger -and $printTaskDefinition.id){
     #Create PrintTaskTrigger
     $printTaskTriggerData = Get-RequestData -ChildEntity "printTaskTrigger"
     $printTaskTriggerData."definition@odata.bind" += $printTaskDefinition.id
-    $printTaskTrigger = Request-DelegatedResource -Uri "print/printers/$($printer_id)/taskTriggers" -Method "POST" -Body $printTaskTriggerData -ScopeOverride "Printer.ReadWrite.All,"
+    $printTaskTrigger = Request-DelegatedResource -Uri "print/printers/$($printer_id)/taskTriggers" -Method "POST" -Body $printTaskTriggerData -ScopeOverride "Printer.ReadWrite.All"
 }
 $identifiers = Add-Identifier $identifiers @("printer", "printTaskTrigger") $printTaskTrigger.id
 
