@@ -112,7 +112,7 @@ application {
                 WorkingDirectory = rootPath,
             },
         };
-        var stdOuputSB = new StringBuilder();
+        var stdOutputSB = new StringBuilder();
         var stdErrSB = new StringBuilder();
         using var outputWaitHandle = new AutoResetEvent(false);
         using var errorWaitHandle = new AutoResetEvent(false);
@@ -120,18 +120,34 @@ application {
         {
             if (string.IsNullOrEmpty(e.Data))
             {
-                outputWaitHandle.Set();
+                try
+                {
+                    outputWaitHandle.Set();
+                }
+                catch(ObjectDisposedException ode)
+                {
+                    stdErrSB.AppendLine("process timed out and killed while standard output stream was still being written by the compiler!");
+                    stdErrSB.AppendLine(ode.Message);
+                }
             }
             else
             {
-                stdOuputSB.Append(e.Data);
+                stdOutputSB.Append(e.Data);
             }
         };
         javacProcess.ErrorDataReceived += (sender, e) =>
         {
             if (string.IsNullOrEmpty(e.Data))
             {
-                errorWaitHandle.Set();
+                try
+                {
+                    errorWaitHandle.Set();
+                }
+                catch(ObjectDisposedException ode)
+                {
+                    stdErrSB.AppendLine("process timed out and killed while error stream was still being written by the compiler!");
+                    stdErrSB.AppendLine(ode.Message);
+                }
             }
             else
             {
@@ -144,7 +160,7 @@ application {
         var hasExited = javacProcess.WaitForExit(20000);
         if (!hasExited)
             javacProcess.Kill(true);
-        var stdOutput = stdOuputSB.ToString();
+        var stdOutput = stdOutputSB.ToString();
         var stdErr = stdErrSB.ToString();
         return new CompilationResultsModel(
             hasExited && stdOutput.Contains("BUILD SUCCESSFUL", StringComparison.OrdinalIgnoreCase),
