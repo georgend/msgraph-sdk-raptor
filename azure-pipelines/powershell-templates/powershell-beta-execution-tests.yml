@@ -26,11 +26,11 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
-- job: 'Beta PowerShell Snippet Execution Tests'
+- job: PowerShellBetaExecutionTests
   pool: ${{ parameters.BuildAgentPool }}
   timeoutInMinutes: ${{ parameters.PipelineTimeout }}
   strategy:
-    maxParallel: 4
+    maxParallel: 1
     matrix:
         PowerShellBetaExecutionTests:
             projectFileName: PowerShellBetaExecutionTests
