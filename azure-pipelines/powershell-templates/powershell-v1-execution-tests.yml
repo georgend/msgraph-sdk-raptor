@@ -26,7 +26,7 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
-- job: V1 PowerShell Snippet Execution Tests
+- job: PowerShellV1ExecutionTests
   pool: ${{ parameters.BuildAgentPool }}
   timeoutInMinutes: ${{ parameters.PipelineTimeout }}
   strategy:
