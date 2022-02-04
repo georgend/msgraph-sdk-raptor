@@ -27,7 +27,8 @@ variables:
 
 jobs:
 - job: PowerShell
-  pool: ${{ parameters.BuildAgentPool }}
+  pool:
+    vmImage: windows-latest
   timeoutInMinutes: ${{ parameters.PipelineTimeout }}
   strategy:
     maxParallel: 4
