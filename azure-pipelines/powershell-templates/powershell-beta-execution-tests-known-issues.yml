@@ -12,7 +12,7 @@ parameters:
   default: 600
 
 trigger: none # disable triggers based on commits.
-name: 'Beta PowerShell Snippet Execution Tests - Known Issues'
+name: 'Beta PowerShell Snippet Execution Tests Known Issues'
 
 resources:
  repositories:
@@ -26,7 +26,7 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
-- job: Beta PowerShell Snippet Execution Tests - Known Issues
+- job: Beta PowerShell Snippet Execution Tests Known Issues
   pool: ${{ parameters.BuildAgentPool }}
   timeoutInMinutes: ${{ parameters.PipelineTimeout }}
   strategy:
