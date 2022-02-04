@@ -91,7 +91,13 @@ application {
     }
     public CompilationResultsModel CompileSnippet(string codeSnippet, Versions version)
     {
-        var tempPath = Path.Combine(Path.GetTempPath(), "msgraph-sdk-raptor");
+        var root = Environment.GetEnvironmentVariable("RAMDISK_PATH");
+        if (string.IsNullOrEmpty(root))
+        {
+            root = Path.GetTempPath();
+        }
+
+        var tempPath = Path.Combine(root, "msgraph-sdk-raptor");
         Directory.CreateDirectory(tempPath);
         var rootPath = Path.Combine(tempPath, "java" + currentExcutionFolder.Value);
         var sourceFileDirectory = Path.Combine(new string[] { rootPath }.Union(testFileSubDirectories).ToArray());
