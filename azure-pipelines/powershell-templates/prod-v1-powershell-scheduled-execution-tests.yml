@@ -24,7 +24,7 @@ parameters:
 - name: Schedule
   displayName: Schedule
   type: string
-  default: "0 3 * * WED"  # every Wednesday at 3AM UTC (off hours for Redmond, Nairobi and Montréal)
+  default: "0 3 * * WED"  # every Wednesday at 3AM UTC (off hours for Redmond, Nairobi and MontrÃ©al)
 
 trigger: none # disable triggers based on commits.
 pr: none
@@ -54,7 +54,7 @@ jobs:
   pool: ${{ parameters.BuildAgentPool }}
   timeoutInMinutes: ${{ parameters.PipelineTimeout }}
   strategy:
-    maxParallel: 4
+    maxParallel: 2
     matrix:
         PowerShellBetaExecutionTests:
             projectFileName: PowerShellBetaExecutionTests
