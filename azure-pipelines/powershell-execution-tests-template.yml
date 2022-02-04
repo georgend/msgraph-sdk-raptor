@@ -4,7 +4,6 @@ parameters:
 steps:
 - task: PowerShell@2
   displayName: Install Required Modules
-  retryCountOnTaskFailure: 1
   inputs:
     targetType: 'inline'
     script: |
@@ -14,7 +13,6 @@ steps:
         }
 - template: common-templates/checkout.yml
 - template: compile-run-tests-template.yml
-  retryCountOnTaskFailure: 1
   parameters:
     projectFileName: ${{ parameters.projectFileName }}
     runName: ${{ parameters.projectFileName }}
