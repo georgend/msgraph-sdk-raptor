@@ -205,7 +205,8 @@ public class App
             codeToCompile = codeToCompile.Replace("public class App", "public class " + testData.JavaClassName);
 
             var filePath = Path.Combine(compilationDirectory, testData.JavaClassName + ".java");
-            await File.WriteAllTextAsync(filePath, codeToCompile).ConfigureAwait(false);
+            if (!File.Exists(filePath)) // TODO: Windows is not case-sensitive
+                await File.WriteAllTextAsync(filePath, codeToCompile).ConfigureAwait(false);
         }
     }
 
