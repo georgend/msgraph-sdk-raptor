@@ -31,4 +31,21 @@ public record LanguageTestData(
     string JavaPreviewLibPath,
     string TestName,
     string Owner,
-    string FileContent);
+    string FileContent)
+    {
+        public string JavaClassName = string.Join("", FileName
+            .Replace("-java-snippets.md", string.Empty)
+            .Split("-") // kabab-case to PascalCase
+            .Select(x =>
+                {
+                    if (x.Length <= 1)
+                    {
+                        return x.ToUpper();
+                    }
+                    else
+                    {
+                        return Char.ToUpper(x[0]) + x[1..];
+                    }
+                }
+                ));
+    }
