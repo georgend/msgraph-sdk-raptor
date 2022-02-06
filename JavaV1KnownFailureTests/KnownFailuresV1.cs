@@ -33,7 +33,7 @@ public class KnownFailuresV1
     /// Gets TestCaseData for V1 known failures
     /// TestCaseData contains snippet file name, version and test case name
     /// </summary>
-    public IEnumerable<TestCaseData> TestDataV1 => TestDataGenerator.GetTestCaseData(languageTestData, runSettings);
+    public IEnumerable<TestCaseData> TestDataV1 => TestDataGenerator.GetTestCaseData(languageTestData, runSettings).Take(1);
 
     /// <summary>
     /// Represents test runs generated from test case data
