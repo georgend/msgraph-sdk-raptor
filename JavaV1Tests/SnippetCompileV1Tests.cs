@@ -38,7 +38,6 @@ public class SnippetCompileV1Tests
     [TestCaseSource(typeof(SnippetCompileV1Tests), nameof(TestDataV1))]
     public void Test(LanguageTestData testData)
     {
-        Assert.Pass();
-        //javaTestRunner.Run(testData);
+        javaTestRunner.Run(testData);
     }
 }
