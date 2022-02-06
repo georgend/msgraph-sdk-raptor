@@ -81,6 +81,13 @@ public static class TestDataGenerator
                select new TestCaseData(testData).SetName(testData.TestName).SetProperty("Owner", testData.Owner);
     }
 
+    public static IEnumerable<TestCaseData> GetTestCaseData(IEnumerable<LanguageTestData> testData, RunSettings runSettings)
+    {
+        return from testDatum in testData
+               where !(testDatum.IsCompilationKnownIssue ^ runSettings.TestType == TestType.CompilationKnownIssues) // select known compilation issues iff requested
+               select new TestCaseData(testData).SetName(testDatum.TestName).SetProperty("Owner", testDatum.Owner);
+    }
+
     /// <summary>
     /// For each snippet file creates a test case which takes the file name and version as reference
     /// Test case name is also set to to unique name based on file name

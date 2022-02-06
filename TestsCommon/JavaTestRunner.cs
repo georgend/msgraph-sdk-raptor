@@ -1,8 +1,26 @@
 ﻿using System.Diagnostics;
 namespace TestsCommon;
 
-public static class JavaTestRunner
+public class JavaTestRunner
 {
+    private readonly string CompilationDirectory;
+    public JavaTestRunner()
+    {
+        var rootPath = Environment.GetEnvironmentVariable("RAMDISK_PATH");
+        if (string.IsNullOrEmpty(rootPath))
+        {
+            TestContext.Out.WriteLine("Environment variable RAMDISK_PATH is not set, using TEMP instead!");
+            rootPath = Path.GetTempPath();
+        }
+
+        var javaNewGuid = "java" + Guid.NewGuid();
+        CompilationDirectory = Path.Combine(
+            rootPath,
+            "raptor-java",
+            javaNewGuid);
+    }
+
+    private const int TimeoutForJavacInSeconds = 10;
     private const string BuildFileContents = @"apply plugin: 'base'
 
 repositories {
@@ -90,55 +108,36 @@ public class App
     /// 4. Attempts to compile and reports errors if there is any
     /// </summary>
     /// <param name="testData">Test data containing information such as snippet file name</param>
-    public static void Run(LanguageTestData testData)
+    public void Run(LanguageTestData testData)
     {
         if (testData == null)
         {
             throw new ArgumentNullException(nameof(testData));
         }
 
-        // hack
-        var codeToCompile = GetCodeToCompile(testData).GetAwaiter().GetResult();
+        var (stdout, stderr) = ProcessSpawner.SpawnProcess
+        (
+            "javac",
+            $"-cp lib/* -d bin {testData.JavaClassName}.java",
+            TimeoutForJavacInSeconds * 1000
+        );
 
-        // Compile Code
-        var microsoftGraphCSharpCompiler = new MicrosoftGraphJavaCompiler(testData.FileName, testData.JavaPreviewLibPath, testData.JavaLibVersion, testData.JavaCoreVersion);
-
-        var jvmRetryAttmptsLeft = 3;
-        while (jvmRetryAttmptsLeft > 0)
+        if (!string.IsNullOrEmpty(stderr))
         {
-            var compilationResultsModel = microsoftGraphCSharpCompiler.CompileSnippet(codeToCompile, testData.Version);
-
-            if (compilationResultsModel.IsSuccess)
-            {
-                Assert.Pass();
-            }
-            else if (compilationResultsModel.Diagnostics.Any(x => x.GetMessage().Contains("Starting a Gradle Daemon")))
-            {//the JVM takes time to start making the first test to be run to be flaky, this is a workaround
-                jvmRetryAttmptsLeft--;
-                Thread.Sleep(20000);
-                continue;
-            }
-
-            var compilationOutputMessage = new CompilationOutputMessage(compilationResultsModel, codeToCompile, testData.DocsLink, testData.KnownIssueMessage, testData.IsCompilationKnownIssue, Languages.Java);
-
-            Assert.Fail($"{compilationOutputMessage}");
-            break;
+            Assert.Fail(stderr);
+        }
+        else
+        {
+            Assert.Pass();
         }
     }
 
-    public static async Task PrepareCompilationEnvironment(IEnumerable<LanguageTestData> languageTestData)
+    public async Task PrepareCompilationEnvironment(IEnumerable<LanguageTestData> languageTestData)
     {
-        var rootPath = Path.GetTempPath(); // consider ramdisk here
-        var javaNewGuid = "java" + Guid.NewGuid();
-        var compilationDirectory = Path.Combine(
-            rootPath,
-            "raptor-java",
-            javaNewGuid);
-
-        var libDirectory = Path.Combine(compilationDirectory, "lib");
+        var libDirectory = Path.Combine(CompilationDirectory, "lib");
         Directory.CreateDirectory(libDirectory);
 
-        var buildFile = Path.Combine(compilationDirectory, "build.gradle");
+        var buildFile = Path.Combine(CompilationDirectory, "build.gradle");
 
         var firstLanguageTestData = languageTestData.First();
         // TODO handle preview case
@@ -158,7 +157,7 @@ public class App
             ).ConfigureAwait(false);
 
         //await DownloadDependencies(compilationDirectory).ConfigureAwait(false);
-        await DumpJavaFiles(compilationDirectory, languageTestData).ConfigureAwait(false);
+        await DumpJavaFiles(CompilationDirectory, languageTestData).ConfigureAwait(false);
     }
 
     private static async Task DownloadDependencies(string compilationDirectory)
@@ -205,8 +204,7 @@ public class App
             codeToCompile = codeToCompile.Replace("public class App", "public class " + testData.JavaClassName);
 
             var filePath = Path.Combine(compilationDirectory, testData.JavaClassName + ".java");
-            if (!File.Exists(filePath)) // TODO: Windows is not case-sensitive
-                await File.WriteAllTextAsync(filePath, codeToCompile).ConfigureAwait(false);
+            await File.WriteAllTextAsync(filePath, codeToCompile).ConfigureAwait(false);
         }
     }
 
