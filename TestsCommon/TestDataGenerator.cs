@@ -83,9 +83,9 @@ public static class TestDataGenerator
 
     public static IEnumerable<TestCaseData> GetTestCaseData(IEnumerable<LanguageTestData> testData, RunSettings runSettings)
     {
-        return from testDatum in testData
-               where !(testDatum.IsCompilationKnownIssue ^ runSettings.TestType == TestType.CompilationKnownIssues) // select known compilation issues iff requested
-               select new TestCaseData(testData).SetName(testDatum.TestName).SetProperty("Owner", testDatum.Owner);
+        return testData
+            .Where(td => !(td.IsCompilationKnownIssue ^ runSettings.TestType == TestType.CompilationKnownIssues))
+            .Select(td => new TestCaseData(td).SetName(td.TestName).SetProperty("Owner", td.Owner));
     }
 
     /// <summary>

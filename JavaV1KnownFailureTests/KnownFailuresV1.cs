@@ -10,21 +10,18 @@ namespace JavaV1KnownFailureTests;
 [TestFixture]
 public class KnownFailuresV1
 {
-    private IEnumerable<LanguageTestData> languageTestData;
-    private RunSettings runSettings;
-    private JavaTestRunner javaTestRunner;
-
-    [OneTimeSetUp]
-    public async Task OneTimeSetup()
-    {
-        runSettings = new RunSettings(TestContext.Parameters)
+    private static IEnumerable<LanguageTestData> languageTestData => TestDataGenerator.GetLanguageTestCaseData(runSettings);
+    private static RunSettings runSettings => new RunSettings(TestContext.Parameters)
         {
             Version = Versions.V1,
             Language = Languages.Java,
             TestType = TestType.CompilationKnownIssues
         };
+    private JavaTestRunner javaTestRunner;
 
-        languageTestData = TestDataGenerator.GetLanguageTestCaseData(runSettings);
+    [OneTimeSetUp]
+    public async Task OneTimeSetup()
+    {
         javaTestRunner = new JavaTestRunner();
         await javaTestRunner.PrepareCompilationEnvironment(languageTestData).ConfigureAwait(false);
     }
@@ -33,7 +30,7 @@ public class KnownFailuresV1
     /// Gets TestCaseData for V1 known failures
     /// TestCaseData contains snippet file name, version and test case name
     /// </summary>
-    public IEnumerable<TestCaseData> TestDataV1 => TestDataGenerator.GetTestCaseData(languageTestData, runSettings).Take(1);
+    public static IEnumerable<TestCaseData> TestDataV1 => TestDataGenerator.GetTestCaseData(languageTestData, runSettings);
 
     /// <summary>
     /// Represents test runs generated from test case data

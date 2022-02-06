@@ -119,6 +119,7 @@ public class App
         (
             "javac",
             $"-cp lib/* -d bin {testData.JavaClassName}.java",
+            CompilationDirectory,
             TimeoutForJavacInSeconds * 1000
         );
 
@@ -156,7 +157,7 @@ public class App
             .Replace("--libversion--", firstLanguageTestData.JavaLibVersion)
             ).ConfigureAwait(false);
 
-        //await DownloadDependencies(compilationDirectory).ConfigureAwait(false);
+        await DownloadDependencies(CompilationDirectory).ConfigureAwait(false);
         await DumpJavaFiles(CompilationDirectory, languageTestData).ConfigureAwait(false);
     }
 
