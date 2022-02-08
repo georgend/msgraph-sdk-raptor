@@ -1,6 +1,7 @@
 ﻿using static TestsCommon.JavaKnownIssues;
 using static TestsCommon.CSharpKnownIssues;
 using static TestsCommon.PowerShellKnownIssues;
+using static TestsCommon.TypescriptKnownIssues;
 
 namespace TestsCommon;
 
@@ -219,6 +220,7 @@ public static class KnownIssues
         {
             Languages.CSharp => GetCSharpCompilationKnownIssues(version),
             Languages.Java => GetJavaCompilationKnownIssues(version),
+            Languages.TypeScript => GetTypescriptCompilationKnownIssues(version),
             _ => new Dictionary<string, KnownIssue>()
         }).Union(GetCompilationCommonIssues(language, version)).ToDictionary(x => x.Key, x => x.Value);
     }

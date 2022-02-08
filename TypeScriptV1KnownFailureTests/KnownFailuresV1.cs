@@ -5,10 +5,10 @@ using System.Collections.ObjectModel;
 using System.IO;
 using TestsCommon;
 
-namespace TypeScriptV1Tests
+namespace TypeScriptV1KnownFailureTests
 {
     [TestFixture]
-    public class SnippetCompileV1Tests
+    public class KnownFailuresV1
     {
         /// <summary>
         /// Holds a static reference of errors from test evaluation
@@ -19,7 +19,7 @@ namespace TypeScriptV1Tests
         {
             Version = Versions.V1,
             Language = Languages.TypeScript,
-            TestType = TestType.CompilationStable
+            TestType = TestType.CompilationKnownIssues
         };
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace TypeScriptV1Tests
 
 
         /// <summary>
-        /// Gets TestCaseData for Beta
+        /// Gets TestCaseData
         /// TestCaseData contains snippet file name, version and test case name
         /// </summary>
         public static IEnumerable<TestCaseData> TestDataV1 => TestDataGenerator.GetTestCaseData(TestRunSettings);
@@ -56,7 +56,7 @@ namespace TypeScriptV1Tests
         /// <param name="docsLink">documentation page where the snippet is shown</param>
         /// <param name="version">Docs version (e.g. V1, Beta)</param>
         [Test]
-        [TestCaseSource(typeof(SnippetCompileV1Tests), nameof(TestDataV1))]
+        [TestCaseSource(typeof(KnownFailuresV1), nameof(TestDataV1))]
         public void Test(LanguageTestData testData)
         {
             TypeScriptTestRunner.RunTest(testData, NpmResults);
