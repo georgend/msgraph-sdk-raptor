@@ -1,6 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using System.Security.Cryptography.X509Certificates;
+
 using Azure.Core;
+
 using static NUnit.Framework.TestContext;
 
 namespace MsGraphSDKSnippetsCompiler;
@@ -24,17 +26,16 @@ public class PermissionManager
 
     private readonly RaptorConfig _config;
 
-    private readonly bool IsEducation;
+    private readonly bool _isEducation;
 
     /// <summary>
     /// Delegated auth providers
     /// key: scopeName
     /// value: token credential auth provider instance
     /// </summary>
-    private readonly IDictionary<string, TokenCredentialAuthProvider> _authProviders;
-
+    private readonly ConcurrentDictionary<string, TokenCredentialAuthProvider> _authProviders;
     private readonly ConcurrentDictionary<string, TokenCredential> _tokenCredentials;
-    private readonly ConcurrentDictionary<string, ClientCertificateCredential> _clientCertificateCredentials;
+    private readonly ClientCertificateCredential _clientCertificateCredentials;
 
     /// <summary>
     /// Auth provider to initialize GraphServiceClients within the snippets
@@ -47,9 +48,9 @@ public class PermissionManager
 
     public PermissionManager(bool isEducation = false)
     {
-        IsEducation = isEducation;
+        _isEducation = isEducation;
         _config = TestsSetup.Config.Value;
-        var clientSecretCredential = IsEducation
+        var clientSecretCredential = _isEducation
             ? new ClientSecretCredential(_config.EducationTenantID, _config.EducationClientID, _config.EducationClientSecret)
             : new ClientSecretCredential(_config.TenantID, _config.ClientID, _config.ClientSecret);
 
@@ -57,11 +58,19 @@ public class PermissionManager
             clientSecretCredential,
             new List<string> { DefaultAuthScope });
         _client = new GraphServiceClient(AuthProvider);
-        _authProviders = new Dictionary<string, TokenCredentialAuthProvider>();
-        _tokenCredentials = new ConcurrentDictionary<string, TokenCredential>();
-        _clientCertificateCredentials = new ConcurrentDictionary<string, ClientCertificateCredential>();
-    }
 
+        _authProviders = new ConcurrentDictionary<string, TokenCredentialAuthProvider>();
+        _tokenCredentials = new ConcurrentDictionary<string, TokenCredential>();
+        _clientCertificateCredentials = InitializeCerticateCredential();
+    }
+    private ClientCertificateCredential InitializeCerticateCredential()
+    {
+        (string tenantId, string clientId, Lazy<X509Certificate2> certificate) = _isEducation
+            ? (_config.EducationTenantID, _config.EducationClientID, _config.Certificate)
+            : (_config.TenantID, _config.ClientID, _config.Certificate);
+        ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredential(tenantId, clientId, certificate.Value);
+        return clientCertificateCredential;
+    }
     /// <summary>
     /// Gets service principal id for the permission manager
     /// </summary>
@@ -117,6 +126,28 @@ public class PermissionManager
                 result.Add(application.DisplayName);
                 return true;
             });
+        await pageIterator.IterateAsync().ConfigureAwait(false);
+        return result;
+    }
+    public async Task<Dictionary<string, string>> GetExistingApps(string prefix = "DelegatedApp ")
+    {
+        var query = $"startswith(displayName, '{prefix}')";
+        var result = new Dictionary<string, string>();
+        var applications = await _client.Applications
+            .Request()
+            .Filter(query)
+            .Select("appId,displayName")
+            .GetAsync().ConfigureAwait(false);
+
+        var pageIterator = PageIterator<Application>
+            .CreatePageIterator(
+                _client,
+                applications,
+                (application) =>
+                {
+                    result.Add(application.AppId, application.DisplayName);
+                    return true;
+                });
         await pageIterator.IterateAsync().ConfigureAwait(false);
         return result;
     }
@@ -188,7 +219,7 @@ public class PermissionManager
             Id = new Guid(scopeGuid)
         };
 
-        var requiredResourceAccess = new RequiredResourceAccess()
+        var requiredResourceAccess = new RequiredResourceAccess
         {
             ResourceAccess = new List<ResourceAccess> { resourceAccess },
             ResourceAppId = GraphResourceId
@@ -367,30 +398,21 @@ public class PermissionManager
         return _authProviders[delegatedScope?.value];
     }
 
-    /// <summary>
-    /// Creates delegated auth providers
-    /// 1. Gets the list of all delegated permission scopes
-    /// 2. For all scopes
-    ///   2. a. Gets the corresponding preconfigured app in the tenant for a particular scope
-    ///   2. b. Creates a token credential provider for the app
-    /// </summary>
-    /// <returns></returns>
-    ///
     internal async Task CreateDelegatedAuthProviders()
     {
         var permissionDescriptions = await GetPermissionDescriptions().ConfigureAwait(false);
-        (string username, string password, string tenantID) = IsEducation
+        (string username, string password, string tenantID) = _isEducation
             ? (_config.EducationUsername, _config.EducationPassword, _config.EducationTenantID)
             : (_config.Username, _config.Password, _config.TenantID);
-
+        var apps = await GetExistingApps("DelegatedApp").ConfigureAwait(false);
         foreach (var delegatedPermissionScope in permissionDescriptions.delegatedScopesList)
         {
             var scopeName = delegatedPermissionScope.value;
             try
             {
-                var application = await GetApplication(delegatedPermissionScope).ConfigureAwait(false);
+                var application = apps.First(c => c.Value == $"DelegatedApp {scopeName}");
                 var usernamePasswordCredential = new UsernamePasswordCredential(username, password,
-                    tenantID, application.AppId, new UsernamePasswordCredentialOptions
+                    tenantID, application.Key, new UsernamePasswordCredentialOptions
                     {
                         TokenCachePersistenceOptions = new TokenCachePersistenceOptions
                         {
@@ -412,37 +434,16 @@ public class PermissionManager
         }
     }
 
-    internal void CreateCertificateCredentials()
-    {
-        (string tenantID, string clientID, Lazy<X509Certificate2> certificate) = IsEducation
-            ? (_config.EducationTenantID, _config.EducationClientID, _config.Certificate)
-            : (_config.TenantID, _config.ClientID, _config.Certificate);
-        GetClientCertificateCredential(tenantID, clientID, certificate.Value);
-    }
     public TokenCredential GetTokenCredential(Scope delegatedScope)
     {
         return _tokenCredentials[delegatedScope?.value];
     }
 
-    public ClientCertificateCredential GetClientCertificateCredential(string tenantId, string clientId, X509Certificate2 certificate)
+    public ClientCertificateCredential GetClientCertificateCredential()
     {
-        var tokenName = $"{tenantId}:{clientId}";
-        var gotValue = _clientCertificateCredentials.TryGetValue(tokenName, out var clientCertificateCredential);
-        if (!gotValue || clientCertificateCredential == null)
-        {
-            clientCertificateCredential = new ClientCertificateCredential(tenantId, clientId, certificate,
-                new ClientCertificateCredentialOptions()
-                {
-                    TokenCachePersistenceOptions = new TokenCachePersistenceOptions
-                    {
-                        Name = tokenName,
-                        UnsafeAllowUnencryptedStorage = true,
-                    }
-                });
-            _clientCertificateCredentials[tokenName] = clientCertificateCredential;
-        }
-        return clientCertificateCredential;
+        return _clientCertificateCredentials;
     }
+    
     /// <summary>
     /// Gets PermissionManager Application
     /// </summary>
