@@ -7,7 +7,6 @@ using System.Linq.Expressions;
 using System.Runtime.Loader;
 using System.Reflection;
 using Microsoft.VisualBasic.CompilerServices;
-using TestsCommon;
 using Platform = Microsoft.CodeAnalysis.Platform;
 
 namespace MsGraphSDKSnippetsCompiler;

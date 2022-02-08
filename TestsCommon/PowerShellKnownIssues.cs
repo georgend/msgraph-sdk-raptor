@@ -625,7 +625,6 @@ public static class PowerShellKnownIssues
                 { "get-transitive-managers-powershell-V1-executes", NeedsAnalysisKnownIssue },
                 { "get-to-count-powershell-V1-executes", NeedsAnalysisKnownIssue },
                 { "get-hiddenmailfolders-powershell-V1-executes", NeedsAnalysisKnownIssue },
-                { "get-todotasklist-1-powershell-V1-executes", NeedsAnalysisKnownIssue },
                 { "get-group-2-powershell-V1-executes", NeedsAnalysisKnownIssue },
                 { "get-singlevaluelegacyextendedproperty-1-powershell-V1-executes", NeedsAnalysisKnownIssue },
                 { "get-unifiedroleassignment-powershell-V1-executes", NeedsAnalysisKnownIssue },

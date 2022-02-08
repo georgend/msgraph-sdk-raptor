@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-
-namespace TestsCommon
+﻿namespace MsGraphSDKSnippetsCompiler
 {
+    public static class ResourceConstants
+    {
+        public const string GraphResourceId = "00000003-0000-0000-c000-000000000000";
+        public const string DefaultAuthScope = "https://graph.microsoft.com/.default";
+        public const string PermissionManagerAppName = "PermissionManager";
+    }
     public static class DevXUtils
     {
         private static readonly Dictionary<string, string> EdgeCases = new()

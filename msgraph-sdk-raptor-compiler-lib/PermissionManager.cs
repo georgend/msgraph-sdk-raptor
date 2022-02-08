@@ -15,9 +15,6 @@ public class PermissionManager
     /// <summary>
     /// The Graph resource ID. Constant across tenants.
     /// </summary>
-    const string GraphResourceId = "00000003-0000-0000-c000-000000000000";
-    const string DefaultAuthScope = "https://graph.microsoft.com/.default";
-    const string PermissionManagerAppName = "PermissionManager";
 
     /// <summary>
     /// Graph service client with application permissions
@@ -35,7 +32,11 @@ public class PermissionManager
     /// </summary>
     private readonly ConcurrentDictionary<string, TokenCredentialAuthProvider> _authProviders;
     private readonly ConcurrentDictionary<string, TokenCredential> _tokenCredentials;
-    private readonly ClientCertificateCredential _clientCertificateCredentials;
+
+    public  ClientCertificateCredential ClientCertificateCredential
+    {
+        get;
+    }
 
     /// <summary>
     /// Auth provider to initialize GraphServiceClients within the snippets
@@ -56,13 +57,14 @@ public class PermissionManager
 
         AuthProvider = new TokenCredentialAuthProvider(
             clientSecretCredential,
-            new List<string> { DefaultAuthScope });
+            new List<string> { ResourceConstants.DefaultAuthScope });
         _client = new GraphServiceClient(AuthProvider);
 
         _authProviders = new ConcurrentDictionary<string, TokenCredentialAuthProvider>();
         _tokenCredentials = new ConcurrentDictionary<string, TokenCredential>();
-        _clientCertificateCredentials = InitializeCerticateCredential();
+        ClientCertificateCredential = InitializeCerticateCredential();
     }
+
     private ClientCertificateCredential InitializeCerticateCredential()
     {
         (string tenantId, string clientId, Lazy<X509Certificate2> certificate) = _isEducation
@@ -78,7 +80,7 @@ public class PermissionManager
     {
         var servicePrincipal = await _client.ServicePrincipals
             .Request()
-            .Filter($"displayName eq '{PermissionManagerAppName}'")
+            .Filter($"displayName eq '{ResourceConstants.PermissionManagerAppName}'")
             .GetAsync()
             .ConfigureAwait(false);
 
@@ -107,29 +109,7 @@ public class PermissionManager
     /// </summary>
     /// <param name="prefix">prefix for the application name. e.g. DelegatedApp for querying DelegatedApp User.Read, DelegatedApp Group.Read etc.</param>
     /// <returns>application names matching the query</returns>
-    public async Task<HashSet<string>> GetExistingApplicationsWithPrefix(string prefix = "DelegatedApp ")
-    {
-        var query = $"startswith(displayName, '{prefix}')";
-        var result = new HashSet<string>();
-        var applications = await _client.Applications
-            .Request()
-            .Filter(query)
-            .Select("displayName")
-            .GetAsync().ConfigureAwait(false);
-
-        var pageIterator = PageIterator<Application>
-            .CreatePageIterator(
-            _client,
-            applications,
-            (application) =>
-            {
-                result.Add(application.DisplayName);
-                return true;
-            });
-        await pageIterator.IterateAsync().ConfigureAwait(false);
-        return result;
-    }
-    public async Task<Dictionary<string, string>> GetExistingApps(string prefix = "DelegatedApp ")
+    public async Task<Dictionary<string, string>> GetExistingApplicationsWithPrefix(string prefix = "DelegatedApp ")
     {
         var query = $"startswith(displayName, '{prefix}')";
         var result = new Dictionary<string, string>();
@@ -163,7 +143,7 @@ public class PermissionManager
         var application = await GetPermissionManagerApplication().ConfigureAwait(false);
 
         var requiredResourceAccess = application.RequiredResourceAccess
-            .SingleOrDefault(x => x.ResourceAppId == GraphResourceId);
+            .SingleOrDefault(x => x.ResourceAppId == ResourceConstants.GraphResourceId);
         if (requiredResourceAccess == null)
         {
             throw new InvalidDataException("Application PermissionManager has no required resource access");
@@ -222,7 +202,7 @@ public class PermissionManager
         var requiredResourceAccess = new RequiredResourceAccess
         {
             ResourceAccess = new List<ResourceAccess> { resourceAccess },
-            ResourceAppId = GraphResourceId
+            ResourceAppId = ResourceConstants.GraphResourceId
         };
 
         var application = new Application
@@ -230,7 +210,7 @@ public class PermissionManager
             DisplayName = applicationName,
             PublicClient = new PublicClientApplication
             {
-                RedirectUris = new string[] { "http://localhost" }
+                RedirectUris = new[] { "http://localhost" }
             },
             RequiredResourceAccess = new List<RequiredResourceAccess> { requiredResourceAccess },
             SignInAudience = "AzureADMyOrg",
@@ -269,7 +249,7 @@ public class PermissionManager
         var requiredResourceAccess = new RequiredResourceAccess()
         {
             ResourceAccess = listOfResourceAccesses,
-            ResourceAppId = GraphResourceId
+            ResourceAppId = ResourceConstants.GraphResourceId
         };
 
         var application = new Application
@@ -404,7 +384,7 @@ public class PermissionManager
         (string username, string password, string tenantID) = _isEducation
             ? (_config.EducationUsername, _config.EducationPassword, _config.EducationTenantID)
             : (_config.Username, _config.Password, _config.TenantID);
-        var apps = await GetExistingApps("DelegatedApp").ConfigureAwait(false);
+        var apps = await GetExistingApplicationsWithPrefix("DelegatedApp").ConfigureAwait(false);
         foreach (var delegatedPermissionScope in permissionDescriptions.delegatedScopesList)
         {
             var scopeName = delegatedPermissionScope.value;
@@ -439,11 +419,6 @@ public class PermissionManager
         return _tokenCredentials[delegatedScope?.value];
     }
 
-    public ClientCertificateCredential GetClientCertificateCredential()
-    {
-        return _clientCertificateCredentials;
-    }
-    
     /// <summary>
     /// Gets PermissionManager Application
     /// </summary>
@@ -452,7 +427,7 @@ public class PermissionManager
     {
         var collectionPage = await _client.Applications
                           .Request()
-                          .Filter($"displayName eq '{ PermissionManagerAppName }'")
+                          .Filter($"displayName eq '{ ResourceConstants.PermissionManagerAppName }'")
                           .GetAsync().ConfigureAwait(false);
         return collectionPage?.FirstOrDefault();
     }
