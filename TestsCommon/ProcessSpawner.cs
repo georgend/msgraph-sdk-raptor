@@ -2,7 +2,7 @@ using System.Diagnostics;
 public class ProcessSpawner
 {
     // create a static method that spawns a process and waits for a timeout and returns stdout and stderr as a tuple
-    public static (string stdout, string stderr) SpawnProcess(string command, string arguments, string workingDirectory, int timeout)
+    public static async Task<(string stdout, string stderr)> SpawnProcess(string command, string arguments, string workingDirectory, int timeout)
     {
         ProcessStartInfo startInfo = new ProcessStartInfo(command, arguments);
         startInfo.UseShellExecute = false;
@@ -14,6 +14,8 @@ public class ProcessSpawner
         process.StartInfo = startInfo;
         process.Start();
         process.WaitForExit(timeout);
-        return (process.StandardOutput.ReadToEnd(), process.StandardError.ReadToEnd());
+        var stdout = await process.StandardOutput.ReadToEndAsync();
+        var stderr = await process.StandardError.ReadToEndAsync();
+        return (stdout, stderr);
     }
 }

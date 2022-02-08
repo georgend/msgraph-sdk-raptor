@@ -108,14 +108,14 @@ public class App
     /// 4. Attempts to compile and reports errors if there is any
     /// </summary>
     /// <param name="testData">Test data containing information such as snippet file name</param>
-    public void Run(LanguageTestData testData)
+    public async Task Run(LanguageTestData testData)
     {
         if (testData == null)
         {
             throw new ArgumentNullException(nameof(testData));
         }
 
-        var (stdout, stderr) = ProcessSpawner.SpawnProcess
+        var (stdout, stderr) = await ProcessSpawner.SpawnProcess
         (
             "javac",
             $"-cp lib/* -d bin {testData.JavaClassName}.java",

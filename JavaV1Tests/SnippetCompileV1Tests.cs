@@ -36,8 +36,8 @@ public class SnippetCompileV1Tests
     /// </summary>
     [Test]
     [TestCaseSource(typeof(SnippetCompileV1Tests), nameof(TestDataV1))]
-    public void Test(LanguageTestData testData)
+    public async Task Test(LanguageTestData testData)
     {
-        javaTestRunner.Run(testData);
+        await javaTestRunner.Run(testData);
     }
 }
