@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq;
 using TestsCommon;
 
 namespace JavaV1Tests;
@@ -22,7 +21,7 @@ public class SnippetCompileV1Tests
     public async Task OneTimeSetup()
     {
         javaTestRunner = new JavaTestRunner();
-        await javaTestRunner.PrepareCompilationEnvironment(languageTestData).ConfigureAwait(false);        
+        await javaTestRunner.PrepareCompilationEnvironment(languageTestData).ConfigureAwait(false);
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Runtime.InteropServices;
+using System.Diagnostics;
 namespace TestsCommon;
 
 public class JavaTestRunner
@@ -121,7 +122,7 @@ public class App
             $"-cp lib/* -d bin {testData.JavaClassName}.java",
             CompilationDirectory,
             TimeoutForJavacInSeconds * 1000
-        );
+        ).ConfigureAwait(false);
 
         if (!string.IsNullOrEmpty(stderr))
         {
@@ -135,6 +136,7 @@ public class App
 
     public async Task PrepareCompilationEnvironment(IEnumerable<LanguageTestData> languageTestData)
     {
+        _ = languageTestData ?? throw new ArgumentNullException(nameof(languageTestData));
         var libDirectory = Path.Combine(CompilationDirectory, "lib");
         Directory.CreateDirectory(libDirectory);
 
@@ -148,7 +150,7 @@ public class App
             Versions.Beta => BuildFileContents.Replace(
                 "com.microsoft.graph:microsoft-graph:--libversion--",
                 "com.microsoft.graph:microsoft-graph-beta:--libversion--"),
-            _ => throw new ArgumentException("Unsupported version", nameof(firstLanguageTestData.Version))
+            _ => throw new ArgumentException("Unsupported version", nameof(languageTestData))
         };
 
         await File.WriteAllTextAsync(buildFile, BuildFileContents
@@ -163,12 +165,20 @@ public class App
 
     private static async Task DownloadDependencies(string compilationDirectory)
     {
-        var gradleProcess = new Process
+        var gradleProcessName = "gradle";
+        var gradleArguments = "download";
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            gradleProcessName = "cmd";
+            gradleArguments = $"/c \"gradle.bat {gradleArguments}\"";
+        }
+
+        using var gradleProcess = new Process
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = "gradle",
-                Arguments = "download",
+                FileName = gradleProcessName,
+                Arguments = gradleArguments,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
@@ -186,8 +196,8 @@ public class App
             Assert.Fail($"Dependency download timed out after {dependencyDownloadTimeoutInSeconds} seconds");
         }
 
-        var output = gradleProcess.StandardOutput.ReadToEnd();
-        var error = gradleProcess.StandardError.ReadToEnd();
+        var output = await gradleProcess.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
+        var error = await gradleProcess.StandardError.ReadToEndAsync().ConfigureAwait(false);
 
         if (!string.IsNullOrEmpty(error))
         {
